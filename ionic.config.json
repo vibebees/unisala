@@ -1,0 +1,7 @@
+{
+  "name": "Unisala",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

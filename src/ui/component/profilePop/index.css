@@ -1,0 +1,25 @@
+.profile-drop-btn:hover{
+    background-color: #e8f1fa;
+}
+.profile-drop-btn{
+    padding: 10px;
+    border-radius: 5px;
+    font-size: medium;
+    cursor: pointer;
+}
+.profile-drop-div{
+    margin: 10px;
+}
+.profile-pop{
+    position: relative;
+}
+
+.profile-drop{
+    position: absolute;
+    cursor: default;
+    top: 100%;
+    right: 0px;
+    z-index: 999;
+    width: 250px;
+    padding: 0px;
+}

@@ -1,0 +1,45 @@
+.faqs{
+    margin: auto;
+}
+.faqsHead{
+    margin: auto;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+.faqsMapDiv{
+    overflow: hidden; 
+    color: #374151; 
+    font-size: 0.875rem;
+    line-height: 1.25rem; 
+    border-radius: 0.75rem; 
+    border-width: 1px; 
+    border-color: #9CA3AF; 
+    }
+.faqsMapDataDiv{
+    padding: 1rem; 
+    display: flex; 
+    justify-content: space-between; 
+    cursor: pointer; 
+}
+.faqsMapDataDiv:hover .faqsMapDataQues{
+    color: #00a8ff;
+}
+.faqsMapDataQuestion{
+    color: #1F2937; 
+font-weight: 600; 
+}
+.faqsMapDataAnswer{
+    overflow: hidden; 
+    transition-property: all; 
+    transition-duration: 300ms; 
+    background-color: #fff;
+}
+.faqsMapDataAnswer p{
+    padding: 1rem; 
+    padding-top: 0; 
+    font-size: 0.875rem;
+    line-height: 1.25rem; 
+    line-height: 1.75rem; 
+
+}

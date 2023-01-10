@@ -1,0 +1,7 @@
+.sidebar {
+    max-width: 300px;
+    height: fit-content;
+    position: sticky;
+    top: 0;
+    overflow: auto;
+}
