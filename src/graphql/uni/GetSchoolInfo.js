@@ -2,6 +2,7 @@ import { gql } from "@apollo/client"
 const getSchoolInfo = (name) => gql`
     query {
         getSchoolInfo(name: "${name}") {
+            unitId
             elevatorInfo {
                 name
                 address {

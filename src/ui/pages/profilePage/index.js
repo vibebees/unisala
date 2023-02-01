@@ -27,18 +27,6 @@ const ProfilePage = () => {
 
     const decode = jwtDecode(localStorage.getItem("accessToken"))
 
-    // const user = userDetails.find((user) => user.id === username)
-
-    // if (user === undefined) {
-    //     return (
-    //         <IonContent>
-    //             <IonGrid className="max-width-container">
-    //                 <IonText>User not found!!</IonText>
-    //             </IonGrid>
-    //         </IonContent>
-    //     )
-    // }
-
     const myProfile = username === decode?.username
     const {
         firstName,
@@ -92,7 +80,6 @@ const ProfilePage = () => {
                         )}
                         {tab === 1 && <Threads />}
                         {tab === 2 && <Guestbook userId={_id} />}
-                        {/* {tab === 3 && <EasyApplied />} */}
                         {tab === 4 && <Saved />}
                     </IonCol>
                     {windowWidth >= 1080 && (

@@ -8,6 +8,7 @@ import {
 import { heart, location } from "ionicons/icons"
 import { useSelector } from "react-redux"
 import useRating from "../../../../hooks/useRating"
+
 const ProDetails = () => {
     const [width, setWidth] = React.useState(window.innerWidth)
     const handleResize = () => {
@@ -31,44 +32,36 @@ const ProDetails = () => {
                     <IonCardHeader className="UniProfile-Header">
                         <h1>{uniData?.elevatorInfo?.name}</h1>
                     </IonCardHeader>
-                    <IonCardContent
-                        style={{
-                            display: "flex",
-                            padding: "0 12px"
-                        }}
-                    >
-                        <IonIcon
-                            style={{
-                                fontSize: "20px",
-                                alignSelf: "center"
-                            }}
-                            className="ion-icon"
-                            icon={location}
-                        />
-                        <p style={{ alignSelf: "center" }}>
-                            {uniData?.elevatorInfo?.address?.city}
-                        </p>
-                    </IonCardContent>
-                    <IonCardContent
-                        style={{
-                            display: "flex",
-                            padding: "0 12px"
-                        }}
-                    >
-                        <IonIcon
-                            style={{
-                                fontSize: "20px",
-                                alignSelf: "center"
-                            }}
-                            color="danger"
-                            className="ion-icon"
-                            icon={heart}
-                        />
-                        <p style={{ alignSelf: "center" }}>
-                            {useRating(uniData?.reviews || []) || "N/A"} Review
-                        </p>
-                    </IonCardContent>
-                    <IonCardContent>
+                    <div className="inline-flex" >
+                        <IonCardContent style={{ display: "flex", padding: "0 12px" }} >
+                            <IonIcon
+                                style={{
+                                    fontSize: "20px",
+                                    alignSelf: "center"
+                                }}
+                                className="ion-icon"
+                                icon={location}
+                            />
+                            <p style={{ alignSelf: "center" }}>
+                                {uniData?.elevatorInfo?.address?.city}
+                            </p>
+                        </IonCardContent>
+                        <IonCardContent style={{ display: "flex", padding: "0 12px" }} >
+                            <IonIcon
+                                style={{
+                                    fontSize: "20px",
+                                    alignSelf: "center"
+                                }}
+                                color="danger"
+                                className="ion-icon"
+                                icon={heart}
+                            />
+                            <p style={{ alignSelf: "center" }}>
+                                {useRating(uniData?.reviews || []) || "N/A"} Review
+                            </p>
+                        </IonCardContent>
+                    </div>
+                    {/* <IonCardContent>
                         <p
                             style={{
                                 maxWidth: "500px",
@@ -88,7 +81,7 @@ const ProDetails = () => {
                                 ....Read More
                             </span>
                         </p>
-                    </IonCardContent>
+                    </IonCardContent> */}
                 </IonCol>
                 {/* <IonCol
                     size="auto"
