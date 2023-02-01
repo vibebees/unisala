@@ -11,8 +11,13 @@ import {
 } from "@ionic/react"
 import "./professors.css"
 import { star, starOutline } from "ionicons/icons"
+// import { useQuery } from "@apollo/client"
+// import getSchoolInfo from "../../../graphql/uni/GetSchoolInfo"
 
 export const Professors = () => {
+    // const { loading, data } = useQuery(getSchoolInfo(id), {
+    //     context: { clientName: "uni" }
+    // })
     return (
         <IonCard
             style={{

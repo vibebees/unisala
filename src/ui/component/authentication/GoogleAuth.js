@@ -10,7 +10,6 @@ export const GoogleAuth = () => {
     const [user, setuser] = useState(false)
     const onGoogleSignIn = (user) => {
         let userCred = user
-        console.log(userCred)
         axios.post(urls["base"] + "/googleLogin", userCred).then((res) => {
             console.log(res)
         })

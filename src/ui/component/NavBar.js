@@ -108,13 +108,15 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                         gap: "30px"
                     }}
                 >
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRUsQiplH_OWtHnMb1Nrk31z58OJN009JG-w&usqp=CAU"
-                        alt="logo"
-                        style={{
-                            width: "45px"
-                        }}
-                    />
+                    <Link to="/">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRUsQiplH_OWtHnMb1Nrk31z58OJN009JG-w&usqp=CAU"
+                            alt="logo"
+                            style={{
+                                width: "45px"
+                            }}
+                        />
+                    </Link>
                     <div
                         style={{
                             width: "100%"
@@ -303,8 +305,8 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                                     decode
                                         ? setProfileDrop(!profileDrop)
                                         : setActiveNavDrop({
-                                              profile: !activeNavDrop.profile
-                                          })
+                                            profile: !activeNavDrop.profile
+                                        })
                                 }}
                                 style={{
                                     display: "flex",

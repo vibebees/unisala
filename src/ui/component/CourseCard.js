@@ -41,7 +41,6 @@ const CourseCard = ({
             window.removeEventListener("resize", handleResize)
         }
     })
-    console.log(name, "name")
     return (
         <IonCard
             style={{

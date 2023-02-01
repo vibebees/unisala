@@ -13,7 +13,6 @@ import axios from "axios"
 let url = require("../../../../utils/urls")
 
 export const SignUpForm = ({ setauth }) => {
-    console.log("url ------> ", url)
     const [errors, seterrors] = useState({})
     const [present, dismiss] = useIonToast()
     const [datacheck, setdatacheck] = useState(false)

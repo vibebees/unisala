@@ -10,6 +10,7 @@ import SearchResults from "../pages/searchResults"
 import MyNetwork from "../pages/myNetwork"
 import Notifications from "../pages/notifications"
 import UniSearchResults from "../pages/searchResults/uniSearchResults"
+
 export const PageRoute = ({ setPopup }) => (
     <Switch>
         <Route exact path="/home">
