@@ -65,7 +65,7 @@ export const Professors = () => {
                                                                 fontSize: "25px"
                                                             }}
                                                             icon={
-                                                                index < overallRating
+                                                                index <= overallRating
                                                                     ? star
                                                                     : starOutline
                                                             }

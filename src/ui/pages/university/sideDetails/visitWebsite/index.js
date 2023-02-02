@@ -23,7 +23,7 @@ const VisitWebsite = () => {
                         borderBottom: "1px solid #C4C4C4"
                     }}
                 >
-                    <h1>VisitWebsite</h1>
+                    <h1>Visit Website</h1>
                 </IonCardContent>
 
                 <div

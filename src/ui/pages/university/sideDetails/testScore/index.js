@@ -41,7 +41,7 @@ const TestScore = () => {
                         borderBottom: "1px solid #C4C4C4"
                     }}
                 >
-                    <h1>TestScore</h1>
+                    <h1>Test Score</h1>
                 </IonCardContent>
                 <IonCardContent>
                     <IonText color="dark">

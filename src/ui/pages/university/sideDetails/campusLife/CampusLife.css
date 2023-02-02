@@ -1,4 +1,4 @@
-.poll-bar{
+.poll-bar {
     padding: 5px;
     width: 100%;
     position: relative;
@@ -7,17 +7,21 @@
     z-index: 1;
     display: flex;
     justify-content: space-between;
+    background: #F6F6F6;
 }
-.bar-value{
+
+.bar-value {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     z-index: -1;
     background-color: #8EC8EF;
-    
+
 }
-.poll-bar h1, .poll-bar h2{
+
+.poll-bar h1,
+.poll-bar h2 {
     color: black;
     align-self: center;
 }

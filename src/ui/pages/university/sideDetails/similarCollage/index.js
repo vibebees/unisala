@@ -60,7 +60,7 @@ const SimilarCollage = () => {
                         borderBottom: "1px solid #C4C4C4"
                     }}
                 >
-                    <h1>SimilarCollage</h1>
+                    <h1>Similar Collage</h1>
                 </IonCardContent>
                 <IonGrid className={width > 720 && "ion-padding"}>
                     {/* <IonRow>
