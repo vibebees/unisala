@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
     IonCard,
     IonInfiniteScroll,
@@ -7,27 +6,23 @@ import {
 } from "@ionic/react"
 import StateMessage from "../../../component/stateMessage"
 import emptyState from "../../../../assets/emptyState.png"
-import locked from "../../../../assets/private.png"
-import CommentSec from "../../university/tabDetails/Discussion"
-import { useLazyQuery, useQuery } from "@apollo/client"
+// import CommentSec from "../../university/tabDetails/Discussion"
+import { useLazyQuery } from "@apollo/client"
 import GetUserPost from "../../../../graphql/user/GetUserPost"
 import Thread from "../../home/thread"
 import CourseCard from "../../../component/CourseCard"
 import { Link } from "react-router-dom"
 import "./index.css"
-import jwtDecode from "jwt-decode"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 
-function index() {
-    const decode = jwtDecode(localStorage.getItem("accessToken"))
+function index({ userId, firstName }) {
     const [page, setPage] = useState(0)
     const [getUserPost, { data, loading }] = useLazyQuery(
-        GetUserPost(decode?._id, page),
+        GetUserPost(userId, page),
         {
             fetchPolicy: "network-only"
         }
     )
-    // const { loading, error, data } = useQuery(GetUserPost(decode?._id, 0))
     const [threads, setThreads] = useState([])
     useEffect(() => {
         getUserPost()
@@ -37,30 +32,22 @@ function index() {
             Array.isArray(data?.getUserPost?.Posts) &&
             setThreads((pre) => [...pre, ...data?.getUserPost?.Posts])
     }, [data])
-    const isPrivate = false
+
     const userThreads = () => {
-        if (isPrivate) {
-            return (
-                <StateMessage
-                    title="Fulkumari lives a very private life!"
-                    subtitle="Connect with Fulkumari to see Fulkumari's threads activities."
-                >
-                    <img src={locked} alt="empty state" className="state-img" />
-                </StateMessage>
-            )
-        }
         if (Array.isArray(threads) && threads.length === 0) {
             return (
-                <StateMessage
-                    title="Fulkumari has no thread activities yet!"
-                    subtitle="All the published threads will be visible here"
-                >
-                    <img
-                        src={emptyState}
-                        alt="empty state"
-                        className="state-img"
-                    />
-                </StateMessage>
+                <IonCard>
+                    <StateMessage
+                        title={`${firstName} has no thread activities yet!`}
+                        subtitle="All the published threads will be visible here"
+                    >
+                        <img
+                            src={emptyState}
+                            alt="empty state"
+                            className="state-img"
+                        />
+                    </StateMessage>
+                </IonCard>
             )
         }
         return (

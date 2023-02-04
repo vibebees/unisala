@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import {
     IonGrid,
     IonRow,
@@ -22,23 +21,24 @@ import Post from "../../component/post/index"
 import Authentication from "../../component/authentication"
 import { useQuery } from "@apollo/client"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
-// eslint-disable-next-line
-import jwt_decode from "jwt-decode"
+import jwtDecode from "jwt-decode"
 import GetProfileCard from "../../../graphql/user/GetProfileCard"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
 import UnisalaIntro from "./UnisalaIntro"
+import useDocTitle from "../../../hooks/useDocTitile"
 
 export const Home = ({ setPopup }) => {
+    useDocTitle("Unisala")
     const accessToken = localStorage?.getItem("accessToken")
-    const decode = accessToken && jwt_decode(accessToken)
+    const decode = accessToken && jwtDecode(accessToken)
     const profileData = useQuery(GetProfileCard, {
         variables: {
             username: decode?.username
         }
     })
 
-    const [width, setWidth] = React.useState(window.innerWidth)
+    const [width, setWidth] = useState(window.innerWidth)
     const handleResize = () => {
         const { innerWidth } = window
 

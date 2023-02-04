@@ -16,13 +16,15 @@ import { useDispatch } from "react-redux"
 import { searchGetSuccess } from "../../../../store/action/index"
 import { useQuery } from "@apollo/client"
 import UniSearch from "../../../../graphql/uni/UniSearch"
+import useDocTitle from "../../../../hooks/useDocTitile"
 
-function index({ query, match }) {
+function index({ query }) {
     const { name } = useParams()
     const windowWidth = useWindowWidth()
+    useDocTitle("Search ᛫ " + name)
 
     const dispatch = useDispatch()
-    const { loading, error, data } = useQuery(UniSearch(name), {
+    const { data } = useQuery(UniSearch(name), {
         context: { clientName: "uni" }
     })
     useEffect(() => {

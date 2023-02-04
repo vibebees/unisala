@@ -4,9 +4,11 @@ import { IonContent, IonGrid, IonRow, IonCol } from "@ionic/react"
 import ChatList from "./chatList"
 import Chats from "./chats"
 import useWindowWidth from "../../../hooks/useWindowWidth"
+import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
 
 const index = () => {
+    useDocTitle("Messages")
     const windowWidth = useWindowWidth()
     const chatList = [
         {

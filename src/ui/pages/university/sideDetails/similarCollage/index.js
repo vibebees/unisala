@@ -20,32 +20,32 @@ const SimilarCollage = () => {
         }
     })
     const { uniData, isSideBar } = useSelector((store) => store.University)
-    const similarCollage = [
-        {
-            image: "https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            Title: "Nicholls State University",
-            description:
-                "Southeastern Louisiana is a public university located in Hammond, Louisiana. It is a mid-size institution with an enrollment of 9,248 undergraduate students ....Read More",
-            location: "HAMMOND , LA",
-            review: "4.94*67 Reviews",
-            avarage: "A+",
-            acceptance: "90%",
-            act: "19 - 24",
-            type: "university"
-        },
-        {
-            image: "https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            Title: "Nicholls State University",
-            description:
-                "Southeastern Louisiana is a public university located in Hammond, Louisiana. It is a mid-size institution with an enrollment of 9,248 undergraduate students ....Read More",
-            location: "HAMMOND , LA",
-            review: "4.94*67 Reviews",
-            avarage: "A+",
-            acceptance: "90%",
-            act: "19 - 24",
-            type: "university"
-        }
-    ]
+    // const similarCollage = [
+    //     {
+    //         image: "https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //         Title: "Nicholls State University",
+    //         description:
+    //             "Southeastern Louisiana is a public university located in Hammond, Louisiana. It is a mid-size institution with an enrollment of 9,248 undergraduate students ....Read More",
+    //         location: "HAMMOND , LA",
+    //         review: "4.94*67 Reviews",
+    //         avarage: "A+",
+    //         acceptance: "90%",
+    //         act: "19 - 24",
+    //         type: "university"
+    //     },
+    //     {
+    //         image: "https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //         Title: "Nicholls State University",
+    //         description:
+    //             "Southeastern Louisiana is a public university located in Hammond, Louisiana. It is a mid-size institution with an enrollment of 9,248 undergraduate students ....Read More",
+    //         location: "HAMMOND , LA",
+    //         review: "4.94*67 Reviews",
+    //         avarage: "A+",
+    //         acceptance: "90%",
+    //         act: "19 - 24",
+    //         type: "university"
+    //     }
+    // ]
 
     return (
         !isSideBar?.similarCollagesEmpty && (

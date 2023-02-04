@@ -19,15 +19,8 @@ import { useMutation } from "@apollo/client"
 import EditProfile from "../../../../../graphql/user/EditProfile"
 
 function index({ data }) {
-    const {
-        firstName,
-        lastName,
-        oneLinerBio,
-        location,
-        profilePic,
-        username,
-        birthday
-    } = data
+    const { firstName, lastName, oneLinerBio, location, profilePic, username } =
+        data
     const [input, setInput] = useState({})
     useEffect(() => {
         setInput({
@@ -36,8 +29,7 @@ function index({ data }) {
             username: username,
             oneLinerBio: oneLinerBio,
             location: location,
-            profilePic: profilePic,
-            birthday: birthday
+            profilePic: profilePic
         })
     }, [data])
     const [isOpen, setIsOpen] = useState(false)
@@ -170,19 +162,6 @@ function index({ data }) {
                                 className="input-box mt-05"
                                 placeholder="Last Name"
                                 value={input?.lastName}
-                            ></IonInput>
-                        </div>
-
-                        <div className="mb-1">
-                            <h5>Date of birth</h5>
-                            <IonInput
-                                mode="md"
-                                onIonChange={handleChange}
-                                name="birthday"
-                                required
-                                className="input-box mt-05"
-                                placeholder="Last Name"
-                                value={input?.birthday}
                             ></IonInput>
                         </div>
 

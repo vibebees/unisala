@@ -16,7 +16,7 @@ export const ProfilePop = () => {
     const decode = jwtDecode(localStorage.getItem("accessToken"))
     return (
         <IonCard className="profile-drop">
-            <Link to={`/user/${decode?.username}`}>
+            <Link to={`/@/${decode?.username}`}>
                 <IonItem
                     style={{
                         borderBottom: "1px solid #e0e0e0"

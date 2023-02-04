@@ -9,7 +9,6 @@ import {
     IonText
 } from "@ionic/react"
 import "./Admission.css"
-import { Bar } from "react-chartjs-2"
 import TotalCard from "./TotalCard"
 import { useSelector } from "react-redux"
 import useIsData from "../../../../../hooks/useIsData"

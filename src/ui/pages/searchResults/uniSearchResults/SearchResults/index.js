@@ -1,14 +1,21 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react"
-import { IonCard, IonCardContent, IonText } from "@ionic/react"
-import "./index.css"
+import {
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle
+} from "@ionic/react"
 import CourseCard from "../../../../component/CourseCard"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import noResultsFound from "../../../../../assets/no-results.jpg"
+import "./index.css"
 
 function index() {
     const { searchData } = useSelector((store) => store?.University || [])
-    return (
+
+    return searchData?.length ? (
         <>
             {Array.isArray(searchData) &&
                 searchData.map((data, index) => {
@@ -29,6 +36,19 @@ function index() {
                         </Link>
                     )
                 })}
+        </>
+    ) : (
+        <>
+            <IonCard style={{ textAlign: "center" }}>
+                <img alt="unisala: no results found" src={noResultsFound} />
+                <IonCardHeader>
+                    <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>
+                    <IonCardSubtitle>
+                        There were not any saved views, recent queries, or
+                        source matching your search.
+                    </IonCardSubtitle>
+                </IonCardHeader>
+            </IonCard>
         </>
     )
 }

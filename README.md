@@ -4,6 +4,9 @@
     * files  :  in object structure i.e university.page, university.dashboard
     * folder : lowercase and may include underscores(_) i.e mock_data
 
+## APP START
+    npm start
+
 
 `folder structure`
 

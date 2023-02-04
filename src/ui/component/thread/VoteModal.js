@@ -9,7 +9,6 @@ import {
     IonItem,
     IonLabel,
     IonModal,
-    IonSearchbar,
     IonTitle,
     IonToolbar
 } from "@ionic/react"

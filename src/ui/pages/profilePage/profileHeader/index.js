@@ -19,14 +19,14 @@ import "./index.css"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
     const {
-        name,
+        firstName,
+        lastName,
         username,
         profilePic,
         profileBanner,
         oneLinerBio,
         location: userLocation,
         DOJ,
-        birthday,
         socialLinks,
         myProfile
     } = data
@@ -45,7 +45,6 @@ const ProfileHeader = ({ tab, setTab, data }) => {
         { id: 0, menu: name || username },
         { id: 1, menu: "Threads" },
         { id: 2, menu: "Guestbook" },
-        // { id: 3, menu: "Easy Applied" },
         { id: 4, menu: "Saved" }
     ]
 
@@ -82,18 +81,20 @@ const ProfileHeader = ({ tab, setTab, data }) => {
 
             <div className="short-info-wrapper">
                 <IonText color="dark">
-                    <h1>{name}</h1>
+                    <h1>{firstName + " " + lastName}</h1>
                     <IonCardSubtitle>@{username}</IonCardSubtitle>
                 </IonText>
 
                 <div className="inline-2 flex-wrap">
-                    <IonCardSubtitle className="icon-text">
-                        <IonIcon className="icon-16" icon={location} />
-                        {userLocation}
-                    </IonCardSubtitle>
+                    {userLocation && (
+                        <IonCardSubtitle className="icon-text">
+                            <IonIcon className="icon-16" icon={location} />
+                            {userLocation}
+                        </IonCardSubtitle>
+                    )}
                     <IonCardSubtitle className="icon-text">
                         <IonIcon className="icon-16" icon={calendar} />
-                        {birthday}
+                        {DOJ}
                     </IonCardSubtitle>
                 </div>
                 <IonText>

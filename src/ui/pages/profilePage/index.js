@@ -1,7 +1,15 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
 import { useParams } from "react-router"
-import { IonContent, IonGrid, IonRow, IonCol } from "@ionic/react"
+import {
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle
+} from "@ionic/react"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import TopUniversitySidebar from "../../component/TopUniversitySidebar"
 import ProfileHeader from "./profileHeader"
@@ -13,30 +21,27 @@ import "./index.css"
 import jwtDecode from "jwt-decode"
 import { useQuery } from "@apollo/client"
 import GetUser from "../../../graphql/user/GetUser"
+import useDocTitle from "../../../hooks/useDocTitile"
+import noResultsFound from "../../../assets/no-results.jpg"
 
 const ProfilePage = () => {
     let windowWidth = useWindowWidth()
     const [tab, setTab] = useState(0)
     const { username } = useParams()
     const { data } = useQuery(GetUser(username))
+    useDocTitle(username)
 
     const { getUser } = data || {}
-    useEffect(() => {
-        // getUser &&
-    }, [getUser])
-
-    const decode = jwtDecode(localStorage.getItem("accessToken"))
-
+    const accessToken = localStorage.getItem("accessToken")
+    const decode = accessToken ? jwtDecode(accessToken) : {}
     const myProfile = username === decode?.username
     const {
         firstName,
-        name,
         lastName,
         picture,
         profileBanner,
         oneLinerBio,
         location,
-        birthday,
         socialLinks,
         about,
         badges,
@@ -45,7 +50,6 @@ const ProfilePage = () => {
         _id
     } = getUser?.user || {}
     const profileHeaderData = {
-        name,
         firstName,
         lastName,
         username,
@@ -53,7 +57,6 @@ const ProfilePage = () => {
         profileBanner,
         oneLinerBio,
         location,
-        birthday,
         socialLinks,
         myProfile
     }
@@ -63,6 +66,28 @@ const ProfilePage = () => {
         education,
         testScore,
         myProfile
+    }
+
+    if (!getUser?.user) {
+        return (
+            <IonContent>
+                <IonCard
+                    style={{ textAlign: "center", marginInline: "auto" }}
+                    className="max-width-container"
+                >
+                    <img alt="unisala: no results found" src={noResultsFound} />
+                    <IonCardHeader>
+                        <IonCardTitle>
+                            Sorry, this page is not available. &#9785;
+                        </IonCardTitle>
+                        <IonCardSubtitle>
+                            The link you followed may be broken, or the page may
+                            have been removed.
+                        </IonCardSubtitle>
+                    </IonCardHeader>
+                </IonCard>
+            </IonContent>
+        )
     }
 
     return (
@@ -78,9 +103,15 @@ const ProfilePage = () => {
                         {tab === 0 && getUser?.user && (
                             <ProfileBody data={profileBodyData} />
                         )}
-                        {tab === 1 && <Threads />}
-                        {tab === 2 && <Guestbook userId={_id} />}
-                        {tab === 4 && <Saved />}
+                        {tab === 1 && (
+                            <Threads userId={_id} firstName={firstName} />
+                        )}
+                        {tab === 2 && (
+                            <Guestbook userId={_id} firstName={firstName} />
+                        )}
+                        {tab === 4 && (
+                            <Saved userId={_id} firstName={firstName} />
+                        )}
                     </IonCol>
                     {windowWidth >= 1080 && (
                         <IonCol className="sidebar">

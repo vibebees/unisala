@@ -1,13 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useState } from "react"
 import "../auth.css"
-import {
-    IonButton,
-    IonCheckbox,
-    IonSpinner,
-    IonRow,
-    useIonToast
-} from "@ionic/react"
+import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
 import { Link } from "react-router-dom"
 import AuthInput from "../AuthInput"
 import axios from "axios"
@@ -111,7 +105,7 @@ export const SignUpForm = ({ setauth }) => {
                 />
             </div>
             <div className="auth-input-div">
-                <label className="auth-label">Passward</label>
+                <label className="auth-label">Password</label>
                 <br />
                 <AuthInput
                     validation={errors?.password}
@@ -122,12 +116,7 @@ export const SignUpForm = ({ setauth }) => {
                 />
             </div>
             <div className="auth-policy">
-                <div>
-                    <IonCheckbox />
-                    <label>Remember me</label>
-                </div>
-
-                <Link to="">Forget Passward?</Link>
+                <Link to="">Forget Password?</Link>
             </div>
             <IonButton
                 disabled={save}
