@@ -17,9 +17,13 @@ import GetProfileCard from "../../../graphql/user/GetProfileCard"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
 import UnisalaIntro from "./UnisalaIntro"
+import { screenLessThan768 } from "./screens.lessThan768"
+import { screensMoreThan768 } from "./screens.moreThan768"
+import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
 
 export const Home = ({ setPopup }) => {
+    useDocTitle("Unisala")
     const
         accessToken = localStorage?.getItem("accessToken"),
         decode = accessToken && jwtDecode(accessToken),
@@ -54,48 +58,7 @@ export const Home = ({ setPopup }) => {
             <IonContent
                 color="light">
                 <VerifyPostPop />
-                {width < 768 && (
-                    <IonHeader
-                        style={{
-                            position: "sticky",
-                            top: 0,
-                            zIndex: 999,
-                            backgroundColor: "white",
-                            padding: "8px",
-                            borderBottom: "1px solid #e0e0e0"
-                        }}
-                        className="ion-no-border"
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                alignSelf: "center",
-                                height: "100%",
-                                width: "95%",
-                                margin: "auto",
-                                justifyContent: "space-between",
-                                alignItems: "center"
-                            }}
-                        >
-                            <SearchInput />
-                            <div
-                                onClick={() => {
-                                    setActiveProfile(true)
-                                }}
-                                className="profile-pop"
-                            >
-                                <IonIcon size="large" icon={personCircle} />
-                                {/* {activeProfile && <ProfilePop />} */}
-                                {activeProfile && (
-                                    <Authentication
-                                        setActiveProfile={setActiveProfile}
-                                        activeProfile={activeProfile}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </IonHeader>
-                )}
+                {width < 768 && views.lessThan768}
                 <IonGrid
                     style={{
                         width: width >= 768 ? "95%" : "100%",
