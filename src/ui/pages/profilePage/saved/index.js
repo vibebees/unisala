@@ -14,13 +14,14 @@ import GetSevedList from "../../../../graphql/user/getSavedPost"
 import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 
-function index() {
-    const decode = jwtDecode(localStorage.getItem("accessToken"))
+function index({ userId }) {
+    const accessToken = localStorage.getItem("accessToken")
+    const decode = accessToken && jwtDecode(accessToken)
     const [page, setPage] = useState(0)
 
     const [getSavedList, { data, loading }] = useLazyQuery(GetSevedList, {
         variables: {
-            userId: decode?._id,
+            userId,
             page: page
         }
     })
@@ -28,9 +29,11 @@ function index() {
     useEffect(() => {
         getSavedList()
     }, [])
+
     const [threads, setThreads] = useState(data?.getUserPost?.Posts)
+
     useEffect(() => {
-        setThreads((pre) => [...pre, ...data?.getUserPost?.Posts])
+        setThreads(() => [threads, ...data?.getUserPost?.Posts])
     }, [data])
     const isPrivate = false
     const userThreads = () => {
@@ -123,7 +126,12 @@ function index() {
             </div>
         )
     }
-    return <div className="user-thread">{userThreads()}</div>
+    // return <div className="user-thread">{userThreads()}</div>
+    return (
+        <div className="user-thread">
+            <h1>garoh</h1>
+        </div>
+    )
 }
 
 export default index

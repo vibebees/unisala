@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
 import propTypes from "prop-types"
 import { IonCardContent } from "@ionic/react"
 import "./index.css"

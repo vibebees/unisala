@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-use-before-define
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { IonInput, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
 import { searchCircle } from "ionicons/icons"
@@ -76,7 +76,7 @@ function index() {
             {dropDownOptions && (
                 <div className="recommend-search">
                     <div>
-                        <Link to={`/search/users/q=${searchValue}`}>
+                        <Link to={`/search/users/${searchValue}`}>
                             <p
                                 className="recommend-search__user"
                                 onClick={() => setDropDownOptions(false)}
@@ -92,7 +92,7 @@ function index() {
                                 <Link
                                     to={
                                         `/university/${item?.elevatorInfo?.name}` ||
-                                        `/user/${item?.username}`
+                                        `/@/${item?.username}`
                                     }
                                     key={i}
                                     onClick={() => setDropDownOptions(false)}

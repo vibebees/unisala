@@ -36,6 +36,7 @@
             "before": true
           }
         ],
+        "react/react-in-jsx-scope": "off",
         "block-scoped-var": "error",
         "block-spacing": "error",
         "brace-style": ["error", "1tbs"],

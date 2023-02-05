@@ -10,6 +10,8 @@ import SearchResults from "../pages/searchResults"
 import MyNetwork from "../pages/myNetwork"
 import Notifications from "../pages/notifications"
 import UniSearchResults from "../pages/searchResults/uniSearchResults"
+import UserSearchResults from "../pages/searchResults/userSearchResults"
+
 export const PageRoute = ({ setPopup }) => (
     <Switch>
         <Route exact path="/home">
@@ -27,7 +29,7 @@ export const PageRoute = ({ setPopup }) => (
         <Route path="/university/:id">
             <UniversityPage />
         </Route>
-        <Route path="/user/:username">
+        <Route path="/@/:username">
             <ProfilePage />
         </Route>
         <Route path="/messages">
@@ -44,6 +46,9 @@ export const PageRoute = ({ setPopup }) => (
         </Route>
         <Route path="/search/uni/:name">
             <UniSearchResults />
+        </Route>
+        <Route path="/search/users/:name">
+            <UserSearchResults />
         </Route>
         <Route path="">
             <PageNotFound />

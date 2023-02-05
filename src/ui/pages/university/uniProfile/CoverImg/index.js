@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react"
 import "./CoverImg.css"
+
 const CoverImg = () => {
     const [width, setWidth] = React.useState(window.innerWidth)
     const handleResize = () => {

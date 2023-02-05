@@ -5,8 +5,10 @@ import useWindowWidth from "../../../hooks/useWindowWidth"
 import Sidebar from "./sidebar"
 import Requests from "./requests"
 import Recommendations from "./recommendations"
+import useDocTitle from "../../../hooks/useDocTitile"
 
 function index() {
+    useDocTitle("My Network")
     const windowWidth = useWindowWidth()
     return (
         <IonContent>

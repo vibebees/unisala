@@ -1,13 +1,6 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useState } from "react"
-import {
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonIcon,
-    IonText,
-    IonCard
-} from "@ionic/react"
+import { IonGrid, IonRow, IonIcon, IonText, IonCard } from "@ionic/react"
 import {
     chatbubbles,
     home,
@@ -19,8 +12,7 @@ import { Link } from "react-router-dom"
 import SearchBox from "./searchBox"
 import NotificationItem from "./notificationItem"
 import ProfilePop from "./profilePop"
-// eslint-disable-next-line
-import jwt_decode from "jwt-decode"
+import jwtDecode from "jwt-decode"
 
 const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
     const accessToken = localStorage?.getItem("accessToken")
@@ -87,7 +79,7 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
         }
     ]
     const [profileDrop, setProfileDrop] = useState(false)
-    const decode = accessToken && jwt_decode(accessToken)
+    const decode = accessToken && jwtDecode(accessToken)
     return (
         <IonGrid
             style={{
@@ -97,41 +89,46 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                 position: "sticky",
                 top: 0,
                 zIndex: 10,
-                width: "100%"
+                width: "100%",
+                height: "66px"
             }}
         >
-            <IonRow style={{ maxWidth: "1280px", marginInline: "auto" }}>
-                <IonCol
+            <IonRow
+                style={{
+                    maxWidth: "1280px",
+                    marginInline: "auto",
+                    padding: "0.5rem 1rem 0 1rem"
+                }}
+                className="flex"
+            >
+                <div
                     style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "30px"
                     }}
                 >
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRUsQiplH_OWtHnMb1Nrk31z58OJN009JG-w&usqp=CAU"
-                        alt="logo"
-                        style={{
-                            width: "45px"
-                        }}
-                    />
-                    <div
-                        style={{
-                            width: "100%"
-                        }}
-                    >
+                    <Link to="/">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRUsQiplH_OWtHnMb1Nrk31z58OJN009JG-w&usqp=CAU"
+                            alt="logo"
+                            style={{
+                                width: "45px"
+                            }}
+                        />
+                    </Link>
+                    <div style={{ width: "100%" }}>
                         <SearchBox />
                     </div>
-                </IonCol>
-                <IonCol>
-                    <IonRow>
-                        {navigation.map((item, index) => {
+                </div>
+                <IonRow style={{ display: "inline-flex", gap: "2.5rem" }}>
+                    {decode &&
+                        navigation.map((item, index) => {
                             return (
-                                <IonCol
+                                <div
                                     key={index}
-                                    style={{
-                                        cursor: "pointer"
-                                    }}
+                                    style={{ cursor: "pointer" }}
+                                    className="flex"
                                 >
                                     <Link
                                         to={item?.link}
@@ -176,16 +173,14 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                                             </IonText>
                                         </div>
                                     </Link>
-                                </IonCol>
+                                </div>
                             )
                         })}
-                        <IonCol
+                    {decode && (
+                        <div
                             className="profile-pop"
-                            style={{
-                                cursor: "pointer"
-                            }}
+                            style={{ cursor: "pointer" }}
                         >
-                            {" "}
                             <div
                                 tabIndex="129"
                                 onFocus={() => {
@@ -237,7 +232,6 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                                     </p>
                                 </IonText>
                             </div>
-                            {/* {activeNavDrop && <ProfilePop />} */}
                             <div
                                 style={{
                                     height: activeNavDrop.notifications
@@ -259,12 +253,11 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                                 }}
                                 className="notification-drop"
                             >
-                                <Link
+                                <div
                                     style={{
                                         position: "relative",
                                         zIndex: 10000
                                     }}
-                                    to={`/Notifications`}
                                 >
                                     <IonCard>
                                         <IonText
@@ -273,12 +266,6 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                                         >
                                             <h3>Notifications</h3>
                                         </IonText>
-                                        {/* <IonText
-                                        className="ion-margin-left"
-                                        color="dark"
-                                    >
-                                        <h3>Notifications</h3>
-                                    </IonText> */}
                                         {chatList.map((item, index) => {
                                             return (
                                                 <NotificationItem
@@ -288,65 +275,49 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                                             )
                                         })}
                                     </IonCard>
-                                </Link>
+                                </div>
                             </div>
-                        </IonCol>
-                        <IonCol
-                            className="profile-pop"
+                        </div>
+                    )}
+                    <div className="profile-pop" style={{ cursor: "pointer" }}>
+                        <div
+                            onClick={() => {
+                                decode
+                                    ? setProfileDrop(!profileDrop)
+                                    : setActiveNavDrop({
+                                          profile: !activeNavDrop.profile
+                                      })
+                            }}
                             style={{
-                                cursor: "pointer"
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexDirection: "column",
+                                width: "fit-content",
+                                gap: "3px"
                             }}
                         >
-                            {" "}
-                            <div
-                                onClick={() => {
-                                    decode
-                                        ? setProfileDrop(!profileDrop)
-                                        : setActiveNavDrop({
-                                              profile: !activeNavDrop.profile
-                                          })
-                                }}
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexDirection: "column",
-                                    gap: "3px"
-                                }}
-                            >
-                                <IonIcon
-                                    style={{
-                                        fontSize: "25px"
-                                    }}
-                                    color={
-                                        activeNavDrop.profile
-                                            ? "dark"
-                                            : "medium"
-                                    }
-                                    icon={personCircle}
-                                />
+                            <IonIcon
+                                style={{ fontSize: "25px" }}
+                                color={
+                                    activeNavDrop.profile ? "dark" : "medium"
+                                }
+                                icon={personCircle}
+                            />
 
-                                <IonText
-                                    color={
-                                        activeNavDrop.profile
-                                            ? "dark"
-                                            : "medium"
-                                    }
-                                >
-                                    <p
-                                        style={{
-                                            margin: 0,
-                                            fontSize: "14px"
-                                        }}
-                                    >
-                                        My profile
-                                    </p>
-                                </IonText>
-                            </div>
-                            {profileDrop && <ProfilePop />}
-                        </IonCol>
-                    </IonRow>
-                </IonCol>
+                            <IonText
+                                color={
+                                    activeNavDrop.profile ? "dark" : "medium"
+                                }
+                            >
+                                <p style={{ margin: 0, fontSize: "14px" }}>
+                                    My profile
+                                </p>
+                            </IonText>
+                        </div>
+                        {profileDrop && <ProfilePop />}
+                    </div>
+                </IonRow>
             </IonRow>
         </IonGrid>
     )

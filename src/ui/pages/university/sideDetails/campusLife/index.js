@@ -20,55 +20,29 @@ const CampusLife = () => {
 
     return (
         !isSideBar?.campusLifeEmpty && (
-            <IonCard
-                style={{
-                    margin: "15px 0px 0px 0px"
-                }}
-                className="ion-margin-top"
-            >
-                <IonCardContent
-                    style={{
-                        borderBottom: "1px solid #C4C4C4"
-                    }}
-                >
-                    <h1>CampusLife</h1>
-                </IonCardContent>
-                <IonCardContent>
+            <IonCard style={{ margin: "15px 0px 0px 0px" }} className="ion-margin-top" >
+                <IonCardContent style={{ borderBottom: "1px solid #C4C4C4" }} className="flex" >
+                    <h1>Campus Life</h1>
                     <IonItem lines="none">
                         <IonIcon icon={barChart} />
                         <IonLabel className="ion-padding-start">
                             <h2>Poll</h2>
                         </IonLabel>
                     </IonItem>
-                    {/* <IonTitle color="dark">
-                    <h2>Poll</h2>
-                </IonTitle> */}
+                </IonCardContent>
+                <IonCardContent>
                     <IonText color="dark">
-                        <h2>
-                            What one word or phrase best describes your school?
-                        </h2>
+                        <h2>What one word or phrase best describes your school?</h2>
                     </IonText>
                     <IonGrid>
-                        {Array.isArray(
-                            uniData?.students?.campusLife?.poll
-                                ?.wordBestDescribe
-                        ) &&
+                        {Array.isArray(uniData?.students?.campusLife?.poll?.wordBestDescribe) &&
                             uniData?.students?.campusLife?.poll?.wordBestDescribe.map(
                                 ({ type, pollPercentage }, index) => (
                                     <IonRow key={index} className="ion-padding">
                                         <div className="poll-bar">
-                                            <div
-                                                style={{
-                                                    width: pollPercentage + "%"
-                                                }}
-                                                className="bar-value"
-                                            ></div>
-                                            <h3
-                                                style={{
-                                                    color: "black"
-                                                }}
-                                            >
-                                                {type}
+                                            <div style={{ width: pollPercentage + "%" }} className="bar-value"></div>
+                                            <h3 style={{ color: "black" }}>
+                                                {type.split("_").join(" ")}
                                             </h3>
                                             <h2>
                                                 {useIsData(pollPercentage)}%

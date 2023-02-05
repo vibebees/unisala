@@ -137,13 +137,6 @@ export const PostPopup = ({ setPopup, popup }) => {
                             placeholder="Write something..."
                             onChange={(e) => setPostText(e.target.value)}
                         />
-                        {/* <p
-                        style={{
-                            fontSize: "15px"
-                        }}
-                    >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    </p> */}
                     </IonText>
 
                     {file ? (

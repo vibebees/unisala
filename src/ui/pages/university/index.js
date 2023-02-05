@@ -3,6 +3,7 @@ import React, { useEffect } from "react"
 import {
     IonBackButton,
     IonButtons,
+    IonContent,
     IonHeader,
     IonText,
     IonTitle,
@@ -249,6 +250,7 @@ export const UniversityPage = () => {
             </IonText>
         </div>
     ) : uniData ? (
+        <IonContent>
         <section
             ref={app}
             onScroll={() => {
@@ -283,11 +285,12 @@ export const UniversityPage = () => {
                                 fontSize: "1rem"
                             }}
                         >
-                            Southeastern Louisiana University
+                            {data?.getSchoolInfo?.elevatorInfo?.name}
                         </IonTitle>
                     </IonToolbar>
                 </IonHeader>
             )}
+            <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
             <div ref={profile}>
                 <UniProfile />
             </div>
@@ -320,10 +323,12 @@ export const UniversityPage = () => {
                     margin: "0 auto"
                 }}
             >
-                <FAQ />
+                {/* <FAQ /> */}
                 <Discussion />
-                <Reviews />
+                {/* <Reviews /> */}
+            </div>
             </div>
         </section>
+        </IonContent>
     ) : null
 }
