@@ -1,11 +1,8 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
 import {
     IonCard,
     IonText,
     IonCardSubtitle,
     IonIcon,
-    IonButton,
     IonCardContent
 } from "@ionic/react"
 import { location } from "ionicons/icons"
@@ -16,7 +13,7 @@ function index({
     profileImg,
     name,
     username,
-    loaction: place,
+    loaction: userLocation,
     oneLineBio,
     children
 }) {
@@ -49,15 +46,19 @@ function index({
                         <IonCardSubtitle>@{username}</IonCardSubtitle>
                     </IonText>
 
-                    <div className="inline-2 flex-wrap">
-                        <IonCardSubtitle className="icon-text">
-                            <IonIcon className="icon-16" icon={location} />
-                            {place}
-                        </IonCardSubtitle>
-                    </div>
-                    <IonText>
-                        <p>{oneLineBio}</p>
-                    </IonText>
+                    {userLocation && (
+                        <div className="inline-2 flex-wrap">
+                            <IonCardSubtitle className="icon-text">
+                                <IonIcon className="icon-16" icon={location} />
+                                {userLocation}
+                            </IonCardSubtitle>
+                        </div>
+                    )}
+                    {oneLineBio && (
+                        <IonText>
+                            <p>{oneLineBio}</p>
+                        </IonText>
+                    )}
                 </div>
                 {children}
             </IonCardContent>

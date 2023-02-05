@@ -20,6 +20,7 @@ import moment from "moment"
 import jwtDecode from "jwt-decode"
 import { ellipsisVertical } from "ionicons/icons"
 import MorePop from "./MorePop"
+import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 
 function index({ userId, firstName }) {
     const [page, setPage] = useState(0)
@@ -28,13 +29,16 @@ function index({ userId, firstName }) {
     const [isOpen, setIsOpen] = useState(false)
     const [guestbookList, setGuestbookList] = useState([])
 
-    const [getGuestBookList, { data }] = useLazyQuery(receivedGuestbookList, {
-        variables: {
-            userId: userId,
-            page: page,
-            pageSize: 10
+    const [getGuestBookList, { data, loading }] = useLazyQuery(
+        receivedGuestbookList,
+        {
+            variables: {
+                userId: userId,
+                page: page,
+                pageSize: 10
+            }
         }
-    })
+    )
 
     useEffect(() => {
         getGuestBookList()
@@ -42,6 +46,12 @@ function index({ userId, firstName }) {
     useEffect(() => {
         setGuestbookList(data?.receivedGuestbookList?.guestbook)
     }, [data])
+
+    if (loading) {
+        return ["0", "1", "2"].map((item) => {
+            return <ThreadScaletion key={item} />
+        })
+    }
 
     const guestbookLists = () => {
         return (
@@ -120,10 +130,14 @@ function index({ userId, firstName }) {
                 </IonCard>
             )}
 
-            {userId === decode?._id && !guestbookList?.length && (
+            {!guestbookList?.length && (
                 <IonCard>
                     <StateMessage
-                        title="You haven't received any messages!"
+                        title={
+                            userId === decode?._id
+                                ? "You haven't received any messages!"
+                                : `${firstName} has not received any messages`
+                        }
                         subtitle="All the guestbook messages will be visible here"
                     >
                         <img
@@ -137,21 +151,6 @@ function index({ userId, firstName }) {
 
             {Array.isArray(guestbookList) && guestbookList?.length && (
                 <IonCard className="mb-2">{guestbookLists()}</IonCard>
-            )}
-
-            {userId !== decode?._id && !guestbookList?.length && (
-                <IonCard>
-                    <StateMessage
-                        title={`${firstName} has no messages!`}
-                        subtitle="All the guestbook messages will be visible here"
-                    >
-                        <img
-                            src={emptyState}
-                            alt="empty state"
-                            className="state-img"
-                        />
-                    </StateMessage>
-                </IonCard>
             )}
         </>
     )

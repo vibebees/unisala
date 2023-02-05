@@ -27,6 +27,7 @@ import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
 import UnisalaIntro from "./UnisalaIntro"
 import useDocTitle from "../../../hooks/useDocTitile"
+import SearchBox from "../../component/searchBox"
 
 export const Home = ({ setPopup }) => {
     useDocTitle("Unisala")
@@ -85,7 +86,7 @@ export const Home = ({ setPopup }) => {
                                 alignItems: "center"
                             }}
                         >
-                            <SearchInput />
+                            <SearchBox />
                             <div
                                 onClick={() => {
                                     setActiveProfile(true)

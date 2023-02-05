@@ -1,3 +1,7 @@
+.search-results-wrapper {
+    width: calc(100% - 350px);
+}
+
 .filter-col {
     max-width: 320px;
     padding-inline: unset;

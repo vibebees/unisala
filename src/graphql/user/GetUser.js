@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-const GetUser = (id, page) => gql`
+const GetUser = (id) => gql`
     query {
         getUser(username:"${id}") {
           user {
@@ -62,7 +62,6 @@ const GetUser = (id, page) => gql`
                 
               }
             }
-            
           }
           }
     }
