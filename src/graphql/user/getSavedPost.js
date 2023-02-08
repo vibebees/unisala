@@ -1,24 +1,31 @@
 import { gql } from "@apollo/client"
-const GetSevedList = gql`
+
+const GetSavedList = gql`
     query savedList($userId: String!, $page: Float) {
         savedList(userId: $userId, page: $page) {
-            success
-            message
-            Posts {
-                userId
-                postImage
-                postText
-                date
-                upVoteCount
-                postCommentsCount
-                firstName
-                lastName
-                username
-                picture
-                upVoted
-                saved
+            status {
+                success
+                message
             }
+            Posts {
+                _id
+                postText
+                postImage
+                date
+                postCommentsCount
+                upVoted
+                upVoteCount
+                saved
+                user {
+                    _id
+                    firstName
+                    lastName
+                    username
+                    picture
+                }
+            }
+            totalPosts
         }
     }
 `
-export default GetSevedList
+export default GetSavedList

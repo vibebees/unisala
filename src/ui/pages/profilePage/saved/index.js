@@ -1,5 +1,10 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useEffect, useState } from "react"
+import {
+    IonCard,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
+} from "@ionic/react"
 import StateMessage from "../../../component/stateMessage"
 import emptyState from "../../../../assets/emptyState.png"
 import locked from "../../../../assets/private.png"
@@ -10,16 +15,15 @@ import CourseCard from "../../../component/CourseCard"
 import { Link } from "react-router-dom"
 import "../threads/index.css"
 import jwtDecode from "jwt-decode"
-import GetSevedList from "../../../../graphql/user/getSavedPost"
-import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
+import GetSavedList from "../../../../graphql/user/getSavedPost"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 
-function index({ userId }) {
+function index({ userId, firstName }) {
     const accessToken = localStorage.getItem("accessToken")
     const decode = accessToken && jwtDecode(accessToken)
     const [page, setPage] = useState(0)
 
-    const [getSavedList, { data, loading }] = useLazyQuery(GetSevedList, {
+    const [getSavedList, { data, loading }] = useLazyQuery(GetSavedList, {
         variables: {
             userId,
             page: page
@@ -30,28 +34,22 @@ function index({ userId }) {
         getSavedList()
     }, [])
 
-    const [threads, setThreads] = useState(data?.getUserPost?.Posts)
+    const [threads, setThreads] = useState([])
 
     useEffect(() => {
-        setThreads(() => [threads, ...data?.getUserPost?.Posts])
+        if (data) setThreads((pre) => [...pre, ...data?.savedList?.Posts])
     }, [data])
-    const isPrivate = false
-    const userThreads = () => {
-        if (isPrivate) {
-            return (
+
+    if (!data?.savedList.Posts.length) {
+        return (
+            <IonCard>
                 <StateMessage
-                    title={`${decode?.firstName} lives a very private life!`}
-                    subtitle={`Connect with ${decode?.firstName} to see ${decode?.firstName}'s threads activities.`}
-                >
-                    <img src={locked} alt="empty state" className="state-img" />
-                </StateMessage>
-            )
-        }
-        if (Array.isArray(threads) && threads.length === 0) {
-            return (
-                <StateMessage
-                    title={`${decode?.firstName} has no saved threads yet!`}
-                    subtitle="All the saved threads will be visible here"
+                    title={
+                        decode?._id === userId
+                            ? `You have not saved anything yet!`
+                            : `${firstName} has not saved anything yet!`
+                    }
+                    subtitle="All the saved posts will be visible here"
                 >
                     <img
                         src={emptyState}
@@ -59,8 +57,11 @@ function index({ userId }) {
                         className="state-img"
                     />
                 </StateMessage>
-            )
-        }
+            </IonCard>
+        )
+    }
+
+    const userThreads = () => {
         return (
             <div>
                 {Array.isArray(threads) &&
@@ -105,11 +106,13 @@ function index({ userId }) {
                             // </IonCard>
                         )
                     })}
+
                 {loading &&
                     ["0", "1", "2"].map((item) => {
                         return <ThreadScaletion key={item} />
                     })}
-                <IonInfiniteScroll
+
+                {/* <IonInfiniteScroll
                     onIonInfinite={(e) => {
                         setPage(page + 1)
                         getSavedList({
@@ -122,16 +125,11 @@ function index({ userId }) {
                     }}
                 >
                     <IonInfiniteScrollContent loadingText=""></IonInfiniteScrollContent>
-                </IonInfiniteScroll>
+                </IonInfiniteScroll> */}
             </div>
         )
     }
-    // return <div className="user-thread">{userThreads()}</div>
-    return (
-        <div className="user-thread">
-            <h1>garoh</h1>
-        </div>
-    )
+    return <div className="user-thread">{userThreads()}</div>
 }
 
 export default index

@@ -1,6 +1,11 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
-import { IonCard, IonText, IonCol, IonItem, IonAvatar, IonLabel } from "@ionic/react"
+import {
+    IonCard,
+    IonText,
+    IonCol,
+    IonItem,
+    IonAvatar,
+    IonLabel
+} from "@ionic/react"
 
 export const screenGreaterThan1000 = () => {
     return (
@@ -12,12 +17,11 @@ export const screenGreaterThan1000 = () => {
                 position: "sticky",
                 top: "15px",
                 overflow: "auto"
-            }}>
+            }}
+        >
             <IonCard>
                 <IonText color="dark">
-                    <h6 style={{ padding: "10px" }}>
-                        Top Universities
-                    </h6>
+                    <h6 style={{ padding: "10px" }}>Top Universities</h6>
                 </IonText>
 
                 {[
@@ -59,7 +63,8 @@ export const screenGreaterThan1000 = () => {
                                 padding: "0px"
                             }}
                             lines="none"
-                            key={index}>
+                            key={index}
+                        >
                             <IonAvatar slot="start">
                                 <img src={item.img} />
                             </IonAvatar>
@@ -67,13 +72,15 @@ export const screenGreaterThan1000 = () => {
                                 <h2
                                     style={{
                                         margin: 0
-                                    }} >
+                                    }}
+                                >
                                     {item.name}
                                 </h2>
                                 <p
                                     style={{
                                         margin: 0
-                                    }} >
+                                    }}
+                                >
                                     {item.location}
                                 </p>
                             </IonLabel>

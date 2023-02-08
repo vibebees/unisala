@@ -20,8 +20,10 @@ import UnisalaIntro from "./UnisalaIntro"
 import { screenLessThan768 } from "./screens.lessThan768"
 import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
+import useDocTitle from "../../../hooks/useDocTitile"
 
 export const Home = ({ setPopup }) => {
+    useDocTitle("Unisala")
     const
         accessToken = localStorage?.getItem("accessToken"),
         decode = accessToken && jwtDecode(accessToken),

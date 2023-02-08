@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+
 const UniSearch = (name) => gql`
     query {
         searchSchool(name: "${name}") {

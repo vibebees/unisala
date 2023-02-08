@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useHistory } from "react-router-dom"
 import { IonInput, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
 import { searchCircle } from "ionicons/icons"
 import "./index.css"
@@ -10,6 +9,7 @@ import UniSearchDataList from "../../../graphql/uni/UniSearchDatalist"
 import SearchUser from "../../../graphql/user/SearchUser"
 
 function index() {
+    const history = useHistory()
     const [searchValue, setSearchValue] = useState("")
     const [dropDownOptions, setDropDownOptions] = useState(false)
     const [options, setOptions] = useState([])
@@ -61,9 +61,15 @@ function index() {
                         setSearchValue(e.detail.value)
                         setDropDownOptions(true)
                     }}
+                    onkeydown={(e) => {
+                        if (searchValue && e.keyCode === 13) {
+                            setDropDownOptions(false)
+                            return history.push(`/search/uni/${searchValue}`)
+                        }
+                    }}
                 />
                 <Link
-                    to={`/search/uni/${searchValue}`}
+                    to={searchValue ? `/search/uni/${searchValue}` : "#"}
                     className="search-box__search-icon"
                 >
                     <IonIcon
@@ -104,7 +110,6 @@ function index() {
                                         }}
                                         lines="none"
                                         key={index}
-                                        className="recommend-search__user"
                                     >
                                         <IonAvatar slot="start">
                                             <img

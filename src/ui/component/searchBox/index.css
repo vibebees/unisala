@@ -29,14 +29,14 @@
 }
 
 .recommend-search {
+    position: absolute;
     background: #fff;
+    max-height: 400px;
     width: 400px;
     border-radius: 10px;
     margin-top: 10px;
     box-shadow: 0 3px 13px 0 rgb(60 60 60 / 40%);
-    position: absolute;
     padding: 20px;
-    max-height: 400px;
     overflow: auto;
 }
 
@@ -45,10 +45,19 @@
     color: #000;
     padding: 0.5rem;
     border-radius: 5px;
-
+    background: #ddd;
 }
 
 .recommend-search__user:hover {
-    background: #ddd;
+    background: #b8b8b8;
     border-radius: 5px;
+}
+
+@media (width < 768px) {
+    .recommend-search {
+        background: #fff;
+        width: 300px;
+        margin-top: 28rem;
+        position: absolute;
+    }
 }

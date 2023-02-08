@@ -14,8 +14,11 @@ import CourseCard from "../../../component/CourseCard"
 import { Link } from "react-router-dom"
 import "./index.css"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import jwtDecode from "jwt-decode"
 
 function index({ userId, firstName }) {
+    const accessToken = localStorage.getItem("accessToken")
+    const decode = accessToken && jwtDecode(accessToken)
     const [page, setPage] = useState(0)
     const [getUserPost, { data, loading }] = useLazyQuery(
         GetUserPost(userId, page),
@@ -24,9 +27,11 @@ function index({ userId, firstName }) {
         }
     )
     const [threads, setThreads] = useState([])
+
     useEffect(() => {
         getUserPost()
     }, [])
+
     useEffect(() => {
         data?.getUserPost?.Posts &&
             Array.isArray(data?.getUserPost?.Posts) &&
@@ -38,7 +43,11 @@ function index({ userId, firstName }) {
             return (
                 <IonCard>
                     <StateMessage
-                        title={`${firstName} has no thread activities yet!`}
+                        title={
+                            decode?._id === userId
+                                ? `You don't have any thread activities!`
+                                : `${firstName} has no thread activites!`
+                        }
                         subtitle="All the published threads will be visible here"
                     >
                         <img

@@ -1,16 +1,13 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
 import { Redirect, Route, Switch } from "react-router"
 import { HomePage } from "../pages/home/index"
 import { UniversityPage } from "../pages/university"
 import PageNotFound from "./PageNotFound"
 import ProfilePage from "../pages/profilePage"
 import Messages from "../pages/messages"
-import SearchResults from "../pages/searchResults"
 import MyNetwork from "../pages/myNetwork"
 import Notifications from "../pages/notifications"
-import UniSearchResults from "../pages/searchResults/uniSearchResults"
-import UserSearchResults from "../pages/searchResults/userSearchResults"
+import UniSearchResults from "../pages/uniSearchResults"
+import UserSearchResults from "../pages/userSearchResults"
 
 export const PageRoute = ({ setPopup }) => (
     <Switch>
@@ -34,9 +31,6 @@ export const PageRoute = ({ setPopup }) => (
         </Route>
         <Route path="/messages">
             <Messages />
-        </Route>
-        <Route exact path="/search">
-            <SearchResults />
         </Route>
         <Route path="/mynetwork">
             <MyNetwork />
