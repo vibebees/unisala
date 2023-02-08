@@ -52,8 +52,6 @@
     flex-direction: column;
     width: 100%;
     min-width: 235px;
-
-
 }
 
 .apple-auth-btn{
@@ -62,7 +60,6 @@
     width: 235px;
     font-size: small !important;
     border-radius: 100px !important;
-
 }
 
 
@@ -70,7 +67,6 @@
 .apple-auth-btn svg{
     width: 35px !important;
     height: 55px !important;
-    
 }
 
 .auth-name input{
@@ -84,10 +80,17 @@
 
 .auth-input{
     border:1px solid #c4c4c4;
+    background: #ddd;
     height: 35px;
     border-radius: 50px;
     width: 100%;
     padding: 0 10px;
+}
+
+.auth-input:autofill {
+    border:1px solid #c4c4c4;
+    -webkit-text-fill-color: #000;
+    -webkit-box-shadow: 0 0 0 30px #ddd inset !important;
 }
 
 .auth-input-val-div{
