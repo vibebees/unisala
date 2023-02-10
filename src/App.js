@@ -63,13 +63,7 @@ const lib = {}
 lib.R = R
 
 lib.axios = axios
-
-
-
-
-
-
-setupIonicReact();
+setupIonicReact()
 const App = () => {
 
     const [width, setWidth] = useState(window.innerWidth)
@@ -106,8 +100,6 @@ const App = () => {
         //         </IonRouterOutlet>
         //     </IonReactRouter>
         // </IonApp>
-
-
         <Provider store={store}>
             <PersistGate persistor={persistor}>
                 <IonApp>
@@ -234,6 +226,6 @@ const App = () => {
             </PersistGate>
         </Provider>
     )
-};
+}
 
-export default App;
+export default App
