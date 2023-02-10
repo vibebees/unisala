@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react"
-import ReactDOM from "react-dom"
 import App from "./App"
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration"
 import reportWebVitals from "./reportWebVitals"
@@ -21,6 +20,7 @@ import { onError } from "@apollo/client/link/error"
 
 import axios from "axios"
 import urls from "./utils/urls"
+import { createRoot } from 'react-dom/client';
 
 const authLink = setContext((_, { headers }) => {
     const token = localStorage.getItem("accessToken")
@@ -113,16 +113,14 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 })
 
-ReactDOM.render(
-    <ApolloProvider client={client}>
-        <Provider store={store}>
-            <React.StrictMode>
-                <App />
-            </React.StrictMode>
-        </Provider>
-    </ApolloProvider>,
-    document.getElementById("root")
-)
+const root = createRoot(document.getElementById("root"));
+root.render(<ApolloProvider client={client}>
+    <Provider store={store}>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </Provider>
+</ApolloProvider>);
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA

@@ -1,5 +1,5 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
+
+import React, { useEffect, useState } from "react"
 
 import {
     IonApp,
@@ -10,7 +10,8 @@ import {
     IonTabButton,
     IonIcon,
     IonLabel,
-    IonBadge
+    IonBadge,
+    setupIonicReact
 } from "@ionic/react"
 import {
     home,
@@ -63,8 +64,15 @@ lib.R = R
 
 lib.axios = axios
 
+
+
+
+
+
+setupIonicReact();
 const App = () => {
-    const [width, setWidth] = React.useState(window.innerWidth)
+
+    const [width, setWidth] = useState(window.innerWidth)
     const handleResize = () => {
         const { innerWidth } = window
 
@@ -72,21 +80,34 @@ const App = () => {
             setWidth(innerWidth)
         }
     }
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener("resize", handleResize)
         return () => {
             window.removeEventListener("resize", handleResize)
         }
     })
 
-    const [popup, setPopup] = React.useState(false)
-    const [activeNavDrop, setActiveNavDrop] = React.useState({
+    const [popup, setPopup] = useState(false)
+    const [activeNavDrop, setActiveNavDrop] = useState({
         profile: false,
         message: false,
         notification: false
     })
-
     return (
+        // <IonApp>
+        //     <IonReactRouter>
+        //         <IonRouterOutlet>
+        //             <Route exact path="/home">
+        //                 <Home />
+        //             </Route>
+        //             <Route exact path="/">
+        //                 <Redirect to="/home" />
+        //             </Route>
+        //         </IonRouterOutlet>
+        //     </IonReactRouter>
+        // </IonApp>
+
+
         <Provider store={store}>
             <PersistGate persistor={persistor}>
                 <IonApp>
@@ -213,6 +234,6 @@ const App = () => {
             </PersistGate>
         </Provider>
     )
-}
+};
 
-export default App
+export default App;
