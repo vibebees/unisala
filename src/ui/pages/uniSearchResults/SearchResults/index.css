@@ -1,0 +1,22 @@
+.search-results-wrapper {
+    width: calc(100% - 350px);
+}
+
+.filter-col {
+    max-width: 320px;
+    padding-inline: unset;
+}
+
+.filter-col-container{
+    position: sticky;
+    top:20px;
+}
+
+.results-col {
+    width: calc(100% - 320px);
+    padding-inline: unset;
+}
+
+.results-header-card {
+    margin-inline: auto;
+}
