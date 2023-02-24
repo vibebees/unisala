@@ -63,7 +63,6 @@ export const handleSearchSubmit = (search) => {
             .then((res) => {
                 res?.data?.success &&
                     dispatch(searchGetSuccess(res?.data?.data || []))
-                // setUsers(() => res?.data?.data?.users || []);
             })
             .catch((err) => {
                 dispatch(searchGetError(err))
