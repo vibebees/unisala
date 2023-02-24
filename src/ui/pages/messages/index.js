@@ -1,16 +1,19 @@
 // eslint-disable-next-line no-use-before-define
-import React from "react"
+import React, { useEffect } from "react"
 import { IonContent, IonGrid, IonRow, IonCol } from "@ionic/react"
 import ChatList from "./chatList"
 import Chats from "./chats"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
+import { useDispatch } from "react-redux"
+import { usersSearch } from "../../../graphql/user/userSearch"
 
 const index = () => {
     useDocTitle("Messages")
-    const windowWidth = useWindowWidth()
-    const chatList = [
+    const
+     windowWidth = useWindowWidth(),
+     chatList = [
         {
             id: "1",
             message:
@@ -41,8 +44,9 @@ const index = () => {
             university: "Pokhara University",
             image: "https://qph.cf2.quoracdn.net/main-qimg-8e8ea0637a05240ab9c8409ff1860ac9-lq"
         }
-    ]
-    const handleView = () => {
+    ],
+    dispatch = useDispatch(),
+    handleView = () => {
         if (windowWidth >= 768) {
             return (
                 <IonRow>
@@ -62,7 +66,10 @@ const index = () => {
         }
         return <ChatList chatList={chatList} />
     }
-
+    // useEffect(() => {
+    //     console.log("dispatching")
+    //     dispatch(usersSearch())
+    // })
     return (
         <IonContent>
             <IonGrid className="max-width-container">{handleView()}</IonGrid>
