@@ -18,7 +18,7 @@ import "./Threads.css"
 import moment from "moment"
 import { ellipsisHorizontal, trashBin } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import SavePost from "../../../../../graphql/user/savePost"
+import { SavePost } from "../../../../../graphql/user"
 
 const CommentCard = ({
     commentUser,

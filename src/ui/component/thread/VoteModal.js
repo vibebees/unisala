@@ -13,7 +13,7 @@ import {
     IonToolbar
 } from "@ionic/react"
 import { useLazyQuery } from "@apollo/client"
-import GetVoterList from "../../../graphql/user/getVoterList"
+import { GetVoterList } from "../../../graphql/user"
 
 export const VoteModal = ({ _id, isOpen, setIsOpen }) => {
     const [getVoterslist, { data }] = useLazyQuery(GetVoterList, {

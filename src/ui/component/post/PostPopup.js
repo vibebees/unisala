@@ -12,11 +12,11 @@ import {
 } from "@ionic/react"
 import AWS from "aws-sdk"
 import { imageOutline } from "ionicons/icons"
-import AddPost from "../../../graphql/user/addPost"
+import { AddPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import "./index.css"
 
-const S3_BUCKET = "uni-sala"
+ const S3_BUCKET = "uni-sala"
 const REGION = "us-west-2"
 
 AWS.config.update({

@@ -6,7 +6,7 @@ import {
 } from "@ionic/react"
 import { useQuery } from "@apollo/client"
 import { Link } from "react-router-dom"
-import { userSearch } from "../../../../graphql/user/userSearch"
+import { userSearch } from "../../../../graphql/user"
 import UserCard from "../../../component/userCard"
 import noResultsFound from "../../../../assets/no-results.jpg"
 

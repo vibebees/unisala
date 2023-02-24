@@ -15,8 +15,7 @@ import {
     sendOutline,
     trash
 } from "ionicons/icons"
-import AddComment from "../../../../../graphql/user/addComment"
-import UpVote from "../../../../../graphql/user/upVote"
+import { AddComment, UpVote } from "../../../../../graphql/user"
 import CommentCard from "./CommentCard"
 import "./Threads.css"
 const CommentSec = ({ threads }) => {

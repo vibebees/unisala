@@ -22,7 +22,7 @@ import {
 import "./index.css"
 import MessageItem from "../../../component/messagePop/MessageItem"
 import { useQuery } from "@apollo/client"
-import { usersSearch } from "../../../../graphql/user/userSearch"
+import { usersSearch } from "../../../../graphql/user"
 import { useDispatch } from "react-redux"
 import urls from "../../../../utils/urls"
 

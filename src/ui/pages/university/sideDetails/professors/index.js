@@ -14,7 +14,7 @@ import {
 import "./professors.css"
 import { star, starOutline } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
-import GetProfessor from "../../../../../graphql/uni/GetProfessor"
+import { GetProfessor } from "../../../../../graphql/uni"
 import { useSelector } from "react-redux"
 import { professorFilter } from "./filter"
 

@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { searchGetSuccess } from "../../../store/action/index"
 import { useQuery } from "@apollo/client"
-import UniSearch from "../../../graphql/uni/UniSearch"
+import { UniSearch } from "../../../graphql/uni"
 import useDocTitle from "../../../hooks/useDocTitile"
 
 function index() {

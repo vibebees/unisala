@@ -14,7 +14,7 @@ import {
 import { create, eyeOff, add, eye } from "ionicons/icons"
 import EducationPop from "./EducationPop"
 import { useMutation } from "@apollo/client"
-import ToggleView from "../../../../../graphql/user/toggleView"
+import { ToggleView } from "../../../../../graphql/user"
 
 function Education({ education, myProfile }) {
   const [isOpen, setIsOpen] = useState(false)

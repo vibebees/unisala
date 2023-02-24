@@ -21,7 +21,9 @@ import { onError } from "@apollo/client/link/error"
 import axios from "axios"
 import urls from "./utils/urls"
 import { createRoot } from "react-dom/client"
+import { AddPost } from "./graphql/user"
 
+console.log({ AddPost })
 const authLink = setContext((_, { headers }) => {
     const token = localStorage.getItem("accessToken")
     return {

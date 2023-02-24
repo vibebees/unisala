@@ -5,8 +5,8 @@ import { searchCircle } from "ionicons/icons"
 import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
-import UniSearchDataList from "../../../graphql/uni/UniSearchDatalist"
-import SearchUser from "../../../graphql/user/searchUser"
+import { UniSearchDataList } from "../../../graphql/uni"
+import { SearchUser } from "../../../graphql/user"
 
 function index() {
     const history = useHistory()

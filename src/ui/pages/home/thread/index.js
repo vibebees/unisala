@@ -20,10 +20,8 @@ import {
 import "../Home.css"
 import DelatePop from "../DeletePop"
 import { useLazyQuery, useMutation } from "@apollo/client"
-import UpVote from "../../../../graphql/user/upVote"
-import AddComment from "../../../../graphql/user/addComment"
+import { UpVote, AddComment, GetCommentList } from "../../../../graphql/user"
 import VoteModal from "../../../component/thread/VoteModal"
-import GetCommentList from "../../../../graphql/user/getCommentList"
 const Thread = ({ commentlist, id }) => {
     const [commentList, setCommentList] = React.useState(commentlist)
     const [addComment] =

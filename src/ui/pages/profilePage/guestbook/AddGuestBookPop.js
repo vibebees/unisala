@@ -11,7 +11,7 @@ import {
   IonToolbar,
   useIonToast
 } from "@ionic/react"
-import sendGuestbookMessage from "../../../../graphql/user/sentGuestbookMessage"
+import { sendGuestbookMessage } from "../../../../graphql/user"
 import "./index.css"
 
 const AddGuestBookPop = ({ isOpen, setIsOpen, userId }) => {

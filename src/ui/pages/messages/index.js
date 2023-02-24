@@ -7,7 +7,7 @@ import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
 import { useDispatch } from "react-redux"
-import { usersSearch } from "../../../graphql/user/userSearch"
+import { usersSearch } from "../../../graphql/user"
 
 const index = () => {
     useDocTitle("Messages")
