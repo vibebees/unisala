@@ -16,7 +16,7 @@ import { create } from "ionicons/icons"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import "./index.css"
 import { useMutation } from "@apollo/client"
-import EditProfile from "../../../../../graphql/user/EditProfile"
+import EditProfile from "../../../../../graphql/user/editProfile"
 
 function index({ data }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =

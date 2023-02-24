@@ -69,7 +69,7 @@ export const VoteModal = ({ _id, isOpen, setIsOpen }) => {
                                         </div>
                                         <IonButton
                                             mode="ios"
-                                            href={`http://localhost:8100/user/#${item.id}`}
+                                            href={`http://localhost:3000/user/#${item.id}`}
                                             onClick={() => setIsOpen(false)}
                                         >
                                             connect

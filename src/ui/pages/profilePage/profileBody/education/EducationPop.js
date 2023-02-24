@@ -12,8 +12,8 @@ import {
   IonToolbar,
   useIonToast
 } from "@ionic/react"
-import AddEducation from "../../../../../graphql/user/AddEducation"
-import EditEducation from "../../../../../graphql/user/EditEducation"
+import AddEducation from "../../../../../graphql/user/addEducation"
+import EditEducation from "../../../../../graphql/user/editEducation"
 
 const EducationPop = ({
   isOpen,

@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getUniData } from "../../../store/action"
 import PreLoader from "../../component/preloader"
 import useIsEmpty from "../../../hooks/useIsEmpty"
-import { isSideBar } from "../../../store/action/University"
+import { isSideBar } from "../../../store/action/university"
 import getSchoolInfo from "../../../graphql/uni/GetSchoolInfo"
 
 export const UniversityPage = () => {

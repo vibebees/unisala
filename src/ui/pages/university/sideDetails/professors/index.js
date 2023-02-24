@@ -7,13 +7,16 @@ import {
     IonAvatar,
     IonRow,
     IonText,
-    IonIcon
+    IonIcon,
+    IonSelectOption,
+    IonSelect
 } from "@ionic/react"
 import "./professors.css"
 import { star, starOutline } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
 import GetProfessor from "../../../../../graphql/uni/GetProfessor"
 import { useSelector } from "react-redux"
+import { professorFilter } from "./filter"
 
 export const Professors = () => {
     const { uniData } = useSelector((store) => store.University)
@@ -26,6 +29,7 @@ export const Professors = () => {
         <IonCard style={{ margin: "15px 0px 0px 0px" }} className="ion-margin-top">
             <IonCardContent style={{ borderBottom: "1px solid #C4C4C4" }}>
                 <h1>Professors</h1>
+                {professorFilter()}
             </IonCardContent>
             {data?.getProfessors.length
                 ? <IonRow>
@@ -94,7 +98,7 @@ export const Professors = () => {
                 : <IonRow>
                     <h1 className="text-center pt-1 pb-1" style={{ width: "100%" }}>No data</h1>
                 </IonRow>
-                }
+            }
         </IonCard>
     )
 }

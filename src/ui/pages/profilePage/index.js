@@ -20,7 +20,7 @@ import Saved from "./saved"
 import "./index.css"
 import jwtDecode from "jwt-decode"
 import { useQuery } from "@apollo/client"
-import GetUser from "../../../graphql/user/GetUser"
+import GetUser from "../../../graphql/user/getUser"
 import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 

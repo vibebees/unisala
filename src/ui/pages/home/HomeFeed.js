@@ -13,7 +13,7 @@ import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScal
 import urls from "../../../utils/urls"
 import { useLazyQuery } from "@apollo/client"
 import axios from "axios"
-import GetUserPost from "../../../graphql/user/GetUserPost"
+import GetUserPost from "../../../graphql/user/getUserPost"
 
 const HomeFeed = ({ userInfo }) => {
     const [postList, setPostList] = React.useState([])

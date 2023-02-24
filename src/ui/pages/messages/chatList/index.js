@@ -21,6 +21,9 @@ import {
 } from "@ionic/react"
 import "./index.css"
 import MessageItem from "../../../component/messagePop/MessageItem"
+import { useQuery } from "@apollo/client"
+import { usersSearch } from "../../../../graphql/user/userSearch"
+import { useDispatch } from "react-redux"
 
 const chatList = [
     {
@@ -57,6 +60,10 @@ const chatList = [
 
 const index = () => {
     const [isOpen, setIsOpen] = useState(false)
+
+    const { data } = useQuery(usersSearch(), {
+        context: { clientName: "user" }
+    })
 
     const handleMessagesList = () => {
         if (chatList.length !== 0) {
@@ -141,7 +148,7 @@ const index = () => {
                                         </div>
                                         <IonButton
                                             mode="ios"
-                                            href={`http://localhost:8100/messages#${item.id}`}
+                                            href={`http://localhost:3000/messages#${item.id}`}
                                             onClick={() => setIsOpen(false)}
                                         >
                                             Message

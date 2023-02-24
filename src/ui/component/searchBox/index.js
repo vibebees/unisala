@@ -6,7 +6,7 @@ import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import UniSearchDataList from "../../../graphql/uni/UniSearchDatalist"
-import SearchUser from "../../../graphql/user/SearchUser"
+import SearchUser from "../../../graphql/user/searchUser"
 
 function index() {
     const history = useHistory()

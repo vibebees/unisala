@@ -1,7 +1,8 @@
-import { GET_USER_PROFILE } from "../action/types"
+import { GET_USER_PROFILE, GET_USER_FRIENDS } from "../action/types"
 
 const initialState = {
-    profileData: {}
+    profileData: {},
+    friendList: []
 }
 
 const UserProfile = (state = initialState, action) => {
@@ -12,7 +13,11 @@ const UserProfile = (state = initialState, action) => {
                 ...state,
                 profileData: payload
             }
-
+        case GET_USER_FRIENDS:
+            return {
+                ...state,
+                friendList: payload
+            }
         default:
             return state
     }

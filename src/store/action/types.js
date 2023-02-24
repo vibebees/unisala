@@ -10,3 +10,4 @@ export const POLL = "POLL"
 export const REPORT = "REPORT"
 
 export const PRE_LOADING = "PRE_LOADING"
+export const GET_USER_FRIENDS = "GET_USER_FRIENDS"

@@ -12,7 +12,7 @@ import {
 } from "@ionic/react"
 import AWS from "aws-sdk"
 import { imageOutline } from "ionicons/icons"
-import AddPost from "../../../graphql/user/AddPost"
+import AddPost from "../../../graphql/user/addPost"
 import TextChecker from "../../../utils/components/TextChecker"
 import "./index.css"
 

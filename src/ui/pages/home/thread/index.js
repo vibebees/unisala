@@ -20,8 +20,8 @@ import {
 import "../Home.css"
 import DelatePop from "../DeletePop"
 import { useLazyQuery, useMutation } from "@apollo/client"
-import UpVote from "../../../../graphql/user/UpVote"
-import AddComment from "../../../../graphql/user/AddComment"
+import UpVote from "../../../../graphql/user/upVote"
+import AddComment from "../../../../graphql/user/addComment"
 import VoteModal from "../../../component/thread/VoteModal"
 import GetCommentList from "../../../../graphql/user/getCommentList"
 const Thread = ({ commentlist, id }) => {

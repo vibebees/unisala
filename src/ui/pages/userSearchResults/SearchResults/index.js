@@ -6,12 +6,12 @@ import {
 } from "@ionic/react"
 import { useQuery } from "@apollo/client"
 import { Link } from "react-router-dom"
-import UserSearch from "../../../../graphql/user/UserSearch"
+import { userSearch } from "../../../../graphql/user/userSearch"
 import UserCard from "../../../component/userCard"
 import noResultsFound from "../../../../assets/no-results.jpg"
 
 function index({ query }) {
-    const { data } = useQuery(UserSearch(query), {
+    const { data } = useQuery(userSearch(query), {
         context: { clientName: "user" }
     })
 

@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client"
 
-const UserSearch = (searchString) => gql`
+export const
+ userSearch = (searchString) => gql`
     query {
         searchUser(searchString: "${searchString}") {
             status {
@@ -23,6 +24,16 @@ const UserSearch = (searchString) => gql`
             }
         }
     }
+`,
+usersSearch = () => {
+    console.log("usersSearch")
+    return gql`
+    query {
+        getUsers{
+            email
+            picture
+            username
+          }
+    }
 `
-
-export default UserSearch
+}

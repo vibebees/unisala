@@ -16,8 +16,8 @@ import {
   useIonToast
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
-import EditAbout from "../../../../../graphql/user/EditAbout"
-import ToggleView from "../../../../../graphql/user/ToggleView"
+import EditAbout from "../../../../../graphql/user/editAbout"
+import ToggleView from "../../../../../graphql/user/toggleView"
 
 function AboutUser({ about, myProfile }) {
   const [isCardPrivate, setIsCardPrivate] = useState(about?.private)
