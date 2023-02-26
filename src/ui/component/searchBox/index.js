@@ -6,7 +6,7 @@ import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
-import { SearchUser } from "../../../graphql/user"
+import { getUser } from "../../../graphql/user"
 import { UNIVERSITY_SERVICE } from "../../../servers/types"
 
 function index() {
@@ -17,7 +17,7 @@ function index() {
     const [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
         context: { clientName: UNIVERSITY_SERVICE }
     })
-    const [GetUser, searchUser] = useLazyQuery(SearchUser, {
+    const [GetUser, searchUser] = useLazyQuery(getUser, {
         variables: { searchString: searchValue }
     })
 

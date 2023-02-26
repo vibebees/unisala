@@ -393,20 +393,11 @@ export
             message
         }
     }`,
-    SearchUser = gql`
-    query searchUser($searchString: String!) {
-        searchUser(searchString: $searchString) {
-            status {
-                success
-                message
-            }
-            user {
-                firstName
-                lastName
-                username
-                picture
-                location
-            }
+    getUser = gql`
+    query getUser($searchString: String!) {
+        getUser(username: $searchString) {
+            email
+            username
         }
     }`,
     sendGuestbookMessage = gql`

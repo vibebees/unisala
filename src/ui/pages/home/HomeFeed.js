@@ -10,9 +10,7 @@ import CourseCard from "../../component/CourseCard"
 import Thread from "./thread"
 import { Link } from "react-router-dom"
 import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"
-import urls from "../../../servers"
 import { useLazyQuery } from "@apollo/client"
-import axios from "axios"
 import { GetUserPost } from "../../../graphql/user"
 
 const HomeFeed = ({ userInfo }) => {
@@ -23,9 +21,9 @@ const HomeFeed = ({ userInfo }) => {
         GetUserPost(userInfo?._id, page)
     )
     useEffect(() => {
-        axios.get(urls["base"] + "/user/homepagefeed").then((res) => {
-            setPostList(res?.data?.feed)
-        })
+        // axios.get(urls["base"] + "/user/homepagefeed").then((res) => {
+        //     setPostList(res?.data?.feed)
+        // })
     }, [])
     return (
         <>
