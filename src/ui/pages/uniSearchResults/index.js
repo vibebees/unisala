@@ -17,6 +17,7 @@ import { searchGetSuccess } from "../../../store/action/index"
 import { useQuery } from "@apollo/client"
 import { UniSearch } from "../../../graphql/uni"
 import useDocTitle from "../../../hooks/useDocTitile"
+import { UNIVERSITY_SERVICE } from "../../../servers/types"
 
 function index() {
     const { name } = useParams()
@@ -25,7 +26,7 @@ function index() {
 
     const dispatch = useDispatch()
     const { data } = useQuery(UniSearch(name), {
-        context: { clientName: "uni" }
+        context: { clientName: UNIVERSITY_SERVICE }
     })
     useEffect(() => {
         dispatch(searchGetSuccess(data?.searchSchool))
@@ -46,7 +47,6 @@ function index() {
                             <Filter />
                         </IonCol>
                     )}
-
                     <IonCol className="results-col">
                         <SearchResults />
                     </IonCol>

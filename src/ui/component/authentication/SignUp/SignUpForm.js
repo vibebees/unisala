@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import AuthInput from "../AuthInput"
 import axios from "axios"
 import validate from "../../../../utils/components/validate"
-let url = require("../../../../utils/urls")
+let url = require("../../../../servers")
 
 export const SignUpForm = ({ setauth }) => {
   const [errors, seterrors] = useState({})

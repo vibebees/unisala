@@ -17,12 +17,13 @@ import { useQuery } from "@apollo/client"
 import { GetProfessor } from "../../../../../graphql/uni"
 import { useSelector } from "react-redux"
 import { professorFilter } from "./filter"
+import { UNIVERSITY_SERVICE } from "../../../../../servers/types"
 
 export const Professors = () => {
     const { uniData } = useSelector((store) => store.University)
 
     const { data } = useQuery(GetProfessor(uniData?.unitId), {
-        context: { clientName: "uni" }
+        context: { clientName: UNIVERSITY_SERVICE }
     })
 
     return (

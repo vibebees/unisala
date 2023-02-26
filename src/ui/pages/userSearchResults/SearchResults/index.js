@@ -9,10 +9,11 @@ import { Link } from "react-router-dom"
 import { userSearch } from "../../../../graphql/user"
 import UserCard from "../../../component/userCard"
 import noResultsFound from "../../../../assets/no-results.jpg"
+import { MESSAGING_SERVICE } from "../../../../servers/types"
 
 function index({ query }) {
     const { data } = useQuery(userSearch(query), {
-        context: { clientName: "user" }
+        context: { clientName: MESSAGING_SERVICE }
     })
 
     if (!data?.searchUser?.user.length) {

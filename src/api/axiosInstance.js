@@ -1,5 +1,5 @@
 import axios from "axios"
-import urls from "../utils/urls"
+import urls from "../servers"
 
 const authBaseURL = urls["base"]
 export const authInstance = axios.create({

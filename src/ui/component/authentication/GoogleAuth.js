@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import "./auth.css"
 import { useScript } from "../../../hooks/useScript"
 import axios from "axios"
-import urls from "../../../utils/urls"
+import urls from "../../../servers"
 
 export const GoogleAuth = () => {
   const googlebuttonref = useRef()

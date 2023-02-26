@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
 import "../auth.css"
 
 export const UserNotVerified = ({ setauth, auth }) => {

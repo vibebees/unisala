@@ -22,9 +22,11 @@ import {
 import "./index.css"
 import MessageItem from "../../../component/messagePop/MessageItem"
 import { useQuery } from "@apollo/client"
-import { usersSearch } from "../../../../graphql/user"
+import { getFriends } from "../../../../graphql/user"
 import { useDispatch } from "react-redux"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
+import { getUserFriends } from "../../../../store/action/userProfile"
+import { MESSAGING_SERVICE } from "../../../../servers/types"
 
 const
     chatList = [
@@ -64,8 +66,8 @@ const
 const index = () => {
     const
      [isOpen, setIsOpen] = useState(false),
-     { data } = useQuery(usersSearch(), {
-        context: { clientName: "user" }
+     { loading, error, data } = useQuery(getFriends(), {
+        context: { clientName: MESSAGING_SERVICE }
     }),
     dispatch = useDispatch(),
     handleMessagesList = () => {
@@ -81,9 +83,9 @@ const index = () => {
         }
         return <div>No messages</div>
     }
-    //  useEffect(() => {
-    //     dispatch(usersSearch())
-    // }, [])
+
+    dispatch(getUserFriends())
+
     return (
         <>
             <IonCard className="chat-list">

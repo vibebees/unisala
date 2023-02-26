@@ -29,10 +29,6 @@ function index({ userId, firstName }) {
     const [threads, setThreads] = useState([])
 
     useEffect(() => {
-        getUserPost()
-    }, [])
-
-    useEffect(() => {
         data?.getUserPost?.Posts &&
             Array.isArray(data?.getUserPost?.Posts) &&
             setThreads((pre) => [...pre, ...data?.getUserPost?.Posts])

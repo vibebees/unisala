@@ -1,7 +1,7 @@
 import { execute, useQuery } from "@apollo/client"
 import axios from "axios"
 import { getSchoolInfo } from "../../graphql/uni"
-import urls from "../../utils/urls"
+import urls from "../../servers"
 import {
     INTRODUCTORY_QUESTION,
     SEARCH_GET_REQUEST,

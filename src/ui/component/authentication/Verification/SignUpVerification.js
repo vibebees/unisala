@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
 import VerificationCode from "./VerificationCode"
 import "../auth.css"
 

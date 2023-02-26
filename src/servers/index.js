@@ -14,8 +14,8 @@ module.exports = (() => {
                 }
                  return "http://44.204.233.28"
             })(),
-            "messagingService": "http://localhost:2222",
-            "universityService": "http://localhost:9999"
+            "messagingServiceAddress": "http://localhost:2222",
+            "universityServiceAddress": "http://localhost:9999"
         }
     }
     return {

@@ -3,7 +3,7 @@ import "../auth.css"
 import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
 import AuthInput from "../AuthInput"
 import axios from "axios"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
 
 export const SignUpForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()

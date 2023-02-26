@@ -458,7 +458,7 @@ export
             }
         }
     }`,
-    usersSearch = () => {
+    getFriends = () => {
         return gql`
         query {
             getUsers{
