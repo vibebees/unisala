@@ -168,19 +168,17 @@ export
     GetProfileCard = gql`
              query getUser($username: String!) {
                  getUser(username: $username) {
-                     user {
-                         firstName
-                         lastName
-                         username
-                         badges {
-                             private
-                             earnedBadges {
-                                 title
-                                 description
-                                 date
-                             }
-                         }
-                     }
+                    firstName
+                    lastName
+                    username
+                    badges {
+                        private
+                        earnedBadges {
+                            title
+                            description
+                            date
+                        }
+                    }
                  }
              }`,
     GetReplyList = (id, pid) => gql`
@@ -229,9 +227,9 @@ export
                 }
             }`,
     GetUser = (id) => gql`
-    query {
-        getUser(username:"${id}") {
-          user {
+
+    {
+        getUser(username: "prashantbasnet322") {
             firstName
             lastName
             username
@@ -240,60 +238,12 @@ export
             birthday
             name
             role
-            verified
-            location
-            oneLinerBio
-            blocked
-            banned
-            active
-            picture
-            _id
-            about {
-              text
-              private
-            }
-            badges {
-              private
-              earnedBadges {
-                title
-                description
-                date
-              }
-            }
-            education {
-              private
-              schools {
-                _id
-                school
-                degree
-                major
-                startDate
-                graduationDate
-              }
-            }
-            testScore {
-              private
-              scores {
-                SAT_SCORE {
-                  english
-                  maths
-                }
-                ACT_SCORE {
-                  english
-                  maths
-                }
-                IELTS_SCORE {
-                  score
-                }
-                TOEFL_SCORE {
-                  score
-                }
-                
-              }
-            }
+ 
+             
           }
-          }
-    }`,
+      }
+      
+     `,
     GetUserPost = (id, page) => gql`
     query {
         getUserPost(userId: "${id}", page:${page},pageSize:3) {
@@ -449,13 +399,22 @@ export
             }
         }
     }`,
-    getFriends = () => {
-        return gql`
+    getFriends = gql`
         query {
             getUsers{
                 email
                 picture
                 username
             }
+        }`,
+    getMessages = gql`
+        query{
+            getMessages{
+            message{
+                text
+            }
+            reseverId
+            seen
+            senderName
+            }
         }`
-    }

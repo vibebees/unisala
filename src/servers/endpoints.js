@@ -65,12 +65,14 @@ const
     messageServer = new HttpLink({
         uri: config.NODE_ENV === "PRODUCTION"
             ? urls["base"] + "/user/graphql"
-            : messagingServiceAddress + "/graphql"
+            : messagingServiceAddress + "/graphql",
+        server: "MESSAGING_SERVICE"
     }),
     universityServer = new HttpLink({
         uri: config.NODE_ENV === "PRODUCTION"
             ? urls["base"] + "/uni/graphql"
-            : universityServiceAddress + "/graphql"
+            : universityServiceAddress + "/graphql",
+            server: "UNIVERSITY_SERVICE"
     }),
     authLink = setContext((_, { headers }) => {
         const token = localStorage.getItem("accessToken")

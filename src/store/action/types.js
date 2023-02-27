@@ -11,3 +11,4 @@ export const REPORT = "REPORT"
 
 export const PRE_LOADING = "PRE_LOADING"
 export const GET_USER_FRIENDS = "GET_USER_FRIENDS"
+export const GET_USER_MESSAGES = "GET_USER_MESSAGES"

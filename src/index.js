@@ -25,6 +25,7 @@ import { client } from "./servers/endpoints"
 //     cache: new InMemoryCache()
 // })
 const root = createRoot(document.getElementById("root"))
+client.clearStore()
 root.render(<ApolloProvider client={client}>
     <Provider store={store}>
         <React.StrictMode>

@@ -74,7 +74,7 @@ export const MessagePop = () => {
                     return (
                         <Link onClick={() => {
                             setIsMessageShow(!isMessageShow)
-                        }} to={`/messages/#${item.id}`} key={index}>
+                        }} to={`/messages/#item`} key={index}>
                             <MessageItem {...item} />
                         </Link>
                     )
