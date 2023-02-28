@@ -17,7 +17,6 @@ function index() {
     const [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
         context: { clientName: UNIVERSITY_SERVICE }
     })
-    console.log("firing request")
     const [GetUser, searchUser] = useLazyQuery(getUser, {
         variables: { searchString: searchValue }
     })

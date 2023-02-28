@@ -45,7 +45,7 @@ export const PageRoute = ({ setPopup }) => (
             <UserSearchResults />
         </Route>
         <Route path="">
-            <PageNotFound />
+            <PageNotFound msg = "We can’t seem to find the page you are looking for" />
         </Route>
     </Switch>
 )

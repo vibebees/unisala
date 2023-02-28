@@ -15,7 +15,7 @@ import messageImg from "../../../../assets/messages.png"
 import "./index.css"
 import { useLocation } from "react-router"
 
-const index = ({ chatList }) => {
+export const MessagingStation = ({ chatList }) => {
     const chatbox = useRef(null)
     const chatUserId = useLocation().hash
 
@@ -130,7 +130,7 @@ const index = ({ chatList }) => {
                         </IonButton>
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
-                        {messages.map((item) => {
+                        {messages.map((item, index) => {
                             return (
                                 <div key={index} className="chat-box__msg  ">
                                     <div
@@ -172,5 +172,3 @@ const index = ({ chatList }) => {
         </IonCard>
     )
 }
-
-export default index

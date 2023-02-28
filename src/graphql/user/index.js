@@ -171,14 +171,6 @@ export
                     firstName
                     lastName
                     username
-                    badges {
-                        private
-                        earnedBadges {
-                            title
-                            description
-                            date
-                        }
-                    }
                  }
              }`,
     GetReplyList = (id, pid) => gql`
@@ -400,7 +392,7 @@ export
         }
     }`,
     getFriends = gql`
-        query {
+        query getUsers{
             getUsers{
                 email
                 picture
@@ -408,13 +400,13 @@ export
             }
         }`,
     getMessages = gql`
-        query{
+        query getMessages {
             getMessages{
-            message{
-                text
-            }
-            reseverId
-            seen
-            senderName
+                message{
+                    text
+                }
+                reseverId
+                seen
+                senderName
             }
         }`

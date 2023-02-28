@@ -1,13 +1,10 @@
 // eslint-disable-next-line no-use-before-define
-import React, { useEffect } from "react"
 import { IonContent, IonGrid, IonRow, IonCol } from "@ionic/react"
-import ChatList from "./chatList"
-import Chats from "./chats"
+import { Communicators } from "./chatList"
+import { MessagingStation } from "./chats"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
-import { useDispatch } from "react-redux"
-import { usersSearch } from "../../../graphql/user"
 
 const index = () => {
     useDocTitle("Messages")
@@ -18,7 +15,7 @@ const index = () => {
             id: "1",
             message:
                 "Why drag something out when you could get it done in one fell swoop?",
-            name: "Sara Hall",
+            name: "Sara Halll",
             university: "Tribhuvan University",
             image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"
         },
@@ -45,31 +42,24 @@ const index = () => {
             image: "https://qph.cf2.quoracdn.net/main-qimg-8e8ea0637a05240ab9c8409ff1860ac9-lq"
         }
     ],
-    dispatch = useDispatch(),
     handleView = () => {
         if (windowWidth >= 768) {
             return (
                 <IonRow>
                     <IonCol>
-                        <ChatList chatList={chatList} />
+                        <Communicators chatList={chatList} />
                     </IonCol>
 
                     <IonCol className="messages-wrapper">
-                        <Chats chatList={chatList} />
+                        <MessagingStation chatList={chatList} />
                     </IonCol>
                 </IonRow>
             )
         }
         const chatUserId = parseInt(location.hash.split("#")[1])
-        if (chatUserId) {
-            return <Chats chatList={chatList} />
-        }
-        return <ChatList chatList={chatList} />
+
+        return <Communicators chatList={chatList} />
     }
-    // useEffect(() => {
-    //     console.log("dispatching")
-    //     dispatch(usersSearch())
-    // })
     return (
         <IonContent>
             <IonGrid className="max-width-container">{handleView()}</IonGrid>

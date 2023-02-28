@@ -16,7 +16,7 @@ const chatList = [
         id: "1",
         message:
             "Why drag something out when you could get it done in one fell swoop?",
-        name: "Sara Hall",
+        name: "Sara Halls",
         university: "Tribhuvan University",
         image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"
     },
@@ -74,7 +74,9 @@ export const MessagePop = () => {
                     return (
                         <Link onClick={() => {
                             setIsMessageShow(!isMessageShow)
-                        }} to={`/messages/#item`} key={index}>
+                        }}
+                            // to={`/messages/#item`}
+                            key={index}>
                             <MessageItem {...item} />
                         </Link>
                     )
