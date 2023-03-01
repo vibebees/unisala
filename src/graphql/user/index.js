@@ -408,5 +408,6 @@ export
                 reseverId
                 seen
                 senderName
+                senderId
             }
         }`

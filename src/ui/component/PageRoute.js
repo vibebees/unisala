@@ -9,6 +9,14 @@ import Notifications from "../pages/notifications"
 import UniSearchResults from "../pages/uniSearchResults"
 import UserSearchResults from "../pages/userSearchResults"
 
+const messagingRoutes = () => (<>
+  <Route path="/messages">
+            <Messages />
+        </Route>
+        <Route path="/messages/:id">
+            <Messages />
+        </Route>
+</>)
 export const PageRoute = ({ setPopup }) => (
     <Switch>
         <Route exact path="/home">
@@ -29,9 +37,8 @@ export const PageRoute = ({ setPopup }) => (
         <Route path="/@/:username">
             <ProfilePage />
         </Route>
-        <Route path="/messages">
-            <Messages />
-        </Route>
+
+        {messagingRoutes()}
         <Route path="/mynetwork">
             <MyNetwork />
         </Route>

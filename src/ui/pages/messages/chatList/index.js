@@ -16,6 +16,7 @@ import { useQuery } from "@apollo/client"
 import { getFriends, getMessages } from "../../../../graphql/user"
 import { MESSAGING_SERVICE } from "../../../../servers/types"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
+import { getCurrentCommunicator } from "../../../../store/action/userActivity"
 
 export const Communicators = () => {
         const
@@ -24,12 +25,12 @@ export const Communicators = () => {
             { getUsers } = data || [],
             handleMessagesList = (communicators) => {
 
-                if (communicators.length === 0) {
+                if (!communicators) {
                     return <div>No messages</div>
                 }
                 return communicators.map((item, index) => {
                     // const { id, avatar, name, username, message, time } = c
-                    return <Link to={`/message/${item.username}`} key={index}>
+                    return <Link to={`/messages/${item.username}`} key={index}>
                         <MessageItem {...item} />
                     </Link>
                 })
