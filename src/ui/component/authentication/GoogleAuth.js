@@ -3,13 +3,14 @@ import "./auth.css"
 import { useScript } from "../../../hooks/useScript"
 import axios from "axios"
 import urls from "../../../servers"
+import { userServer } from "../../../servers/endpoints"
 
 export const GoogleAuth = () => {
   const googlebuttonref = useRef()
   const [user, setuser] = useState(false)
   const onGoogleSignIn = (user) => {
     let userCred = user
-    axios.post(urls["base"] + "/googleLogin", userCred).then((res) => {
+    axios.post(userServer + "/googleLogin", userCred).then((res) => {
       console.log(res)
     })
   }

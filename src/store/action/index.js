@@ -2,6 +2,7 @@ import { execute, useQuery } from "@apollo/client"
 import axios from "axios"
 import { getSchoolInfo } from "../../graphql/uni"
 import urls from "../../servers"
+import { universityServer } from "../../servers/endpoints"
 import {
     INTRODUCTORY_QUESTION,
     SEARCH_GET_REQUEST,
@@ -59,7 +60,7 @@ export const PreLoader = (data) => {
 export const handleSearchSubmit = (search) => {
     return async (dispatch) => {
         await axios
-            .get(urls["base"] + `/uni/searchUni/${search}`)
+            .get(universityServer + `/searchUni/${search}`)
             .then((res) => {
                 res?.data?.success &&
                     dispatch(searchGetSuccess(res?.data?.data || []))

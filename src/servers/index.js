@@ -4,18 +4,10 @@ module.exports = (() => {
 
     if (config.NODE_ENV === "DEVELOPMENT") {
         return {
-            //  "http://44.204.233.28"
-            "base": (() => {
-                if (config.NODE_ENV === "DEVELOPMENT") {
-                    return {
-                        "messagingService": "http://localhost:2222",
-                        "universityService": "http://localhost:9999"
-                    }
-                }
-                 return "http://44.204.233.28"
-            })(),
             "messagingServiceAddress": "http://localhost:2222",
-            "universityServiceAddress": "http://localhost:9999"
+            "universityServiceAddress": "http://localhost:9999",
+            "messageSocketAddress": "ws://localhost:2224",
+            "userServiceAddress": "http://localhost:4444"
         }
     }
     return {

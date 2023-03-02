@@ -5,6 +5,9 @@ import { Link } from "react-router-dom"
 import AuthInput from "../AuthInput"
 import axios from "axios"
 import validate from "../../../../utils/components/validate"
+import { userServer } from "../../../../servers/endpoints"
+import { useDispatch } from "react-redux"
+import { registerUser } from "../../../../store/action/authenticationAction"
 let url = require("../../../../servers")
 
 export const SignUpForm = ({ setauth }) => {
@@ -33,13 +36,15 @@ export const SignUpForm = ({ setauth }) => {
     e.preventDefault()
     seterrors(validate(input))
     setdatacheck(true)
-  }
+  },
+  dispatch = useDispatch()
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && datacheck) {
       setsave(true)
+      // dispatch(registerUser({ userServer, input, setdatacheck, setauth, setsave, present, dismiss }))
       axios
-        .post(url["base"] + `/user/register`, input)
+        .post(userServer + `/register`, input)
         .then((res) => {
           setsave(false)
           if (res.data.success === true) {

@@ -23,7 +23,7 @@ export const Professors = () => {
     const { uniData } = useSelector((store) => store.University)
 
     const { data } = useQuery(GetProfessor(uniData?.unitId), {
-        context: { clientName: UNIVERSITY_SERVICE }
+        context: { service: UNIVERSITY_SERVICE }
     })
 
     return (

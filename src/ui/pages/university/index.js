@@ -30,7 +30,7 @@ export const UniversityPage = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
     const { loading, data } = useQuery(getSchoolInfo(id), {
-        context: { clientName: UNIVERSITY_SERVICE }
+        context: { service: UNIVERSITY_SERVICE }
     })
     useEffect(() => {
         dispatch(getUniData(data?.getSchoolInfo))

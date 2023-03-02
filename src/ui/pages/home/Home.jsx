@@ -29,7 +29,7 @@ export const Home = ({ setPopup }) => {
         decode = accessToken && jwtDecode(accessToken),
         profileData = useQuery(GetProfileCard, {
             variables: {
-                username: decode?.username
+                username: "Ellen0"
             }
         }),
         [width, setWidth] = useState(window.innerWidth),

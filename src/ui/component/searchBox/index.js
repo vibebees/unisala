@@ -7,7 +7,7 @@ import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { getUser } from "../../../graphql/user"
-import { UNIVERSITY_SERVICE } from "../../../servers/types"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
 
 function index() {
     const history = useHistory()
@@ -15,10 +15,11 @@ function index() {
     const [dropDownOptions, setDropDownOptions] = useState(false)
     const [options, setOptions] = useState([])
     const [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
-        context: { clientName: UNIVERSITY_SERVICE }
+        context: { service: UNIVERSITY_SERVICE_GQL }
     })
     const [GetUser, searchUser] = useLazyQuery(getUser, {
-        variables: { searchString: searchValue }
+        context: { service: USER_SERVICE_GQL },
+        variables: { username: "Ellen0" }
     })
 
     useEffect(() => {

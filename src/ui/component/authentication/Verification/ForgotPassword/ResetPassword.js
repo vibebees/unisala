@@ -5,6 +5,7 @@ import AuthInput from "../../AuthInput"
 import urls from "../../../../../servers"
 import validate from "../../../../../utils/components/validate"
 import "../../auth.css"
+import { userServer } from "../../../../../servers/endpoints"
 
 export const ResetPassword = ({ setauth, auth }) => {
   const { code, email } = auth
@@ -58,7 +59,7 @@ export const ResetPassword = ({ setauth, auth }) => {
 
     setLoading(true)
     axios
-      .post(urls["base"] + `/user/changePassword`, {
+      .post(userServer + `/changePassword`, {
         email,
         password,
         code

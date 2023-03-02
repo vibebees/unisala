@@ -336,8 +336,8 @@ export
         }
     }`,
     getUser = gql`
-    query getUser($searchString: String!) {
-        getUser(username: $searchString) {
+    query getUser($username: String!) {
+        getUser(username: $username) {
             email
             username
         }

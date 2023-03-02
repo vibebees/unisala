@@ -13,7 +13,7 @@ import { MESSAGING_SERVICE } from "../../../../servers/types"
 
 function index({ query }) {
     const { data } = useQuery(userSearch(query), {
-        context: { clientName: MESSAGING_SERVICE }
+        context: { service: MESSAGING_SERVICE }
     })
 
     if (!data?.searchUser?.user.length) {

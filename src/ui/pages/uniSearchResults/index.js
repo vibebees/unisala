@@ -26,7 +26,7 @@ function index() {
 
     const dispatch = useDispatch()
     const { data } = useQuery(UniSearch(name), {
-        context: { clientName: UNIVERSITY_SERVICE }
+        context: { service: UNIVERSITY_SERVICE }
     })
     useEffect(() => {
         dispatch(searchGetSuccess(data?.searchSchool))

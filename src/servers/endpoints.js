@@ -10,11 +10,12 @@ import { setContext } from "@apollo/client/link/context"
 import urls from "."
 import { onError } from "@apollo/client/link/error"
 import axios from "axios"
-import { UNIVERSITY_SERVICE } from "./types"
+import { MESSAGING_SERVICE_GQL, UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "./types"
+import { io } from "socket.io-client"
 
 const
     config = require("./config"),
-    { messagingServiceAddress, universityServiceAddress } = urls,
+    { messagingServiceAddress, universityServiceAddress, messageSocketAddress, userServiceAddress } = urls,
     getNewToken = async () => {
         try {
             const { data } = await axios.post(urls["base"] + "/user/refreshToken", { refreshToken: localStorage.getItem("refreshToken") })
@@ -62,17 +63,23 @@ const
             }
         }
     ),
-    messageServer = new HttpLink({
+    messageServerGql = new HttpLink({
         uri: config.NODE_ENV === "PRODUCTION"
-            ? urls["base"] + "/user/graphql"
+            ? urls["base"] + "/message/graphql"
             : messagingServiceAddress + "/graphql",
-        server: "MESSAGING_SERVICE"
+        server: MESSAGING_SERVICE_GQL
     }),
-    universityServer = new HttpLink({
+    universityServerGql = new HttpLink({
         uri: config.NODE_ENV === "PRODUCTION"
             ? urls["base"] + "/uni/graphql"
             : universityServiceAddress + "/graphql",
-            server: "UNIVERSITY_SERVICE"
+            server: UNIVERSITY_SERVICE_GQL
+    }),
+    userServerGql = new HttpLink({
+        uri: config.NODE_ENV === "PRODUCTION"
+            ? urls["base"] + "/user/graphql"
+            : userServiceAddress + "/graphql",
+            server: USER_SERVICE_GQL
     }),
     authLink = setContext((_, { headers }) => {
         const token = localStorage.getItem("accessToken")
@@ -84,14 +91,25 @@ const
         }
     })
 
-export const client = new ApolloClient({
+export
+ const client = new ApolloClient({
     link: split(
-        (operation) => operation.getContext().clientName === UNIVERSITY_SERVICE,
-        universityServer,
-        from([authLink, errorLink, messageServer])
+        (operation) => (operation.getContext().service === UNIVERSITY_SERVICE_GQL),
+        universityServerGql,
+        from([authLink, errorLink, messageServerGql, userServerGql])
     ),
     headers: {
         authorization: localStorage?.getItem("accessToken") || ""
     },
     cache: new InMemoryCache()
-})
+}),
+ messageSocket = () => io(messageSocketAddress),
+ userServer = config.NODE_ENV === "PRODUCTION"
+                ? urls["base"] + "/user/"
+                : userServiceAddress,
+messageServer = config.NODE_ENV === "PRODUCTION"
+                ? urls["base"] + "/message/"
+                : userServiceAddress,
+universityServer = config.NODE_ENV === "PRODUCTION"
+                ? urls["base"] + "/uni/"
+                : userServiceAddress

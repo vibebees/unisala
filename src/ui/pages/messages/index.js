@@ -10,6 +10,8 @@ import { getFriends } from "../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { useRef, useEffect } from "react"
 import { io } from "socket.io-client"
+import { messageSocket } from "../../../servers/endpoints"
+import { messageSocketAddress } from "../../../servers/index"
 const index = () => {
     useDocTitle("Messages")
     const
@@ -39,7 +41,7 @@ const index = () => {
     }
 
     useEffect(() => {
-        socket.current = io("ws://localhost:2224")
+        socket.current = messageSocket()
         socket.current.on("connect", () => {
             console.log("socket connected")
         })
@@ -53,6 +55,10 @@ const index = () => {
             socket.current.disconnect()
         }
     }, [])
+
+    useEffect(() => {
+        socket.current.emit("join", { username: "joshua" })
+    })
 
     return (
         <IonContent>
