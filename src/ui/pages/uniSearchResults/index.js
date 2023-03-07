@@ -17,7 +17,7 @@ import { searchGetSuccess } from "../../../store/action/index"
 import { useQuery } from "@apollo/client"
 import { UniSearch } from "../../../graphql/uni"
 import useDocTitle from "../../../hooks/useDocTitile"
-import { UNIVERSITY_SERVICE } from "../../../servers/types"
+import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 
 function index() {
     const { name } = useParams()
@@ -26,7 +26,7 @@ function index() {
 
     const dispatch = useDispatch()
     const { data } = useQuery(UniSearch(name), {
-        context: { service: UNIVERSITY_SERVICE }
+        context: { server: UNIVERSITY_SERVICE_GQL }
     })
     useEffect(() => {
         dispatch(searchGetSuccess(data?.searchSchool))

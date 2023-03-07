@@ -14,7 +14,7 @@ import { ellipsisHorizontal, ellipsisVertical, send } from "ionicons/icons"
 import messageImg from "../../../../assets/messages.png"
 import "./index.css"
 import { useParams } from "react-router"
-import { MESSAGING_SERVICE } from "../../../../servers/types"
+import { MESSAGE_SERVICE_GQL } from "../../../../servers/types"
 import { getMessages } from "../../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
@@ -24,7 +24,7 @@ export const MessagingStation = () => {
         chatbox = useRef(null),
         { id } = useParams(),
         receipent = id,
-        { loading, error, data } = useQuery(getMessages, { context: { server: MESSAGING_SERVICE } }),
+        { loading, error, data } = useQuery(getMessages, { context: { server: MESSAGE_SERVICE_GQL } }),
         ScrollBottom = () => {
             if (chatbox.current) {
                 chatbox.current.scrollTop = chatbox.current.scrollHeight

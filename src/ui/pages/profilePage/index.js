@@ -19,15 +19,19 @@ import Guestbook from "./guestbook"
 import Saved from "./saved"
 import jwtDecode from "jwt-decode"
 import { useQuery } from "@apollo/client"
-import { GetUser } from "../../../graphql/user"
+import { getUserGql } from "../../../graphql/user"
 import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
+import { USER_SERVICE_GQL } from "../../../servers/types"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
   const [tab, setTab] = useState(0)
   const { username } = useParams()
-  const { data } = useQuery(GetUser(username))
+  const { data } = useQuery(getUserGql, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { username: "prashantbasnet445" }
+})
   useDocTitle(username)
 
   const { getUser } = data || {}

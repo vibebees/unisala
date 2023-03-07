@@ -23,13 +23,13 @@ import PreLoader from "../../component/preloader"
 import useIsEmpty from "../../../hooks/useIsEmpty"
 import { isSideBar } from "../../../store/action/University"
 import { getSchoolInfo } from "../../../graphql/uni"
-import { UNIVERSITY_SERVICE } from "../../../servers/types"
+import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 
 export default function UniversityPage() {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { loading, data } = useQuery(getSchoolInfo(id), {
-    context: { service: UNIVERSITY_SERVICE }
+    context: { server: UNIVERSITY_SERVICE_GQL }
 })
   useEffect(() => {
     dispatch(getUniData(data?.getSchoolInfo))

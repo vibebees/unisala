@@ -6,7 +6,7 @@ import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
-import { getUser } from "../../../graphql/user"
+import { getUserGql } from "../../../graphql/user"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 
@@ -16,12 +16,12 @@ function index() {
     [dropDownOptions, setDropDownOptions] = useState(false),
     [options, setOptions] = useState([]),
     [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
-        context: { service: UNIVERSITY_SERVICE_GQL }
+        context: { server: UNIVERSITY_SERVICE_GQL }
     }),
     myInfo = useSelector((state) => state.auth),
-    [GetUser, searchUser] = useLazyQuery(getUser, {
-        context: { service: USER_SERVICE_GQL },
-        variables: { username: myInfo.username }
+    [GetUser, searchUser] = useLazyQuery(getUserGql, {
+        context: { server: USER_SERVICE_GQL },
+        variables: { username: "prashantbasnet445" }
     })
 
     useEffect(() => {

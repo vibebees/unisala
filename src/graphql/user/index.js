@@ -219,9 +219,9 @@ export
                     totalPosts
                 }
             }`,
-    GetUser = (id) => gql`
-            query {
-                getUser(username:"${id}") {
+    getUserGql = gql`
+    query  getUser($username: String!) {
+                getUser(username: $username) {
                   user {
                     firstName
                     lastName
@@ -385,13 +385,6 @@ export
             message
         }
     }`,
-    getUser = gql`
-    query getUser($username: String!) {
-        getUser(username: $username) {
-            email
-            username
-        }
-    }`,
     sendGuestbookMessage = gql`
     mutation sendGuestbookMessage($receiverId: String!, $message: String!) {
         sendGuestbookMessage(receiverId: $receiverId, message: $message) {
@@ -433,11 +426,7 @@ export
                 picture
                 coverPicture
                 location
-                connectionType {
-                  requestorId
-                  receiverId
-                  status
-                }
+                
             }
         }
     }`,

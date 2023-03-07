@@ -5,7 +5,7 @@ import { MessagingStation } from "./chats"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
-import { MESSAGING_SERVICE } from "../../../servers/types"
+import { MESSAGE_SERVICE_GQL } from "../../../servers/types"
 import { getFriends } from "../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { useRef, useEffect, useState } from "react"
@@ -20,7 +20,7 @@ const index = () => {
     useDocTitle("Messages")
     const
      windowWidth = useWindowWidth(),
-     { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGING_SERVICE } }),
+     { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
      { getUsers } = data || [],
      socket = useRef(),
      handleView = () => {

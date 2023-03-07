@@ -14,14 +14,14 @@ import "./index.css"
 import MessageItem from "../../../component/messagePop/MessageItem"
 import { useQuery } from "@apollo/client"
 import { getFriends, getMessages } from "../../../../graphql/user"
-import { MESSAGING_SERVICE } from "../../../../servers/types"
+import { MESSAGE_SERVICE_GQL } from "../../../../servers/types"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
 import { getCurrentCommunicator } from "../../../../store/action/userActivity"
 
 export const Communicators = () => {
         const
             [isOpen, setIsOpen] = useState(false),
-            { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGING_SERVICE } }),
+            { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
             { getUsers } = data || [],
             handleMessagesList = (communicators) => {
 

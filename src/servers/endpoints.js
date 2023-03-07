@@ -10,9 +10,9 @@ import { setContext } from "@apollo/client/link/context"
 import urls from "."
 import { onError } from "@apollo/client/link/error"
 import axios from "axios"
-import { MESSAGING_SERVICE_GQL, UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "./types"
+import { MESSAGE_SERVICE_GQL, UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "./types"
 import { io } from "socket.io-client"
-
+import { getMainDefinition } from "@apollo/client/utilities"
 const
     config = require("./config"),
     { messagingServiceAddress, universityServiceAddress, messageSocketAddress, userServiceAddress } = urls,
@@ -67,7 +67,7 @@ const
         uri: config.NODE_ENV === "PRODUCTION"
             ? urls["base"] + "/message/graphql"
             : messagingServiceAddress + "/graphql",
-        server: MESSAGING_SERVICE_GQL
+        server: MESSAGE_SERVICE_GQL
     }),
     universityServerGql = new HttpLink({
         uri: config.NODE_ENV === "PRODUCTION"
@@ -94,15 +94,23 @@ const
 export
  const client = new ApolloClient({
     link: split(
-        (operation) => (operation.getContext().service === UNIVERSITY_SERVICE_GQL),
+        (operation) => (operation.getContext().server === UNIVERSITY_SERVICE_GQL),
         universityServerGql,
-        from([authLink, errorLink, messageServerGql, userServerGql])
+        split(
+            (operation) => operation.getContext().server === MESSAGE_SERVICE_GQL,
+            messageServerGql,
+            split(
+                (operation) => operation.getContext().server === USER_SERVICE_GQL,
+              userServerGql
+            )
+          ),
+          from([authLink, errorLink])
     ),
-    headers: {
-        authorization: localStorage?.getItem("accessToken") || ""
-    },
-    cache: new InMemoryCache()
-}),
+     headers: {
+         authorization: localStorage?.getItem("accessToken") || ""
+     },
+     cache: new InMemoryCache()
+ }),
  messageSocket = () => io(messageSocketAddress),
  userServer = config.NODE_ENV === "PRODUCTION"
                 ? urls["base"] + "/user/"
