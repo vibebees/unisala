@@ -9,14 +9,15 @@ import { Link } from "react-router-dom"
 import { userSearch } from "../../../../graphql/user"
 import UserCard from "../../../component/userCard"
 import noResultsFound from "../../../../assets/no-results.jpg"
+import "../../uniSearchResults/SearchResults/index.css"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 function index({ query }) {
-  console.log({ query }, "firing user search query")
   const { data } = useQuery(userSearch(query), {
     context: { server: USER_SERVICE_GQL }
-})
-  if (!data?.searchUser?.user.length) {
+  })
+
+  if (!data?.searchUser?.user?.length) {
     return (
       <IonCard style={{ textAlign: "center" }}>
         <img alt="unisala: no results found" src={noResultsFound} />

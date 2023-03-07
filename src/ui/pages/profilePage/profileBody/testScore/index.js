@@ -15,6 +15,7 @@ import { eyeOff, eye, add } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
 import { ToggleView } from "../../../../../graphql/user/"
 import EditTestScore from "./editTestScore"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const TestScore = ({ testScore, myProfile }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,6 +24,7 @@ const TestScore = ({ testScore, myProfile }) => {
   const [present, dismiss] = useIonToast()
 
   const [toggleView] = useMutation(ToggleView, {
+    context: { server: USER_SERVICE_GQL },
     variables: { card: "testScore" },
     onCompleted: (data) => {
       if (data.toggleView.status.success) {

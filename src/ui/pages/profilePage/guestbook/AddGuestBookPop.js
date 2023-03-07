@@ -13,12 +13,14 @@ import {
 } from "@ionic/react"
 import { sendGuestbookMessage } from "../../../../graphql/user"
 import "./index.css"
+import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 const AddGuestBookPop = ({ isOpen, setIsOpen, userId, refetch }) => {
   const [message, setMessage] = useState("")
   const [present, dismiss] = useIonToast()
 
   const [executeMutation] = useMutation(sendGuestbookMessage, {
+    context: { server: USER_SERVICE_GQL },
     variables: {
       receiverId: userId,
       message: message

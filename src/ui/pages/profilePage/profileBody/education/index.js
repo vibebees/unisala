@@ -14,6 +14,7 @@ import { create, eyeOff, add, eye, trash } from "ionicons/icons"
 import EducationPop from "./EducationPop"
 import { useMutation } from "@apollo/client"
 import { ToggleView, DeleteEducation } from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 function Education({ education, myProfile }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,6 +24,7 @@ function Education({ education, myProfile }) {
   const [isCardPrivate, setIsCardPrivate] = useState(education?.private)
 
   const [toggleView] = useMutation(ToggleView, {
+    context: { server: USER_SERVICE_GQL },
     variables: { card: "education" },
     onCompleted: (data) => {
       if (data.toggleView.status.success) {
@@ -38,7 +40,7 @@ function Education({ education, myProfile }) {
     }
   })
 
-  const [deleteEducation, { data }] = useMutation(DeleteEducation)
+  const [deleteEducation, { data }] = useMutation(DeleteEducation, { context: { server: USER_SERVICE_GQL } })
 
   const [input, setInput] = useState({
     school: "",

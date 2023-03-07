@@ -495,4 +495,103 @@ export
                     }
                 }
                 }
-            }`
+            }`,
+    SendConnectRequest = gql`
+            mutation sendConnectRequest($receiverId: String!) {
+              sendConnectRequest(receiverId: $receiverId) {
+                success
+                message
+              }
+            }`,
+    RemoveConnectRequest = gql`
+            mutation removeConnectRequest($connecteeId: String!) {
+                removeConnectRequest(connecteeId: $connecteeId) {
+                success
+                message
+                }
+            }`,
+    ReceivedConnectionList = gql`
+            query {
+              receivedConnectionList {
+                status {
+                  success
+                  message
+                }
+                connectionList {
+                  _id
+                  status
+                  date
+                  user {
+                    _id
+                    firstName
+                    lastName
+                    username
+                    oneLinerBio
+                    birthday
+                    name
+                    role
+                    verified
+                    active
+                    picture
+                    coverPicture
+                    location
+                  }
+                }
+              }
+            }`,
+    PendingConnectionList = gql`
+            query {
+                pendingConnectionList {
+                status {
+                    success
+                    message
+                }
+                connectionList {
+                    _id
+                    status
+                    date
+                    user {
+                    _id
+                    firstName
+                    lastName
+                    username
+                    oneLinerBio
+                    birthday
+                    name
+                    role
+                    verified
+                    active
+                    picture
+                    location
+                    coverPicture
+                    }
+                }
+                }
+            } `,
+
+    ConnectedList = gql`
+                query connectedList($userId: String!){
+                    connectedList(userId: $userId) {
+                        status {
+                            message
+                            success
+                        }
+                        connectionList {
+                        date
+                        user {
+                            firstName
+                            lastName
+                            username
+                            _id
+                            picture
+                        }
+                        }
+                    }
+                }`,
+    AcceptConnectRequest = gql`
+    mutation acceptConnectRequest($requestorId: String!) {
+        acceptConnectRequest(requestorId: $requestorId) {
+        success
+        message
+        }
+    }`

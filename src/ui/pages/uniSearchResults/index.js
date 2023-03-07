@@ -15,9 +15,8 @@ import { useParams } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { searchGetSuccess } from "../../../store/action/index"
 import { useQuery } from "@apollo/client"
-import { UniSearch } from "../../../graphql/uni"
+import { UniSearch } from "../../../graphql/uni/"
 import useDocTitle from "../../../hooks/useDocTitile"
-import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 
 function index() {
     const { name } = useParams()
@@ -26,7 +25,7 @@ function index() {
 
     const dispatch = useDispatch()
     const { data } = useQuery(UniSearch(name), {
-        context: { server: UNIVERSITY_SERVICE_GQL }
+        context: { clientName: "uni" }
     })
     useEffect(() => {
         dispatch(searchGetSuccess(data?.searchSchool))
@@ -47,6 +46,7 @@ function index() {
                             <Filter />
                         </IonCol>
                     )}
+
                     <IonCol className="results-col">
                         <SearchResults />
                     </IonCol>

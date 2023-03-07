@@ -17,6 +17,7 @@ import {
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
 import { AddTestScore } from "../../../../../graphql/user/"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 function EditTestScore({ scores, setScores, setIsOpen, isOpen }) {
   const [input, setInput] = useState(scores)
@@ -63,6 +64,7 @@ function EditTestScore({ scores, setScores, setIsOpen, isOpen }) {
   }
 
   const [addTestScore, { loading }] = useMutation(AddTestScore("testScores"), {
+    context: { server: USER_SERVICE_GQL },
     variables: {
       testScores: {
         SAT_SCORE: {

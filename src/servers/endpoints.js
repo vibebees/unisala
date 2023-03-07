@@ -45,7 +45,7 @@ const
                                 .filter((value) => Boolean(value))
                                 .flatMap((accessToken) => {
                                     const oldHeaders =
-                                        operation.getContext().headers
+                                    operation.getContext().headers
                                     operation.setContext({
                                         headers: {
                                             ...oldHeaders,
@@ -89,11 +89,8 @@ const
                 authorization: token ? `${token}` : ""
             }
         }
-    })
-
-export
- const client = new ApolloClient({
-    link: split(
+    }),
+    httpLink = split(
         (operation) => (operation.getContext().server === UNIVERSITY_SERVICE_GQL),
         universityServerGql,
         split(
@@ -103,9 +100,12 @@ export
                 (operation) => operation.getContext().server === USER_SERVICE_GQL,
               userServerGql
             )
-          ),
-          from([authLink, errorLink])
-    ),
+          )
+    )
+
+export
+ const client = new ApolloClient({
+    link: authLink.concat(httpLink),
      headers: {
          authorization: localStorage?.getItem("accessToken") || ""
      },

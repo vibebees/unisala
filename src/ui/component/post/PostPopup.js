@@ -15,6 +15,7 @@ import { imageOutline } from "ionicons/icons"
 import { AddPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import "./index.css"
+import { USER_SERVICE_GQL } from "../../../servers/types"
 
  const S3_BUCKET = "uni-sala"
 const REGION = "us-west-2"
@@ -38,7 +39,7 @@ export const PostPopup = ({ setPopup, popup }) => {
     const [fileData, setFileData] = React.useState("")
     const [fileName, setFileName] = React.useState("")
 
-    const [addPost] = useMutation(AddPost)
+    const [addPost] = useMutation(AddPost, { context: { server: USER_SERVICE_GQL } })
     const handleChangeImage = (e) => {
         e.preventDefault()
         const file = imgfile?.current?.files[0]

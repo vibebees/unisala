@@ -17,6 +17,7 @@ import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import "./index.css"
 import { useMutation } from "@apollo/client"
 import { EditProfile } from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 function index({ profileHeader, setProfileHeader }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =
@@ -36,6 +37,7 @@ function index({ profileHeader, setProfileHeader }) {
   const [present, dismiss] = useIonToast()
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
+    context: { server: USER_SERVICE_GQL },
     variables: {
       ...input
     },

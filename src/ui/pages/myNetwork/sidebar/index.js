@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   IonCard,
   IonCardContent,
@@ -17,13 +16,30 @@ import {
   IonButton
 } from "@ionic/react"
 import { people } from "ionicons/icons"
+import { useQuery, useMutation } from "@apollo/client"
+import { useSelector } from "react-redux"
+import { ConnectedList, RemoveConnectRequest } from "../../../../graphql/user/"
+import StateMessage from "../../../component/stateMessage"
+import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 function index() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false),
+    { user } = useSelector((store) => store?.userProfile),
+    { data } = useQuery(ConnectedList, {
+      context: { server: USER_SERVICE_GQL },
+      variables: { userId: user._id }
+    }),
+    [removeConnectRequest] = useMutation(RemoveConnectRequest, {
+      context: { server: USER_SERVICE_GQL },
+      onCompleted: (data) => {
+        console.log(data)
+      }
+    })
+
   return (
     <IonCard>
       <IonCardContent>
-        <IonText color="dark">Manageme network</IonText>
+        <IonText color="dark">Manage network</IonText>
         <div
           className="flex mt-05"
           onClick={() => {
@@ -34,11 +50,15 @@ function index() {
             <IonIcon icon={people} className="grey-icon-32" />
             <h2>Connections</h2>
           </div>
-          <h2>4</h2>
+          <h2>{data?.connectedList?.connectionList.length}</h2>
         </div>
       </IonCardContent>
 
-      <IonModal isOpen={isOpen} mode="ios">
+      <IonModal
+        isOpen={isOpen}
+        mode="ios"
+        onDidDismiss={() => setIsOpen(false)}
+      >
         <IonHeader>
           <IonToolbar>
             <IonTitle>Manage Connection</IonTitle>
@@ -54,30 +74,44 @@ function index() {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding modal-content">
-          <IonItem mode="ios" className="mb-1" key={index} lines="full">
-            <IonAvatar slot="start">
-              <img
-                src="https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=411&q=80"
-                alt=""
-              />
-            </IonAvatar>
-            <IonLabel>
-              <div className="flex">
-                <div>
-                  <h2>John Doe</h2>
-                  <p>@johndoe</p>
-                </div>
-                <IonButton
-                  mode="ios"
-                  onClick={() => setIsOpen(false)}
-                  color="dark"
-                  fill="outline"
-                >
-                  Disconnect
-                </IonButton>
-              </div>
-            </IonLabel>
-          </IonItem>
+          {data?.connectedList?.connectionList.map((item, index) => {
+            return (
+              <IonItem mode="ios" className="mb-1" key={index} lines="full">
+                <IonAvatar slot="start">
+                  <img
+                    src="https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=411&q=80"
+                    alt=""
+                  />
+                </IonAvatar>
+                <IonLabel>
+                  <div className="flex">
+                    <div>
+                      <h2>{item.user.firstName + " " + item.user.lastName}</h2>
+                      <p>{item.user.username}</p>
+                    </div>
+                    <IonButton
+                      mode="ios"
+                      onClick={() =>
+                        removeConnectRequest({
+                          variables: { connecteeId: item.user._id }
+                        })
+                      }
+                      color="dark"
+                      fill="outline"
+                    >
+                      Disconnect
+                    </IonButton>
+                  </div>
+                </IonLabel>
+              </IonItem>
+            )
+          })}
+          {!data?.connectedList?.connectionList.length && (
+            <StateMessage
+              title="No Connections yet"
+              subtitle="Add connections to see them here"
+            />
+          )}
         </IonContent>
       </IonModal>
     </IonCard>

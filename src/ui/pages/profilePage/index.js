@@ -54,6 +54,7 @@ const ProfilePage = () => {
     doj
   } = getUser?.user || {}
   const profileHeaderData = {
+    _id,
     firstName,
     lastName,
     username,
@@ -63,7 +64,8 @@ const ProfilePage = () => {
     location,
     socialLinks,
     myProfile,
-    doj
+    doj,
+    connectionType: getUser?.connectionType
   }
   const profileBodyData = {
     about,

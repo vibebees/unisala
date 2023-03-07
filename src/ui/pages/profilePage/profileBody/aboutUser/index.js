@@ -17,6 +17,7 @@ import {
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
 import { EditAbout, ToggleView } from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 function AboutUser({ about, myProfile }) {
   const [userAbout, setAbout] = useState(about)
@@ -27,6 +28,7 @@ function AboutUser({ about, myProfile }) {
     text: userAbout?.text
   })
   const [editAbout, { loading }] = useMutation(EditAbout, {
+    context: { server: USER_SERVICE_GQL },
     variables: { about: input.text },
     onCompleted: (data) => {
       if (data.editAbout.status.success) {
@@ -43,6 +45,7 @@ function AboutUser({ about, myProfile }) {
     }
   })
   const [toggleView] = useMutation(ToggleView, {
+    context: { server: USER_SERVICE_GQL },
     variables: { card: "about" },
     onCompleted: (data) => {
       if (data.toggleView.status.success) {

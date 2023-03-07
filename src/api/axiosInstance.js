@@ -5,8 +5,8 @@ const authBaseURL = urls["base"]
 export const authInstance = axios.create({
     baseURL: authBaseURL,
     headers: {
-        Authorization: localStorage.getItem("access")
-            ? "JWT " + localStorage.getItem("access")
+        Authorization: localStorage.getItem("accessToken")
+            ? "JWT " + localStorage.getItem("accessToken")
             : null,
         "Content-Type": "application/json",
         accept: "application/json"
@@ -67,10 +67,8 @@ authInstance.interceptors.response.use(
                                 response.data.refreshToken
                             )
 
-                            authInstance.defaults.headers["Authorization"] =
-                                "JWT " + response.data.access
-                            originalRequest.headers["Authorization"] =
-                                "JWT " + response.data.access
+                            authInstance.defaults.headers["Authorization"] = "JWT " + response.data.access
+                            originalRequest.headers["Authorization"] = "JWT " + response.data.access
 
                             return authInstance(originalRequest)
                         })

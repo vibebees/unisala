@@ -13,6 +13,7 @@ import {
   IonSpinner
 } from "@ionic/react"
 import { AddEducation, EditEducation } from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const EducationPop = ({
   isOpen,
@@ -23,7 +24,8 @@ const EducationPop = ({
   setSchoolList
 }) => {
   const [executeMutation, { loading, data }] = useMutation(
-    isEdit ? EditEducation : AddEducation
+    isEdit ? EditEducation : AddEducation,
+    { context: { server: USER_SERVICE_GQL } }
   )
   const [present, dismiss] = useIonToast()
   const handelChange = (e) => {
