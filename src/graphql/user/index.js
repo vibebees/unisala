@@ -18,37 +18,37 @@ export
         }
     }`,
     AddEducation = gql`
-            mutation addEducation(
-                $school: String!
-                $degree: String!
-                $major: String!
-                $startDate: String!
-                $graduationDate: String!
-            ) {
-                addEducation(
-                    school: $school
-                    degree: $degree
-                    major: $major
-                    startDate: $startDate
-                    graduationDate: $graduationDate
-                ) {
-                    status {
-                        success
-                        message
-                    }
-                    education {
-                        private
-                        schools {
-                            _id
-                            school
-                            degree
-                            major
-                            startDate
-                            graduationDate
-                        }
-                    }
-                }
-            }`,
+        mutation addEducation(
+        $school: String!
+        $degree: String
+        $major: String
+        $startDate: String!
+        $graduationDate: String!
+        ) {
+        addEducation(
+            school: $school
+            degree: $degree
+            major: $major
+            startDate: $startDate
+            graduationDate: $graduationDate
+        ) {
+            status {
+            success
+            message
+            }
+            education {
+            private
+            schools {
+                _id
+                school
+                degree
+                major
+                startDate
+                graduationDate
+            }
+            }
+        }
+        }`,
     AddPost = gql`
             mutation addPost($postText: String!,$postImage: String!) {
                 addPost(postText: $postText,postImage: $postImage) {
@@ -70,83 +70,84 @@ export
                 }
             }`,
     EditEducation = gql`
-            mutation editEducation(
-                $id: String!
-                $school: String!
-                $degree: String!
-                $major: String!
-                $startDate: String!
-                $graduationDate: String!
-            ) {
-                editEducation(
-                    id: $id
-                    school: $school
-                    degree: $degree
-                    major: $major
-                    startDate: $startDate
-                    graduationDate: $graduationDate
-                ) {
-                    status {
-                        success
-                        message
-                    }
-                    education {
-                        private
-                        schools {
-                            _id
-                            school
-                            degree
-                            major
-                            startDate
-                            graduationDate
-                        }
-                    }
-                }
-            }`,
+        mutation editEducation(
+        $id: String!
+        $school: String!
+        $degree: String
+        $major: String
+        $startDate: String!
+        $graduationDate: String!
+        ) {
+        editEducation(
+            id: $id
+            school: $school
+            degree: $degree
+            major: $major
+            startDate: $startDate
+            graduationDate: $graduationDate
+        ) {
+            status {
+            success
+            message
+            }
+            education {
+            private
+            schools {
+                _id
+                school
+                degree
+                major
+                startDate
+                graduationDate
+            }
+            }
+        }
+        }`,
     EditProfile = gql`
-            mutation editProfile(
-                $profilePicture: String
-                $coverPicture: String
-                $username: String!
-                $firstName: String!
-                $lastName: String!
-                $location: String
-                $oneLinerBio: String
-                $birthday: String
-            ) {
-                editProfile(
-                    profilePicture: $profilePicture
-                    coverPicture: $coverPicture
-                    username: $username
-                    firstName: $firstName
-                    lastName: $lastName
-                    location: $location
-                    oneLinerBio: $oneLinerBio
-                    birthday: $birthday
-                ) {
-                    status {
-                        success
-                        message
-                    }
-                    user {
-                        firstName
-                        lastName
-                        username
-                        oneLinerBio
-                        age
-                        gender
-                        birthday
-                        name
-                        role
-                        verified
-                        blocked
-                        banned
-                        active
-                        picture
-                        doj
-                    }
-                }
-            }`,
+        mutation editProfile(
+        $profilePicture: String
+        $coverPicture: String
+        $username: String!
+        $firstName: String!
+        $lastName: String!
+        $location: String
+        $oneLinerBio: String
+        $birthday: String
+        ) {
+        editProfile(
+            profilePicture: $profilePicture
+            coverPicture: $coverPicture
+            username: $username
+            firstName: $firstName
+            lastName: $lastName
+            location: $location
+            oneLinerBio: $oneLinerBio
+            birthday: $birthday
+        ) {
+            status {
+            success
+            message
+            }
+            user {
+            firstName
+            lastName
+            username
+            oneLinerBio
+            location
+            age
+            gender
+            birthday
+            name
+            role
+            verified
+            blocked
+            banned
+            active
+            picture
+            doj
+            }
+        }
+        }`,
     GetCommentList = (id, pid) => gql`
             query {
                  commentList (postId:"${id}", parentId:"${pid}") {
@@ -219,23 +220,72 @@ export
                 }
             }`,
     GetUser = (id) => gql`
-
-    {
-        getUser(username: "prashantbasnet322") {
-            firstName
-            lastName
-            username
-            age
-            gender
-            birthday
-            name
-            role
- 
-             
-          }
-      }
-      
-     `,
+            query {
+                getUser(username:"${id}") {
+                  user {
+                    firstName
+                    lastName
+                    username
+                    age
+                    gender
+                    birthday
+                    name
+                    role
+                    verified
+                    location
+                    oneLinerBio
+                    doj
+                    blocked
+                    banned
+                    active
+                    picture
+                    _id
+                    about {
+                      text
+                      private
+                    }
+                    badges {
+                      private
+                      earnedBadges {
+                        title
+                        description
+                        date
+                      }
+                    }
+                    education {
+                      private
+                      schools {
+                        _id
+                        school
+                        degree
+                        major
+                        startDate
+                        graduationDate
+                      }
+                    }
+                    testScore {
+                      private
+                      scores {
+                        SAT_SCORE {
+                          english
+                          maths
+                        }
+                        ACT_SCORE {
+                          english
+                          maths
+                        }
+                        IELTS_SCORE {
+                          score
+                        }
+                        TOEFL_SCORE {
+                          score
+                        }
+                        
+                      }
+                    }
+                  }
+                  }
+            }`,
     GetUserPost = (id, page) => gql`
     query {
         getUserPost(userId: "${id}", page:${page},pageSize:3) {
@@ -409,4 +459,51 @@ export
                 seen
                 senderId
             }
-        }`
+        }`,
+    DeleteEducation = gql`
+        mutation deleteEducation($id: String!) {
+            deleteEducation(id: $id) {
+            status {
+                success
+                message
+            }
+            education {
+                private
+                schools {
+                _id
+                school
+                degree
+                major
+                startDate
+                graduationDate
+                }
+            }
+            }
+        }`,
+    AddTestScore = (testScores) => gql`
+            mutation addTestScore($testScores: ${testScores}) {
+                addTestScore(testScore: $testScores) {
+                status {
+                    message
+                    success
+                }
+                testScore {
+                    scores {
+                    SAT_SCORE {
+                        maths
+                        english
+                    }
+                    ACT_SCORE {
+                        maths
+                        english
+                    }
+                    IELTS_SCORE {
+                        score
+                    }
+                    TOEFL_SCORE {
+                        score
+                    }
+                    }
+                }
+                }
+            }`,

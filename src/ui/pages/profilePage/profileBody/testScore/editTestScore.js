@@ -16,7 +16,7 @@ import {
   IonSpinner
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
-import AddTestScore from "../../../../../graphql/user/AddTestScore"
+import { AddTestScore } from "../../../../../graphql/user/"
 
 function EditTestScore({ scores, setScores, setIsOpen, isOpen }) {
   const [input, setInput] = useState(scores)

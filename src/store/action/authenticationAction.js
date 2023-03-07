@@ -9,40 +9,44 @@ import {
 } from "./types"
 
 export const loginUser = ({ userServer, input, setLoading, present, dismiss, setauth }) => {
-    return (dispatch) => axios
-    .post(userServer + `/login`, input)
-    .then((res) => {
-      setLoading(false)
-      if (res.data.success) {
-        dispatch({
-          type: USER_LOGIN,
-          payload: res?.data || {}
+
+  return (dispatch) => axios
+      .post(userServer + `/login`, input)
+      .then((res) => {
+        setLoading(false)
+        if (res.data.success) {
+          dispatch({
+            type: USER_LOGIN,
+            payload: res?.data || {}
+        })
+          window.innerWidth < 768
+            ? window.location.replace("/home")
+            : window.location.reload()
+        }
+        if (!res.data.success) {
+          present({
+            duration: 3000,
+            message: res.data.message,
+            buttons: [{ text: "X", handler: () => dismiss() }],
+            color: "primary",
+            mode: "ios"
+          })
+          if (res.data.status === 302) {
+            setauth({ state: "userNotVerified", email: input.email })
+          }
+        }
       })
-        window.location.reload()
-      }
-      if (!res.data.success) {
+      .catch((err) => {
+        setLoading(false)
+        console.log(err)
         present({
           duration: 3000,
-          message: res.data.message,
+          message: "Something went wrong!",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
-        if (res.data.status === 302) {
-          setauth({ state: "userNotVerified", email: input.email })
-        }
-      }
-    })
-    .catch((err) => {
-      setLoading(false)
-      present({
-        duration: 3000,
-        message: err.response.data.message,
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
       })
-    })
 }
 
 export const registerUser = ({ userServer, input, setdatacheck, setauth, setsave, present, dismiss }) => {
