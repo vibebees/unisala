@@ -8,18 +8,20 @@ import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { getUser } from "../../../graphql/user"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
+import { useSelector } from "react-redux"
 
 function index() {
-    const history = useHistory()
-    const [searchValue, setSearchValue] = useState("")
-    const [dropDownOptions, setDropDownOptions] = useState(false)
-    const [options, setOptions] = useState([])
-    const [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
+    const history = useHistory(),
+    [searchValue, setSearchValue] = useState(""),
+    [dropDownOptions, setDropDownOptions] = useState(false),
+    [options, setOptions] = useState([]),
+    [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
         context: { service: UNIVERSITY_SERVICE_GQL }
-    })
-    const [GetUser, searchUser] = useLazyQuery(getUser, {
+    }),
+    myInfo = useSelector((state) => state.auth),
+    [GetUser, searchUser] = useLazyQuery(getUser, {
         context: { service: USER_SERVICE_GQL },
-        variables: { username: "Ellen0" }
+        variables: { username: myInfo.username }
     })
 
     useEffect(() => {

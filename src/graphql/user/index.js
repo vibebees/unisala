@@ -405,9 +405,8 @@ export
                 message{
                     text
                 }
-                reseverId
+                receiverId
                 seen
-                senderName
                 senderId
             }
         }`

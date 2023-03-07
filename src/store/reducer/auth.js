@@ -5,7 +5,8 @@ export let initial = {
     accessToken: null,
     firstName: "",
     lastName: "",
-    username: ""
+    username: "",
+    id: ""
 }
 // const auth = (state = initial, action) => {
 //     switch (action.type) {
@@ -30,7 +31,9 @@ const authentication = (state = initial, action) => {
                 message: action.payload.message,
                 firstName: action.payload.firstName,
                 lastName: action.payload.lastName,
-                username: action.payload.username
+                username: action.payload.username,
+                id: action.payload.id
+
             }
 
             localStorage.setItem("accessToken", state.accessToken)

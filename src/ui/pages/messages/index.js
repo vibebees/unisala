@@ -8,10 +8,14 @@ import "./index.css"
 import { MESSAGING_SERVICE } from "../../../servers/types"
 import { getFriends } from "../../../graphql/user"
 import { useQuery } from "@apollo/client"
-import { useRef, useEffect } from "react"
-import { io } from "socket.io-client"
+import { useRef, useEffect, useState } from "react"
+import useSound from "use-sound"
 import { messageSocket } from "../../../servers/endpoints"
 import { messageSocketAddress } from "../../../servers/index"
+import { useDispatch, useSelector } from "react-redux"
+import { messageSend, seenMessage } from "../../../store/action/messengerAction"
+// import notificationSound from "../../../assets/sounds/notification.mp3"
+// import sendingSound from "../../../assets/sounds/sending.mp3"
 const index = () => {
     useDocTitle("Messages")
     const
@@ -38,27 +42,97 @@ const index = () => {
             return <MessagingStation />
         }
         return <Communicators chatList={getUsers} />
-    }
+    },
+    dispatch = useDispatch(),
+    { friends, message, mesageSendSuccess, messageGetSuccess, themeMood, newUserAdd } = {},
+    myInfo = useSelector((state) => state.auth),
+    [currentfriend, setCurrentFriend] = useState(""),
+    [newMessage, setNewMessage] = useState(""),
+    [activeUser, setActiveUser] = useState([]),
+    [socketMessage, setSocketMessage] = useState(""),
+    [typingMessage, setTypingMessage] = useState("")
+    //  [notificationSPlay] = useSound(notificationSound),
+    //  [sendingSPlay] = useSound(sendingSound)
+
+    // useEffect(() => {
+    //     socket.current = messageSocket()
+    //     socket.current.on("connect", () => {
+    //         console.log("socket connected")
+    //     })
+    //     socket.current.on("message", (message) => {
+    //         console.log(message)
+    //     })
+    //     socket.current.on("disconnect", () => {
+    //         console.log("socket disconnected")
+    //     })
+    //     return () => {
+    //         socket.current.disconnect()
+    //     }
+    // }, [])
+
+    useEffect(() => {
+        if (socketMessage && currentfriend) {
+             if (socketMessage.senderId === currentfriend._id && socketMessage.reseverId === myInfo.id) {
+                  dispatch({
+                       type: "SOCKET_MESSAGE",
+                       payload: {
+                            message: socketMessage
+                       }
+                  })
+                  dispatch(seenMessage(socketMessage))
+                  socket.current.emit("messageSeen", socketMessage)
+                  dispatch({
+                   type: "UPDATE_FRIEND_MESSAGE",
+                   payload: {
+                        msgInfo: socketMessage,
+                        status: "seen"
+                   }
+              })
+             }
+        }
+        setSocketMessage("")
+     }, [socketMessage])
 
     useEffect(() => {
         socket.current = messageSocket()
-        socket.current.on("connect", () => {
-            console.log("socket connected")
+        socket.current.on("getMessage", (data) => {
+            setSocketMessage(data)
         })
-        socket.current.on("message", (message) => {
-            console.log(message)
-        })
-        socket.current.on("disconnect", () => {
-            console.log("socket disconnected")
-        })
-        return () => {
-            socket.current.disconnect()
-        }
+
+        socket.current.on("typingMessageGet", (data) => {
+         setTypingMessage(data)
+     })
+
+     socket.current.on("msgSeenResponse", (msg) => {
+         dispatch({
+              type: "SEEN_MESSAGE",
+              payload: {
+                   msgInfo: msg
+              }
+         })
+     })
+
+     socket.current.on("msgDelivaredResponse", (msg) => {
+         dispatch({
+              type: "DELIVARED_MESSAGE",
+              payload: {
+                   msgInfo: msg
+              }
+         })
+     })
+
+     socket.current.on("seenSuccess", (data) => {
+          dispatch({
+               type: "SEEN_ALL",
+               payload: data
+          })
+     })
+
     }, [])
 
-    useEffect(() => {
-        socket.current.emit("join", { username: "joshua" })
-    })
+    // useEffect(() => {
+    //     socket.current.emit("join", { username: "joshua" })
+    // })
 
     return (
         <IonContent>

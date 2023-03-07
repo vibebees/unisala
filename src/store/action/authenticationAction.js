@@ -55,7 +55,6 @@ export const registerUser = ({ userServer, input, setdatacheck, setauth, setsave
             localStorage.setItem("email", input.email)
             setdatacheck(false)
             setauth({ state: "SignUpVerification" })
-            console.log(res)
             dispatch({
                 type: USER_REGISTRATION,
                 payload: res

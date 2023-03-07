@@ -21,15 +21,17 @@ import { screenLessThan768 } from "./screens.lessThan768"
 import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
+import { useSelector } from "react-redux"
 
 export const Home = ({ setPopup }) => {
     useDocTitle("Unisala")
     const
         accessToken = localStorage?.getItem("accessToken"),
         decode = accessToken && jwtDecode(accessToken),
+        myInfo = useSelector((state) => state.auth),
         profileData = useQuery(GetProfileCard, {
             variables: {
-                username: "Ellen0"
+                username: myInfo.username
             }
         }),
         [width, setWidth] = useState(window.innerWidth),

@@ -1,27 +1,45 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import {
     IonButton,
     IonInput,
     IonIcon
 } from "@ionic/react"
 import { send } from "ionicons/icons"
+import { useSelector } from "react-redux"
+import { messageSocket } from "../../../../servers/endpoints"
 
 export const TypeBox = (receipent) => {
     const
         [messageInput, setMessageInput] = useState(""),
         [messages, setMessages] = useState({}),
-        HandelSubmit = (e) => {
+        socket = useRef(),
+        myInfo = useSelector((state) => state.auth),
+        sendMessage = (e) => {
             e.preventDefault()
-            if (messageInput) {
-                const newMessage = {
-                    id: messages.length + 1,
-                    message: messageInput,
-                    userId: receipent
-                }
-                setMessages(newMessage)
+            const data = {
+                senderId: myInfo.id,
+                receiverId: myInfo.username,
+                message: messageInput
             }
+            socket.current.emit("messageReceived", data)
+            //    dispatch(messageSend(data))
+            setMessageInput("")
         }
-    return (<form onSubmit={HandelSubmit} className="flex">
+
+    useEffect(() => {
+        socket.current = messageSocket()
+        socket.current.on("connect", () => {
+            console.log("socket connected")
+        })
+        socket.current.on("disconnect", () => {
+            console.log("socket disconnected")
+        })
+        // return () => {
+        //     socket.current.disconnect()
+        // }
+    }, [])
+
+    return (<form onSubmit={sendMessage} className="flex">
         <IonInput
             mode="md"
             className="input-box"
