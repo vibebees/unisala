@@ -84,7 +84,7 @@ const App = () => {
   })
 
   const dispatch = useDispatch(),
-    { loggedIn } = useSelector((store) => store?.UserProfile.profileData)
+    { loggedIn } = useSelector((store) => store?.userProfile)
 
   useEffect(() => {
     const accessToken = localStorage?.getItem("accessToken"),

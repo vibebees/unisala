@@ -19,7 +19,7 @@ const SimilarCollage = () => {
             window.removeEventListener("resize", handleResize)
         }
     })
-    const { uniData, isSideBar } = useSelector((store) => store.University)
+    const { uniData, isSideBar } = useSelector((store) => store?.university)
     // const similarCollage = [
     //     {
     //         image: "https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",

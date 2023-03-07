@@ -40,7 +40,7 @@ const SideDetails = ({
     grantAnimate,
     librariesAnimate
 }) => {
-    const { isSideBar } = useSelector((store) => store?.University)
+    const { isSideBar } = useSelector((store) => store?.university)
     const sideMenu = [
         !isSideBar?.applicantsEmpty && {
             title: "Statistics",

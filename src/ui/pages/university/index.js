@@ -34,7 +34,7 @@ export default function UniversityPage() {
   useEffect(() => {
     dispatch(getUniData(data?.getSchoolInfo))
   }, [data])
-  const { uniData } = useSelector((store) => store?.University)
+  const { uniData } = useSelector((store) => store?.university)
   const UniEmpty = useIsEmpty(uniData || {}, "School")
   const reportEmpty = useIsEmpty(uniData?.report || {}, "Report")
   const similarCollagesEmpty = useIsEmpty(

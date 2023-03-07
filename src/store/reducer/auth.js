@@ -1,12 +1,7 @@
 
 export let initial = {
-    message: "",
     refreshToken: null,
-    accessToken: null,
-    firstName: "",
-    lastName: "",
-    username: "",
-    id: ""
+    accessToken: null
 }
 // const auth = (state = initial, action) => {
 //     switch (action.type) {

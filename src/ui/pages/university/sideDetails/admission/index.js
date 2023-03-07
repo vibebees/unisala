@@ -14,7 +14,7 @@ import { useSelector } from "react-redux"
 import useIsData from "../../../../../hooks/useIsData"
 
 const Admission = ({ admissionAnimate }) => {
-    const { uniData, isSideBar } = useSelector((store) => store.University)
+    const { uniData, isSideBar } = useSelector((store) => store.university)
 
     const options = {
         responsive: true,

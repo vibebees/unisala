@@ -9,11 +9,11 @@ import UserProfile from "./userProfile"
 const rootReducer = combineReducers({
     introductionQuestionAnswered: introductionReducer,
     auth: auth,
-    University: University,
-    UserProfile: UserProfile
+    university: University,
+    userProfile: UserProfile
 })
 const persistConfig = {
-    key: "development0",
+    key: "development1",
     storage
 }
 

@@ -11,7 +11,7 @@ import noResultsFound from "../../../../assets/no-results.jpg"
 import "./index.css"
 
 function index() {
-    const { searchData } = useSelector((store) => store?.University || [])
+    const { searchData } = useSelector((store) => store?.university || [])
 
     return searchData?.length ? (
         <>

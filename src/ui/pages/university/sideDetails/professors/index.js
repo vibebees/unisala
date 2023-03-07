@@ -20,7 +20,7 @@ import { professorFilter } from "./filter"
 import { UNIVERSITY_SERVICE } from "../../../../../servers/types"
 
 export const Professors = () => {
-    const { uniData } = useSelector((store) => store.University)
+    const { uniData } = useSelector((store) => store?.university)
 
     const { data } = useQuery(GetProfessor(uniData?.unitId), {
         context: { service: UNIVERSITY_SERVICE }

@@ -22,17 +22,19 @@ import { screenLessThan768 } from "./screens.lessThan768"
 import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
-import { useSelector } from "react-redux"
 
 export const Home = ({ setPopup }) => {
     useDocTitle("Unisala")
     const
-        { user, loggedIn } = useSelector((store) => store?.UserProfile.profileData),
+        { user, loggedIn } = useSelector((store) => store?.userProfile),
         profileData = loggedIn && useQuery(GetProfileCard, {
             variables: {
+                username: "prashantbasnet15"
             }
         }),
         [width, setWidth] = useState(window.innerWidth),
+        { innerWidth } = window,
+        handleResize = () => {
             const { innerWidth } = window
             if (width !== innerWidth) {
                 setWidth(innerWidth)

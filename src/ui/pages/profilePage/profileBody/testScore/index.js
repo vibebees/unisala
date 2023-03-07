@@ -13,7 +13,7 @@ import {
 } from "@ionic/react"
 import { eyeOff, eye, add } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import ToggleView from "../../../../../graphql/user/ToggleView"
+import { ToggleView } from "../../../../../graphql/user/"
 import EditTestScore from "./editTestScore"
 
 const TestScore = ({ testScore, myProfile }) => {

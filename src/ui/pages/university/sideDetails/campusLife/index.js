@@ -16,7 +16,7 @@ import { useSelector } from "react-redux"
 import useIsData from "../../../../../hooks/useIsData"
 
 const CampusLife = () => {
-    const { uniData, isSideBar } = useSelector((store) => store.University)
+    const { uniData, isSideBar } = useSelector((store) => store?.university)
 
     return (
         !isSideBar?.campusLifeEmpty && (
