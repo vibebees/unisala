@@ -11,6 +11,7 @@ import "./Home.css"
 import { personCircle } from "ionicons/icons"
 import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
+import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
 import jwtDecode from "jwt-decode"
 import { GetProfileCard } from "../../../graphql/user"
@@ -26,16 +27,12 @@ import { useSelector } from "react-redux"
 export const Home = ({ setPopup }) => {
     useDocTitle("Unisala")
     const
-        accessToken = localStorage?.getItem("accessToken"),
-        decode = accessToken && jwtDecode(accessToken),
-        myInfo = useSelector((state) => state.auth),
-        profileData = useQuery(GetProfileCard, {
+        { user, loggedIn } = useSelector((store) => store?.UserProfile.profileData),
+        profileData = loggedIn && useQuery(GetProfileCard, {
             variables: {
-                username: myInfo.username
             }
         }),
         [width, setWidth] = useState(window.innerWidth),
-        handleResize = () => {
             const { innerWidth } = window
             if (width !== innerWidth) {
                 setWidth(innerWidth)
@@ -45,8 +42,8 @@ export const Home = ({ setPopup }) => {
         [activeTab, setActiveTab] = useState(0),
         views = {
             greaterThan1000: screenGreaterThan1000(),
-            greaterThan768: screensMoreThan768({ activeTab, setActiveTab, unisalaImg, profileData, decode }),
-            lessThan768: screenLessThan768({ setActiveProfile, personCircle, activeProfile })
+            greaterThan768: screensMoreThan768({ activeTab, setActiveTab, unisalaImg, profileData, loggedIn }),
+            lessThan768: screenLessThan768({ setActiveProfile, personCircle, activeProfile, loggedIn, username: user.username })
         }
 
     useEffect(() => {
@@ -55,6 +52,7 @@ export const Home = ({ setPopup }) => {
             window.removeEventListener("resize", handleResize)
         }
     }, [])
+
     return (
         <IonPage>
             <IonContent
@@ -81,7 +79,7 @@ export const Home = ({ setPopup }) => {
                                 margin: "auto",
                                 minHeight: "calc(90vh)"
                             }}>
-                            {decode && width >= 768 && (
+                            {loggedIn && width >= 768 && (
                                 <IonCard style={{ margin: "20px 0px" }} onClick={() => {
                                     setPopup(true)
                                 }} >
@@ -89,7 +87,7 @@ export const Home = ({ setPopup }) => {
                                 </IonCard>
                             )}
                             {
-                                decode ? <HomeFeed userInfo={decode} /> : <UnisalaIntro />
+                                loggedIn ? <HomeFeed userInfo={user} /> : <UnisalaIntro />
                             }
                         </IonCol>
                         {width > 1000 && views.greaterThan1000}

@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   IonButtons,
   IonButton,
@@ -10,7 +9,8 @@ import {
   IonTitle,
   IonIcon,
   IonInput,
-  useIonToast
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
 import { create } from "ionicons/icons"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
@@ -18,9 +18,9 @@ import "./index.css"
 import { useMutation } from "@apollo/client"
 import { EditProfile } from "../../../../../graphql/user"
 
-function index({ data }) {
+function index({ profileHeader, setProfileHeader }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =
-    data
+    profileHeader
   const [input, setInput] = useState({})
   useEffect(() => {
     setInput({
@@ -31,7 +31,7 @@ function index({ data }) {
       location: location,
       profilePic: profilePic
     })
-  }, [data])
+  }, [profileHeader])
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
 
@@ -39,15 +39,26 @@ function index({ data }) {
     variables: {
       ...input
     },
-    onCompleted: () => {
-      present({
-        duration: 3000,
-        message: "Profile Updated",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
-      setIsOpen(false)
+    onCompleted: (data) => {
+      if (data?.editProfile?.status?.success) {
+        setProfileHeader(data?.editProfile?.user)
+        present({
+          duration: 3000,
+          message: "Profile Updated",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+        setIsOpen(false)
+      } else {
+        present({
+          duration: 3000,
+          message: data?.editProfile?.status?.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
     },
     onError: (error) => {
       present({
@@ -188,7 +199,7 @@ function index({ data }) {
               mode="ios"
               expand="block"
             >
-              Save Changes
+              {loading ? <IonSpinner /> : "Save Changes"}
             </IonButton>
           </form>
         </IonContent>

@@ -171,6 +171,12 @@ li {
     gap: 5px;
 }
 
+.inline-2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .p-grey {
     color: #999999;
 }
@@ -203,4 +209,12 @@ li {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+.sidebar {
+    max-width: 300px;
+    height: fit-content;
+    position: sticky;
+    top: 0;
+    overflow: auto;
 }

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import "../auth.css"
 import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
 import AuthInput from "../AuthInput"
 import axios from "axios"
@@ -8,7 +7,7 @@ import { userServer } from "../../../../servers/endpoints"
 import { useDispatch } from "react-redux"
 import { loginUser } from "../../../../store/action/authenticationAction"
 
-export const SignUpForm = ({ setauth }) => {
+export const SignInForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState({
@@ -96,4 +95,4 @@ export const SignUpForm = ({ setauth }) => {
     </form>
   )
 }
-export default SignUpForm
+export default SignInForm

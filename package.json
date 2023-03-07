@@ -24,6 +24,7 @@
     "aws-sdk": "^2.1231.0",
     "axios": "^0.24.0",
     "chart.js": "^3.7.1",
+    "eslint-plugin-promise": "^6.1.1",
     "graphql": "^16.6.0",
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
@@ -95,5 +96,5 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1"
   },
-  "description": "An Ionic project"
+  "description": "Unisala"
 }

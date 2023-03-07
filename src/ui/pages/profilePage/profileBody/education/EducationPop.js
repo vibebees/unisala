@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import {
   IonButton,
@@ -10,7 +9,8 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-  useIonToast
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
 import { AddEducation, EditEducation } from "../../../../../graphql/user"
 
@@ -22,7 +22,7 @@ const EducationPop = ({
   input,
   setSchoolList
 }) => {
-  const [executeMutation, { data }] = useMutation(
+  const [executeMutation, { loading, data }] = useMutation(
     isEdit ? EditEducation : AddEducation
   )
   const [present, dismiss] = useIonToast()
@@ -33,6 +33,25 @@ const EducationPop = ({
   }
   const handelSubmit = (e) => {
     e.preventDefault()
+    if (input.school.length < 3) {
+      return present({
+        duration: 3000,
+        message: "School name can't be empty",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    }
+    if (input.startDate < 3 || input.graduationDate < 3) {
+      return present({
+        duration: 3000,
+        message: "Dates can't be empty",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    }
+
     executeMutation({
       variables: {
         id: input?._id,
@@ -74,6 +93,7 @@ const EducationPop = ({
       setSchoolList(data?.addEducation?.education?.schools)
     }
   }, [data])
+
   return (
     <IonModal
       onDidDismiss={() => {
@@ -133,6 +153,7 @@ const EducationPop = ({
               name="startDate"
               onIonChange={handelChange}
               placeholder="Start Date"
+              value={input?.startDate}
             ></IonInput>
           </div>
           <div className="mb-1">
@@ -143,10 +164,11 @@ const EducationPop = ({
               name="graduationDate"
               onIonChange={handelChange}
               placeholder="Graduation Date"
+              value={input?.graduationDate}
             ></IonInput>
           </div>
           <IonButton type="submit" mode="ios" expand="block">
-            Save Changes
+            {loading ? <IonSpinner /> : "Save Changes"}
           </IonButton>
         </form>
       </IonContent>

@@ -17,11 +17,11 @@ const validate = (data) => {
     errors.password = "Password field is required"
   } else if (
     !data?.password?.match(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/gi
     )
   ) {
     errors.password =
-      "Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, number and ymbol"
+      "Password must be at least 8 characters long, contain at least one lowercase, uppercase letter, number and symbol"
   }
   return errors
 }

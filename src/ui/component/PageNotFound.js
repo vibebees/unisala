@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
 import { IonButton, IonContent, IonText } from "@ionic/react"
 
 export const PageNotFound = ({ msg }) => {

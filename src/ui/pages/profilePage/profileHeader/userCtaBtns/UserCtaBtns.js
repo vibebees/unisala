@@ -1,23 +1,11 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState } from "react"
+import { useState } from "react"
 import { chatbubbles, personAdd, personRemove } from "ionicons/icons"
-import {
-  IonButton,
-  IonIcon,
-  useIonToast,
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonContent
-} from "@ionic/react"
+import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import EditProfile from "../editProfile"
 import "./UserCtaBtns.css"
 
-function UserCtaBtns({ data, myProfile }) {
-  const [isOpen, setIsOpen] = useState(false)
+function UserCtaBtns({ profileHeader, setProfileHeader, myProfile }) {
   const [connect, setConnect] = useState(false)
   const [present, dismiss] = useIonToast()
   let windowWidth = useWindowWidth()
@@ -35,7 +23,12 @@ function UserCtaBtns({ data, myProfile }) {
 
   const buttonToShow = () => {
     if (myProfile) {
-      return <EditProfile data={data} />
+      return (
+        <EditProfile
+          profileHeader={profileHeader}
+          setProfileHeader={setProfileHeader}
+        />
+      )
     }
     return (
       <>
@@ -74,24 +67,6 @@ function UserCtaBtns({ data, myProfile }) {
   return (
     <>
       <div className="user-cta-btns">{buttonToShow()}</div>
-      <IonModal isOpen={isOpen}>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Modal</IonTitle>
-            <IonButtons slot="end">
-              <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum
-            quidem recusandae ducimus quos reprehenderit. Veniam, molestias
-            quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui.
-            Eaque, dicta.
-          </p>
-        </IonContent>
-      </IonModal>
     </>
   )
 }

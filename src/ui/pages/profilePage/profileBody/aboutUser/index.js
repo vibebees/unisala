@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState } from "react"
+import { useState } from "react"
 import { eyeOff, create, eye } from "ionicons/icons"
 import {
   IonCard,
@@ -13,22 +12,25 @@ import {
   IonToolbar,
   IonTitle,
   IonTextarea,
-  useIonToast
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
 import { EditAbout, ToggleView } from "../../../../../graphql/user"
 
 function AboutUser({ about, myProfile }) {
-  const [isCardPrivate, setIsCardPrivate] = useState(about?.private)
+  const [userAbout, setAbout] = useState(about)
+  const [isCardPrivate, setIsCardPrivate] = useState(userAbout?.private)
   const [isOpen, setIsOpen] = useState(false)
 
   const [input, setInput] = useState({
-    text: about?.text
+    text: userAbout?.text
   })
   const [editAbout, { loading }] = useMutation(EditAbout, {
     variables: { about: input.text },
     onCompleted: (data) => {
       if (data.editAbout.status.success) {
+        setAbout(data.editAbout.about)
         present({
           duration: 3000,
           message: "About Updated",
@@ -61,15 +63,12 @@ function AboutUser({ about, myProfile }) {
   }
   const [present, dismiss] = useIonToast()
 
-  if (!myProfile && (!about?.text || about?.Private)) {
-    return ""
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
     editAbout()
     setIsOpen(false)
   }
+
   return (
     <>
       <IonCard className="mb-2">
@@ -79,7 +78,7 @@ function AboutUser({ about, myProfile }) {
             <div className="inline-flex">
               <IonIcon
                 className="grey-icon-32 mr-1"
-                icon={!isCardPrivate ? eyeOff : eye}
+                icon={isCardPrivate ? eyeOff : eye}
                 onClick={() => {
                   toggleView()
                 }}
@@ -93,19 +92,25 @@ function AboutUser({ about, myProfile }) {
           )}
         </IonCardContent>
 
-        {myProfile && !about?.text ? (
+        {myProfile && !userAbout?.text ? (
           <IonCardContent className="center-text">
             <p>Share something about yourself</p>
-            <IonButton color="primary" mode="ios" className="icon-text ">
+            <IonButton
+              color="primary"
+              mode="ios"
+              className="icon-text "
+              onClick={() => setIsOpen(true)}
+            >
               Add About
             </IonButton>
           </IonCardContent>
         ) : (
           <IonCardContent>
-            <p>{input?.text}</p>
+            <p>{userAbout?.text}</p>
           </IonCardContent>
         )}
       </IonCard>
+
       <IonModal
         onDidDismiss={() => setIsOpen(false)}
         isOpen={isOpen}
@@ -136,7 +141,7 @@ function AboutUser({ about, myProfile }) {
             </div>
 
             <IonButton type="submit" mode="ios" expand="block">
-              Save Changes
+              {loading ? <IonSpinner /> : "Save Changes"}
             </IonButton>
           </form>
         </IonContent>

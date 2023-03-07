@@ -41,13 +41,6 @@ function Badges({ badge, myProfile }) {
     }
   }
 
-  if (
-    !myProfile &&
-    (badge?.private ||
-      (Array.isArray(badge?.earnedBadges) && badge?.earnedBadges.length === 0))
-  ) {
-    return ""
-  }
   return (
     <IonCard className="mb-2">
       <IonCardContent className="card-bb flex">
@@ -56,7 +49,7 @@ function Badges({ badge, myProfile }) {
           <div className="inline-flex">
             <IonIcon
               className="grey-icon-32 mr-1"
-              icon={!isCardPrivate ? eyeOff : eye}
+              icon={isCardPrivate ? eyeOff : eye}
               onClick={() => {
                 handleCardPrivacy()
               }}

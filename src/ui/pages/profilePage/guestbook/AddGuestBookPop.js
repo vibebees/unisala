@@ -14,9 +14,10 @@ import {
 import { sendGuestbookMessage } from "../../../../graphql/user"
 import "./index.css"
 
-const AddGuestBookPop = ({ isOpen, setIsOpen, userId }) => {
+const AddGuestBookPop = ({ isOpen, setIsOpen, userId, refetch }) => {
   const [message, setMessage] = useState("")
   const [present, dismiss] = useIonToast()
+
   const [executeMutation] = useMutation(sendGuestbookMessage, {
     variables: {
       receiverId: userId,
@@ -32,6 +33,7 @@ const AddGuestBookPop = ({ isOpen, setIsOpen, userId }) => {
           mode: "ios"
         })
         setIsOpen(false)
+        refetch()
       }
     },
     onError: (error) => {

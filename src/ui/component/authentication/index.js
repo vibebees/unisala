@@ -1,5 +1,17 @@
 import { useState, useEffect } from "react"
-import { IonCol, IonGrid, IonPopover, IonRow } from "@ionic/react"
+import {
+  IonCol,
+  IonGrid,
+  IonPopover,
+  IonRow,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonContent
+} from "@ionic/react"
 import "./auth.css"
 import SignIn from "./SignIn/Index"
 import SignUp from "./SignUp/Index"
@@ -29,7 +41,64 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
       window.removeEventListener("resize", handleResize)
     }
   })
+
   return (
+    // <IonModal
+    //   isOpen={activeNavDrop.profile}
+    //   onDidDismiss={() =>
+    //     setActiveNavDrop({
+    //       profile: false
+    //     })
+    //   }
+    // >
+    //   <IonHeader>
+    //     <IonToolbar>
+    //       <IonButtons slot="end">
+    //         <IonButton
+    //           onClick={() =>
+    //             setActiveNavDrop({
+    //               profile: false
+    //             })
+    //           }
+    //         >
+    //           Close
+    //         </IonButton>
+    //       </IonButtons>
+    //     </IonToolbar>
+    //   </IonHeader>
+
+    //   <IonGrid>
+    //     <IonRow>
+    //       <IonCol>
+    //         {auth.state === "signin" ? (
+    //           <SignIn setauth={setauth} setActiveNavDrop={setActiveNavDrop} />
+    //         ) : auth.state === "signup" ? (
+    //           <SignUp setauth={setauth} />
+    //         ) : auth.state === "SignUpVerification" ? (
+    //           <SignUpVerification setauth={setauth} />
+    //         ) : auth.state === "emailVerify" ? (
+    //           <EmailVerify setauth={setauth} />
+    //         ) : auth.state === "ForgotPasswordVerification" ? (
+    //           <ForgotPasswordVerification setauth={setauth} auth={auth} />
+    //         ) : auth.state === "resetPassword" ? (
+    //           <ResetPassword setauth={setauth} auth={auth} />
+    //         ) : auth.state === "userNotVerified" ? (
+    //           <UserNotVerified setauth={setauth} auth={auth} />
+    //         ) : null}
+    //       </IonCol>
+    //       {width > 764 && (
+    //         <IonCol size="auto">
+    //           <img
+    //             src="https://images.unsplash.com/photo-1597920940566-a77511f9327d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80"
+    //             alt=""
+    //             className="auth-img"
+    //           />
+    //         </IonCol>
+    //       )}
+    //     </IonRow>
+    //   </IonGrid>
+    // </IonModal>
+
     <IonPopover
       isOpen={activeNavDrop.profile}
       onDidDismiss={() =>
@@ -40,10 +109,10 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
       className="auth-pop"
     >
       <IonGrid>
-        <IonRow>
+        <IonRow style={{ overflow: "hidden" }}>
           <IonCol>
             {auth.state === "signin" ? (
-              <SignIn setauth={setauth} />
+              <SignIn setauth={setauth} setActiveNavDrop={setActiveNavDrop} />
             ) : auth.state === "signup" ? (
               <SignUp setauth={setauth} />
             ) : auth.state === "SignUpVerification" ? (
