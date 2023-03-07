@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react"
 import { IonAvatar, IonItem, IonLabel, IonText } from "@ionic/react"
-export const MessageItem = ({ email, username, age, birthday, verified, image }) => {
+export const MessageItem = ({ firstName, username, lastName, picture, _id, image }) => {
     return (
         <div className="message-pop-item">
             <IonItem
@@ -34,7 +34,7 @@ export const MessageItem = ({ email, username, age, birthday, verified, image })
                 </IonLabel>
             </IonItem>
             <IonText>
-                <p className="message-pop-item-msg">{birthday}</p>
+                <p className="message-pop-item-msg">{firstName + " " + lastName}</p>
             </IonText>
         </div>
     )

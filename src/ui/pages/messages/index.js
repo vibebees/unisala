@@ -5,8 +5,8 @@ import { MessagingStation } from "./chats"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
-import { MESSAGE_SERVICE_GQL } from "../../../servers/types"
-import { getFriends } from "../../../graphql/user"
+import { MESSAGE_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
+import { ConnectedList, getFriends } from "../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { useRef, useEffect, useState } from "react"
 import useSound from "use-sound"
@@ -20,15 +20,14 @@ const index = () => {
     useDocTitle("Messages")
     const
      windowWidth = useWindowWidth(),
-     { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
-     { getUsers } = data || [],
+     { getUsers } = [],
      socket = useRef(),
      handleView = () => {
         if (windowWidth >= 768) {
             return (
                 <IonRow>
                     <IonCol>
-                        <Communicators chatList={getUsers} />
+                        <Communicators />
                     </IonCol>
 
                     <IonCol className="messages-wrapper">
@@ -51,6 +50,7 @@ const index = () => {
     [activeUser, setActiveUser] = useState([]),
     [socketMessage, setSocketMessage] = useState(""),
     [typingMessage, setTypingMessage] = useState("")
+
     //  [notificationSPlay] = useSound(notificationSound),
     //  [sendingSPlay] = useSound(sendingSound)
 
