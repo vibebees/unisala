@@ -439,14 +439,18 @@ export
             }
         }`,
     getMessages = gql`
-        query getMessages {
-            getMessages{
-                message{
+        query getMessages($id: String!) {
+            getMessages(id: $id){
+                pairs
+                messages{
+                  seen
+                  senderId
+                  receiverId
+                  message{
                     text
+                  }
+                 
                 }
-                receiverId
-                seen
-                senderId
             }
         }`,
     DeleteEducation = gql`

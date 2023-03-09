@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-use-before-define
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import {
     IonCard,
     IonItem,
@@ -10,7 +10,6 @@ import {
     IonInput,
     IonIcon
 } from "@ionic/react"
-import { ellipsisHorizontal, ellipsisVertical, send } from "ionicons/icons"
 import messageImg from "../../../../assets/messages.png"
 import "./index.css"
 import { useParams } from "react-router"
@@ -19,50 +18,39 @@ import { getMessages } from "../../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
 import { TypeBox } from "./typeBox"
+import { useSelector } from "react-redux"
+import { MessageItem } from "./messageItem"
 export const MessagingStation = () => {
     const
         chatbox = useRef(null),
-        { id } = useParams(),
-        receipent = id,
-        { loading, error, data } = useQuery(getMessages, { context: { server: MESSAGE_SERVICE_GQL } }),
+        { username } = useParams(),
+        myInfo = useSelector((state) => state?.userProfile?.user),
+        { loading, error, data } = useQuery(getMessages, {
+            variables: {
+                // currentUser
+                id: myInfo._id
+            },
+            context: { server: MESSAGE_SERVICE_GQL }
+        }),
         ScrollBottom = () => {
             if (chatbox.current) {
                 chatbox.current.scrollTop = chatbox.current.scrollHeight
             }
-        }
-    React.useEffect(() => {
+        },
+        { messagingTo } = useSelector((state) => state?.userActivity),
+        userFriendId = messagingTo?._id,
+        [messages, setMessages] = useState([])
+    useEffect(() => {
+        setMessages(data?.getMessages.filter((item) => item.pairs.includes(userFriendId))[0]?.messages)
+    }, [username])
+    useEffect(() => {}, [messages])
+
+    useEffect(() => {
         ScrollBottom()
     }, [chatbox.current, chatbox])
 
-    const [messages, setMessages] = React.useState([
-        {
-            id: "1",
-            message: "Hello",
-            userId: "1"
-        },
-        {
-            id: "2",
-            message: "How are you?",
-            userId: receipent
-        }
-    ])
-
-    const
-     [messageInput, setMessageInput] = React.useState(""),
-     HandelSubmit = async (e) => {
-        e.preventDefault()
-        if (messageInput) {
-            const newMessage = {
-                id: messages.length + 1,
-                message: messageInput,
-                userId: receipent
-            }
-            await messages.push(newMessage)
-            setMessageInput("")
-            ScrollBottom()
-        }
-    },
-    MessageHistory = () => {
+    const MessageHistory = () => {
+        console.log("messages", messages)
         return (
             <IonCard className="chats-wrapper">
                 <IonCardContent className="chats-wrapper__content">
@@ -73,7 +61,7 @@ export const MessagingStation = () => {
 
                         <IonLabel>
                             <div className="flex justify-content-start">
-                                <h2>{receipent} </h2>
+                                <h2>{username} </h2>
                                 <img
                                     src="https://www.svgrepo.com/show/178831/badges-money.svg"
                                     alt=""
@@ -87,41 +75,44 @@ export const MessagingStation = () => {
                         </IonButton>
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
-                        {data?.getMessages?.map((item, index) => {
-                            return (
-                                <div key={index} className="chat-box__msg  ">
-                                    <div
-                                        className={` ${item.senderId === "63fd5eebff23d1aa31eba285"
+
+                        {userFriendId}
+                        <div></div>
+                        {
+                            messages?.map((item, index) => {
+                                return (
+                                    <div key={index} className="chat-box__msg  ">
+                                        <div
+                                            className={` ${item.senderId === "63fd5eebff23d1aa31eba285"
                                                 ? "msg-text-sent"
                                                 : "msg-text-received"
-                                            }`}
-                                    >
-                                        <p>{item.message.text}</p>
+                                                }`}
+                                        >
+                                            <p>{item?.message?.text}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        {/* {messages?.map((item, index) => <MessageItem key = {index} item = {item} />)} */}
                     </div>
-                    <TypeBox receipent/>
+                    <TypeBox username />
                 </IonCardContent>
             </IonCard>
         )
     },
-    DefaultMessage = () => {
-        return (
-            <IonCard className="chats-wrapper">
-                <IonCardContent className="chats-wrapper__content chats-title">
-                    <img src={messageImg} />
-                    <h2>Chat with your connections!</h2>
-                    <p>Start chatting</p>
-                </IonCardContent>
-            </IonCard>
-        )
-    }
+        DefaultMessage = () => {
+            return (
+                <IonCard className="chats-wrapper">
+                    <IonCardContent className="chats-wrapper__content chats-title">
+                        <img src={messageImg} />
+                        <h2>Chat with your connections!</h2>
+                        <p>Start chatting</p>
+                    </IonCardContent>
+                </IonCard>
+            )
+        }
     if (loading) return <SkeletonMessage />
-    if (data) {
-        return <MessageHistory />
-    }
-    return <DefaultMessage />
+    return <MessageHistory />
+    // return <DefaultMessage />
 
 }

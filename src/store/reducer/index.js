@@ -5,12 +5,14 @@ import storage from "redux-persist/lib/storage"
 import { persistReducer } from "redux-persist"
 import University from "./university"
 import UserProfile from "./userProfile"
+import userActivity from "./userActivity"
 
 const rootReducer = combineReducers({
     introductionQuestionAnswered: introductionReducer,
     auth: auth,
     university: University,
-    userProfile: UserProfile
+    userProfile: UserProfile,
+    userActivity
 })
 const persistConfig = {
     key: "development1",

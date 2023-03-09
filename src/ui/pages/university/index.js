@@ -26,9 +26,9 @@ import { getSchoolInfo } from "../../../graphql/uni"
 import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 
 export default function UniversityPage() {
-  const { id } = useParams()
+  const { username } = useParams()
   const dispatch = useDispatch()
-  const { loading, data } = useQuery(getSchoolInfo(id), {
+  const { loading, data } = useQuery(getSchoolInfo(username), {
     context: { server: UNIVERSITY_SERVICE_GQL }
 })
   useEffect(() => {

@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useEffect, useState } from "react"
-import { Link, Redirect } from "react-router-dom"
+import { Link, Redirect, useParams } from "react-router-dom"
 import {
     IonButton,
     IonCard,
@@ -13,11 +13,11 @@ import {
 import "./index.css"
 import MessageItem from "../../../component/messagePop/MessageItem"
 import { useQuery } from "@apollo/client"
-import { ConnectedList, getFriends, getMessages } from "../../../../graphql/user"
+import { ConnectedList } from "../../../../graphql/user"
 import { MESSAGE_SERVICE_GQL, USER_SERVICE_GQL } from "../../../../servers/types"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
-import { getCurrentCommunicator } from "../../../../store/action/userActivity"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { sendMessageTo } from "../../../../store/action/userActivity"
 
 export const Communicators = () => {
         const
@@ -28,8 +28,9 @@ export const Communicators = () => {
                 context: { server: USER_SERVICE_GQL },
                 variables: { userId: user._id }
               }) || {},
-              { connectedList } = data,
-              { connectionList } = connectedList,
+              { connectedList } = data || {},
+              { connectionList } = connectedList || {},
+              dispatch = useDispatch(),
             // { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
             handleMessagesList = (communicators) => {
 
@@ -38,14 +39,12 @@ export const Communicators = () => {
                 }
 
                 return communicators.map((item, index) => {
-
                     // const { id, avatar, name, username, message, time } = c
-                    return <Link to={`/messages/${item?.user?.username}`} key={index}>
+                    return <Link to={`/messages/${item?.user?.username}`} key={index} onClick = { () => dispatch(sendMessageTo((item?.user)))}>
                         <MessageItem {...item.user} />
                     </Link>
                 })
             }
-
         return (
             <>
                 <IonCard className="chat-list">

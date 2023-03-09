@@ -10,7 +10,6 @@ const UserProfile = (state = initialState, action) => {
     const { type, payload } = action
     switch (type) {
         case GET_USER_PROFILE:
-            console.log({ payload })
             return {
                 ...state,
                 user: payload.user,

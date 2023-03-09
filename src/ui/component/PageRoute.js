@@ -17,7 +17,7 @@ const messagingRoutes = () => (<>
   <Route path="/messages">
             <Messages />
         </Route>
-        <Route path="/messages/:id">
+        <Route path="/messages/:username">
             <Messages />
         </Route>
 </>)
