@@ -7,14 +7,15 @@ import {
 import StateMessage from "../../../component/stateMessage"
 import emptyState from "../../../../assets/emptyState.png"
 import locked from "../../../../assets/private.png"
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 import { GetUserPost, GetSavedList } from "../../../../graphql/user/"
 import Thread from "../../home/thread"
-import CourseCard from "../../../component/courseCard/CourseCard"
+import CourseCard from "../../../component/courseCard"
 import { Link } from "react-router-dom"
 import "../threads/index.css"
 import jwtDecode from "jwt-decode"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 function index({ userId, firstName }) {
   const accessToken = localStorage.getItem("accessToken")
@@ -22,6 +23,7 @@ function index({ userId, firstName }) {
   const [page, setPage] = useState(0)
 
   const [getSavedList, { data, loading }] = useLazyQuery(GetSavedList, {
+    context: { server: USER_SERVICE_GQL },
     variables: {
       userId,
       page: page

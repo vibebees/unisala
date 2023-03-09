@@ -13,30 +13,61 @@ import {
 } from "@ionic/react"
 import { eyeOff, eye, add } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import { ToggleView } from "../../../../../graphql/user/"
+import { getUserGql, ToggleView } from "../../../../../graphql/user/"
 import EditTestScore from "./editTestScore"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-const TestScore = ({ testScore, myProfile }) => {
+const TestScore = ({ testScore, myProfile, username }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [scores, setScores] = useState(testScore?.scores)
-  const [isCardPrivate, setIsCardPrivate] = useState(testScore?.private)
+  const { scores } = testScore ?? {}
   const [present, dismiss] = useIonToast()
 
   const [toggleView] = useMutation(ToggleView, {
     context: { server: USER_SERVICE_GQL },
     variables: { card: "testScore" },
+    update: (cache, { data: { toggleView } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              testScore: {
+                ...getUser.user.testScore,
+                private: toggleView.private
+              }
+            }
+          }
+        }
+      })
+    },
     onCompleted: (data) => {
       if (data.toggleView.status.success) {
         present({
           duration: 3000,
-          message: data.toggleView.status.message,
+          message: testScore?.private
+            ? "View made public"
+            : "View made private",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
-        setIsCardPrivate(!isCardPrivate)
       }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
     }
   })
 
@@ -247,7 +278,7 @@ const TestScore = ({ testScore, myProfile }) => {
             <div className="inline-flex">
               <IonIcon
                 className="grey-icon-32 mr-1"
-                icon={isCardPrivate ? eyeOff : eye}
+                icon={testScore?.private ? eyeOff : eye}
                 onClick={() => {
                   toggleView()
                 }}
@@ -265,9 +296,9 @@ const TestScore = ({ testScore, myProfile }) => {
 
       <EditTestScore
         scores={scores}
-        setScores={setScores}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        username={username}
       />
     </>
   )

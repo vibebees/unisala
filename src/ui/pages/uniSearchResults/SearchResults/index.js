@@ -4,7 +4,7 @@ import {
   IonCardTitle,
   IonCardSubtitle
 } from "@ionic/react"
-import CourseCard from "../../../component/courseCard/CourseCard"
+import CourseCard from "../../../component/courseCard"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import noResultsFound from "../../../../assets/no-results.jpg"

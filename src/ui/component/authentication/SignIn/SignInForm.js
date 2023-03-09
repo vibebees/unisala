@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
 import AuthInput from "../AuthInput"
-import axios from "axios"
-import urls from "../../../../servers"
 import { userServer } from "../../../../servers/endpoints"
 import { useDispatch } from "react-redux"
 import { loginUser } from "../../../../store/action/authenticationAction"
@@ -22,9 +20,9 @@ export const SignInForm = ({ setauth }) => {
   }
 
   const submitHandler = (e) => {
-    e.preventDefault()
-  },
-  dispatch = useDispatch()
+      e.preventDefault()
+    },
+    dispatch = useDispatch()
 
   const login = () => {
     if (!input.email && !input.password) {
@@ -38,7 +36,9 @@ export const SignInForm = ({ setauth }) => {
     }
 
     setLoading(true)
-    dispatch(loginUser({ userServer, input, setLoading, present, dismiss, setauth }))
+    dispatch(
+      loginUser({ userServer, input, setLoading, present, dismiss, setauth })
+    )
   }
 
   return (

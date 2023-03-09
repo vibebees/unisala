@@ -13,7 +13,6 @@ import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
-import jwtDecode from "jwt-decode"
 import { GetProfileCard } from "../../../graphql/user"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
@@ -22,18 +21,19 @@ import { screenLessThan768 } from "./screens.lessThan768"
 import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
+import { USER_SERVICE_GQL } from "../../../servers/types"
 
 export const Home = ({ setPopup }) => {
     useDocTitle("Unisala")
     const
         { user, loggedIn } = useSelector((store) => store?.userProfile),
         profileData = loggedIn && useQuery(GetProfileCard, {
+            context: { server: USER_SERVICE_GQL },
             variables: {
-                username: "prashantbasnet15"
+                username: user?.username
             }
         }),
         [width, setWidth] = useState(window.innerWidth),
-        { innerWidth } = window,
         handleResize = () => {
             const { innerWidth } = window
             if (width !== innerWidth) {

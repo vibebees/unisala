@@ -1,4 +1,3 @@
-import { useState } from "react"
 import propTypes from "prop-types"
 import { Link } from "react-router-dom"
 import { IonCard, IonCardSubtitle, IonText, IonIcon } from "@ionic/react"
@@ -17,7 +16,6 @@ import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
 import "./index.css"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
-  const [profileHeader, setProfileHeader] = useState(data)
   const {
     firstName,
     lastName,
@@ -28,7 +26,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     location: userLocation,
     doj,
     socialLinks
-  } = profileHeader
+  } = data
 
   const icons = {
     twitter: logoTwitter,
@@ -41,7 +39,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
   }
 
   const tabMenu = [
-    { id: 0, menu: name || username },
+    { id: 0, menu: username },
     { id: 1, menu: "Threads" },
     { id: 2, menu: "Guestbook" },
     { id: 4, menu: "Saved" }
@@ -75,11 +73,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
             alt="userName"
           />
         </div>
-        <UserCtaBtns
-          profileHeader={profileHeader}
-          setProfileHeader={setProfileHeader}
-          myProfile={data.myProfile}
-        />
+        <UserCtaBtns profileHeader={data} myProfile={data.myProfile} />
       </div>
 
       <div className="short-info-wrapper">

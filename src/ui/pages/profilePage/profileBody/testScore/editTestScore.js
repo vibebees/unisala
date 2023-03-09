@@ -16,10 +16,10 @@ import {
   IonSpinner
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
-import { AddTestScore } from "../../../../../graphql/user/"
+import { AddTestScore, getUserGql } from "../../../../../graphql/user/"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-function EditTestScore({ scores, setScores, setIsOpen, isOpen }) {
+function EditTestScore({ scores, setIsOpen, isOpen, username }) {
   const [input, setInput] = useState(scores)
   const [present, dismiss] = useIonToast()
   const [testScoreContent, setTestScoreContent] = useState("SAT")
@@ -79,9 +79,37 @@ function EditTestScore({ scores, setScores, setIsOpen, isOpen }) {
         TOEFL_SCORE: { score: input.TOEFL_SCORE.score || null }
       }
     },
+    update: (cache, { data: { addTestScore } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              testScore: {
+                ...getUser.user.testScore,
+                scores: {
+                  SAT_SCORE: { ...addTestScore.testScore.scores.SAT_SCORE },
+                  ACT_SCORE: { ...addTestScore.testScore.scores.ACT_SCORE },
+                  IELTS_SCORE: {
+                    ...addTestScore.testScore.scores.IELTS_SCORE
+                  },
+                  TOEFL_SCORE: { ...addTestScore.testScore.scores.TOEFL_SCORE }
+                }
+              }
+            }
+          }
+        }
+      })
+    },
     onCompleted: (data) => {
       if (data.addTestScore.status.success) {
-        setScores(data.addTestScore.testScore.scores)
         present({
           duration: 3000,
           message: "About Updated",
@@ -91,6 +119,15 @@ function EditTestScore({ scores, setScores, setIsOpen, isOpen }) {
         })
         setIsOpen(false)
       }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
     }
   })
 
