@@ -30,7 +30,7 @@ function index({
         </div>
       </div>
       <IonCardContent className="user-card--info">
-        <Link to={`/${username}`} className="user-card--info-link">
+        <Link to={`/@/${username}`} className="user-card--info-link">
           <div className="user-card--info-text">
             <IonText color="dark">
               <h1 style={{ fontSize: "1.2rem" }}>{name}</h1>

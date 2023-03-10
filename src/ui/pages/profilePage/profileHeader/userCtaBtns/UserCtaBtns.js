@@ -2,7 +2,10 @@ import { useState } from "react"
 import { chatbubbles, personAdd } from "ionicons/icons"
 import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import { useMutation } from "@apollo/client"
-import { SendConnectRequest, AcceptConnectRequest } from "../../../../../graphql/user/"
+import {
+  SendConnectRequest,
+  AcceptConnectRequest
+} from "../../../../../graphql/user/"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import EditProfile from "../editProfile"
 import "./UserCtaBtns.css"
@@ -63,7 +66,6 @@ function UserCtaBtns({ profileHeader, setProfileHeader, myProfile }) {
           mode="ios"
           className="icon-text"
           onClick={() => {
-            console.log("clicked")
             sendConnectRequest({
               variables: { receiverId: profileHeader._id }
             })
@@ -93,7 +95,7 @@ function UserCtaBtns({ profileHeader, setProfileHeader, myProfile }) {
     ) {
       return (
         <IonButton
-          color="secondary"
+          color="success"
           mode="ios"
           className="icon-text"
           onClick={() => {

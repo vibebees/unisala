@@ -34,7 +34,7 @@ authInstance.interceptors.response.use(
     // eslint-disable-next-line
     if (
       error.response.status === 401 &&
-      originalRequest.url === authBaseURL + "/user/refreshToken/"
+      originalRequest.url === authBaseURL + "/refreshToken/"
     ) {
       window.location.href = "/"
       return Promise.reject(error)
@@ -54,7 +54,7 @@ authInstance.interceptors.response.use(
         const now = Math.ceil(Date.now() / 1000)
         if (tokenParts.exp > now) {
           return axios
-            .post(urls["base"] + "/user/refreshToken", {
+            .post(urls["base"] + "/refreshToken", {
               token: refreshToken
             })
             .then((response) => {

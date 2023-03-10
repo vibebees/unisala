@@ -238,6 +238,11 @@ export const AddComment = gql`
   getUserGql = gql`
     query getUser($username: String!) {
       getUser(username: $username) {
+        connectionType {
+          requestorId
+          receiverId
+          status
+        }
         user {
           firstName
           lastName
