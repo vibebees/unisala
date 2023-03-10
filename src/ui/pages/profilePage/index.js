@@ -30,8 +30,8 @@ const ProfilePage = () => {
   const { username } = useParams()
   const { data } = useQuery(getUserGql, {
     context: { server: USER_SERVICE_GQL },
-    variables: { username: "prashantbasnet445" }
-})
+    variables: { username: username }
+  })
   useDocTitle(username)
 
   const { getUser } = data || {}
@@ -68,6 +68,7 @@ const ProfilePage = () => {
     connectionType: getUser?.connectionType
   }
   const profileBodyData = {
+    username,
     about,
     badges,
     education,

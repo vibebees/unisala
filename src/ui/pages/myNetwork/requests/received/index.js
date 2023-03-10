@@ -27,7 +27,10 @@ function index() {
               loaction={item.user.location}
               oneLineBio={item.user.oneLinerBio}
             >
-              <RequestReceivedButton user={item} />
+              <RequestReceivedButton
+                reqUserId={item.user._id}
+                reqUsername={item.user.username}
+              />
             </UserCard>
           )
         }

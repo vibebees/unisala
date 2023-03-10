@@ -13,34 +13,107 @@ import {
 import { create, eyeOff, add, eye, trash } from "ionicons/icons"
 import EducationPop from "./EducationPop"
 import { useMutation } from "@apollo/client"
-import { ToggleView, DeleteEducation } from "../../../../../graphql/user"
+import {
+  ToggleView,
+  DeleteEducation,
+  getUserGql
+} from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-function Education({ education, myProfile }) {
+function Education({ education, myProfile, username }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const { schools } = education ?? {}
-  const [schoolList, setSchoolList] = useState(schools ?? [])
-  const [isCardPrivate, setIsCardPrivate] = useState(education?.private)
 
   const [toggleView] = useMutation(ToggleView, {
     context: { server: USER_SERVICE_GQL },
     variables: { card: "education" },
+    update: (cache, { data: { toggleView } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              education: {
+                ...getUser.user.education,
+                private: toggleView.private
+              }
+            }
+          }
+        }
+      })
+    },
     onCompleted: (data) => {
       if (data.toggleView.status.success) {
         present({
           duration: 3000,
-          message: data.toggleView.status.message,
+          message: education.private ? "View made public" : "View made private",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
-        setIsCardPrivate(!isCardPrivate)
       }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
     }
   })
 
-  const [deleteEducation, { data }] = useMutation(DeleteEducation, { context: { server: USER_SERVICE_GQL } })
+  const [deleteEducation] = useMutation(DeleteEducation, {
+    context: { server: USER_SERVICE_GQL },
+    update: (cache, { data }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              education: data?.deleteEducation?.education
+            }
+          }
+        }
+      })
+    },
+    onCompleted: (data) => {
+      if (data.deleteEducation.status.success) {
+        present({
+          duration: 3000,
+          message: "Education Deleted",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+  })
 
   const [input, setInput] = useState({
     school: "",
@@ -60,7 +133,7 @@ function Education({ education, myProfile }) {
           <div className="inline-flex">
             <IonIcon
               className="grey-icon-32 mr-1"
-              icon={isCardPrivate ? eyeOff : eye}
+              icon={education.private ? eyeOff : eye}
               onClick={() => {
                 toggleView()
               }}
@@ -84,7 +157,7 @@ function Education({ education, myProfile }) {
         )}
       </IonCardContent>
 
-      {myProfile && Array.isArray(schoolList) && schoolList.length === 0 ? (
+      {myProfile && Array.isArray(schools) && schools.length === 0 ? (
         <IonCardContent className="center-text">
           <p>Share your education</p>
           <IonButton
@@ -99,8 +172,8 @@ function Education({ education, myProfile }) {
       ) : (
         <IonCardContent>
           <IonList>
-            {Array.isArray(schoolList) &&
-              schoolList.map((education, i) => {
+            {Array.isArray(schools) &&
+              schools.map((education, i) => {
                 const {
                   img,
                   school,
@@ -146,18 +219,6 @@ function Education({ education, myProfile }) {
                             deleteEducation({
                               variables: { id: education._id }
                             })
-                            present({
-                              duration: 3000,
-                              message: "Education deleted",
-                              buttons: [
-                                { text: "X", handler: () => dismiss() }
-                              ],
-                              color: "primary",
-                              mode: "ios"
-                            })
-                            setSchoolList(
-                              data?.deleteEducation?.education.schools ?? []
-                            )
                           }}
                         />
                       </>
@@ -176,8 +237,8 @@ function Education({ education, myProfile }) {
         setIsEdit={setIsEdit}
         input={input}
         setInput={setInput}
-        schoolList={schoolList}
-        setSchoolList={setSchoolList}
+        schoolList={schools}
+        username={username}
       />
     </IonCard>
   )

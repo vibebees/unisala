@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import {
   IonButton,
@@ -12,7 +11,11 @@ import {
   useIonToast,
   IonSpinner
 } from "@ionic/react"
-import { AddEducation, EditEducation } from "../../../../../graphql/user"
+import {
+  AddEducation,
+  EditEducation,
+  getUserGql
+} from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const EducationPop = ({
@@ -21,11 +24,53 @@ const EducationPop = ({
   setInput,
   isEdit,
   input,
-  setSchoolList
+  username
 }) => {
-  const [executeMutation, { loading, data }] = useMutation(
+  const [executeMutation, { loading }] = useMutation(
     isEdit ? EditEducation : AddEducation,
-    { context: { server: USER_SERVICE_GQL } }
+    {
+      context: { server: USER_SERVICE_GQL },
+      update: (cache, { data }) => {
+        const { getUser } = cache.readQuery({
+          query: getUserGql,
+          variables: { username }
+        })
+        cache.writeQuery({
+          query: getUserGql,
+          variables: { username },
+          data: {
+            getUser: {
+              ...getUser,
+              user: {
+                ...getUser.user,
+                education:
+                  data?.addEducation?.education ||
+                  data?.editEducation?.education
+              }
+            }
+          }
+        })
+      },
+      onCompleted: () => {
+        present({
+          duration: 3000,
+          message: isEdit ? "Education Edited" : "Education Added",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+        setIsOpen(false)
+      },
+      onError: (error) => {
+        present({
+          duration: 3000,
+          message: error.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
+    }
   )
   const [present, dismiss] = useIonToast()
   const handelChange = (e) => {
@@ -44,7 +89,7 @@ const EducationPop = ({
         mode: "ios"
       })
     }
-    if (input.startDate < 3 || input.graduationDate < 3) {
+    if (input.startDate < 4 || input.graduationDate < 4) {
       return present({
         duration: 3000,
         message: "Dates can't be empty",
@@ -53,7 +98,6 @@ const EducationPop = ({
         mode: "ios"
       })
     }
-
     executeMutation({
       variables: {
         id: input?._id,
@@ -64,37 +108,7 @@ const EducationPop = ({
         graduationDate: input?.graduationDate
       }
     })
-    isEdit &&
-      setSchoolList((prev) => {
-        return prev.map((item) => {
-          if (item._id === input?._id) {
-            return {
-              ...item,
-              school: input?.school,
-              degree: input?.degree,
-              major: input?.major,
-              startDate: input?.startDate,
-              graduationDate: input?.graduationDate
-            }
-          }
-          return item
-        })
-      })
-
-    setIsOpen(false)
   }
-  useEffect(() => {
-    if (data?.addEducation?.status?.success) {
-      present({
-        duration: 3000,
-        message: "Education Added",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
-      setSchoolList(data?.addEducation?.education?.schools)
-    }
-  }, [data])
 
   return (
     <IonModal

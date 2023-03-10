@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   IonButtons,
   IonButton,
@@ -14,36 +14,49 @@ import {
 } from "@ionic/react"
 import { create } from "ionicons/icons"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
-import "./index.css"
 import { useMutation } from "@apollo/client"
-import { EditProfile } from "../../../../../graphql/user"
+import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import "./index.css"
 
-function index({ profileHeader, setProfileHeader }) {
+function index({ profileHeader }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =
     profileHeader
-  const [input, setInput] = useState({})
-  useEffect(() => {
-    setInput({
-      firstName: firstName,
-      lastName: lastName,
-      username: username,
-      oneLinerBio: oneLinerBio,
-      location: location,
-      profilePic: profilePic
-    })
-  }, [profileHeader])
+  const [input, setInput] = useState({
+    firstName,
+    lastName,
+    username,
+    oneLinerBio,
+    location,
+    profilePic
+  })
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
     context: { server: USER_SERVICE_GQL },
-    variables: {
-      ...input
+    variables: { ...input },
+    update: (cache, { data: { editProfile } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              ...editProfile.user
+            }
+          }
+        }
+      })
     },
     onCompleted: (data) => {
       if (data?.editProfile?.status?.success) {
-        setProfileHeader(data?.editProfile?.user)
         present({
           duration: 3000,
           message: "Profile Updated",
@@ -51,11 +64,10 @@ function index({ profileHeader, setProfileHeader }) {
           color: "primary",
           mode: "ios"
         })
-        setIsOpen(false)
       } else {
         present({
           duration: 3000,
-          message: data?.editProfile?.status?.message,
+          message: data?.editProfile?.status.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
@@ -72,6 +84,7 @@ function index({ profileHeader, setProfileHeader }) {
       })
     }
   })
+
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value })
   }
@@ -80,6 +93,7 @@ function index({ profileHeader, setProfileHeader }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     editProfile()
+    setIsOpen(false)
   }
 
   return (

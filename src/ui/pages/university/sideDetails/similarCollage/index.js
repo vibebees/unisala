@@ -1,7 +1,6 @@
-// eslint-disable-next-line no-use-before-define
 import React from "react"
 import { IonCard, IonCardContent, IonGrid, IonRow } from "@ionic/react"
-import CourseCard from "../../../../component/courseCard/CourseCard"
+import CourseCard from "../../../../component/courseCard"
 import { useSelector } from "react-redux"
 import useIsData from "../../../../../hooks/useIsData"
 const SimilarCollage = () => {

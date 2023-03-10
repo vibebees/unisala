@@ -5,7 +5,7 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent
 } from "@ionic/react"
-import CourseCard from "../../component/CourseCard"
+import CourseCard from "../../component/courseCard"
 import Thread from "./thread"
 import { Link } from "react-router-dom"
 import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"

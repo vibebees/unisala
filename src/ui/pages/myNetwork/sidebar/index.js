@@ -13,12 +13,17 @@ import {
   IonItem,
   IonAvatar,
   IonLabel,
-  IonButton
+  IonButton,
+  useIonToast
 } from "@ionic/react"
 import { people } from "ionicons/icons"
 import { useQuery, useMutation } from "@apollo/client"
 import { useSelector } from "react-redux"
-import { ConnectedList, RemoveConnectRequest } from "../../../../graphql/user/"
+import {
+  ConnectedList,
+  getUserGql,
+  RemoveConnectRequest
+} from "../../../../graphql/user/"
 import StateMessage from "../../../component/stateMessage"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 
@@ -29,10 +34,17 @@ function index() {
       context: { server: USER_SERVICE_GQL },
       variables: { userId: user._id }
     }),
+    [present, dismiss] = useIonToast(),
     [removeConnectRequest] = useMutation(RemoveConnectRequest, {
       context: { server: USER_SERVICE_GQL },
-      onCompleted: (data) => {
-        console.log(data)
+      onError: (error) => {
+        present({
+          duration: 3000,
+          message: error.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
       }
     })
 
@@ -93,7 +105,25 @@ function index() {
                       mode="ios"
                       onClick={() =>
                         removeConnectRequest({
-                          variables: { connecteeId: item.user._id }
+                          variables: { connecteeId: item.user._id },
+                          update: (cache) => {
+                            const getUser = cache.readQuery({
+                              query: getUserGql,
+                              variables: { username: item.user.username }
+                            })
+                            getUser &&
+                              cache.writeQuery({
+                                query: getUserGql,
+                                variables: { username: item.user.username },
+                                data: {
+                                  getUser: {
+                                    ...getUser.getUser,
+                                    connectionType: null,
+                                    user: getUser.getUser.user
+                                  }
+                                }
+                              })
+                          }
                         })
                       }
                       color="dark"

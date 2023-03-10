@@ -12,7 +12,7 @@ import {
 } from "@ionic/react"
 import { ellipsisVertical } from "ionicons/icons"
 import { Link } from "react-router-dom"
-import { useLazyQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import moment from "moment"
 import jwtDecode from "jwt-decode"
 import StateMessage from "../../../component/stateMessage"
@@ -22,6 +22,7 @@ import { receivedGuestbookList } from "../../../../graphql/user"
 import AddGuestBookPop from "./AddGuestBookPop"
 import MorePop from "./MorePop"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 function index({ userId, firstName }) {
   const [page, setPage] = useState(0)
@@ -30,23 +31,18 @@ function index({ userId, firstName }) {
   const [isOpen, setIsOpen] = useState(false)
   const [guestbookList, setGuestbookList] = useState([])
 
-  const [getGuestBookList, { data, loading, refetch }] = useLazyQuery(
-    receivedGuestbookList,
-    {
-      variables: {
-        userId: userId,
-        page: page,
-        pageSize: 10
-      }
+  const { loading, refetch } = useQuery(receivedGuestbookList, {
+    fetchPolicy: "network-only",
+    context: { server: USER_SERVICE_GQL },
+    variables: {
+      userId: userId,
+      page: page,
+      pageSize: 10
+    },
+    onCompleted: (data) => {
+      setGuestbookList(data?.receivedGuestbookList?.guestbook)
     }
-  )
-
-  useEffect(() => {
-    getGuestBookList()
-  }, [])
-  useEffect(() => {
-    setGuestbookList(data?.receivedGuestbookList?.guestbook)
-  }, [data])
+  })
 
   if (loading) {
     return ["0", "1", "2"].map((item) => {
