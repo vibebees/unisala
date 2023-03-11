@@ -25,7 +25,9 @@ import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 const Thread = ({ commentlist, id }) => {
   const [commentList, setCommentList] = useState(commentlist)
-  const [addComment] = useMutation(AddComment, { context: { server: USER_SERVICE_GQL } })
+  const [addComment] = useMutation(AddComment, {
+    context: { server: USER_SERVICE_GQL }
+  })
   const [comment, setComment] = useState(false)
   useEffect(() => {
     setTimeout(() => {
@@ -159,7 +161,9 @@ export const Comment = ({
   const [device, setDevice] = useState("")
   const [isThread, setIsThread] = useState(true)
   const [delPop, setDelPop] = useState(false)
-  const [upVote, { data, loading, error }] = useMutation(UpVote, { context: { server: USER_SERVICE_GQL } })
+  const [upVote, { data, loading, error }] = useMutation(UpVote, {
+    context: { server: USER_SERVICE_GQL }
+  })
 
   useEffect(() => {
     var platform = ["Android", "Win32", "iOS"]

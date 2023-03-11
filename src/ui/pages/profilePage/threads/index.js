@@ -23,10 +23,12 @@ function index({ userId, firstName }) {
   const [getUserPost, { data, loading }] = useLazyQuery(
     GetUserPost(userId, page),
     {
-      fetchPolicy: "network-only"
+      fetchPolicy: "network-only",
+      context: { server: "USER_SERVICE_GQL" }
     }
   )
   const [threads, setThreads] = useState([])
+  console.log(data)
 
   useEffect(() => {
     getUserPost()

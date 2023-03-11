@@ -42,7 +42,7 @@ export const screenLessThan768 = ({
               // }}
               className="profile-pop"
             >
-              <IonIcon size="large" icon={personCircle} />
+              <IonIcon size="large" icon={personCircle} color="medium" />
               {/* {activeProfile && <ProfilePop />} */}
               {/* {activeProfile && (
               <Authentication
