@@ -19,115 +19,94 @@ import { messageSend, seenMessage } from "../../../store/action/messengerAction"
 const index = () => {
     useDocTitle("Messages")
     const
-     windowWidth = useWindowWidth(),
-     { getUsers } = [],
-     socket = useRef(),
-     handleView = () => {
-        if (windowWidth >= 768) {
-            return (
-                <IonRow>
-                    <IonCol>
-                        <Communicators />
-                    </IonCol>
+        windowWidth = useWindowWidth(),
+        { getUsers } = [],
+        socket = useRef(),
+        handleView = () => {
+            if (windowWidth >= 768) {
+                return (
+                    <IonRow>
+                        <IonCol>
+                            <Communicators />
+                        </IonCol>
 
-                    <IonCol className="messages-wrapper">
-                        <MessagingStation/>
-                    </IonCol>
-                </IonRow>
-            )
-        }
-        const chatUserId = parseInt(location.hash.split("#")[1])
-        if (chatUserId) {
-            return <MessagingStation />
-        }
-        return <Communicators chatList={getUsers} />
-    },
-    dispatch = useDispatch(),
-    { friends, message, mesageSendSuccess, messageGetSuccess, themeMood, newUserAdd } = {},
-    myInfo = useSelector((state) => state.auth),
-    [currentfriend, setCurrentFriend] = useState(""),
-    [newMessage, setNewMessage] = useState(""),
-    [activeUser, setActiveUser] = useState([]),
-    [socketMessage, setSocketMessage] = useState(""),
-    [typingMessage, setTypingMessage] = useState("")
-
-    //  [notificationSPlay] = useSound(notificationSound),
-    //  [sendingSPlay] = useSound(sendingSound)
-
-    // useEffect(() => {
-    //     socket.current = messageSocket()
-    //     socket.current.on("connect", () => {
-    //         console.log("socket connected")
-    //     })
-    //     socket.current.on("message", (message) => {
-    //         console.log(message)
-    //     })
-    //     socket.current.on("disconnect", () => {
-    //         console.log("socket disconnected")
-    //     })
-    //     return () => {
-    //         socket.current.disconnect()
-    //     }
-    // }, [])
+                        <IonCol className="messages-wrapper">
+                            <MessagingStation />
+                        </IonCol>
+                    </IonRow>
+                )
+            }
+            const chatUserId = parseInt(location.hash.split("#")[1])
+            if (chatUserId) {
+                return <MessagingStation />
+            }
+            return <Communicators chatList={getUsers} />
+        },
+        dispatch = useDispatch(),
+        { friends, message, mesageSendSuccess, messageGetSuccess, themeMood, newUserAdd } = {},
+        myInfo = useSelector((state) => state.userProfile.user),
+        [currentfriend, setCurrentFriend] = useState(""),
+        [newMessage, setNewMessage] = useState(""),
+        [activeUser, setActiveUser] = useState([]),
+        [socketMessage, setSocketMessage] = useState(""),
+        [messageHistory, setMessageHistory] = useState([])
 
     useEffect(() => {
         if (socketMessage && currentfriend) {
-             if (socketMessage.senderId === currentfriend._id && socketMessage.reseverId === myInfo.id) {
-                  dispatch({
-                       type: "SOCKET_MESSAGE",
-                       payload: {
-                            message: socketMessage
-                       }
-                  })
-                  dispatch(seenMessage(socketMessage))
-                  socket.current.emit("messageSeen", socketMessage)
-                  dispatch({
-                   type: "UPDATE_FRIEND_MESSAGE",
-                   payload: {
+            if (socketMessage.senderId === currentfriend._id && socketMessage.reseverId === myInfo._id) {
+                dispatch({
+                    type: "SOCKET_MESSAGE",
+                    payload: {
+                        message: socketMessage
+                    }
+                })
+                dispatch(seenMessage(socketMessage))
+                socket.current.emit("messageSeen", socketMessage)
+                dispatch({
+                    type: "UPDATE_FRIEND_MESSAGE",
+                    payload: {
                         msgInfo: socketMessage,
                         status: "seen"
-                   }
-              })
-             }
+                    }
+                })
+            }
         }
         setSocketMessage("")
-     }, [socketMessage])
+    }, [socketMessage])
 
     useEffect(() => {
         socket.current = messageSocket()
-        socket.current.on("getMessage", (data) => {
-            setSocketMessage(data)
-        })
 
         socket.current.on("typingMessageGet", (data) => {
-         setTypingMessage(data)
-     })
+            // setTypingMessage(data)
+        })
 
-     socket.current.on("msgSeenResponse", (msg) => {
-         dispatch({
-              type: "SEEN_MESSAGE",
-              payload: {
-                   msgInfo: msg
-              }
-         })
-     })
+        socket.current.on("msgSeenResponse", (msg) => {
+            dispatch({
+                type: "SEEN_MESSAGE",
+                payload: {
+                    msgInfo: msg
+                }
+            })
+        })
 
-     socket.current.on("msgDelivaredResponse", (msg) => {
-         dispatch({
-              type: "DELIVARED_MESSAGE",
-              payload: {
-                   msgInfo: msg
-              }
-         })
-     })
+        socket.current.on("msgDelivaredResponse", (msg) => {
+            dispatch({
+                type: "DELIVARED_MESSAGE",
+                payload: {
+                    msgInfo: msg
+                }
+            })
+        })
 
-     socket.current.on("seenSuccess", (data) => {
-          dispatch({
-               type: "SEEN_ALL",
-               payload: data
-          })
-     })
+        socket.current.on("seenSuccess", (data) => {
+            dispatch({
+                type: "SEEN_ALL",
+                payload: data
+            })
+        })
 
+        socket.current.emit("join", { _id: myInfo._id })
     }, [])
 
     // useEffect(() => {

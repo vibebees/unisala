@@ -7,27 +7,54 @@ import {
 import { send } from "ionicons/icons"
 import { useSelector } from "react-redux"
 import { messageSocket } from "../../../../servers/endpoints"
+import { useMutation } from "@apollo/client"
+import { addMessageGql, getMessagesByIdGql } from "../../../../graphql/user"
 
+const updateMessage = (data, messagingTo) => {
+    const
+    [addMessage] = useMutation(addMessageGql)
+
+    addMessage({
+        variables: data,
+        update: (cache, { data: { addMessage } }) => {
+            // Update the cache with the new message
+            const { getMessagesById } = cache.readQuery({
+                query: getMessagesByIdGql,
+                variables: { _id: messagingTo._id }
+            })
+            cache.writeQuery({
+                query: getMessagesByIdGql,
+                variables: { _id: messagingTo._id },
+                data: {
+                    getMessagesById: [
+                        {
+                            ...getMessagesById[0],
+                            messages: [...getMessagesById[0].messages, addMessage]
+                        }
+                    ]
+                }
+            })
+        }
+    })
+}
 export const TypeBox = () => {
     const
         [messageInput, setMessageInput] = useState(""),
         [messages, setMessages] = useState({}),
-        messagingToUser = useSelector((state) => state?.userActivity?.messagingTo),
+        { messagingTo } = useSelector((state) => state?.userActivity),
         socket = useRef(),
         myInfo = useSelector((state) => state.auth),
         sendMessage = (e) => {
             e.preventDefault()
             const data = {
                 senderId: myInfo.id,
-                receiverId: messagingToUser._id,
+                receiverId: messagingTo._id,
                 message: messageInput
             }
-            console.log({ data })
-            socket.current.emit("messageReceived", data)
-            //    dispatch(messageSend(data))
+            updateMessage(data, messagingTo)
+            socket.current.emit("createMessage", data)
             setMessageInput("")
         }
-
     useEffect(() => {
         socket.current = messageSocket()
         // return () => {

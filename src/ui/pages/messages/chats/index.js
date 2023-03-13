@@ -14,7 +14,7 @@ import messageImg from "../../../../assets/messages.png"
 import "./index.css"
 import { useParams } from "react-router"
 import { MESSAGE_SERVICE_GQL } from "../../../../servers/types"
-import { getMessages } from "../../../../graphql/user"
+import { getMessagesGql, getMessagesByIdGql } from "../../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
 import { TypeBox } from "./typeBox"
@@ -24,11 +24,13 @@ export const MessagingStation = () => {
     const
         chatbox = useRef(null),
         { username } = useParams(),
+        { messagingTo } = useSelector((state) => state?.userActivity),
+
         myInfo = useSelector((state) => state?.userProfile?.user),
-        { loading, error, data } = useQuery(getMessages, {
+        { loading, error, data } = useQuery(getMessagesByIdGql, {
             variables: {
                 // currentUser
-                id: myInfo._id
+                _id: messagingTo._id
             },
             context: { server: MESSAGE_SERVICE_GQL }
         }),
@@ -37,20 +39,17 @@ export const MessagingStation = () => {
                 chatbox.current.scrollTop = chatbox.current.scrollHeight
             }
         },
-        { messagingTo } = useSelector((state) => state?.userActivity),
         userFriendId = messagingTo?._id,
-        [messages, setMessages] = useState([])
+        [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || [])
     useEffect(() => {
-        setMessages(data?.getMessages.filter((item) => item.pairs.includes(userFriendId))[0]?.messages)
-    }, [username])
-    useEffect(() => {}, [messages])
+        setMessages(data?.getMessageById[0]?.messages)
+    }, [username, data])
 
     useEffect(() => {
         ScrollBottom()
     }, [chatbox.current, chatbox])
 
     const MessageHistory = () => {
-        console.log("messages", messages)
         return (
             <IonCard className="chats-wrapper">
                 <IonCardContent className="chats-wrapper__content">
@@ -75,15 +74,12 @@ export const MessagingStation = () => {
                         </IonButton>
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
-
-                        {userFriendId}
-                        <div></div>
                         {
                             messages?.map((item, index) => {
                                 return (
                                     <div key={index} className="chat-box__msg  ">
                                         <div
-                                            className={` ${item.senderId === "63fd5eebff23d1aa31eba285"
+                                            className={` ${item.senderId === myInfo?._id
                                                 ? "msg-text-sent"
                                                 : "msg-text-received"
                                                 }`}
@@ -113,6 +109,4 @@ export const MessagingStation = () => {
         }
     if (loading) return <SkeletonMessage />
     return <MessageHistory />
-    // return <DefaultMessage />
-
 }

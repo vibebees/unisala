@@ -462,9 +462,24 @@ export const AddComment = gql`
                 username
             }
         }`,
-    getMessages = gql`
-        query getMessages($id: String!) {
-            getMessages(id: $id){
+    getMessagesGql = gql`
+        query getMessages($_id: String!) {
+            getMessages(_id: $_id){
+                pairs
+                messages{
+                  seen
+                  senderId
+                  receiverId
+                  message{
+                    text
+                  }
+                 
+                }
+            }
+        }`,
+      getMessagesByIdGql = gql`
+        query getMessageById($_id: ID!) {
+          getMessageById(_id: $_id){
                 pairs
                 messages{
                   seen
@@ -618,13 +633,22 @@ export const AddComment = gql`
           }
         }
       }
-    }
-  `,
+    }`,
   AcceptConnectRequest = gql`
     mutation acceptConnectRequest($requestorId: String!) {
       acceptConnectRequest(requestorId: $requestorId) {
         success
         message
       }
-    }
-  `
+    }`,
+    addMessageGql = gql`
+    mutation AddMessage($text: String!, $senderId: ID!, $recipientId: ID!) {
+      addMessage(text: $text, senderId: $senderId, recipientId: $recipientId) {
+        seen
+        message{
+          text
+        }
+        senderId
+        recipientId
+      }
+    }`
