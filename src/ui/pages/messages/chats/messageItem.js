@@ -1,9 +1,8 @@
-export const MessageItem = ({ item, index }) => {
+export const MessageItem = ({ item, index, currentUserId }) => {
 
-    console.log({ item })
     return (<div key={index} className="chat-box__msg  ">
     <div
-        className={` ${item.senderId === "63fd5eebff23d1aa31eba285"
+        className={` ${item.senderId === currentUserId
             ? "msg-text-sent"
             : "msg-text-received"
             }`}

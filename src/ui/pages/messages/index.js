@@ -14,6 +14,8 @@ import { messageSocket } from "../../../servers/endpoints"
 import { messageSocketAddress } from "../../../servers/index"
 import { useDispatch, useSelector } from "react-redux"
 import { messageSend, seenMessage } from "../../../store/action/messengerAction"
+import { io } from "socket.io-client"
+
 // import notificationSound from "../../../assets/sounds/notification.mp3"
 // import sendingSound from "../../../assets/sounds/sending.mp3"
 const index = () => {
@@ -44,7 +46,7 @@ const index = () => {
         },
         dispatch = useDispatch(),
         { friends, message, mesageSendSuccess, messageGetSuccess, themeMood, newUserAdd } = {},
-        myInfo = useSelector((state) => state.userProfile.user),
+        { user } = useSelector((state) => state.userProfile),
         [currentfriend, setCurrentFriend] = useState(""),
         [newMessage, setNewMessage] = useState(""),
         [activeUser, setActiveUser] = useState([]),
@@ -53,7 +55,7 @@ const index = () => {
 
     useEffect(() => {
         if (socketMessage && currentfriend) {
-            if (socketMessage.senderId === currentfriend._id && socketMessage.reseverId === myInfo._id) {
+            if (socketMessage.senderId === currentfriend._id && socketMessage.reseverId === user._id) {
                 dispatch({
                     type: "SOCKET_MESSAGE",
                     payload: {
@@ -71,44 +73,33 @@ const index = () => {
                 })
             }
         }
-        setSocketMessage("")
     }, [socketMessage])
 
     useEffect(() => {
-        socket.current = messageSocket()
+ console.log("triggering")
+}, [])
+    // useEffect(() => {
+    //     console.log("useEffect Running")
+    //     socket.current = messageSocket()
+    //     socket.current.on("getMessage", (data) => {
+    //         // setTypingMessage(data)
+    //         const { senderId, receiverId } = data
+    //         // updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
+    //         console.log("getMessage", data)
+    //     })
 
-        socket.current.on("typingMessageGet", (data) => {
-            // setTypingMessage(data)
-        })
-
-        socket.current.on("msgSeenResponse", (msg) => {
-            dispatch({
-                type: "SEEN_MESSAGE",
-                payload: {
-                    msgInfo: msg
-                }
-            })
-        })
-
-        socket.current.on("msgDelivaredResponse", (msg) => {
-            dispatch({
-                type: "DELIVARED_MESSAGE",
-                payload: {
-                    msgInfo: msg
-                }
-            })
-        })
-
-        socket.current.on("seenSuccess", (data) => {
-            dispatch({
-                type: "SEEN_ALL",
-                payload: data
-            })
-        })
-
-        socket.current.emit("join", { _id: myInfo._id })
-    }, [])
-
+    //     socket.current.on("connect", (msg) => {
+    //        console.log("connected")
+    //     })
+    //     socket.current.emit("joinRoom", {
+    //         senderId: user?._id,
+    //         receiverId: messagingTo?._id
+    //     })
+    //     return () => {
+    //         socket.current.disconnect()
+    //         console.log("Socket disconnected")
+    //       }
+    // }, [])
     // useEffect(() => {
     //     socket.current.emit("join", { username: "joshua" })
     // })

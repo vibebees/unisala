@@ -5,63 +5,33 @@ import {
     IonIcon
 } from "@ionic/react"
 import { send } from "ionicons/icons"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { messageSocket } from "../../../../servers/endpoints"
-import { useMutation } from "@apollo/client"
+import { useMutation, useApolloClient, gql } from "@apollo/client"
 import { addMessageGql, getMessagesByIdGql } from "../../../../graphql/user"
-
-const updateMessage = (data, messagingTo) => {
-    const
-    [addMessage] = useMutation(addMessageGql)
-
-    addMessage({
-        variables: data,
-        update: (cache, { data: { addMessage } }) => {
-            // Update the cache with the new message
-            const { getMessagesById } = cache.readQuery({
-                query: getMessagesByIdGql,
-                variables: { _id: messagingTo._id }
-            })
-            cache.writeQuery({
-                query: getMessagesByIdGql,
-                variables: { _id: messagingTo._id },
-                data: {
-                    getMessagesById: [
-                        {
-                            ...getMessagesById[0],
-                            messages: [...getMessagesById[0].messages, addMessage]
-                        }
-                    ]
-                }
-            })
-        }
-    })
-}
-export const TypeBox = () => {
+import { MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY } from "../../../../store/types/messengerType"
+import { messageUpdated } from "../../../../store/action/userActivity"
+import { v4 as uuidv4 } from "uuid"
+import { updateChatMessages } from "../../../../utils"
+export const TypeBox = ({ socket }) => {
     const
         [messageInput, setMessageInput] = useState(""),
-        [messages, setMessages] = useState({}),
         { messagingTo } = useSelector((state) => state?.userActivity),
-        socket = useRef(),
-        myInfo = useSelector((state) => state.auth),
+        { user } = useSelector((state) => state?.userProfile),
+        client = useApolloClient(),
         sendMessage = (e) => {
             e.preventDefault()
             const data = {
-                senderId: myInfo.id,
+                senderId: user._id,
                 receiverId: messagingTo._id,
-                message: messageInput
+                message: {
+                    text: messageInput
+                },
+                seen: false
             }
-            updateMessage(data, messagingTo)
             socket.current.emit("createMessage", data)
             setMessageInput("")
         }
-    useEffect(() => {
-        socket.current = messageSocket()
-        // return () => {
-        //     socket.current.disconnect()
-        // }
-    }, [])
-
     return (<form onSubmit={sendMessage} className="flex">
         <IonInput
             mode="md"

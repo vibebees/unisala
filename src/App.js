@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   IonApp,
   IonPage,
@@ -49,6 +49,7 @@ import PostPopup from "./ui/component/post/PostPopup"
 import MessagePop from "./ui/component/messagePop"
 import AuthModal from "./ui/component/authentication"
 import { getUserProfile } from "./store/action/userProfile"
+import { messageSocket } from "./servers/endpoints"
 
 /* Theme variables */
 
@@ -61,14 +62,16 @@ lib.axios = axios
 setupIonicReact()
 
 const App = () => {
-  const [width, setWidth] = useState(window.innerWidth)
-  const handleResize = () => {
+  const
+   [width, setWidth] = useState(window.innerWidth),
+   handleResize = () => {
     const { innerWidth } = window
 
     if (width !== innerWidth) {
       setWidth(innerWidth)
     }
-  }
+  },
+  socket = useRef(null)
   useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {

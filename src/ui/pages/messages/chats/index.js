@@ -15,22 +15,26 @@ import "./index.css"
 import { useParams } from "react-router"
 import { MESSAGE_SERVICE_GQL } from "../../../../servers/types"
 import { getMessagesGql, getMessagesByIdGql } from "../../../../graphql/user"
-import { useQuery } from "@apollo/client"
+import { useApolloClient, useQuery } from "@apollo/client"
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
 import { TypeBox } from "./typeBox"
 import { useSelector } from "react-redux"
 import { MessageItem } from "./messageItem"
+import { messageSocket } from "../../../../servers/endpoints"
+import { updateChatMessages } from "../../../../utils"
 export const MessagingStation = () => {
     const
         chatbox = useRef(null),
         { username } = useParams(),
         { messagingTo } = useSelector((state) => state?.userActivity),
 
-        myInfo = useSelector((state) => state?.userProfile?.user),
-        { loading, error, data } = useQuery(getMessagesByIdGql, {
+        { user } = useSelector((state) => state?.userProfile),
+        { loading, error, data, refetch } = useQuery(getMessagesByIdGql, {
             variables: {
                 // currentUser
-                _id: messagingTo._id
+                senderId: user?._id,
+                receiverId: messagingTo?._id
+
             },
             context: { server: MESSAGE_SERVICE_GQL }
         }),
@@ -40,15 +44,45 @@ export const MessagingStation = () => {
             }
         },
         userFriendId = messagingTo?._id,
-        [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || [])
+        [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || []),
+        { messageUpdated } = useSelector((state) => state?.userActivity),
+        socket = useRef(),
+        client = useApolloClient()
+
     useEffect(() => {
         setMessages(data?.getMessageById[0]?.messages)
     }, [username, data])
 
     useEffect(() => {
+        messageUpdated && refetch()
+    }, [messageUpdated])
+
+    useEffect(() => {
         ScrollBottom()
     }, [chatbox.current, chatbox])
 
+    useEffect(() => {
+        console.log("useEffect Running")
+        socket.current = messageSocket()
+        socket.current.on("getMessage", (data) => {
+            // setTypingMessage(data)
+            const { senderId, receiverId } = data
+            // updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
+            console.log("getMessage", data)
+        })
+
+        socket.current.on("connect", (msg) => {
+           console.log("connected")
+        })
+        socket.current.emit("joinRoom", {
+            senderId: user?._id,
+            receiverId: messagingTo?._id
+        })
+        return () => {
+            socket.current.disconnect()
+            console.log("Socket disconnected")
+          }
+    }, [])
     const MessageHistory = () => {
         return (
             <IonCard className="chats-wrapper">
@@ -74,24 +108,9 @@ export const MessagingStation = () => {
                         </IonButton>
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
-                        {
-                            messages?.map((item, index) => {
-                                return (
-                                    <div key={index} className="chat-box__msg  ">
-                                        <div
-                                            className={` ${item.senderId === myInfo?._id
-                                                ? "msg-text-sent"
-                                                : "msg-text-received"
-                                                }`}
-                                        >
-                                            <p>{item?.message?.text}</p>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        {/* {messages?.map((item, index) => <MessageItem key = {index} item = {item} />)} */}
+                        {messages?.map((item, index) => <MessageItem key={index} item={item} currentUserId={user?._id} />)}
                     </div>
-                    <TypeBox username />
+                    <TypeBox socket = {socket}/>
                 </IonCardContent>
             </IonCard>
         )

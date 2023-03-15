@@ -13,7 +13,7 @@ import {
     HttpLink,
     ApolloLink,
     fromPromise,
-    from
+    useApolloClient
 } from "@apollo/client"
 
 import { createRoot } from "react-dom/client"
