@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
+import { useState } from "react"
 import {
   IonAvatar,
   IonGrid,
@@ -27,8 +26,8 @@ const CommentCard = ({
   commentimage,
   postId
 }) => {
-  const [showPopover, setShowPopover] = React.useState(false)
-  const [love, setLove] = React.useState(false)
+  const [showPopover, setShowPopover] = useState(false)
+  const [love, setLove] = useState(false)
   const [savePost] = useMutation(SavePost, {
     variables: {
       postId: postId
@@ -71,7 +70,7 @@ const CommentCard = ({
           >
             <IonIcon color={love ? "danger" : "medium"} icon={trashBin} />
             <IonLabel className="ion-text-wrap ion-margin-start">
-              dalate
+              Delete
             </IonLabel>
           </IonItem>
         </IonList>

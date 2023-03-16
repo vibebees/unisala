@@ -3,8 +3,8 @@ import { gql } from "@apollo/client"
 export const AddComment = gql`
     mutation addComment(
       $postId: String!
-      $commentText: String!
-      $parentId: String!
+      $commentText: String
+      $parentId: String
     ) {
       addComment(
         postId: $postId
@@ -152,24 +152,28 @@ export const AddComment = gql`
       }
     }
   `,
-  GetCommentList = (id, pid) => gql`
-            query {
-                 commentList (postId:"${id}", parentId:"${pid}") {
-                   success
-                   message
-                            comments {
-                              _id
-                              userId
-                              postId
-                              commentText
-                              commentImage
-                              firstName
-                              lastName
-                              username
-                              date
-                            } 
-                 }
-             }`,
+  GetCommentList = gql`
+    query commentList($postId: String!, $parentId: String) {
+      commentList(postId: $postId, parentId: $parentId) {
+        success
+        message
+        comments {
+          _id
+          userId
+          postId
+          commentText
+          commentImage
+          firstName
+          lastName
+          username
+          date
+          repliesCount
+          upVoteCount
+          upVoted
+        }
+      }
+    }
+  `,
   GetProfileCard = gql`
     query getUser($username: String!) {
       getUser(username: $username) {
@@ -309,7 +313,7 @@ export const AddComment = gql`
   `,
   GetUserPost = (id, page) => gql`
     query {
-        getUserPost(userId: "${id}", page:${page},pageSize:3) {
+        getUserPost(userId: "${id}", page:${page},pageSize:5) {
             totalPosts
             Posts {
               _id
@@ -430,6 +434,7 @@ export const AddComment = gql`
   UpVote = gql`
     mutation upVote($postId: String!) {
       upVote(postId: $postId) {
+        upVotesCount
         success
         message
       }

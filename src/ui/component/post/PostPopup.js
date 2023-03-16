@@ -11,14 +11,16 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
-  IonButtons
+  IonButtons,
+  useIonToast
 } from "@ionic/react"
 import AWS from "aws-sdk"
 import { imageOutline } from "ionicons/icons"
 import { AddPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
-import "./index.css"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import "./index.css"
+import { useSelector } from "react-redux"
 
 const S3_BUCKET = "uni-sala"
 const REGION = "us-west-2"
@@ -34,6 +36,8 @@ const myBucket = new AWS.S3({
 })
 
 export const PostPopup = ({ setPopup, popup }) => {
+  const { user } = useSelector((state) => state.userProfile)
+  const [present, dismiss] = useIonToast()
   const [setProgress] = useState(0)
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
@@ -43,8 +47,27 @@ export const PostPopup = ({ setPopup, popup }) => {
   const [fileName, setFileName] = useState("")
 
   const [addPost] = useMutation(AddPost, {
-    context: { server: USER_SERVICE_GQL }
+    context: { server: USER_SERVICE_GQL },
+    onCompleted: () => {
+      present({
+        duration: 3000,
+        message: "Post added",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
   })
+
   const handleChangeImage = (e) => {
     e.preventDefault()
     const file = imgfile?.current?.files[0]
@@ -61,6 +84,7 @@ export const PostPopup = ({ setPopup, popup }) => {
       setfile("")
     }
   }
+
   const handleImageDrop = (e) => {
     e.preventDefault()
     const file = e?.dataTransfer?.files[0]
@@ -77,6 +101,7 @@ export const PostPopup = ({ setPopup, popup }) => {
       setfile("")
     }
   }
+
   const fileUpdate = async (fileData, postImage) => {
     const fName = fileData?.name?.split(".")
     postImage = fName[0] + Date.now() + "." + fName[1]
@@ -99,6 +124,7 @@ export const PostPopup = ({ setPopup, popup }) => {
         if (data) console.log(data)
       })
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     var postImage = null
@@ -133,8 +159,7 @@ export const PostPopup = ({ setPopup, popup }) => {
               />
             </IonAvatar>
             <IonLabel className="ion-padding-start">
-              <h2>Nabin Kharel</h2>
-              <p>24 jun 2022</p>
+              <h2>{user.username}</h2>
             </IonLabel>
           </IonItem>
           <IonText color="dark">
