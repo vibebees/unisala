@@ -2,7 +2,7 @@
 import React from "react"
 import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel, IonRow, IonText } from "@ionic/react"
 import { addCircle, helpCircle, informationCircle } from "ionicons/icons"
-export const MessageItem = ({ firstName, username, lastName, picture, _id, image, recentMessage }) => {
+export const MessageItem = ({ firstName, username, lastName, picture, _id, image, message, seen }) => {
     return (
         <div className="message-pop-item">
             <IonItem
@@ -38,8 +38,8 @@ export const MessageItem = ({ firstName, username, lastName, picture, _id, image
             <IonRow>
                 <IonCol>
                     {}
-                    <IonText style={{ fontWeight: "bold" }} >
-                    {recentMessage?.message?.text}
+                    <IonText style={{ fontWeight: !seen ? "bold" : "normal" }} >
+                    { message?.text.length > 20 ? message?.text.slice(0, 20) + "..." : message?.text.slice(0, 20)}
                     </IonText>
                 </IonCol>
                 <IonCol>

@@ -45,11 +45,9 @@ import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 import Nav from "./ui/component/NavBar"
 import { PageRoute } from "./ui/component/PageRoute"
-import { CreateAPost } from "./ui/component/post/CreateAPost"
 import MessagePop from "./ui/component/messagePop"
 import AuthModal from "./ui/component/authentication"
 import { getUserProfile } from "./store/action/userProfile"
-import { messageSocket } from "./servers/endpoints"
 
 /* Theme variables */
 
@@ -79,7 +77,6 @@ const App = () => {
     }
   })
 
-  const [popup, setPopup] = useState(false)
   const [activeNavDrop, setActiveNavDrop] = useState({
     profile: false,
     message: false,
@@ -133,7 +130,7 @@ const App = () => {
               {width < 768 && (
                 <IonTabs>
                   <IonRouterOutlet>
-                    <PageRoute setPopup={setPopup} />
+                    <PageRoute />
                   </IonRouterOutlet>
 
                   {loggedIn ? (
@@ -168,9 +165,6 @@ const App = () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center"
-                          }}
-                          onClick={() => {
-                            setPopup(true)
                           }}
                         >
                           <IonIcon size="large" icon={addCircleOutline} />

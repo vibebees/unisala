@@ -22,7 +22,7 @@ import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import CreateAPost from "../../component/post/CreateAPost"
+import { CreateAPost } from "../../component/post/CreateAPost"
 
 export const Home = () => {
     useDocTitle("Unisala")

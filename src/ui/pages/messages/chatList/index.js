@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { sendMessageTo } from "../../../../store/action/userActivity"
 import { last } from "ramda"
 
-export const Communicators = ({ socket = {}, messages = [], connectionList = [] }) => {
+export const Communicators = ({ socket = {}, messages = [], connectionList = [], connectionListWithMessage = [] }) => {
         const
             [isOpen, setIsOpen] = useState(false),
             { user } = useSelector((store) => store?.userProfile),
@@ -33,16 +33,15 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [] 
                     socket.current.emit("messageSeen", last(messages)?._id)
                 }
             },
-            handleMessagesList = (communicators = []) => {
+            handleMessagesList = (communicators = connectionListWithMessage || connectionList) => {
 
                 if (!communicators) {
                     return <div>No messages</div>
                 }
-
                 return communicators?.map((item, index) => {
                     // const { id, avatar, name, username, message, time } = c
                     return <Link to={`/messages/${item?.user?.username}`} key={index} onClick = { () => setUpChat(item)}>
-                        <MessageItem {...item.user} recentMessage = {last(messages)}/>
+                        <MessageItem {...item.user} {...item.recentMessage}/>
                     </Link>
                 })
             }
@@ -71,7 +70,7 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [] 
                                         ? <SkeletonMessage />
                                         : handleMessagesList(getUsers)
                                 } */}
-                                {handleMessagesList(connectionList)}
+                                {handleMessagesList()}
                             </div>
                         </IonList>
                     </IonCardContent>

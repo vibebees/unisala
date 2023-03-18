@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   IonCard,
   IonCardContent,
@@ -28,6 +28,7 @@ import StateMessage from "../../../component/stateMessage"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 
 function index() {
+
   const [isOpen, setIsOpen] = useState(false),
     { user } = useSelector((store) => store?.userProfile),
     { data } = useQuery(ConnectedList, {
