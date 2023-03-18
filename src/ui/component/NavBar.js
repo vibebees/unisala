@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { IonGrid, IonRow, IonIcon, IonText, IonCard } from "@ionic/react"
+import { useState, useRef } from "react"
+import { IonGrid, IonRow, IonIcon, IonText, IonPopover } from "@ionic/react"
 import {
   chatbubbles,
   home,
@@ -9,12 +9,17 @@ import {
 } from "ionicons/icons"
 import { Link } from "react-router-dom"
 import SearchBox from "./searchBox"
-import NotificationItem from "./notificationItem"
 import ProfilePop from "./profilePop"
 import jwtDecode from "jwt-decode"
 
 const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
-  const accessToken = localStorage?.getItem("accessToken")
+  const popover = useRef(null)
+  const [popoverOpen, setPopoverOpen] = useState(false)
+
+  const openPopover = (e) => {
+    popover.current.event = e
+    setPopoverOpen(true)
+  }
 
   const navigation = [
     {
@@ -37,51 +42,9 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
       icon: notifications,
       link: "/notifications"
     }
-    // {
-    //     name: "My profile",
-    //     icon: personCircle,
-    //     link: "/home"
-    // }
   ]
-  const [active, setActive] = React.useState(0)
-  const notification = React.useRef(null)
-  const chatList = [
-    {
-      id: "1",
-      message:
-        "Why drag something out when you could get it done in one fell swoop?",
-      name: "Sara Hall",
-      date: "jan 24",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-    },
-    {
-      id: "2",
-      message: "These are just the first of many shortcuts",
-      name: "Ali Khan",
-      date: "jan 21",
-      image:
-        "https://filmfare.wwmindia.com/thumb/content/2019/aug/hrithikroshanweb1565958352.jpg?width=1200&height=900"
-    },
-    {
-      id: "3",
-      message:
-        "Lorem ipsum dolor sit amet consec tetur adipisicing elit tetur adipisicing elit.",
-      name: "Ram Kumar",
-      date: "jan 19",
-      image:
-        "https://i.pinimg.com/originals/1d/df/a9/1ddfa98a7e262b691614bc30923a40d5.jpg"
-    },
-    {
-      id: "4",
-      message: "Supercharge your Messenger experience",
-      name: "Hari Paudel",
-      date: "jan 15",
-      image:
-        "https://qph.cf2.quoracdn.net/main-qimg-8e8ea0637a05240ab9c8409ff1860ac9-lq"
-    }
-  ]
-  const [profileDrop, setProfileDrop] = useState(false)
+  const [active, setActive] = useState(0)
+  const accessToken = localStorage?.getItem("accessToken")
   const decode = accessToken && jwtDecode(accessToken)
   return (
     <IonGrid
@@ -162,119 +125,40 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                 </div>
               )
             })}
-          {/* {decode && (
-            <div className="profile-pop" style={{ cursor: "pointer" }}>
-              <div
-                tabIndex="129"
-                onFocus={() => {
-                  // setActiveNavDrop({
-                  //     notifications:
-                  //         !activeNavDrop.notifications
-                  // })
-                  notification.current?.focus()
-                }}
-                // onBlurCapture={() => {
-                //     setActiveNavDrop({
-                //         notifications: false
-                //     })
-                // }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  gap: "3px"
-                }}
-              >
-                <IonIcon
-                  style={{
-                    fontSize: "25px"
-                  }}
-                  color={activeNavDrop.notifications ? "dark" : "medium"}
-                  icon={notifications}
-                />
 
-                <IonText
-                  color={activeNavDrop.notifications ? "dark" : "medium"}
-                >
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: "14px"
-                    }}
-                  >
-                    Notification
-                  </p>
-                </IonText>
-              </div>
-              <div
-                style={{
-                  height: activeNavDrop.notifications
-                    ? notification.current?.scrollHeight + "px"
-                    : "0px"
-                }}
-                tabIndex="2"
-                ref={notification}
-                onFocus={() => {
-                  setActiveNavDrop({
-                    notifications: true
-                  })
-                }}
-                onBlur={() => {
-                  setActiveNavDrop({
-                    notifications: false
-                  })
-                }}
-                className="notification-drop"
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    zIndex: 10000
-                  }}
-                >
-                  <IonCard>
-                    <IonText color="dark" className="post-title">
-                      <h3>Notifications</h3>
-                    </IonText>
-                    {chatList.map((item, index) => {
-                      return <NotificationItem key={index} {...item} />
-                    })}
-                  </IonCard>
-                </div>
-              </div>
-            </div>
-          )} */}
-          <div className="profile-pop" style={{ cursor: "pointer" }}>
-            <div
-              onClick={() => {
-                decode
-                  ? setProfileDrop(!profileDrop)
-                  : setActiveNavDrop({
-                      profile: !activeNavDrop.profile
-                    })
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-                width: "fit-content",
-                gap: "3px"
-              }}
-            >
-              <IonIcon
-                style={{ fontSize: "25px" }}
-                color={activeNavDrop.profile ? "dark" : "medium"}
-                icon={personCircle}
-              />
+          <div
+            onClick={openPopover}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              width: "fit-content",
+              gap: "3px",
+              cursor: "pointer"
+            }}
+          >
+            <IonIcon
+              style={{ fontSize: "25px" }}
+              color={activeNavDrop.profile ? "dark" : "medium"}
+              icon={personCircle}
+            />
 
-              <IonText color={activeNavDrop.profile ? "dark" : "medium"}>
-                <p style={{ margin: 0, fontSize: "14px" }}>My profile</p>
-              </IonText>
-            </div>
-            {profileDrop && <ProfilePop />}
+            <IonText color={activeNavDrop.profile ? "dark" : "medium"}>
+              <p style={{ margin: 0, fontSize: "14px" }}>My profile</p>
+            </IonText>
           </div>
+          <IonPopover
+            ref={popover}
+            isOpen={popoverOpen}
+            onDidDismiss={() => setPopoverOpen(false)}
+          >
+            <ProfilePop
+              setPopoverOpen={setPopoverOpen}
+              activeNavDrop={activeNavDrop}
+              setActiveNavDrop={setActiveNavDrop}
+            />
+          </IonPopover>
         </IonRow>
       </IonRow>
     </IonGrid>

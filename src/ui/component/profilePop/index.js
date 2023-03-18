@@ -1,24 +1,46 @@
-import {
-  IonIcon,
-  IonCard,
-  IonItem,
-  IonAvatar,
-  IonLabel,
-  IonButtons
-} from "@ionic/react"
-import { document, home, settings } from "ionicons/icons"
+import { IonIcon, IonItem, IonAvatar, IonLabel, IonButtons } from "@ionic/react"
+import { logOut } from "ionicons/icons"
 import "./index.css"
 import { Link } from "react-router-dom"
 import jwtDecode from "jwt-decode"
-export const ProfilePop = () => {
-  const decode = jwtDecode(localStorage.getItem("accessToken"))
+import Authentication from "../authentication"
+import { useEffect } from "react"
+
+export const ProfilePop = ({
+  setPopoverOpen,
+  setActiveNavDrop,
+  activeNavDrop
+}) => {
+  const accessToken = localStorage?.getItem("accessToken")
+  const decode = accessToken && jwtDecode(accessToken)
+
+  useEffect(() => {
+    if (!decode) {
+      setActiveNavDrop({
+        profile: !activeNavDrop.profile
+      })
+    }
+  }, [decode])
+
+  if (!decode) {
+    return (
+      <Authentication
+        activeNavDrop={activeNavDrop}
+        setActiveNavDrop={setActiveNavDrop}
+      />
+    )
+  }
+
   return (
-    <IonCard className="profile-drop">
+    <>
       <Link to={`/@/${decode?.username}`}>
         <IonItem
+          button
+          detail={false}
           style={{
             borderBottom: "1px solid #e0e0e0"
           }}
+          onClick={() => setPopoverOpen(false)}
           lines="none"
         >
           <IonAvatar slot="start">
@@ -40,27 +62,20 @@ export const ProfilePop = () => {
         </IonItem>
       </Link>
       <div className="profile-drop-div">
-        <IonButtons className="profile-drop-btn" lines="none">
-          <IonIcon slot="start" icon={document} />
-          <IonLabel color="dark">Drafts</IonLabel>
-        </IonButtons>
-        <IonButtons className="profile-drop-btn" lines="none">
-          <IonIcon slot="start" icon={settings} />
-          <IonLabel color="dark">Settings</IonLabel>
-        </IonButtons>
         <IonButtons
           onClick={() => {
+            setPopoverOpen(false)
             localStorage.clear()
             window.location.reload()
           }}
           className="profile-drop-btn"
           lines="none"
         >
-          <IonIcon slot="start" icon={home} />
+          <IonIcon slot="start" icon={logOut} />
           <IonLabel color="dark">Log out</IonLabel>
         </IonButtons>
       </div>
-    </IonCard>
+    </>
   )
 }
 export default ProfilePop

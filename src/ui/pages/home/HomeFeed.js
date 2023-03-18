@@ -6,7 +6,7 @@ import {
   IonInfiniteScrollContent
 } from "@ionic/react"
 import CourseCard from "../../component/courseCard"
-import Thread from "./thread"
+import Thread from "../../component/thread"
 import { Link } from "react-router-dom"
 import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"
 import { useLazyQuery } from "@apollo/client"
@@ -55,7 +55,7 @@ const HomeFeed = ({ userInfo }) => {
                 className="thread-card"
                 key={index}
               >
-                {/* <Thread commentlist={ item?.post?.post } id={item?._id} /> */}
+                {/* <Thread commentlist={item?.post?.post} id={item?._id} /> */}
               </div>
             )
           })}

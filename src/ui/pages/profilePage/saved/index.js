@@ -6,13 +6,11 @@ import {
 } from "@ionic/react"
 import StateMessage from "../../../component/stateMessage"
 import emptyState from "../../../../assets/emptyState.png"
-import locked from "../../../../assets/private.png"
 import { useLazyQuery } from "@apollo/client"
-import { GetUserPost, GetSavedList } from "../../../../graphql/user/"
-import Thread from "../../home/thread"
+import { GetSavedList } from "../../../../graphql/user/"
+import Thread from "../../../component/thread"
 import CourseCard from "../../../component/courseCard"
 import { Link } from "react-router-dom"
-import "../threads/index.css"
 import jwtDecode from "jwt-decode"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
@@ -86,20 +84,8 @@ function index({ userId, firstName }) {
                 className="thread-card"
                 key={index}
               >
-                <Thread commentlist={item} id={item?._id} />
+                <Thread thread={item} id={item?._id} />
               </div>
-
-              // <IonCard
-              //     key={index}
-              //     style={{
-              //         width: "98%",
-              //         margin: "10px auto",
-              //         borderTop: "1px solid #e0e0e0",
-              //         padding: "10px 10px 0px 10px"
-              //     }}
-              // >
-              //     <Thread commentlist={[item]} />
-              // </IonCard>
             )
           })}
 

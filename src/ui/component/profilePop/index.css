@@ -1,5 +1,5 @@
 .profile-drop-btn:hover {
-    background-color: #e8f1fa;
+    background-color: #f0f0f0;
 }
 
 .profile-drop-btn {
@@ -16,13 +16,7 @@
 .profile-pop {
     position: relative;
 }
-
-.profile-drop {
-    position: absolute;
-    cursor: default;
-    top: 100%;
-    right: 0px;
-    z-index: 999;
-    width: 250px;
-    padding: 0px;
+  
+ion-popover::part(backdrop) {
+    background-color: transparent;
 }

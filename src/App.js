@@ -133,7 +133,7 @@ const App = () => {
               {width < 768 && (
                 <IonTabs>
                   <IonRouterOutlet>
-                    <PageRoute />
+                    <PageRoute setPopup={setPopup} />
                   </IonRouterOutlet>
 
                   {loggedIn ? (

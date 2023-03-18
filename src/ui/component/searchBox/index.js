@@ -100,8 +100,9 @@ function index() {
               return (
                 <Link
                   to={
-                    `/university/${item?.elevatorInfo?.name}` ||
-                    `/@/${item?.username}`
+                    item?.elevatorInfo?.name
+                      ? `/university/${item?.elevatorInfo?.name}`
+                      : `/@/${item?.username}`
                   }
                   key={i}
                   onClick={() => setDropDownOptions(false)}

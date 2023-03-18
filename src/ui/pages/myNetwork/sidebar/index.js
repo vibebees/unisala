@@ -58,7 +58,7 @@ function index() {
             setIsOpen(true)
           }}
         >
-          <div className="inline-2">
+          <div className="inline-2" style={{ cursor: "pointer" }}>
             <IonIcon icon={people} className="grey-icon-32" />
             <h2>Connections</h2>
           </div>
