@@ -30,9 +30,10 @@ export const TypeBox = ({ socket }) => {
                 seen: false
             }
             socket.current.emit("createMessage", data)
+            updateChatMessages({ newMessage: data, senderId: user._id, receiverId: messagingTo._id, client })
             setMessageInput("")
         }
-    return (<form onSubmit={sendMessage} className="flex">
+    return (<div className="flex">
         <IonInput
             mode="md"
             className="input-box"
@@ -40,8 +41,8 @@ export const TypeBox = ({ socket }) => {
             placeholder="Message"
             value={messageInput}
         ></IonInput>
-        <IonButton type="submit" mode="ios">
+        <IonButton type="submit" mode="ios" onClick={sendMessage}>
             <IonIcon icon={send} />
         </IonButton>
-    </form>)
+    </div>)
 }

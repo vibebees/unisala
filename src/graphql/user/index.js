@@ -467,6 +467,7 @@ export const AddComment = gql`
             getMessages(_id: $_id){
                 pairs
                 messages{
+                  _id
                   seen
                   senderId
                   receiverId
@@ -482,6 +483,7 @@ export const AddComment = gql`
           getMessageById(senderId: $senderId receiverId: $receiverId){
                 pairs
                 messages{
+                  _id
                   seen
                   senderId
                   receiverId

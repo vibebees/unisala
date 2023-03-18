@@ -22,8 +22,9 @@ import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import CreateAPost from "../../component/post/CreateAPost"
 
-export const Home = ({ setPopup }) => {
+export const Home = () => {
     useDocTitle("Unisala")
     const
         { user, loggedIn } = useSelector((store) => store?.userProfile),
@@ -46,7 +47,9 @@ export const Home = ({ setPopup }) => {
             greaterThan1000: screenGreaterThan1000(),
             greaterThan768: screensMoreThan768({ activeTab, setActiveTab, unisalaImg, profileData, loggedIn }),
             lessThan768: screenLessThan768({ setActiveProfile, personCircle, activeProfile, loggedIn, username: user.username })
-        }
+        },
+        [createAPostPopUp, setCreateAPostPopUp] = useState(false),
+        [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false)
 
     useEffect(() => {
         window.addEventListener("resize", handleResize)
@@ -57,9 +60,12 @@ export const Home = ({ setPopup }) => {
 
     return (
         <IonPage>
+
             <IonContent
                 color="light">
-                <VerifyPostPop />
+                <VerifyPostPop setPopup = {setVerifyAPostPopUp} popup = {verfiyAPostPopUp}/>
+                  <CreateAPost setPopup={setCreateAPostPopUp} popup={createAPostPopUp} />
+
                 {width < 768 && views.lessThan768}
                 <IonGrid
                     style={{
@@ -83,7 +89,7 @@ export const Home = ({ setPopup }) => {
                             }}>
                             {loggedIn && width >= 768 && (
                                 <IonCard style={{ margin: "20px 0px" }} onClick={() => {
-                                    setPopup(true)
+                                    setCreateAPostPopUp(true)
                                 }} >
                                     <Post />
                                 </IonCard>

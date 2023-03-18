@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client"
+import { v4 as uuidv4 } from "uuid"
+
 export const
 updateChatMessages = ({ newMessage, senderId, receiverId, client }) => {
-    console.log("newMessage", newMessage._id)
     client.cache.modify({
         fields: {
             getMessageById(allMessages, { readField }) {
@@ -17,7 +18,7 @@ updateChatMessages = ({ newMessage, senderId, receiverId, client }) => {
                 const existingMessages = currentFriendConvo.messages ?? []
                 const newMessageRef = client.cache.writeFragment({
                     data: {
-                        id: newMessage._id,
+                        id: uuidv4(),
                         senderId,
                         receiverId,
                         seen: false,

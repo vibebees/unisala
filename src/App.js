@@ -45,7 +45,7 @@ import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 import Nav from "./ui/component/NavBar"
 import { PageRoute } from "./ui/component/PageRoute"
-import PostPopup from "./ui/component/post/PostPopup"
+import { CreateAPost } from "./ui/component/post/CreateAPost"
 import MessagePop from "./ui/component/messagePop"
 import AuthModal from "./ui/component/authentication"
 import { getUserProfile } from "./store/action/userProfile"
@@ -100,7 +100,6 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <IonApp>
           <IonPage>
-            <PostPopup setPopup={setPopup} popup={popup} />
 
             <IonReactRouter>
               {width >= 768 && (
@@ -121,7 +120,7 @@ const App = () => {
                       marginTop: "65px"
                     }}
                   >
-                    <PageRoute setPopup={setPopup} />
+                    <PageRoute />
                   </IonRouterOutlet>
                 </div>
               )}

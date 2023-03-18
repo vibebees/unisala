@@ -16,6 +16,7 @@ import { AddPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import "./index.css"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import { useSelector } from "react-redux"
 
  const S3_BUCKET = "uni-sala"
 const REGION = "us-west-2"
@@ -30,17 +31,17 @@ const myBucket = new AWS.S3({
     region: REGION
 })
 
-export const PostPopup = ({ setPopup, popup }) => {
-    const [setProgress] = useState(0)
-    const imgfile = React.useRef()
-    const [postText, setPostText] = React.useState("")
-
-    const [file, setfile] = React.useState("")
-    const [fileData, setFileData] = React.useState("")
-    const [fileName, setFileName] = React.useState("")
-
-    const [addPost] = useMutation(AddPost, { context: { server: USER_SERVICE_GQL } })
-    const handleChangeImage = (e) => {
+export const CreateAPost = ({ setPopup, popup }) => {
+    const
+    [setProgress] = useState(0),
+    imgfile = React.useRef(),
+    [postText, setPostText] = React.useState(""),
+    [file, setfile] = React.useState(""),
+    [fileData, setFileData] = React.useState(""),
+    [fileName, setFileName] = React.useState(""),
+    { user } = useSelector((state) => state.userProfile),
+    [addPost] = useMutation(AddPost, { context: { server: USER_SERVICE_GQL } }),
+    handleChangeImage = (e) => {
         e.preventDefault()
         const file = imgfile?.current?.files[0]
         setFileData(file)
@@ -128,7 +129,7 @@ export const PostPopup = ({ setPopup, popup }) => {
                             />
                         </IonAvatar>
                         <IonLabel className="ion-padding-start">
-                            <h2>Nabin Kharel</h2>
+                            <h2>{user?.firstName + " " + user?.lastName} </h2>
                             <p>24 jun 2022</p>
                         </IonLabel>
                     </IonItem>
@@ -181,4 +182,4 @@ export const PostPopup = ({ setPopup, popup }) => {
         </IonModal>
     )
 }
-export default PostPopup
+export default CreateAPost

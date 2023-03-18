@@ -1,8 +1,9 @@
-import { MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY } from "../types/messengerType"
+import { MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY, SEEN_MESSAGE } from "../types/messengerType"
 
 const initialState = {
     messagingTo: null,
-    messageUpdated: false
+    messageUpdated: false,
+    lastMessageRead: []
 }
 
 const userActivity = (state = initialState, action) => {
@@ -22,6 +23,11 @@ const userActivity = (state = initialState, action) => {
             return {
                 ...state,
                 messageUpdated: false
+            }
+        case SEEN_MESSAGE:
+            return {
+                ...state,
+                lastMessageRead: [...state.lastMessageRead, payload]
             }
         default:
             return state

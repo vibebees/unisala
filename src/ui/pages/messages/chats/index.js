@@ -7,86 +7,29 @@ import {
     IonLabel,
     IonButton,
     IonCardContent,
-    IonInput,
+    IonContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonList,
     IonIcon
 } from "@ionic/react"
 import messageImg from "../../../../assets/messages.png"
 import "./index.css"
-import { useParams } from "react-router"
-import { MESSAGE_SERVICE_GQL } from "../../../../servers/types"
-import { getMessagesGql, getMessagesByIdGql } from "../../../../graphql/user"
-import { useApolloClient, useQuery } from "@apollo/client"
-import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
 import { TypeBox } from "./typeBox"
-import { useSelector } from "react-redux"
 import { MessageItem } from "./messageItem"
-import { messageSocket } from "../../../../servers/endpoints"
-import { updateChatMessages } from "../../../../utils"
-export const MessagingStation = () => {
+import { Link, useParams } from "react-router-dom"
+import { eye } from "ionicons/icons"
+import { last } from "ramda"
+export const MessagingStation = ({ socket = {}, chatbox = [], messages = [], user = {}, messagingTo = {} }) => {
+
     const
-        chatbox = useRef(null),
         { username } = useParams(),
-        { messagingTo } = useSelector((state) => state?.userActivity),
-
-        { user } = useSelector((state) => state?.userProfile),
-        { loading, error, data, refetch } = useQuery(getMessagesByIdGql, {
-            variables: {
-                // currentUser
-                senderId: user?._id,
-                receiverId: messagingTo?._id
-
-            },
-            context: { server: MESSAGE_SERVICE_GQL }
-        }),
-        ScrollBottom = () => {
-            if (chatbox.current) {
-                chatbox.current.scrollTop = chatbox.current.scrollHeight
-            }
+        lastMessageStatus = () => {
+            last(messages)?.seen && last(messages)?.senderId !== user._id && (<IonIcon icon={eye} size="small" className="seen-eye" />)
         },
-        userFriendId = messagingTo?._id,
-        [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || []),
-        { messageUpdated } = useSelector((state) => state?.userActivity),
-        socket = useRef(),
-        client = useApolloClient()
-
-    useEffect(() => {
-        setMessages(data?.getMessageById[0]?.messages)
-    }, [username, data])
-
-    useEffect(() => {
-        messageUpdated && refetch()
-    }, [messageUpdated])
-
-    useEffect(() => {
-        ScrollBottom()
-    }, [chatbox.current, chatbox])
-
-    useEffect(() => {
-        console.log("useEffect Running")
-        socket.current = messageSocket()
-        socket.current.on("getMessage", (data) => {
-            // setTypingMessage(data)
-            const { senderId, receiverId } = data
-            // updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
-            console.log("getMessage", data)
-        })
-
-        socket.current.on("connect", (msg) => {
-           console.log("connected")
-        })
-        socket.current.emit("joinRoom", {
-            senderId: user?._id,
-            receiverId: messagingTo?._id
-        })
-        return () => {
-            socket.current.disconnect()
-            console.log("Socket disconnected")
-          }
-    }, [])
-    const MessageHistory = () => {
-        return (
-            <IonCard className="chats-wrapper">
-                <IonCardContent className="chats-wrapper__content">
+        MessageHistory = () => {
+            return (
+                <IonCard className="chats-wrapper">
                     <IonItem mode="ios" lines="full" className="chats-header">
                         <IonAvatar slot="start">
                             <img src="https://www.svgrepo.com/show/178831/badges-money.svg" />
@@ -94,27 +37,31 @@ export const MessagingStation = () => {
 
                         <IonLabel>
                             <div className="flex justify-content-start">
-                                <h2>{username} </h2>
+                                <h2>{messagingTo?.firstName + " " + messagingTo.lastName}</h2>
                                 <img
                                     src="https://www.svgrepo.com/show/178831/badges-money.svg"
                                     alt=""
                                     width={20}
                                 />
                             </div>
-                            <p>university</p>
+                            <p>{messagingTo?.username}</p>
                         </IonLabel>
-                        <IonButton mode="ios" size="default">
-                            View Profile
-                        </IonButton>
+                        <Link to={`/@/${user?.username}`} >
+                            <IonButton mode="ios" size="default" >
+                                View Profile
+                            </IonButton>
+                        </Link>
+
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
                         {messages?.map((item, index) => <MessageItem key={index} item={item} currentUserId={user?._id} />)}
+                        {lastMessageStatus()}
                     </div>
-                    <TypeBox socket = {socket}/>
-                </IonCardContent>
-            </IonCard>
-        )
-    },
+                    <TypeBox socket={socket} />
+                </IonCard>
+            )
+
+        },
         DefaultMessage = () => {
             return (
                 <IonCard className="chats-wrapper">
@@ -126,6 +73,5 @@ export const MessagingStation = () => {
                 </IonCard>
             )
         }
-    if (loading) return <SkeletonMessage />
-    return <MessageHistory />
+    return username ? <MessageHistory /> : <DefaultMessage />
 }

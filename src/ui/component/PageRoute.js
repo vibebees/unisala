@@ -14,21 +14,21 @@ const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 
 const messagingRoutes = () => (<>
-  <Route path="/messages">
-            <Messages />
-        </Route>
-        <Route path="/messages/:username">
-            <Messages />
-        </Route>
+  <Route path="/messages" exact>
+    <Messages />
+  </Route>
+  <Route path="/messages/:username" exact>
+    <Messages />
+  </Route>
 </>)
-export const PageRoute = ({ setPopup }) => (
+export const PageRoute = () => (
   <Switch>
     <Suspense fallback="Loading...">
-      <Route exact path="/home">
-        <HomePage setPopup={setPopup} />
+      <Route exact path="/home" >
+        <HomePage />
       </Route>
 
-      <Route exact path="/">
+      <Route exact path="/" >
         <Redirect to="/home" />
       </Route>
 
@@ -36,37 +36,37 @@ export const PageRoute = ({ setPopup }) => (
         <UniversityPage />
       </Route>
 
-      <Route path="/@/:username">
+      <Route path="/@/:username" exact>
         <ProfilePage />
       </Route>
 
       {messagingRoutes()}
 
-      <Route path="/mynetwork">
+      <Route path="/mynetwork" exact>
         <ProtectedRoute>
           <MyNetwork />
         </ProtectedRoute>
       </Route>
 
-      <Route path="/notifications">
+      <Route path="/notifications" exact>
         <ProtectedRoute>
           <Notifications />
         </ProtectedRoute>
       </Route>
 
-      <Route path="/search/uni/:name">
+      <Route path="/search/uni/:name" exact>
         <UniSearchResults />
       </Route>
 
-      <Route path="/search/users/:name">
+      <Route path="/search/users/:name" exact>
         <UserSearchResults />
       </Route>
 
-      <Route path="/login">
+      <Route path="/login" exact>
         <Login />
       </Route>
 
-      <Route path="">
+      <Route path="" exact>
         <PageNotFound />
       </Route>
     </Suspense>

@@ -1,11 +1,12 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react"
-import { IonAvatar, IonItem, IonLabel, IonText } from "@ionic/react"
- export const MessageItem = ({ firstName, username, lastName, picture, _id, image }) => {
+import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel, IonRow, IonText } from "@ionic/react"
+import { addCircle, helpCircle, informationCircle } from "ionicons/icons"
+export const MessageItem = ({ firstName, username, lastName, picture, _id, image, recentMessage }) => {
     return (
         <div className="message-pop-item">
             <IonItem
-                 style={{
+                style={{
                     margin: "0px",
                     padding: "0px",
                     backgroundColor: "red"
@@ -18,7 +19,7 @@ import { IonAvatar, IonItem, IonLabel, IonText } from "@ionic/react"
                 <IonLabel>
                     <div className="flex ">
                         {" "}
-                        <h2>{username}</h2>
+                        <h2>{firstName + " " + lastName}</h2>
                         <img
                             src="https://www.svgrepo.com/show/178831/badges-money.svg"
                             alt=""
@@ -34,9 +35,18 @@ import { IonAvatar, IonItem, IonLabel, IonText } from "@ionic/react"
                     </p>
                 </IonLabel>
             </IonItem>
-            <IonText>
-                <p className="message-pop-item-msg">{firstName + " " + lastName}</p>
-            </IonText>
+            <IonRow>
+                <IonCol>
+                    {}
+                    <IonText style={{ fontWeight: "bold" }} >
+                    {recentMessage?.message?.text}
+                    </IonText>
+                </IonCol>
+                <IonCol>
+                    <IonIcon icon={helpCircle} color = "blue" />
+                </IonCol>
+            </IonRow>
+
         </div>
     )
 }

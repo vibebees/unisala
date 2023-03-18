@@ -18,30 +18,31 @@ import { MESSAGE_SERVICE_GQL, USER_SERVICE_GQL } from "../../../../servers/types
 import { SkeletonMessage } from "../../../../utils/components/SkeletonMessage"
 import { useDispatch, useSelector } from "react-redux"
 import { sendMessageTo } from "../../../../store/action/userActivity"
+import { last } from "ramda"
 
-export const Communicators = () => {
+export const Communicators = ({ socket = {}, messages = [], connectionList = [] }) => {
         const
             [isOpen, setIsOpen] = useState(false),
             { user } = useSelector((store) => store?.userProfile),
             //  { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
-             { data } = useQuery(ConnectedList, {
-                context: { server: USER_SERVICE_GQL },
-                variables: { userId: user._id }
-              }) || {},
-              { connectedList } = data || {},
-              { connectionList } = connectedList || {},
               dispatch = useDispatch(),
             // { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
-            handleMessagesList = (communicators) => {
+            setUpChat = (friend) => {
+                dispatch(sendMessageTo((friend?.user)))
+                if (socket.current && last(messages) && !(last(messages)?.seen) && last(messages)?.senderId !== user._id) {
+                    socket.current.emit("messageSeen", last(messages)?._id)
+                }
+            },
+            handleMessagesList = (communicators = []) => {
 
                 if (!communicators) {
                     return <div>No messages</div>
                 }
 
-                return communicators.map((item, index) => {
+                return communicators?.map((item, index) => {
                     // const { id, avatar, name, username, message, time } = c
-                    return <Link to={`/messages/${item?.user?.username}`} key={index} onClick = { () => dispatch(sendMessageTo((item?.user)))}>
-                        <MessageItem {...item.user} />
+                    return <Link to={`/messages/${item?.user?.username}`} key={index} onClick = { () => setUpChat(item)}>
+                        <MessageItem {...item.user} recentMessage = {last(messages)}/>
                     </Link>
                 })
             }

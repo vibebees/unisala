@@ -6,8 +6,8 @@ import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
 import { MESSAGE_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
-import { ConnectedList, getFriends } from "../../../graphql/user"
-import { useQuery } from "@apollo/client"
+import { ConnectedList, getFriends, getMessagesByIdGql } from "../../../graphql/user"
+import { useQuery, useApolloClient } from "@apollo/client"
 import { useRef, useEffect, useState } from "react"
 import useSound from "use-sound"
 import { messageSocket } from "../../../servers/endpoints"
@@ -15,7 +15,8 @@ import { messageSocketAddress } from "../../../servers/index"
 import { useDispatch, useSelector } from "react-redux"
 import { messageSend, seenMessage } from "../../../store/action/messengerAction"
 import { io } from "socket.io-client"
-
+import { useParams } from "react-router"
+import { updateChatMessages } from "../../../utils"
 // import notificationSound from "../../../assets/sounds/notification.mp3"
 // import sendingSound from "../../../assets/sounds/sending.mp3"
 const index = () => {
@@ -24,86 +25,90 @@ const index = () => {
         windowWidth = useWindowWidth(),
         { getUsers } = [],
         socket = useRef(),
+        chatbox = useRef(null),
+        { username } = useParams(),
+        { messagingTo } = useSelector((state) => state?.userActivity),
+
+        { user } = useSelector((state) => state?.userProfile),
+        { loading, error, data, refetch } = useQuery(getMessagesByIdGql, {
+            variables: {
+                // currentUser
+                senderId: user?._id,
+                receiverId: messagingTo?._id
+
+            },
+            context: { server: MESSAGE_SERVICE_GQL }
+        }),
+        scrollBottom = () => {
+            if (chatbox.current) {
+                chatbox.current.scrollTop = chatbox.current.scrollHeight
+            }
+        },
+        myNetwork = useQuery(ConnectedList, {
+            context: { server: USER_SERVICE_GQL },
+            variables: { userId: user._id }
+          }) || {},
+          { connectedList } = myNetwork?.data || {},
+          { connectionList } = connectedList || {},
+        [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || []),
+        { messageUpdated } = useSelector((state) => state?.userActivity),
+        client = useApolloClient(),
+        chatListView = () => <Communicators socket ={socket} chatList={getUsers} messages = {messages} connectionList ={connectionList} messagingTo ={messagingTo}/>,
+        chatView = () => <MessagingStation socket = {socket} chatbox = {chatbox} user ={user} messages = {messages} messagingTo = {messagingTo}/>,
         handleView = () => {
+            console.log("handleView", data)
             if (windowWidth >= 768) {
                 return (
                     <IonRow>
                         <IonCol>
-                            <Communicators />
+                            {chatListView()}
                         </IonCol>
 
                         <IonCol className="messages-wrapper">
-                            <MessagingStation />
+                            {chatView()}
                         </IonCol>
                     </IonRow>
                 )
             }
             const chatUserId = parseInt(location.hash.split("#")[1])
             if (chatUserId) {
-                return <MessagingStation />
+                return chatView()
             }
-            return <Communicators chatList={getUsers} />
-        },
-        dispatch = useDispatch(),
-        { friends, message, mesageSendSuccess, messageGetSuccess, themeMood, newUserAdd } = {},
-        { user } = useSelector((state) => state.userProfile),
-        [currentfriend, setCurrentFriend] = useState(""),
-        [newMessage, setNewMessage] = useState(""),
-        [activeUser, setActiveUser] = useState([]),
-        [socketMessage, setSocketMessage] = useState(""),
-        [messageHistory, setMessageHistory] = useState([])
-
-    useEffect(() => {
-        if (socketMessage && currentfriend) {
-            if (socketMessage.senderId === currentfriend._id && socketMessage.reseverId === user._id) {
-                dispatch({
-                    type: "SOCKET_MESSAGE",
-                    payload: {
-                        message: socketMessage
-                    }
-                })
-                dispatch(seenMessage(socketMessage))
-                socket.current.emit("messageSeen", socketMessage)
-                dispatch({
-                    type: "UPDATE_FRIEND_MESSAGE",
-                    payload: {
-                        msgInfo: socketMessage,
-                        status: "seen"
-                    }
-                })
-            }
+            return chatListView()
         }
-    }, [socketMessage])
 
     useEffect(() => {
- console.log("triggering")
-}, [])
-    // useEffect(() => {
-    //     console.log("useEffect Running")
-    //     socket.current = messageSocket()
-    //     socket.current.on("getMessage", (data) => {
-    //         // setTypingMessage(data)
-    //         const { senderId, receiverId } = data
-    //         // updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
-    //         console.log("getMessage", data)
-    //     })
+        setMessages(data?.getMessageById[0]?.messages)
+        scrollBottom()
+    }, [username, data])
 
-    //     socket.current.on("connect", (msg) => {
-    //        console.log("connected")
-    //     })
-    //     socket.current.emit("joinRoom", {
-    //         senderId: user?._id,
-    //         receiverId: messagingTo?._id
-    //     })
-    //     return () => {
-    //         socket.current.disconnect()
-    //         console.log("Socket disconnected")
-    //       }
-    // }, [])
-    // useEffect(() => {
-    //     socket.current.emit("join", { username: "joshua" })
-    // })
+    useEffect(() => {
+        messageUpdated && refetch()
+    }, [messageUpdated])
 
+    useEffect(() => {
+    }, [chatbox.current, chatbox])
+
+    useEffect(() => {
+        socket.current = messageSocket()
+        socket.current.on("getMessage", (data) => {
+            // setTypingMessage(data)
+            const { senderId, receiverId } = data
+            updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
+        })
+
+        socket.current.on("connect", (msg) => {
+           console.log("connected")
+        })
+        socket.current.emit("joinRoom", {
+            senderId: user?._id,
+            receiverId: messagingTo?._id
+        })
+        return () => {
+            socket.current.disconnect()
+            console.log("Socket disconnected")
+          }
+    }, [])
     return (
         <IonContent>
             <IonGrid className="max-width-container">{handleView()}</IonGrid>
