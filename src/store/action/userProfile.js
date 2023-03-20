@@ -1,4 +1,4 @@
-import { GET_USER_PROFILE, GET_USER_FRIENDS, GET_USER_MESSAGES } from "./types"
+import { GET_USER_PROFILE, GET_USER_FRIENDS, GET_USER_MESSAGES, MY_NETWORK_RECENT_MESSAGES } from "./types"
 
 export const
     getUserProfile = (data) => {
@@ -18,4 +18,12 @@ export const
             type: GET_USER_MESSAGES,
             payload: data
         }
+    },
+    setMyNetworkRecentMessages = (data) => {
+        return (dispatch) => {
+            dispatch({
+                type: MY_NETWORK_RECENT_MESSAGES,
+                payload: data
+            })
+          }
     }
