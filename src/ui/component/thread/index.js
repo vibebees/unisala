@@ -8,7 +8,7 @@ import "./index.css"
 import ShowMore from "./ShowMore"
 
 const Thread = ({ thread }) => {
-  const { _id, date, postText, upVoteCount, postCommentsCount, upVoted } =
+  const { _id, date, postText, upVoteCount, postCommentsCount, upVoted, saved } =
     thread
   const { firstName, lastName, username } = thread.user || {}
   const [reply, setReply] = useState(false)
@@ -41,7 +41,7 @@ const Thread = ({ thread }) => {
             isReply={false}
           />
           <Reply repliesCount={postCommentsCount} setReply={setReply} />
-          <Save postId={_id} />
+          <Save postId={_id} saved={saved} thread={thread} />
         </div>
       </div>
 

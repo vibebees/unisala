@@ -16,18 +16,18 @@ import {
 } from "@ionic/react"
 import AWS from "aws-sdk"
 import { imageOutline } from "ionicons/icons"
-import { AddPost } from "../../../graphql/user"
+import { AddPost, GetUserPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import "./index.css"
 import { useSelector } from "react-redux"
+import "./index.css"
 
-const S3_BUCKET = "uni-sala"
-const REGION = "us-west-2"
+const S3_BUCKET = "unisala-test"
+const REGION = "ap-south-1"
 
 AWS.config.update({
-  accessKeyId: "AKIAZ6I45TER3Z53WMUW",
-  secretAccessKey: "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"
+  accessKeyId: "AKIAVB2USJPTRQRSNCXR",
+  secretAccessKey: "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"
 })
 
 const myBucket = new AWS.S3({
@@ -48,6 +48,27 @@ export const CreateAPost = ({ setPopup, popup }) => {
 
   const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
+    update: (cache, { data: { addPost } }) => {
+      const post = {
+        ...addPost.post,
+        user: {
+          _id: user._id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          picture: user.picture
+        },
+        upVoteCount: 0,
+        postCommentsCount: 0,
+        upVoted: false,
+        saved: false
+      }
+      const data = cache.readQuery({ query: GetUserPost(user._id, 0) })
+      data && cache.writeQuery({
+        query: GetUserPost(user._id, 0),
+        data: { getUserPost: { ...data.getUserPost, Posts: [post, ...data.getUserPost.Posts] } }
+      })
+    },
     onCompleted: () => {
       present({
         duration: 3000,
@@ -102,7 +123,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
     }
   }
 
-  const fileUpdate = async (fileData, postImage) => {
+  const fileUpdate = (fileData, postImage) => {
     const fName = fileData?.name?.split(".")
     postImage = fName[0] + Date.now() + "." + fName[1]
     setFileName(postImage)
@@ -114,21 +135,20 @@ export const CreateAPost = ({ setPopup, popup }) => {
       Key: fName[0] + Date.now() + "." + fName[1]
     }
 
-    await myBucket
-      .putObject(params)
-      .on("httpUploadProgress", (evt) => {
-        setProgress(Math.round((evt.loaded / evt.total) * 100))
-      })
-      .send((err, data) => {
-        if (err) console.log(err)
-        if (data) console.log(data)
-      })
+    myBucket.upload(params, (err, data) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      console.log("File uploaded successfully:", data.Location)
+    })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     var postImage = null
-    fileData && file && (await fileUpdate(fileData, postImage))
+    fileData && file && fileUpdate(fileData, postImage)
+    console.log(fileName)
     addPost({
       variables: {
         postText: TextChecker(postText),

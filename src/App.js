@@ -108,9 +108,9 @@ const App = () => {
                     />
                   </div>
 
-                  {loggedIn && location.pathname !== "/messages" && (
+                  {/* {loggedIn && location.pathname !== "/messages" && (
                     <MessagePop />
-                  )}
+                  )} */}
 
                   <IonRouterOutlet
                     style={{

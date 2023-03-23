@@ -52,8 +52,16 @@ export const AddComment = gql`
   AddPost = gql`
     mutation addPost($postText: String!, $postImage: String!) {
       addPost(postText: $postText, postImage: $postImage) {
-        success
-        message
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postText
+          postImage
+          date
+        }
       }
     }
   `,
@@ -405,6 +413,14 @@ export const AddComment = gql`
   SavePost = gql`
     mutation save($postId: String!) {
       save(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
+  UnSavePost = gql`
+    mutation unSave($postId: String!) {
+      unSave(postId: $postId) {
         success
         message
       }
