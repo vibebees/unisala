@@ -2,27 +2,27 @@ import { IonIcon, IonItem, IonAvatar, IonLabel, IonButtons } from "@ionic/react"
 import { logOut } from "ionicons/icons"
 import "./index.css"
 import { Link } from "react-router-dom"
-import jwtDecode from "jwt-decode"
 import Authentication from "../authentication"
 import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import Avatar from "../Avatar"
 
 export const ProfilePop = ({
   setPopoverOpen,
   setActiveNavDrop,
   activeNavDrop
 }) => {
-  const accessToken = localStorage?.getItem("accessToken")
-  const decode = accessToken && jwtDecode(accessToken)
+  const { user, loggedIn } = useSelector((state) => state.userProfile)
 
   useEffect(() => {
-    if (!decode) {
+    if (!loggedIn) {
       setActiveNavDrop({
         profile: !activeNavDrop.profile
       })
     }
-  }, [decode])
+  }, [loggedIn])
 
-  if (!decode) {
+  if (!loggedIn) {
     return (
       <Authentication
         activeNavDrop={activeNavDrop}
@@ -33,7 +33,7 @@ export const ProfilePop = ({
 
   return (
     <>
-      <Link to={`/@/${decode?.username}`}>
+      <Link to={`/@/${user?.username}`}>
         <IonItem
           button
           detail={false}
@@ -44,11 +44,7 @@ export const ProfilePop = ({
           lines="none"
         >
           <IonAvatar slot="start">
-            <img
-              src={
-                "https://vz.cnwimg.com/thumb-1200x/wp-content/uploads/2010/10/Chris-Evans-e1587513440370.jpg"
-              }
-            />
+            <Avatar username={user.username} profilePic={user.picture} />
           </IonAvatar>
           <IonLabel>
             <h2
@@ -56,7 +52,7 @@ export const ProfilePop = ({
                 margin: 0
               }}
             >
-              {decode.username}
+              {user.username}
             </h2>
           </IonLabel>
         </IonItem>
@@ -65,6 +61,9 @@ export const ProfilePop = ({
         <IonButtons
           onClick={() => {
             setPopoverOpen(false)
+            setActiveNavDrop({
+              profile: false
+            })
             localStorage.clear()
             window.location.reload()
           }}

@@ -6,18 +6,19 @@ import Save from "./actions/Save"
 import ReplyInput from "../ReplyInput"
 import "./index.css"
 import ShowMore from "./ShowMore"
+import Avatar from "../Avatar"
 
 const Thread = ({ thread }) => {
   const { _id, date, postText, upVoteCount, postCommentsCount, upVoted, saved } =
     thread
-  const { firstName, lastName, username } = thread.user || {}
+  const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
 
   return (
     <IonCard className="thread">
       <div className="thread-header">
         <div className="thread_profile-pic">
-          <img src="https://picsum.photos/200/300" alt="user" />
+          <Avatar profilePic={picture} username={username} />
         </div>
         <div className="thread_userdetails">
           <h3>{firstName + " " + lastName}</h3>

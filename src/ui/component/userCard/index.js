@@ -7,6 +7,7 @@ import {
 } from "@ionic/react"
 import { location } from "ionicons/icons"
 import { Link } from "react-router-dom"
+import Avatar from "../Avatar"
 import "./index.css"
 
 function index({
@@ -26,7 +27,7 @@ function index({
         </div>
 
         <div className="user-card--profile">
-          <img src={profileImg} className="user-profile__img" alt="userName" />
+          <Avatar username={username} profilePic={profileImg} />
         </div>
       </div>
       <IonCardContent className="user-card--info">

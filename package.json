@@ -9,6 +9,8 @@
     "@capacitor/haptics": "4.1.0",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
+    "@dicebear/collection": "^5.3.4",
+    "@dicebear/core": "^5.3.4",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
     "@react-native-async-storage/async-storage": "^1.15.15",
