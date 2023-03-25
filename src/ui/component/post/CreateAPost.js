@@ -56,7 +56,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
-          picture: user.picture
+          picture: user.picture || null
         },
         upVoteCount: 0,
         postCommentsCount: 0,
@@ -64,10 +64,16 @@ export const CreateAPost = ({ setPopup, popup }) => {
         saved: false
       }
       const data = cache.readQuery({ query: GetUserPost(user._id, 0) })
-      data && cache.writeQuery({
-        query: GetUserPost(user._id, 0),
-        data: { getUserPost: { ...data.getUserPost, Posts: [post, ...data.getUserPost.Posts] } }
-      })
+      data &&
+        cache.writeQuery({
+          query: GetUserPost(user._id, 0),
+          data: {
+            getUserPost: {
+              ...data.getUserPost,
+              Posts: [post, ...data.getUserPost.Posts]
+            }
+          }
+        })
     },
     onCompleted: () => {
       present({
@@ -148,7 +154,6 @@ export const CreateAPost = ({ setPopup, popup }) => {
     e.preventDefault()
     var postImage = null
     fileData && file && fileUpdate(fileData, postImage)
-    console.log(fileName)
     addPost({
       variables: {
         postText: TextChecker(postText),

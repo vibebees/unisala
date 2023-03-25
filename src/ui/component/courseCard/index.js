@@ -41,13 +41,7 @@ const CourseCard = ({
     }
   })
   return (
-    <IonCard
-      style={{
-        border: "1px solid #e0e0e0",
-        width: "100%",
-        margin: "10px auto"
-      }}
-    >
+    <IonCard>
       <IonGrid>
         <IonRow>
           <IonCol
