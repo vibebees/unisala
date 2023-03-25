@@ -1,6 +1,5 @@
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../servers"
 import AuthInput from "../AuthInput"
 import "../auth.css"
 import { userServer } from "../../../../servers/endpoints"
@@ -25,6 +24,14 @@ const VerificationCode = ({ verify, email, loading, HandleChange, input }) => {
             mode: "ios"
           })
         }
+      })
+
+      present({
+        duration: 3000,
+        message: "new code has been sent to your email",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
       })
   }
 
