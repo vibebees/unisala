@@ -18,8 +18,7 @@ jobs:
       
     - name: build
       run: |
-        ls
-        npm -v
+        npm i -f
         npm run build
 
     - name: copy file via ssh key
