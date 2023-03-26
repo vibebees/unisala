@@ -1,0 +1,33 @@
+name: Test/Release
+
+on:
+  push:
+    branches: [test, release]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+     
+    - name: build
+      run: |
+        npm i -f
+        npm run build
+
+    - name: copy file via ssh key
+      if: ${{github.ref == 'refs/heads/test'}}
+      uses: appleboy/scp-action@master
+      with:
+        host: "100.26.217.90"
+        username: "ec2-user"
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        source: "build/*"
+        target: "/var/www/html/"
