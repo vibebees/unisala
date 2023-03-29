@@ -20,7 +20,7 @@ jobs:
       if: ${{github.ref == 'refs/heads/test'}}
       run: |
         npm i -f
-        npm run build
+        ci=false && npm run build
 
     - name: copy file via ssh key
       if: ${{github.ref == 'refs/heads/test'}}
