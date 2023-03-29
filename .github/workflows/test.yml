@@ -38,5 +38,6 @@ jobs:
         script: |
           cd unisala-user
           npm i -f
+          npm run build
           cd build
-          mv * /var/www/html
+          sudo mv * /var/www/html
