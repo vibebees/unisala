@@ -16,12 +16,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: build
-      if: ${{github.ref == 'refs/heads/test'}}
-      run: |
-        ci=false && npm i -f
-        ci=false && npm run build
-
     - name: copy file via ssh key
       if: ${{github.ref == 'refs/heads/test'}}
       uses: appleboy/scp-action@master
@@ -30,5 +24,19 @@ jobs:
         username: "ec2-user"
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: "build/*"
-        target: "/var/www/html/"
+        source: "*"
+        target: "~/unisala-user"
+        
+    - name: build
+      if: ${{github.ref == 'refs/heads/test'}}
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: "100.26.217.90"
+        username: "ec2-user"
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd unisala-user
+          npm i -f
+          cd build
+          mv * /var/www/html
