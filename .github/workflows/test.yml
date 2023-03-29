@@ -25,7 +25,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "*"
-        target: "~/unisala-user"
+        target: "~/unisala-web"
         
     - name: build
       if: ${{github.ref == 'refs/heads/test'}}
@@ -36,8 +36,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd unisala-user
+          cd unisala-web
           npm i -f
           npm run build
           cd build
-          sudo mv * /var/www/html
+          sudo cp * /var/www/html
