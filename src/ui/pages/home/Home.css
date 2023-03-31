@@ -9,7 +9,7 @@
     border: none;
     padding-left: 10px;
 }
-    
+
 .searchInput::placeholder{
     color: #7e7d7d !important;
 }
@@ -97,4 +97,14 @@
 
 .badges-card{
     max-width: 250px;
+}
+
+.user-profile-circle{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin: 0px auto;
+    background: #e8f1fa;
+    overflow: hidden;
 }

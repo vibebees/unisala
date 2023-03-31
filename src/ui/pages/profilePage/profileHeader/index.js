@@ -14,6 +14,7 @@ import {
 } from "ionicons/icons"
 import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
 import "./index.css"
+import Avatar from "../../../component/Avatar"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
   const {
@@ -64,14 +65,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
         </div>
 
         <div className="user-profile">
-          <img
-            src={
-              profilePic ??
-              "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1670164432~exp=1670165032~hmac=36b9b40ac0ed5b3a668c8bd6a3773cb706f13b46413881b4a4f1079241cb9eb5"
-            }
-            className="user-profile__img"
-            alt="userName"
-          />
+          <Avatar profilePic={profilePic} username={username} />
         </div>
         <UserCtaBtns profileHeader={data} myProfile={data.myProfile} />
       </div>

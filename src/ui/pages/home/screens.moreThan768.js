@@ -6,6 +6,8 @@ import {
   IonItem,
   IonLabel
 } from "@ionic/react"
+import { useSelector } from "react-redux"
+import Avatar from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
 export const screensMoreThan768 = ({
   activeTab,
@@ -14,6 +16,7 @@ export const screensMoreThan768 = ({
   profileData,
   loggedIn
 }) => {
+  const { user } = useSelector((state) => state.userProfile)
   return (
     <IonCol
       size="auto"
@@ -28,35 +31,18 @@ export const screensMoreThan768 = ({
         <>
           <IonCard>
             <div className="aside-profile">
-              <div>
-                <IonAvatar
-                  style={{
-                    width: "60px",
-                    height: "60px"
-                  }}
-                >
-                  <img
-                    src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1670164432~exp=1670165032~hmac=36b9b40ac0ed5b3a668c8bd6a3773cb706f13b46413881b4a4f1079241cb9eb5"
-                    alt=""
-                  />
-                </IonAvatar>
+              <div className="user-profile-circle">
+                <Avatar username={user.username} profilePic={user.profilePic} size="medium" />
               </div>
             </div>
             <div className="aside-profile-details">
               <IonText className="flex justify-content-center" color="dark">
                 <h6>
-                  {profileData?.data?.getUser?.user?.firstName +
-                    " " +
-                    profileData?.data?.getUser?.user?.lastName}
+                  {user?.firstName + " " + user?.lastName}
                 </h6>
-                <img
-                  src="https://www.svgrepo.com/show/178831/badges-money.svg"
-                  alt=""
-                  width={20}
-                />
               </IonText>
               <IonText color="medium">
-                <p>@{profileData?.data?.getUser?.user?.username}</p>
+                <p>@{user.username}</p>
               </IonText>
             </div>
           </IonCard>

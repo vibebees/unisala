@@ -6,27 +6,38 @@ import Save from "./actions/Save"
 import ReplyInput from "../ReplyInput"
 import "./index.css"
 import ShowMore from "./ShowMore"
+import Avatar from "../Avatar"
+import { Link } from "react-router-dom"
 
 const Thread = ({ thread }) => {
-  const { _id, date, postText, upVoteCount, postCommentsCount, upVoted } =
-    thread
-  const { firstName, lastName, username } = thread.user || {}
+  const {
+    _id,
+    date,
+    postText,
+    upVoteCount,
+    postCommentsCount,
+    upVoted,
+    saved
+  } = thread
+  const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
 
   return (
     <IonCard className="thread">
-      <div className="thread-header">
-        <div className="thread_profile-pic">
-          <img src="https://picsum.photos/200/300" alt="user" />
-        </div>
-        <div className="thread_userdetails">
-          <h3>{firstName + " " + lastName}</h3>
-          <div className="threads_username">
-            <p>@{username}</p>
-            <p className="threads_date">{date.toString().slice(0, 10)}</p>
+      <Link to={`/@/${username}`}>
+        <div className="thread-header">
+          <div className="thread_profile-pic">
+            <Avatar profilePic={picture} username={username} />
+          </div>
+          <div className="thread_userdetails">
+            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
+            <div className="threads_username">
+              <p>@{username}</p>
+              <p className="threads_date">{date.toString().slice(0, 10)}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
 
       <div className="thread_content">
         <div className="thread_comment">
@@ -41,7 +52,7 @@ const Thread = ({ thread }) => {
             isReply={false}
           />
           <Reply repliesCount={postCommentsCount} setReply={setReply} />
-          <Save postId={_id} />
+          <Save postId={_id} saved={saved} thread={thread} />
         </div>
       </div>
 

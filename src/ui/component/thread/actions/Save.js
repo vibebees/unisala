@@ -1,18 +1,52 @@
 import { IonIcon, IonButtons, useIonToast } from "@ionic/react"
 import { bookmark } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import { SavePost } from "../../../../graphql/user"
+import { GetSavedList, SavePost, UnSavePost } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
+import { useSelector } from "react-redux"
 
-function Save({ postId }) {
+function Save({ postId, saved, thread }) {
+  const userId = useSelector((state) => state.userProfile.user._id)
   const [present, dismiss] = useIonToast()
-  const [save] = useMutation(SavePost, {
+  const [save] = useMutation(saved ? UnSavePost : SavePost, {
     variables: { postId },
     context: { server: USER_SERVICE_GQL },
+    update: (cache, { data }) => {
+      cache.modify({
+        id: cache.identify({
+          __typename: "Post",
+          id: postId
+        }),
+        fields: {
+          saved: () => data?.save?.message === "saved"
+        }
+      })
+      if (data?.save?.message === "saved") {
+        const data = cache.readQuery({
+          query: GetSavedList,
+          variables: { userId, page: 0 },
+          context: { server: USER_SERVICE_GQL }
+        })
+        data && cache.writeQuery({
+          query: GetSavedList,
+          variables: { userId, page: 0 },
+          data: {
+            ...data,
+            savedList: {
+              ...data.savedList,
+              Posts: [
+                { ...thread, saved: true },
+                ...data.savedList.Posts
+              ]
+            }
+          }
+        })
+      }
+    },
     onCompleted: () => {
       present({
         duration: 3000,
-        message: "Saved",
+        message: saved ? "Unsaved" : "Saved",
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "primary",
         mode: "ios"
@@ -28,10 +62,11 @@ function Save({ postId }) {
       })
     }
   })
+
   return (
-    <IonButtons className="post-button" onClick={save}>
+    <IonButtons className="post-button" onClick={save} style={{ cursor: "pointer" }}>
       <IonIcon
-        color="medium"
+        color={saved ? "secondary" : "medium"}
         style={{
           margin: "0px",
           fontSize: "23px"

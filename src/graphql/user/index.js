@@ -52,8 +52,16 @@ export const AddComment = gql`
   AddPost = gql`
     mutation addPost($postText: String!, $postImage: String!) {
       addPost(postText: $postText, postImage: $postImage) {
-        success
-        message
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postText
+          postImage
+          date
+        }
       }
     }
   `,
@@ -208,12 +216,12 @@ export const AddComment = gql`
                             lastName
                             username
                             date
-                            } 
+                            }
                 }
             }`,
   GetSavedList = gql`
     query savedList($userId: String!, $page: Float) {
-      savedList(userId: $userId, page: $page) {
+      savedList(userId: $userId, page: $page, pageSize: 5) {
         status {
           success
           message
@@ -311,29 +319,30 @@ export const AddComment = gql`
       }
     }
   `,
-  GetUserPost = (id, page) => gql`
-    query {
-        getUserPost(userId: "${id}", page:${page},pageSize:5) {
-            totalPosts
-            Posts {
-              _id
-              postImage
-              postText
-              date
-              upVoteCount
-              postCommentsCount
-              user {
-                _id
-                firstName
-                lastName
-                picture
-                username
-              }
-              saved
-              upVoted
-            } 
+  GetUserPost = gql`
+    query getUserPost($userId: String!, $page: Float!) {
+      getUserPost(userId: $userId, page: $page, pageSize: 5) {
+        totalPosts
+        Posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          user {
+            _id
+            firstName
+            lastName
+            picture
+            username
+          }
+          saved
+          upVoted
         }
-    }`,
+      }
+    }
+  `,
   GetVoterList = gql`
     query upVoteList($postId: String!, $page: Float) {
       upVoteList(postId: $postId, page: $page) {
@@ -344,34 +353,6 @@ export const AddComment = gql`
           firstName
           lastName
           picture
-        }
-      }
-    }
-  `,
-  GetUserPost2 = (id, page) => gql`
-    query {
-      receivedConnectionList {
-        status {
-          success
-          message
-        }
-        connectionList {
-          _id
-          status
-          date
-          user {
-            firstName
-            lastName
-            username
-            oneLinerBio
-            birthday
-            name
-            role
-            verified
-            active
-            picture
-            location
-          }
         }
       }
     }
@@ -405,6 +386,14 @@ export const AddComment = gql`
   SavePost = gql`
     mutation save($postId: String!) {
       save(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
+  UnSavePost = gql`
+    mutation unSave($postId: String!) {
+      unSave(postId: $postId) {
         success
         message
       }
@@ -455,71 +444,73 @@ export const AddComment = gql`
                 picture
                 coverPicture
                 location
-                
+
             }
         }
     }`,
-    getFriends = gql`
-        query getUsers{
-            getUsers{
-                email
-                picture
-                username
-            }
-        }`,
-    getMessagesGql = gql`
-        query getMessages($_id: String!) {
-            getMessages(_id: $_id){
-                pairs
-                messages{
-                  _id
-                  seen
-                  senderId
-                  receiverId
-                  message{
-                    text
-                  }
-                 
-                }
-            }
-        }`,
-      getMessagesByIdGql = gql`
-        query getMessageById($senderId: ID! $receiverId: ID!) {
-          getMessageById(senderId: $senderId receiverId: $receiverId){
-                pairs
-                messages{
-                  _id
-                  seen
-                  senderId
-                  receiverId
-                  message{
-                    text
-                  }
-                 
-                }
-            }
-        }`,
-    DeleteEducation = gql`
-        mutation deleteEducation($id: String!) {
-            deleteEducation(id: $id) {
-            status {
-                success
-                message
-            }
-            education {
-                private
-                schools {
-                _id
-                school
-                degree
-                major
-                startDate
-                graduationDate
-                }
-            }
-            }
-        }`,
-    AddTestScore = (testScores) => gql`
+  getFriends = gql`
+    query getUsers {
+      getUsers {
+        email
+        picture
+        username
+      }
+    }
+  `,
+  getMessagesGql = gql`
+    query getMessages($_id: String!) {
+      getMessages(_id: $_id) {
+        pairs
+        messages {
+          _id
+          seen
+          senderId
+          receiverId
+          message {
+            text
+          }
+        }
+      }
+    }
+  `,
+  getMessagesByIdGql = gql`
+    query getMessageById($senderId: ID!, $receiverId: ID!) {
+      getMessageById(senderId: $senderId, receiverId: $receiverId) {
+        pairs
+        messages {
+          _id
+          seen
+          senderId
+          receiverId
+          message {
+            text
+          }
+        }
+      }
+    }
+  `,
+  DeleteEducation = gql`
+    mutation deleteEducation($id: String!) {
+      deleteEducation(id: $id) {
+        status {
+          success
+          message
+        }
+        education {
+          private
+          schools {
+            _id
+            school
+            degree
+            major
+            startDate
+            graduationDate
+          }
+        }
+      }
+    }
+  `,
+  AddTestScore = (testScores) => gql`
             mutation addTestScore($testScores: ${testScores}) {
                 addTestScore(testScore: $testScores) {
                 status {
@@ -640,22 +631,25 @@ export const AddComment = gql`
           }
         }
       }
-    }`,
+    }
+  `,
   AcceptConnectRequest = gql`
     mutation acceptConnectRequest($requestorId: String!) {
       acceptConnectRequest(requestorId: $requestorId) {
         success
         message
       }
-    }`,
-    addMessageGql = gql`
+    }
+  `,
+  addMessageGql = gql`
     mutation AddMessage($text: String!, $senderId: ID!, $recipientId: ID!) {
       addMessage(text: $text, senderId: $senderId, recipientId: $recipientId) {
         seen
-        message{
+        message {
           text
         }
         senderId
         recipientId
       }
-    }`
+    }
+  `

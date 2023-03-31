@@ -21,6 +21,7 @@ const messagingRoutes = () => (<>
     <Messages />
   </Route>
 </>)
+
 export const PageRoute = () => (
   <Switch>
     <Suspense fallback="Loading...">

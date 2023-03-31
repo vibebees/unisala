@@ -36,12 +36,7 @@ export const screenLessThan768 = ({
         <SearchBox />
         {loggedIn && (
           <Link to={`/@/${username}`}>
-            <div
-              // onClick={() => {
-              //   setActiveProfile(true)
-              // }}
-              className="profile-pop"
-            >
+            <div className="profile-pop">
               <IonIcon size="large" icon={personCircle} color="medium" />
               {/* {activeProfile && <ProfilePop />} */}
               {/* {activeProfile && (

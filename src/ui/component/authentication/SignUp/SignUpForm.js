@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react"
-import "../auth.css"
 import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
-import { Link } from "react-router-dom"
 import AuthInput from "../AuthInput"
 import axios from "axios"
 import validate from "../../../../utils/components/validate"
 import { userServer } from "../../../../servers/endpoints"
 import { useDispatch } from "react-redux"
 import { registerUser } from "../../../../store/action/authenticationAction"
-let url = require("../../../../servers")
+import "../auth.css"
 
 export const SignUpForm = ({ setauth }) => {
   const [errors, seterrors] = useState({})
@@ -62,11 +60,11 @@ export const SignUpForm = ({ setauth }) => {
             })
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setsave(false)
           present({
             duration: 3000,
-            message: err.response.data.message,
+            message: "Something went wrong!",
             buttons: [{ text: "X", handler: () => dismiss() }],
             color: "primary",
             mode: "ios"

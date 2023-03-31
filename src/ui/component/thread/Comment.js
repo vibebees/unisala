@@ -16,9 +16,9 @@ function Comment({ comment, postId }) {
     commentText,
     repliesCount,
     upVoteCount,
-    upVoted
+    upVoted,
+    saved
   } = comment
-  console.log("🚀 ~ file: Comment.js:21 ~ Comment ~ comment:", comment)
   const [reply, setReply] = useState(false)
 
   return (
@@ -49,7 +49,7 @@ function Comment({ comment, postId }) {
             isReply={true}
           />
           <Reply repliesCount={repliesCount} setReply={setReply} />
-          <Save postId={postId} />
+          {/* <Save postId={postId} saved={saved} /> */}
         </div>
       </div>
 

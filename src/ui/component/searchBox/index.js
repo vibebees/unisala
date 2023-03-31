@@ -11,6 +11,7 @@ import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
 } from "../../../servers/types"
+import Avatar from "../Avatar"
 
 function index() {
   const history = useHistory(),
@@ -116,13 +117,11 @@ function index() {
                     key={index}
                   >
                     <IonAvatar slot="start">
-                      <img
-                        src={
-                          item?.elevatorInfo?.logo ||
-                          item?.picture ||
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
-                        }
-                      />
+                      {
+                        item?.elevatorInfo?.name ? <img
+                        src={ item?.elevatorInfo?.logo || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"}
+                      /> : <Avatar username={item?.username} profilePic={item?.picture} />
+                      }
                     </IonAvatar>
                     <IonLabel>
                       <h2

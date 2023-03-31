@@ -1,9 +1,8 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState } from "react"
+import { useState } from "react"
 import AWS from "aws-sdk"
 
-const S3_BUCKET = "uni-sala"
-const REGION = "us-west-2"
+const S3_BUCKET = "unisala-test"
+const REGION = "ap-south-1"
 
 AWS.config.update({
     accessKeyId: "AKIAZ6I45TER3Z53WMUW",
