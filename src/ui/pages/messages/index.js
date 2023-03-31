@@ -17,6 +17,7 @@ import { messageSend, seenMessage } from "../../../store/action/messengerAction"
 import { io } from "socket.io-client"
 import { useParams } from "react-router"
 import { updateChatMessages } from "../../../utils"
+import { setMyNetworkRecentMessages } from "../../../store/action/userProfile"
 // import notificationSound from "../../../assets/sounds/notification.mp3"
 // import sendingSound from "../../../assets/sounds/sending.mp3"
 const index = () => {
@@ -50,8 +51,9 @@ const index = () => {
         }) || {},
         { connectedList } = myNetwork?.data || {},
         { connectionList } = connectedList || [],
-         [connectionListWithMessage, setConnectionListWithMessage] = useState([]),
+        [connectionListWithMessage, setConnectionListWithMessage] = useState([]),
         [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || []),
+        [recentMessages, setRecentMessages] = useState([]),
         { messageUpdated } = useSelector((state) => state?.userActivity),
         client = useApolloClient(),
         props = {
@@ -62,7 +64,9 @@ const index = () => {
             scrollBottom,
             connectionList,
             messages,
-            connectionListWithMessage
+            connectionListWithMessage,
+            test: recentMessages,
+            recentMessages
         },
         chatListView = () => <Communicators {...props} />,
         chatView = () => <MessagingStation {...props} />,
@@ -85,8 +89,9 @@ const index = () => {
                 return chatView()
             }
             return chatListView()
-        }
-        useEffect(() => {}, [connectionListWithMessage])
+        },
+        dispatch = useDispatch()
+    useEffect(() => { }, [connectionListWithMessage])
     useEffect(() => {
         if (connectionList?.length > 0) {
             socket.current = messageSocket()
@@ -100,14 +105,16 @@ const index = () => {
                 })
             })
 
-            socket.current.on("fetchRecentMessageForNetwork", (recentMessages) => {
+            socket.current.on("fetchRecentMessageForNetwork", (recentMessagesWithNetwork) => {
                 const mergedData = connectionList.map((conn) => {
                     const userId = conn.user._id
-                    const userMessages = recentMessages.filter((msg) => msg.senderId === userId || msg.receiverId === userId)
+                    const userMessages = recentMessagesWithNetwork.filter((msg) => msg.senderId === userId || msg.receiverId === userId)
 
                     return { ...conn, recentMessage: userMessages?.[0] }
-                  })
-                    setConnectionListWithMessage(mergedData)
+                })
+                setConnectionListWithMessage(mergedData)
+                setRecentMessages([...recentMessagesWithNetwork])
+                dispatch(setMyNetworkRecentMessages(mergedData))
             })
 
         }

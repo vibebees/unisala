@@ -54,4 +54,13 @@ updateChatMessages = ({ newMessage, senderId, receiverId, client }) => {
         variables: { senderId, receiverId }
     })
 
+},
+messageSeen = ({ messagingTo = {}, username = "", recentMessages = [], socket = {} }) => {
+    const seeingMessageFor = messagingTo?.username === username ? messagingTo?._id : ""
+    if (seeingMessageFor) {
+        const
+         seenMessage = recentMessages?.filter((item) => item?.user?._id === messagingTo?._id)?.[0],
+         notSeen = !(seenMessage?.recentMessage?.seen)
+         notSeen && socket?.current?.emit("messageSeen", { seenMessageId: seenMessage?.recentMessage?._id })
+    }
 }

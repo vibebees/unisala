@@ -18,15 +18,12 @@ import "./index.css"
 import { TypeBox } from "./typeBox"
 import { MessageItem } from "./messageItem"
 import { Link, useParams } from "react-router-dom"
-import { eye } from "ionicons/icons"
-import { last } from "ramda"
-export const MessagingStation = ({ socket = {}, chatbox = [], messages = [], user = {}, messagingTo = {} }) => {
+import { useSelector } from "react-redux"
+
+export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {}, scrollBottom = () => {}, connectionList = [], messageUpdated = false, test = [], connectionListWithMessage = [] }) => {
 
     const
         { username } = useParams(),
-        lastMessageStatus = () => {
-            last(messages)?.seen && last(messages)?.senderId !== user._id && (<IonIcon icon={eye} size="small" className="seen-eye" />)
-        },
         MessageHistory = () => {
             return (
                 <IonCard className="chats-wrapper">
@@ -55,7 +52,7 @@ export const MessagingStation = ({ socket = {}, chatbox = [], messages = [], use
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
                         {messages?.map((item, index) => <MessageItem key={index} item={item} currentUserId={user?._id} />)}
-                        {lastMessageStatus()}
+                        {/* {lastMessageStatus()} */}
                     </div>
                     <TypeBox socket={socket} />
                 </IonCard>
@@ -73,5 +70,6 @@ export const MessagingStation = ({ socket = {}, chatbox = [], messages = [], use
                 </IonCard>
             )
         }
+
     return username ? <MessageHistory /> : <DefaultMessage />
 }
