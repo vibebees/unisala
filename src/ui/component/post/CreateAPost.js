@@ -22,13 +22,14 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 import "./index.css"
 import { useSelector } from "react-redux"
 
-const S3_BUCKET = "uni-sala"
-const REGION = "us-west-2"
+const S3_BUCKET = "unisala-prod"
+const REGION = "us-east-1"
 
 AWS.config.update({
-  accessKeyId: "AKIAZ6I45TER3Z53WMUW",
-  secretAccessKey: "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"
+  accessKeyId: "AKIAUVJSKU37X3A6PCBA",
+  secretAccessKey: "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"
 })
+const s3 = new AWS.S3()
 
 const myBucket = new AWS.S3({
   params: { Bucket: S3_BUCKET },
@@ -38,7 +39,7 @@ const myBucket = new AWS.S3({
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
-  const [setProgress] = useState(0)
+  const [progress, setProgress] = useState(0)
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
 
@@ -108,7 +109,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
     setFileName(postImage)
 
     const params = {
-      ACL: "public-read",
+      // ACL: "public-read",
       Body: fileData,
       Bucket: S3_BUCKET,
       Key: fName[0] + Date.now() + "." + fName[1]
