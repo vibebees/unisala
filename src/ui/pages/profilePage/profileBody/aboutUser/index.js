@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState } from "react"
+import { useState } from "react"
 import { eyeOff, create, eye } from "ionicons/icons"
 import {
   IonCard,
@@ -13,47 +12,111 @@ import {
   IonToolbar,
   IonTitle,
   IonTextarea,
-  useIonToast
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
-import EditAbout from "../../../../../graphql/user/EditAbout"
-import ToggleView from "../../../../../graphql/user/ToggleView"
+import { EditAbout, ToggleView, getUserGql } from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-function AboutUser({ about, myProfile }) {
-  const [isCardPrivate, setIsCardPrivate] = useState(about?.private)
+function AboutUser({ about, myProfile, username }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const [input, setInput] = useState({
     text: about?.text
   })
   const [editAbout, { loading }] = useMutation(EditAbout, {
+    context: { server: USER_SERVICE_GQL },
     variables: { about: input.text },
+    update: (cache, { data: { editAbout } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              about: {
+                ...getUser.user.about,
+                text: editAbout.about.text
+              }
+            }
+          }
+        }
+      })
+    },
     onCompleted: (data) => {
-      if (data.editAbout.status.success) {
+      if (data?.editAbout.status.success) {
         present({
           duration: 3000,
-          message: "About Updated",
+          message: data.editAbout.status.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
         setIsOpen(false)
       }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
     }
   })
+
   const [toggleView] = useMutation(ToggleView, {
+    context: { server: USER_SERVICE_GQL },
     variables: { card: "about" },
+    update: (cache, { data: { toggleView } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
+      })
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              about: {
+                ...getUser.user.about,
+                private: toggleView.private
+              }
+            }
+          }
+        }
+      })
+    },
     onCompleted: (data) => {
       if (data.toggleView.status.success) {
         present({
           duration: 3000,
-          message: data.toggleView.status.message,
+          message: about.private ? "View made public" : "View made private",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
-        setIsCardPrivate(!isCardPrivate)
       }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
     }
   })
 
@@ -62,15 +125,11 @@ function AboutUser({ about, myProfile }) {
   }
   const [present, dismiss] = useIonToast()
 
-  if (!myProfile && (!about?.text || about?.Private)) {
-    return ""
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
     editAbout()
-    setIsOpen(false)
   }
+
   return (
     <>
       <IonCard className="mb-2">
@@ -80,7 +139,7 @@ function AboutUser({ about, myProfile }) {
             <div className="inline-flex">
               <IonIcon
                 className="grey-icon-32 mr-1"
-                icon={!isCardPrivate ? eyeOff : eye}
+                icon={about.private ? eyeOff : eye}
                 onClick={() => {
                   toggleView()
                 }}
@@ -97,16 +156,22 @@ function AboutUser({ about, myProfile }) {
         {myProfile && !about?.text ? (
           <IonCardContent className="center-text">
             <p>Share something about yourself</p>
-            <IonButton color="primary" mode="ios" className="icon-text ">
+            <IonButton
+              color="primary"
+              mode="ios"
+              className="icon-text "
+              onClick={() => setIsOpen(true)}
+            >
               Add About
             </IonButton>
           </IonCardContent>
         ) : (
           <IonCardContent>
-            <p>{input?.text}</p>
+            <p style={{ fontSize: "1.15rem" }}>{about?.text}</p>
           </IonCardContent>
         )}
       </IonCard>
+
       <IonModal
         onDidDismiss={() => setIsOpen(false)}
         isOpen={isOpen}
@@ -137,7 +202,7 @@ function AboutUser({ about, myProfile }) {
             </div>
 
             <IonButton type="submit" mode="ios" expand="block">
-              Save Changes
+              {loading ? <IonSpinner /> : "Save Changes"}
             </IonButton>
           </form>
         </IonContent>

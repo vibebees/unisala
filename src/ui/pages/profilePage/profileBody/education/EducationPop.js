@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import {
   IonButton,
@@ -10,10 +8,15 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-  useIonToast
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
-import AddEducation from "../../../../../graphql/user/AddEducation"
-import EditEducation from "../../../../../graphql/user/EditEducation"
+import {
+  AddEducation,
+  EditEducation,
+  getUserGql
+} from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const EducationPop = ({
   isOpen,
@@ -21,10 +24,53 @@ const EducationPop = ({
   setInput,
   isEdit,
   input,
-  setSchoolList
+  username
 }) => {
-  const [executeMutation, { data }] = useMutation(
-    isEdit ? EditEducation : AddEducation
+  const [executeMutation, { loading }] = useMutation(
+    isEdit ? EditEducation : AddEducation,
+    {
+      context: { server: USER_SERVICE_GQL },
+      update: (cache, { data }) => {
+        const { getUser } = cache.readQuery({
+          query: getUserGql,
+          variables: { username }
+        })
+        cache.writeQuery({
+          query: getUserGql,
+          variables: { username },
+          data: {
+            getUser: {
+              ...getUser,
+              user: {
+                ...getUser.user,
+                education:
+                  data?.addEducation?.education ||
+                  data?.editEducation?.education
+              }
+            }
+          }
+        })
+      },
+      onCompleted: () => {
+        present({
+          duration: 3000,
+          message: isEdit ? "Education Edited" : "Education Added",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+        setIsOpen(false)
+      },
+      onError: (error) => {
+        present({
+          duration: 3000,
+          message: error.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
+    }
   )
   const [present, dismiss] = useIonToast()
   const handelChange = (e) => {
@@ -34,6 +80,24 @@ const EducationPop = ({
   }
   const handelSubmit = (e) => {
     e.preventDefault()
+    if (input.school.length < 3) {
+      return present({
+        duration: 3000,
+        message: "School name can't be empty",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    }
+    if (input.startDate < 4 || input.graduationDate < 4) {
+      return present({
+        duration: 3000,
+        message: "Dates can't be empty",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    }
     executeMutation({
       variables: {
         id: input?._id,
@@ -44,37 +108,8 @@ const EducationPop = ({
         graduationDate: input?.graduationDate
       }
     })
-    isEdit &&
-      setSchoolList((prev) => {
-        return prev.map((item) => {
-          if (item._id === input?._id) {
-            return {
-              ...item,
-              school: input?.school,
-              degree: input?.degree,
-              major: input?.major,
-              startDate: input?.startDate,
-              graduationDate: input?.graduationDate
-            }
-          }
-          return item
-        })
-      })
-
-    setIsOpen(false)
   }
-  useEffect(() => {
-    if (data?.addEducation?.status?.success) {
-      present({
-        duration: 3000,
-        message: "Education Added",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
-      setSchoolList(data?.addEducation?.education?.schools)
-    }
-  }, [data])
+
   return (
     <IonModal
       onDidDismiss={() => {
@@ -134,6 +169,7 @@ const EducationPop = ({
               name="startDate"
               onIonChange={handelChange}
               placeholder="Start Date"
+              value={input?.startDate}
             ></IonInput>
           </div>
           <div className="mb-1">
@@ -144,10 +180,11 @@ const EducationPop = ({
               name="graduationDate"
               onIonChange={handelChange}
               placeholder="Graduation Date"
+              value={input?.graduationDate}
             ></IonInput>
           </div>
           <IonButton type="submit" mode="ios" expand="block">
-            Save Changes
+            {loading ? <IonSpinner /> : "Save Changes"}
           </IonButton>
         </form>
       </IonContent>

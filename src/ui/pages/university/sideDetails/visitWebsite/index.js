@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 
 const VisitWebsite = () => {
     const [popup, setPopup] = React.useState(false)
-    const { uniData, isSideBar } = useSelector((store) => store.University)
+    const { uniData, isSideBar } = useSelector((store) => store?.university)
 
     return (
         !isSideBar?.visitWebsiteEmpty && (

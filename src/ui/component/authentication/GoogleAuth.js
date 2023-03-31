@@ -1,22 +1,42 @@
-import { useRef, useState } from "react"
-import "./auth.css"
+import { useRef } from "react"
+import { useIonToast } from "@ionic/react"
 import { useScript } from "../../../hooks/useScript"
 import axios from "axios"
-import urls from "../../../utils/urls"
+import urls from "../../../servers"
+import { userServer } from "../../../servers/endpoints"
+import "./auth.css"
 
 export const GoogleAuth = () => {
+  const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef()
-  const [user, setuser] = useState(false)
   const onGoogleSignIn = (user) => {
-    let userCred = user
-    axios.post(urls["base"] + "/googleLogin", userCred).then((res) => {
-      console.log(res)
-    })
+    const { credential } = user
+    axios
+      .post(userServer + `/auth/google`, { token: credential })
+      .then((res) => {
+        if (res.data.success) {
+          localStorage.setItem("accessToken", res?.data.accessToken)
+          localStorage.setItem("refreshToken", res?.data.refreshToken)
+          window.innerWidth < 768
+            ? window.location.replace("/home")
+            : window.location.reload()
+        }
+        if (!res.data.success) {
+          present({
+            duration: 3000,
+            message: res.data.message,
+            buttons: [{ text: "X", handler: () => dismiss() }],
+            color: "primary",
+            mode: "ios"
+          })
+        }
+      })
   }
+
   useScript("https://accounts.google.com/gsi/client", () => {
     window.google.accounts.id.initialize({
       client_id:
-        "495426079334-c0l6u5292ur5q0shvv7cq3dp4rl7d5pc.apps.googleusercontent.com", // here's your Google ID
+        "487917910098-28vlg3tsath5h6qgu8bvdlfnep20du3s.apps.googleusercontent.com", // here's your Google ID
       callback: onGoogleSignIn,
       auto_select: false
     })

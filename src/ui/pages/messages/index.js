@@ -1,68 +1,158 @@
 // eslint-disable-next-line no-use-before-define
-import React from "react"
 import { IonContent, IonGrid, IonRow, IonCol } from "@ionic/react"
-import ChatList from "./chatList"
-import Chats from "./chats"
+import { Communicators } from "./chatList"
+import { MessagingStation } from "./chats"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import useDocTitle from "../../../hooks/useDocTitile"
 import "./index.css"
-
+import { MESSAGE_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
+import { ConnectedList, getFriends, getMessagesByIdGql } from "../../../graphql/user"
+import { useQuery, useApolloClient } from "@apollo/client"
+import { useRef, useEffect, useState } from "react"
+import useSound from "use-sound"
+import { messageSocket } from "../../../servers/endpoints"
+import { messageSocketAddress } from "../../../servers/index"
+import { useDispatch, useSelector } from "react-redux"
+import { messageSend, seenMessage } from "../../../store/action/messengerAction"
+import { io } from "socket.io-client"
+import { useParams } from "react-router"
+import { updateChatMessages } from "../../../utils"
+import { setMyNetworkRecentMessages } from "../../../store/action/userProfile"
+// import notificationSound from "../../../assets/sounds/notification.mp3"
+// import sendingSound from "../../../assets/sounds/sending.mp3"
 const index = () => {
     useDocTitle("Messages")
-    const windowWidth = useWindowWidth()
-    const chatList = [
-        {
-            id: "1",
-            message:
-                "Why drag something out when you could get it done in one fell swoop?",
-            name: "Sara Hall",
-            university: "Tribhuvan University",
-            image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-        },
-        {
-            id: "2",
-            message: "These are just the first of many shortcuts",
-            name: "Ali Khan",
-            university: "Harvard University",
-            image: "https://filmfare.wwmindia.com/thumb/content/2019/aug/hrithikroshanweb1565958352.jpg?width=1200&height=900"
-        },
-        {
-            id: "3",
-            message:
-                "Lorem ipsum dolor sit amet consec tetur adipisicing elit tetur adipisicing elit.",
-            name: "Ram Kumar",
-            university: "New York",
-            image: "https://i.pinimg.com/originals/1d/df/a9/1ddfa98a7e262b691614bc30923a40d5.jpg"
-        },
-        {
-            id: "4",
-            message: "Supercharge your Messenger experience",
-            name: "Hari Paudel",
-            university: "Pokhara University",
-            image: "https://qph.cf2.quoracdn.net/main-qimg-8e8ea0637a05240ab9c8409ff1860ac9-lq"
-        }
-    ]
-    const handleView = () => {
-        if (windowWidth >= 768) {
-            return (
-                <IonRow>
-                    <IonCol>
-                        <ChatList chatList={chatList} />
-                    </IonCol>
+    const
+        windowWidth = useWindowWidth(),
+        { getUsers } = [],
+        socket = useRef(),
+        chatbox = useRef(null),
+        { username } = useParams(),
+        { messagingTo } = useSelector((state) => state?.userActivity),
+        { user } = useSelector((state) => state?.userProfile)
+    const
 
-                    <IonCol className="messages-wrapper">
-                        <Chats chatList={chatList} />
-                    </IonCol>
-                </IonRow>
-            )
-        }
-        const chatUserId = parseInt(location.hash.split("#")[1])
-        if (chatUserId) {
-            return <Chats chatList={chatList} />
-        }
-        return <ChatList chatList={chatList} />
-    }
+        { loading, error, data, refetch } = messagingTo?._id && useQuery(getMessagesByIdGql, {
+            variables: {
+                // currentUser
+                senderId: user?._id,
+                receiverId: messagingTo?._id
+            },
+            context: { server: MESSAGE_SERVICE_GQL }
+        }) || {},
+        scrollBottom = () => {
+            if (chatbox.current) {
+                chatbox.current.scrollTop = chatbox.current.scrollHeight
+            }
+        },
+        myNetwork = useQuery(ConnectedList, {
+            context: { server: USER_SERVICE_GQL },
+            variables: { userId: user._id }
+        }) || {},
+        { connectedList } = myNetwork?.data || {},
+        { connectionList } = connectedList || [],
+        [connectionListWithMessage, setConnectionListWithMessage] = useState([]),
+        [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || []),
+        [recentMessages, setRecentMessages] = useState([]),
+        { messageUpdated } = useSelector((state) => state?.userActivity),
+        client = useApolloClient(),
+        props = {
+            socket,
+            chatbox,
+            user,
+            messagingTo,
+            scrollBottom,
+            connectionList,
+            messages,
+            connectionListWithMessage,
+            test: recentMessages,
+            recentMessages
+        },
+        chatListView = () => <Communicators {...props} />,
+        chatView = () => <MessagingStation {...props} />,
+        handleView = () => {
+            if (windowWidth >= 768) {
+                return (
+                    <IonRow>
+                        <IonCol>
+                            {chatListView()}
+                        </IonCol>
 
+                        <IonCol className="messages-wrapper">
+                            {chatView()}
+                        </IonCol>
+                    </IonRow>
+                )
+            }
+            const chatUserId = parseInt(location.hash.split("#")[1])
+            if (chatUserId) {
+                return chatView()
+            }
+            return chatListView()
+        },
+        dispatch = useDispatch()
+    useEffect(() => { }, [connectionListWithMessage])
+    useEffect(() => {
+        if (connectionList?.length > 0) {
+            socket.current = messageSocket()
+            socket.current.emit("queryRecentMessageForNetwork", {
+                userId: user?._id,
+                connectedList: connectionList.map((o) => {
+                    return {
+                        senderId: user?._id,
+                        receiverId: o?.user?._id
+                    }
+                })
+            })
+
+            socket.current.on("fetchRecentMessageForNetwork", (recentMessagesWithNetwork) => {
+                const mergedData = connectionList.map((conn) => {
+                    const userId = conn.user._id
+                    const userMessages = recentMessagesWithNetwork.filter((msg) => msg.senderId === userId || msg.receiverId === userId)
+
+                    return { ...conn, recentMessage: userMessages?.[0] }
+                })
+                setConnectionListWithMessage(mergedData)
+                setRecentMessages([...recentMessagesWithNetwork])
+                dispatch(setMyNetworkRecentMessages(mergedData))
+            })
+
+        }
+
+    }, [connectionList])
+    useEffect(() => {
+        setMessages(data?.getMessageById[0]?.messages)
+        scrollBottom()
+    }, [username, data])
+
+    useEffect(() => {
+        messageUpdated && refetch()
+    }, [messageUpdated])
+
+    useEffect(() => {
+    }, [chatbox.current, chatbox])
+
+    useEffect(() => {
+        socket.current = messageSocket()
+        socket.current.on("getMessage", (data) => {
+            // setTypingMessage(data)
+            const { senderId, receiverId } = data
+            updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
+        })
+
+        socket.current.on("connect", (msg) => {
+            console.log("connected")
+        })
+        socket.current.emit("joinRoom", {
+            senderId: user?._id,
+            receiverId: messagingTo?._id,
+            userId: user?._id
+        })
+        return () => {
+            socket.current.disconnect()
+            console.log("Socket disconnected")
+        }
+    }, [])
     return (
         <IonContent>
             <IonGrid className="max-width-container">{handleView()}</IonGrid>

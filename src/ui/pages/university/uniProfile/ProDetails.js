@@ -24,7 +24,7 @@ const ProDetails = () => {
             window.removeEventListener("resize", handleResize)
         }
     })
-    const { uniData } = useSelector((store) => store.University)
+    const { uniData } = useSelector((store) => store?.university)
     return (
         <IonGrid className={width > 720 ? "ion-padding" : ""}>
             <IonRow>

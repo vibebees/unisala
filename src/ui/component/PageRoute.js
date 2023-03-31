@@ -1,51 +1,74 @@
+import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
-import { HomePage } from "../pages/home/index"
-import { UniversityPage } from "../pages/university"
-import PageNotFound from "./PageNotFound"
-import ProfilePage from "../pages/profilePage"
-import Messages from "../pages/messages"
-import MyNetwork from "../pages/myNetwork"
-import Notifications from "../pages/notifications"
-import UniSearchResults from "../pages/uniSearchResults"
-import UserSearchResults from "../pages/userSearchResults"
+import ProtectedRoute from "../../utils/lib/protectedRoute"
 
-export const PageRoute = ({ setPopup }) => (
-    <Switch>
-        <Route exact path="/home">
-            <HomePage setPopup={setPopup} />
-        </Route>
+const HomePage = lazy(() => import("../pages/home"))
+const ProfilePage = lazy(() => import("../pages/profilePage"))
+const Messages = lazy(() => import("../pages/messages"))
+const MyNetwork = lazy(() => import("../pages/myNetwork"))
+const Notifications = lazy(() => import("../pages/notifications"))
+const UniversityPage = lazy(() => import("../pages/university"))
+const UniSearchResults = lazy(() => import("../pages/uniSearchResults"))
+const UserSearchResults = lazy(() => import("../pages/userSearchResults"))
+const PageNotFound = lazy(() => import("./PageNotFound"))
+const Login = lazy(() => import("../pages/login"))
 
-        <Route exact path="/">
-            <Redirect to="/home" />
-        </Route>
+const messagingRoutes = () => (<>
+  <Route path="/messages" exact>
+    <Messages />
+  </Route>
+  <Route path="/messages/:username" exact>
+    <Messages />
+  </Route>
+</>)
+export const PageRoute = () => (
+  <Switch>
+    <Suspense fallback="Loading...">
+      <Route exact path="/home" >
+        <HomePage />
+      </Route>
 
-        <Route exact path="/university/:id">
-            <UniversityPage />
-        </Route>
+      <Route exact path="/" >
+        <Redirect to="/home" />
+      </Route>
 
-        <Route path="/university/:id">
-            <UniversityPage />
-        </Route>
-        <Route path="/@/:username">
-            <ProfilePage />
-        </Route>
-        <Route path="/messages">
-            <Messages />
-        </Route>
-        <Route path="/mynetwork">
-            <MyNetwork />
-        </Route>
-        <Route path="/notifications">
-            <Notifications />
-        </Route>
-        <Route path="/search/uni/:name">
-            <UniSearchResults />
-        </Route>
-        <Route path="/search/users/:name">
-            <UserSearchResults />
-        </Route>
-        <Route path="">
-            <PageNotFound />
-        </Route>
-    </Switch>
+      <Route exact path="/university/:id">
+        <UniversityPage />
+      </Route>
+
+      <Route path="/@/:username" exact>
+        <ProfilePage />
+      </Route>
+
+      {messagingRoutes()}
+
+      <Route path="/mynetwork" exact>
+        <ProtectedRoute>
+          <MyNetwork />
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/notifications" exact>
+        <ProtectedRoute>
+          <Notifications />
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/search/uni/:name" exact>
+        <UniSearchResults />
+      </Route>
+
+      <Route path="/search/users/:name" exact>
+        <UserSearchResults />
+      </Route>
+
+      <Route path="/login" exact>
+        <Login />
+      </Route>
+
+      <Route path="" exact>
+        <PageNotFound />
+      </Route>
+    </Suspense>
+  </Switch>
 )

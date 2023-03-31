@@ -1,8 +1,9 @@
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
 import AuthInput from "../AuthInput"
 import "../auth.css"
+import { userServer } from "../../../../servers/endpoints"
 
 const VerificationCode = ({ verify, email, loading, HandleChange, input }) => {
   const [present, dismiss] = useIonToast()
@@ -13,7 +14,7 @@ const VerificationCode = ({ verify, email, loading, HandleChange, input }) => {
 
   const receiveCode = () => {
     axios
-      .post(urls["base"] + `/user/sendVerficationMail`, { email })
+      .post(userServer + `/sendVerficationMail`, { email })
       .then((res) => {
         if (res.data.success) {
           present({

@@ -2,8 +2,9 @@ import { useState } from "react"
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
 import AuthInput from "../../AuthInput"
-import urls from "../../../../../utils/urls"
+import urls from "../../../../../servers"
 import "../../auth.css"
+import { userServer } from "../../../../../servers/endpoints"
 
 export const EmailVerify = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
@@ -30,7 +31,7 @@ export const EmailVerify = ({ setauth }) => {
     }
     setLoading(true)
     axios
-      .post(urls["base"] + `/user/sendVerficationMail`, { email })
+      .post(userServer + `/sendVerficationMail`, { email })
       .then((res) => {
         setLoading(false)
         if (res.data.success) {

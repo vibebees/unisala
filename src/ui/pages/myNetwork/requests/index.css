@@ -1,15 +1,14 @@
-.pending-title-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .requests-header {
     display: flex;
     justify-content: center;
     width: 100%;
     gap: 4rem;
     border-bottom: 1px solid #ddd;
+}
+
+.requests-header h2{
+    font-size: 1.3rem;
+    cursor: pointer;
 }
 
 .requests-header--active-tab {

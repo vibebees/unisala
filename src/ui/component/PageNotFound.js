@@ -1,8 +1,6 @@
-// eslint-disable-next-line no-use-before-define
-import React from "react"
 import { IonButton, IonContent, IonText } from "@ionic/react"
 
-export const PageNotFound = () => {
+export const PageNotFound = ({ msg }) => {
     return (
         <IonContent color="light">
             <div
@@ -25,7 +23,7 @@ export const PageNotFound = () => {
                 </IonText>
                 <br />
                 <IonText color="dark">
-                    <h6>We can’t seem to find the page you are looking for</h6>
+                    <h6>{msg}</h6>
                 </IonText>
                 <br />
                 <IonButton routerLink="/home">Go Home</IonButton>

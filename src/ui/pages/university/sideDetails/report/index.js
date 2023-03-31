@@ -30,8 +30,8 @@ const Report = () => {
 
     const [more, setMore] = React.useState(false)
 
-    const { uniData } = useSelector((store) => store.University)
-    const { isSideBar } = useSelector((store) => store.University)
+    const { uniData } = useSelector((store) => store?.university)
+    const { isSideBar } = useSelector((store) => store?.university)
 
     // const {
     //     academics,

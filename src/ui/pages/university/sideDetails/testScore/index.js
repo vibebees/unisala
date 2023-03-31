@@ -26,7 +26,7 @@ const TestScore = () => {
         }
     })
 
-    const { uniData, isSideBar } = useSelector((store) => store.University)
+    const { uniData, isSideBar } = useSelector((store) => store?.university)
 
     return (
         !isSideBar?.testScoreEmpty && (

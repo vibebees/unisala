@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   IonButtons,
   IonButton,
@@ -10,44 +9,70 @@ import {
   IonTitle,
   IonIcon,
   IonInput,
-  useIonToast
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
 import { create } from "ionicons/icons"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
-import "./index.css"
 import { useMutation } from "@apollo/client"
-import EditProfile from "../../../../../graphql/user/EditProfile"
+import { EditProfile, getUserGql } from "../../../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import "./index.css"
 
-function index({ data }) {
+function index({ profileHeader }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =
-    data
-  const [input, setInput] = useState({})
-  useEffect(() => {
-    setInput({
-      firstName: firstName,
-      lastName: lastName,
-      username: username,
-      oneLinerBio: oneLinerBio,
-      location: location,
-      profilePic: profilePic
-    })
-  }, [data])
+    profileHeader
+  const [input, setInput] = useState({
+    firstName,
+    lastName,
+    username,
+    oneLinerBio,
+    location,
+    profilePic
+  })
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
-    variables: {
-      ...input
-    },
-    onCompleted: () => {
-      present({
-        duration: 3000,
-        message: "Profile Updated",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
+    context: { server: USER_SERVICE_GQL },
+    variables: { ...input },
+    update: (cache, { data: { editProfile } }) => {
+      const { getUser } = cache.readQuery({
+        query: getUserGql,
+        variables: { username }
       })
-      setIsOpen(false)
+      cache.writeQuery({
+        query: getUserGql,
+        variables: { username },
+        data: {
+          getUser: {
+            ...getUser,
+            user: {
+              ...getUser.user,
+              ...editProfile.user
+            }
+          }
+        }
+      })
+    },
+    onCompleted: (data) => {
+      if (data?.editProfile?.status?.success) {
+        present({
+          duration: 3000,
+          message: "Profile Updated",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      } else {
+        present({
+          duration: 3000,
+          message: data?.editProfile?.status.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
     },
     onError: (error) => {
       present({
@@ -59,6 +84,7 @@ function index({ data }) {
       })
     }
   })
+
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value })
   }
@@ -67,6 +93,7 @@ function index({ data }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     editProfile()
+    setIsOpen(false)
   }
 
   return (
@@ -188,7 +215,7 @@ function index({ data }) {
               mode="ios"
               expand="block"
             >
-              Save Changes
+              {loading ? <IonSpinner /> : "Save Changes"}
             </IonButton>
           </form>
         </IonContent>

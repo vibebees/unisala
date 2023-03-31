@@ -1,23 +1,31 @@
 // eslint-disable-next-line no-use-before-define
-import React from "react"
-import { IonAvatar, IonItem, IonLabel, IonText } from "@ionic/react"
-export const MessageItem = ({ image, university, name, message }) => {
+import React, { useState } from "react"
+import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel, IonRow, IonText } from "@ionic/react"
+import { addCircle, helpCircle, informationCircle } from "ionicons/icons"
+export const MessageItem = ({ firstName, username, lastName, picture, _id, image, message = {}, seen = false }) => {
+
+    // const [seen, setSeen] = useState(false)
+    // // if current message box is open for any user that should put the seen status to true
+    // if (currentUserId === item?.sender?._id) {
+    //     setSeen(true)
+    // }
     return (
         <div className="message-pop-item">
             <IonItem
                 style={{
                     margin: "0px",
-                    padding: "0px"
+                    padding: "0px",
+                    backgroundColor: "red"
                 }}
                 lines="none"
             >
                 <IonAvatar slot="start">
-                    <img src={image} />
+                    <img src={"https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"} />
                 </IonAvatar>
                 <IonLabel>
                     <div className="flex ">
                         {" "}
-                        <h2>{name}</h2>
+                        <h2>{firstName + " " + lastName}</h2>
                         <img
                             src="https://www.svgrepo.com/show/178831/badges-money.svg"
                             alt=""
@@ -29,13 +37,22 @@ export const MessageItem = ({ image, university, name, message }) => {
                             margin: 0
                         }}
                     >
-                        {university}
+                        {username}
                     </p>
                 </IonLabel>
             </IonItem>
-            <IonText>
-                <p className="message-pop-item-msg">{message}</p>
-            </IonText>
+            <IonRow>
+                <IonCol>
+                    {}
+                    <IonText style={{ fontWeight: seen ? "normal" : "bold" }} >
+                    { message?.text?.length > 20 ? message?.text?.slice(0, 20) + "..." : message?.text?.slice(0, 20)}
+                    </IonText>
+                </IonCol>
+                <IonCol>
+                   { !seen && <IonIcon icon={helpCircle} color = "blue" />}
+                </IonCol>
+            </IonRow>
+
         </div>
     )
 }

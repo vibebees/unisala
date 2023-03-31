@@ -1,22 +1,22 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { combineReducers } from "redux"
 import introductionReducer from "./intro"
 import auth from "./auth"
-
+import storage from "redux-persist/lib/storage"
 import { persistReducer } from "redux-persist"
 import University from "./university"
 import UserProfile from "./userProfile"
+import userActivity from "./userActivity"
 
 const rootReducer = combineReducers({
     introductionQuestionAnswered: introductionReducer,
     auth: auth,
-    University: University,
-    UserProfile: UserProfile
+    university: University,
+    userProfile: UserProfile,
+    userActivity
 })
 const persistConfig = {
-    key: "development0",
-    storage: AsyncStorage,
-    whitelist: ["introductionQuestionAnswered"]
+    key: "development2",
+    storage
 }
 
 export default persistReducer(persistConfig, rootReducer)

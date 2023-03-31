@@ -59,4 +59,7 @@
         width: 300px;
         top: 3rem;
     }
+    .search-box {
+        width: 100%;
+    }
 }

@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
 import VerificationCode from "./VerificationCode"
 import "../auth.css"
+import { userServer } from "../../../../servers/endpoints"
 
 const SignUpVerification = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
@@ -31,7 +32,7 @@ const SignUpVerification = ({ setauth }) => {
     }
     setLoading(true)
     axios
-      .post(urls["base"] + `/user/verifyEmail`, {
+      .post(userServer + `/verifyEmail`, {
         ...input,
         email: localStorage.getItem("email")
       })

@@ -26,8 +26,7 @@ import {
 } from "ionicons/icons"
 import { Link } from "react-router-dom"
 import "./index.css"
-export const VerifyPostPop = () => {
-    const [popup, setPopup] = React.useState(false)
+export const VerifyPostPop = ({ popup = false, setPopup }) => {
 
     return (
         <IonModal

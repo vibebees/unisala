@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../utils/urls"
+import urls from "../../../../servers"
 import "../auth.css"
+import { userServer } from "../../../../servers/endpoints"
 
 export const UserNotVerified = ({ setauth, auth }) => {
   const { email } = auth
@@ -12,7 +13,7 @@ export const UserNotVerified = ({ setauth, auth }) => {
   const verify = () => {
     setsave(true)
     axios
-      .post(urls["base"] + `/user/sendVerficationMail`, {
+      .post(userServer + `/sendVerficationMail`, {
         email
       })
       .then((res) => {

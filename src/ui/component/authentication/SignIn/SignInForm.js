@@ -1,11 +1,11 @@
 import { useState } from "react"
-import "../auth.css"
 import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
 import AuthInput from "../AuthInput"
-import axios from "axios"
-import urls from "../../../../utils/urls"
+import { userServer } from "../../../../servers/endpoints"
+import { useDispatch } from "react-redux"
+import { loginUser } from "../../../../store/action/authenticationAction"
 
-export const SignUpForm = ({ setauth }) => {
+export const SignInForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState({
@@ -20,8 +20,9 @@ export const SignUpForm = ({ setauth }) => {
   }
 
   const submitHandler = (e) => {
-    e.preventDefault()
-  }
+      e.preventDefault()
+    },
+    dispatch = useDispatch()
 
   const login = () => {
     if (!input.email && !input.password) {
@@ -35,38 +36,9 @@ export const SignUpForm = ({ setauth }) => {
     }
 
     setLoading(true)
-    axios
-      .post(urls["base"] + `/user/login`, input)
-      .then((res) => {
-        setLoading(false)
-        if (res.data.success) {
-          localStorage.setItem("accessToken", res?.data.accessToken)
-          localStorage.setItem("refreshToken", res?.data.refreshToken)
-          window.location.reload()
-        }
-        if (!res.data.success) {
-          present({
-            duration: 3000,
-            message: res.data.message,
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-          if (res.data.status === 302) {
-            setauth({ state: "userNotVerified", email: input.email })
-          }
-        }
-      })
-      .catch((err) => {
-        setLoading(false)
-        present({
-          duration: 3000,
-          message: err.response.data.message,
-          buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "primary",
-          mode: "ios"
-        })
-      })
+    dispatch(
+      loginUser({ userServer, input, setLoading, present, dismiss, setauth })
+    )
   }
 
   return (
@@ -123,4 +95,4 @@ export const SignUpForm = ({ setauth }) => {
     </form>
   )
 }
-export default SignUpForm
+export default SignInForm

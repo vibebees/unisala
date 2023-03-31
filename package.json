@@ -24,6 +24,7 @@
     "aws-sdk": "^2.1231.0",
     "axios": "^0.24.0",
     "chart.js": "^3.7.1",
+    "eslint-plugin-promise": "^6.1.1",
     "graphql": "^16.6.0",
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
@@ -43,7 +44,9 @@
     "redux-persist": "^6.0.0",
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.4.1",
+    "socket.io-client": "^4.6.1",
     "typescript": "^4.1.3",
+    "use-sound": "^4.0.1",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
     "workbox-broadcast-update": "^5.1.4",
@@ -62,7 +65,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -88,7 +92,9 @@
   "devDependencies": {
     "@capacitor/cli": "4.6.3",
     "eslint": "^8.33.0",
-    "eslint-config-standard": "^17.0.0"
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1"
   },
-  "description": "An Ionic project"
+  "description": "Unisala"
 }

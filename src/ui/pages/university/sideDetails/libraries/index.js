@@ -25,7 +25,7 @@ const Libraries = ({ librariesAnimate }) => {
     //         }
     //     ]
     // }
-    const { uniData, isSideBar } = useSelector((store) => store.University)
+    const { uniData, isSideBar } = useSelector((store) => store?.university)
 
     return (
         !isSideBar.libraryEmpty && (

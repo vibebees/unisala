@@ -1,97 +1,130 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useState } from "react"
-import { chatbubbles, personAdd, personRemove } from "ionicons/icons"
+import { useState } from "react"
+import { chatbubbles, personAdd } from "ionicons/icons"
+import { IonButton, IonIcon, useIonToast } from "@ionic/react"
+import { useMutation } from "@apollo/client"
 import {
-  IonButton,
-  IonIcon,
-  useIonToast,
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonContent
-} from "@ionic/react"
+  SendConnectRequest,
+  AcceptConnectRequest
+} from "../../../../../graphql/user/"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import EditProfile from "../editProfile"
 import "./UserCtaBtns.css"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-function UserCtaBtns({ data, myProfile }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [connect, setConnect] = useState(false)
-  const [present, dismiss] = useIonToast()
+function UserCtaBtns({ profileHeader, setProfileHeader, myProfile }) {
   let windowWidth = useWindowWidth()
+  const [present, dismiss] = useIonToast()
+  const [connectionType, setConnectionType] = useState(
+    profileHeader.connectionType
+  )
 
-  const connectToUser = (msg) => {
-    present({
-      duration: 3000,
-      message: msg,
-      buttons: [{ text: "X", handler: () => dismiss() }],
-      color: "primary",
-      mode: "ios"
-    })
-    setConnect(!connect)
-  }
+  const [sendConnectRequest] = useMutation(SendConnectRequest, {
+    onCompleted: (data) => {
+      if (data.sendConnectRequest.success) {
+        setConnectionType({ status: "pending", receiverId: profileHeader._id })
+        present({
+          duration: 3000,
+          message: "Connect request sent",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
+    },
+    context: { server: USER_SERVICE_GQL }
+  })
 
-  const buttonToShow = () => {
-    if (myProfile) {
-      return <EditProfile data={data} />
+  const [acceptConnectRequest] = useMutation(AcceptConnectRequest, {
+    onCompleted: (data) => {
+      if (data.acceptConnectRequest.success) {
+        setConnectionType({ status: "accepted" })
+        present({
+          duration: 3000,
+          message: "Connect request accepted",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
     }
+  })
+
+  const ButtonToShow = () => {
+    if (myProfile) {
+      return (
+        <EditProfile
+          profileHeader={profileHeader}
+          setProfileHeader={setProfileHeader}
+        />
+      )
+    }
+
+    if (!connectionType) {
+      return (
+        <IonButton
+          color="secondary"
+          mode="ios"
+          className="icon-text"
+          onClick={() => {
+            sendConnectRequest({
+              variables: { receiverId: profileHeader._id }
+            })
+          }}
+        >
+          <IonIcon className="white-icon-32 mr-1" icon={personAdd} />
+          {windowWidth >= 768 && "Connect"}
+        </IonButton>
+      )
+    }
+
+    if (
+      connectionType.receiverId === profileHeader._id &&
+      connectionType.status === "pending"
+    ) {
+      return (
+        <IonButton color="light" mode="ios" className="icon-text">
+          <IonIcon className="grey-icon-32 mr-1" icon={personAdd} />
+          {windowWidth >= 768 && "Requested"}
+        </IonButton>
+      )
+    }
+
+    if (
+      connectionType.requestorId === profileHeader._id &&
+      connectionType.status === "pending"
+    ) {
+      return (
+        <IonButton
+          color="success"
+          mode="ios"
+          className="icon-text"
+          onClick={() => {
+            acceptConnectRequest({
+              variables: { requestorId: profileHeader._id }
+            })
+          }}
+        >
+          <IonIcon className="white-icon-32 mr-1" icon={personAdd} />
+          {windowWidth >= 768 && "Accept"}
+        </IonButton>
+      )
+    }
+
     return (
       <>
         <IonButton color="light" mode="ios" className="icon-text">
           <IonIcon className="grey-icon-32 mr-1" icon={chatbubbles} />
           {windowWidth >= 768 && "Message"}
         </IonButton>
-        {connect ? (
-          <IonButton
-            color="light"
-            mode="ios"
-            className="icon-text"
-            onClick={() => {
-              connectToUser("Connection Removed")
-            }}
-          >
-            <IonIcon className="grey-icon-32 mr-1" icon={personRemove} />
-            {windowWidth >= 768 && "Disconnect"}
-          </IonButton>
-        ) : (
-          <IonButton
-            color="secondary"
-            mode="ios"
-            className="icon-text"
-            onClick={() => {
-              connectToUser("Connection Request Sent")
-            }}
-          >
-            <IonIcon className="white-icon-32 mr-1" icon={personAdd} />
-            {windowWidth >= 768 && "Connect"}
-          </IonButton>
-        )}
       </>
     )
   }
+
   return (
     <>
-      <div className="user-cta-btns">{buttonToShow()}</div>
-      <IonModal isOpen={isOpen}>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Modal</IonTitle>
-            <IonButtons slot="end">
-              <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum
-            quidem recusandae ducimus quos reprehenderit. Veniam, molestias
-            quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui.
-            Eaque, dicta.
-          </p>
-        </IonContent>
-      </IonModal>
+      <div className="user-cta-btns">
+        <ButtonToShow />
+      </div>
     </>
   )
 }

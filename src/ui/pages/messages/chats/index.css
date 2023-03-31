@@ -70,6 +70,13 @@
     justify-content: center;
 }
 
+.seen-eye{
+    margin-top: 50px;
+    margin-left: -30px;
+    /* background-color: #4c8dff; */
+    color: #4c8dff;
+}
+
 @media (min-width: 768px) {
     .msg-text-received {
         max-width: 60%;
