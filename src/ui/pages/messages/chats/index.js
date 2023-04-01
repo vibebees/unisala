@@ -20,7 +20,7 @@ import { MessageItem } from "./messageItem"
 import { Link, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 
-export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {}, scrollBottom = () => {}, connectionList = [], messageUpdated = false, test = [], connectionListWithMessage = [] }) => {
+export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {} }) => {
 
     const
         { username } = useParams(),

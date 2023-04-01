@@ -48,9 +48,10 @@ const index = () => {
         { connectionList } = connectedList || [],
         [connectionListWithMessage, setConnectionListWithMessage] = useState([]),
         [messages, setMessages] = useState(data?.getMessagesById?.[0]?.messages || []),
-        [recentMessages, setRecentMessages] = useState([]),
         { messageUpdated } = useSelector((state) => state?.userActivity),
         client = useApolloClient(),
+        { recentMessages } = useSelector((store) => store?.userProfile),
+
         props = {
             socket,
             chatbox,
@@ -59,8 +60,6 @@ const index = () => {
             scrollBottom,
             connectionList,
             messages,
-            connectionListWithMessage,
-            test: recentMessages,
             recentMessages
         },
         chatListView = () => <Communicators {...props} />,
@@ -106,7 +105,6 @@ const index = () => {
                     const userMessages = recentMessagesWithNetwork.filter((msg) => msg.senderId === userId || msg.receiverId === userId)
                     return { ...conn, recentMessage: userMessages?.[0] }
                 })
-                setRecentMessages([...recentMessagesWithNetwork])
                 dispatch(setMyNetworkRecentMessages(mergedData))
             })
 
@@ -131,7 +129,7 @@ const index = () => {
             // setTypingMessage(data)
             updateChatMessages({ newMessage: data, client, user })
             //also need to update the last message on chat list
-            // updatedRecentMessages({ newMessage: data, user, recentMessages })
+            updatedRecentMessages({ newMessage: data, user, recentMessages, dispatch, setMyNetworkRecentMessages })
 
         })
 

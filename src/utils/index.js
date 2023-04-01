@@ -109,7 +109,7 @@ export const
             notSeen && socket?.current?.emit("messageSeen", { seenMessageId: seenMessage?.recentMessage?._id })
         }
     },
-    updatedRecentMessages = (newMessage, user, recentMessages) => {
+    updatedRecentMessages = ({ newMessage, user, recentMessages, setMyNetworkRecentMessages, dispatch }) => {
         const { senderId, receiverId } = getSenderAndReceiver(newMessage, user)
 
         const updatedRecentMessages = recentMessages?.map((item) => {
@@ -121,5 +121,6 @@ export const
             }
             return item
           })
-          console.log("updatedRecentMessages", updatedRecentMessages)
+          dispatch(setMyNetworkRecentMessages(updatedRecentMessages))
+
     }

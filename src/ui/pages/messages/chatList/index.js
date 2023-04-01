@@ -21,12 +21,11 @@ import { sendMessageTo } from "../../../../store/action/userActivity"
 import { last } from "ramda"
 import { messageSeen } from "../../../../utils"
 
-export const Communicators = ({ socket = {}, messages = [], connectionList = [], connectionListWithMessage = [], messagingTo = {} }) => {
+export const Communicators = ({ recentMessages = [], messagingTo = {} }) => {
     const
         [isOpen, setIsOpen] = useState(false),
         { user } = useSelector((store) => store?.userProfile),
         { username } = useParams(),
-        { recentMessages } = useSelector((store) => store?.userProfile),
         //  { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
         dispatch = useDispatch(),
         // { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
@@ -52,7 +51,6 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [],
             messageSeen({ messagingTo, username, recentMessages })
         }
     }, [username])
-    console.log({ recentMessages })
     return (
         <>
             <IonCard className="chat-list">
