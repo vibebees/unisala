@@ -474,8 +474,8 @@ export const AddComment = gql`
     }
   `,
   getMessagesByIdGql = gql`
-    query getMessageById($senderId: ID!, $receiverId: ID!) {
-      getMessageById(senderId: $senderId, receiverId: $receiverId) {
+    query getMessagesByIdGql($senderId: ID!, $receiverId: ID!) {
+      getMessagesByIdGql(senderId: $senderId, receiverId: $receiverId) {
         pairs
         messages {
           _id

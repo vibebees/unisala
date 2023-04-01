@@ -34,12 +34,11 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [],
             dispatch(sendMessageTo((friend?.user)))
         },
         // connectionListWithMessage is merged list of connectionList and it's recent message
-        handleMessagesList = (communicators = recentMessages || (connectionListWithMessage || connectionList)) => {
-
-            if (!communicators) {
+        handleMessagesList = () => {
+            if (!recentMessages) {
                 return <div>No messages</div>
             }
-            return communicators?.map((item, index) => {
+            return recentMessages?.map((item, index) => {
                 // const { id, avatar, name, username, message, time } = c
                 // console.log("item", item)
                 return <Link to={`/messages/${item?.user?.username}`} key={index} onClick={() => setUpChat(item)}>
@@ -53,6 +52,7 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [],
             messageSeen({ messagingTo, username, recentMessages })
         }
     }, [username])
+    console.log({ recentMessages })
     return (
         <>
             <IonCard className="chat-list">

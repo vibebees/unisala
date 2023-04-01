@@ -9,14 +9,10 @@ import { MESSAGE_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
 import { ConnectedList, getFriends, getMessagesByIdGql } from "../../../graphql/user"
 import { useQuery, useApolloClient } from "@apollo/client"
 import { useRef, useEffect, useState } from "react"
-import useSound from "use-sound"
 import { messageSocket } from "../../../servers/endpoints"
-import { messageSocketAddress } from "../../../servers/index"
 import { useDispatch, useSelector } from "react-redux"
-import { messageSend, seenMessage } from "../../../store/action/messengerAction"
-import { io } from "socket.io-client"
 import { useParams } from "react-router"
-import { updateChatMessages } from "../../../utils"
+import { updateChatMessages, updatedRecentMessages } from "../../../utils"
 import { setMyNetworkRecentMessages } from "../../../store/action/userProfile"
 // import notificationSound from "../../../assets/sounds/notification.mp3"
 // import sendingSound from "../../../assets/sounds/sending.mp3"
@@ -29,16 +25,15 @@ const index = () => {
         chatbox = useRef(null),
         { username } = useParams(),
         { messagingTo } = useSelector((state) => state?.userActivity),
-        { user } = useSelector((state) => state?.userProfile)
-    const
-
-        { loading, error, data, refetch } = messagingTo?._id && useQuery(getMessagesByIdGql, {
+        { user } = useSelector((state) => state?.userProfile),
+        { loading, error, data } = messagingTo?._id && useQuery(getMessagesByIdGql, {
             variables: {
                 // currentUser
                 senderId: user?._id,
                 receiverId: messagingTo?._id
             },
-            context: { server: MESSAGE_SERVICE_GQL }
+            context: { server: MESSAGE_SERVICE_GQL },
+            nextFetchPolicy: "cache-first"
         }) || {},
         scrollBottom = () => {
             if (chatbox.current) {
@@ -109,10 +104,8 @@ const index = () => {
                 const mergedData = connectionList.map((conn) => {
                     const userId = conn.user._id
                     const userMessages = recentMessagesWithNetwork.filter((msg) => msg.senderId === userId || msg.receiverId === userId)
-
                     return { ...conn, recentMessage: userMessages?.[0] }
                 })
-                setConnectionListWithMessage(mergedData)
                 setRecentMessages([...recentMessagesWithNetwork])
                 dispatch(setMyNetworkRecentMessages(mergedData))
             })
@@ -121,12 +114,12 @@ const index = () => {
 
     }, [connectionList])
     useEffect(() => {
-        setMessages(data?.getMessageById[0]?.messages)
+        setMessages(data?.getMessagesByIdGql[0]?.messages)
         scrollBottom()
     }, [username, data])
 
     useEffect(() => {
-        messageUpdated && refetch()
+        // messageUpdated && refetch()
     }, [messageUpdated])
 
     useEffect(() => {
@@ -136,8 +129,10 @@ const index = () => {
         socket.current = messageSocket()
         socket.current.on("getMessage", (data) => {
             // setTypingMessage(data)
-            const { senderId, receiverId } = data
-            updateChatMessages({ newMessage: data, senderId: senderId, receiverId: receiverId, client })
+            updateChatMessages({ newMessage: data, client, user })
+            //also need to update the last message on chat list
+            // updatedRecentMessages({ newMessage: data, user, recentMessages })
+
         })
 
         socket.current.on("connect", (msg) => {
@@ -145,8 +140,7 @@ const index = () => {
         })
         socket.current.emit("joinRoom", {
             senderId: user?._id,
-            receiverId: messagingTo?._id,
-            userId: user?._id
+            receiverId: messagingTo?._id
         })
         return () => {
             socket.current.disconnect()

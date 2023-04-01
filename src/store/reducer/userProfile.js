@@ -1,4 +1,4 @@
-import { GET_USER_PROFILE, GET_USER_FRIENDS, MY_NETWORK_RECENT_MESSAGES } from "../action/types"
+import { GET_USER_PROFILE, GET_USER_FRIENDS, MY_NETWORK_RECENT_MESSAGES, MY_NETWORK_RECENT_MESSAGE } from "../action/types"
 
 const initialState = {
   user: {},
