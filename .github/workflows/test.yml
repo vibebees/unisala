@@ -2,7 +2,7 @@ name: Test/Release
 
 on:
   push:
-    branches: [test, release]
+    branches: [test]
 
 jobs:
   deploy:
