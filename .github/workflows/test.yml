@@ -20,7 +20,7 @@ jobs:
       if: ${{github.ref == 'refs/heads/test'}}
       uses: appleboy/scp-action@master
       with:
-        host: "100.26.217.90"
+        host: "3.89.121.12"
         username: "ec2-user"
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
@@ -31,7 +31,7 @@ jobs:
       if: ${{github.ref == 'refs/heads/test'}}
       uses: appleboy/ssh-action@v0.1.8
       with:
-        host: "100.26.217.90"
+        host: "3.89.121.12"
         username: "ec2-user"
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
