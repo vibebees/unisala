@@ -17,9 +17,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name : install & build
-      run: |
-        npm i
-        npm run build-win
+    - run: npm i
+    - run: CI=false npm run build
 
     - name: copy file via ssh key
       if: ${{github.ref == 'refs/heads/test'}}
