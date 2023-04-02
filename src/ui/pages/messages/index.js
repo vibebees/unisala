@@ -126,6 +126,7 @@ const index = () => {
     useEffect(() => {
         socket.current = messageSocket()
         socket.current.on("getMessage", (data) => {
+            console.log("new message", data)
             // setTypingMessage(data)
             updateChatMessages({ newMessage: data, client, user })
             //also need to update the last message on chat list
@@ -139,6 +140,9 @@ const index = () => {
         socket.current.emit("joinRoom", {
             senderId: user?._id,
             receiverId: messagingTo?._id
+        })
+        socket.current.on("joinedRoom", (roomName) => {
+            console.log("joined room", roomName)
         })
         return () => {
             socket.current.disconnect()
