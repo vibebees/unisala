@@ -1,8 +1,14 @@
 // eslint-disable-next-line no-use-before-define
-import React from "react"
+import React, { useState } from "react"
 import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel, IonRow, IonText } from "@ionic/react"
 import { addCircle, helpCircle, informationCircle } from "ionicons/icons"
-export const MessageItem = ({ firstName, username, lastName, picture, _id, image, message, seen }) => {
+export const MessageItem = ({ firstName, username, lastName, picture, _id, image, message = {}, seen = false }) => {
+
+    // const [seen, setSeen] = useState(false)
+    // // if current message box is open for any user that should put the seen status to true
+    // if (currentUserId === item?.sender?._id) {
+    //     setSeen(true)
+    // }
     return (
         <div className="message-pop-item">
             <IonItem
@@ -38,12 +44,12 @@ export const MessageItem = ({ firstName, username, lastName, picture, _id, image
             <IonRow>
                 <IonCol>
                     {}
-                    <IonText style={{ fontWeight: !seen ? "bold" : "normal" }} >
-                    { message?.text.length > 20 ? message?.text.slice(0, 20) + "..." : message?.text.slice(0, 20)}
+                    <IonText style={{ fontWeight: seen ? "normal" : "bold" }} >
+                    { message?.text?.length > 20 ? message?.text?.slice(0, 20) + "..." : message?.text?.slice(0, 20)}
                     </IonText>
                 </IonCol>
                 <IonCol>
-                    <IonIcon icon={helpCircle} color = "blue" />
+                   { !seen && <IonIcon icon={helpCircle} color = "blue" />}
                 </IonCol>
             </IonRow>
 
