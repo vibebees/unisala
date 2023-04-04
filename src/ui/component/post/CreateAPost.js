@@ -22,26 +22,27 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import "./index.css"
 
-const S3_BUCKET = "unisala-test"
-const REGION = "ap-south-1"
+const S3_BUCKET = "unisala-prod"
+
+// const S3_BUCKET = "unisala-test"
 
 AWS.config.update({
-  accessKeyId: "AKIAVB2USJPTRQRSNCXR",
-  secretAccessKey: "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"
+  accessKeyId: "AKIAUVJSKU37X3A6PCBA",
+  secretAccessKey: "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",
+  region: "us-east-1"
+
+  // accessKeyId: "AKIAVB2USJPTRQRSNCXR",
+  // secretAccessKey: "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",
+  // region: "ap-south-1"
 })
 
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET },
-  region: REGION
-})
+const myBucket = new AWS.S3()
 
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
-  const [setProgress] = useState(0)
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
-
   const [file, setfile] = useState("")
   const [fileData, setFileData] = useState("")
   const [fileName, setFileName] = useState("")
@@ -63,10 +64,16 @@ export const CreateAPost = ({ setPopup, popup }) => {
         upVoted: false,
         saved: false
       }
-      const data = cache.readQuery({ query: GetUserPost(user._id, 0) })
+      const data = cache.readQuery({
+        query: GetUserPost,
+        variables: { userId: user._id, page: 0 },
+        context: { server: USER_SERVICE_GQL }
+      })
       data &&
         cache.writeQuery({
-          query: GetUserPost(user._id, 0),
+          query: GetUserPost,
+          variables: { userId: user._id, page: 0 },
+          context: { server: USER_SERVICE_GQL },
           data: {
             getUserPost: {
               ...data.getUserPost,
@@ -129,37 +136,41 @@ export const CreateAPost = ({ setPopup, popup }) => {
     }
   }
 
-  const fileUpdate = (fileData, postImage) => {
-    const fName = fileData?.name?.split(".")
-    postImage = fName[0] + Date.now() + "." + fName[1]
-    setFileName(postImage)
+  const fileUpdate = async () => {
+    const fName = fileData?.name?.split(".") || ""
+    const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
+    if (fileData && file) {
+      const params = {
+        Body: fileData,
+        Bucket: S3_BUCKET,
+        Key: uploadFilename
+      }
 
-    const params = {
-      ACL: "public-read",
-      Body: fileData,
-      Bucket: S3_BUCKET,
-      Key: fName[0] + Date.now() + "." + fName[1]
+      await myBucket.putObject(params).send((err) => {
+        console.log(err)
+        if (err) {
+          present({
+            duration: 3000,
+            message: err.message,
+            buttons: [{ text: "X", handler: () => dismiss() }],
+            color: "primary",
+            mode: "ios"
+          })
+        }
+      })
     }
 
-    myBucket.upload(params, (err, data) => {
-      if (err) {
-        console.error(err)
-        return
+    addPost({
+      variables: {
+        postText: TextChecker(postText),
+        postImage: uploadFilename
       }
-      console.log("File uploaded successfully:", data.Location)
     })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    var postImage = null
-    fileData && file && fileUpdate(fileData, postImage)
-    addPost({
-      variables: {
-        postText: TextChecker(postText),
-        postImage: fileName
-      }
-    })
+    fileUpdate()
     setPopup(false)
   }
 
