@@ -21,7 +21,7 @@ import { sendMessageTo } from "../../../../store/action/userActivity"
 import { last } from "ramda"
 import { messageSeen } from "../../../../utils"
 
-export const Communicators = ({ recentMessages = [], messagingTo = {} }) => {
+export const Communicators = ({ recentMessages = [], messagingTo = {}, socket = {} }) => {
     const
         [isOpen, setIsOpen] = useState(false),
         { user } = useSelector((store) => store?.userProfile),
@@ -48,7 +48,7 @@ export const Communicators = ({ recentMessages = [], messagingTo = {} }) => {
 
     useEffect(() => {
         if (username) {
-            messageSeen({ messagingTo, username, recentMessages })
+            messageSeen({ messagingTo, username, recentMessages, socket, user })
         }
     }, [username])
     return (

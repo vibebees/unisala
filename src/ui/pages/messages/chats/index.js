@@ -20,10 +20,15 @@ import { MessageItem } from "./messageItem"
 import { Link, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 
-export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {} }) => {
+export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {}, dispatch = () => {} }) => {
 
     const
+        lastMessageStatus = () => {
+            return (<strong>read</strong>)
+        },
         { username } = useParams(),
+        { messageSeenBy } = useSelector((store) => store?.userActivity),
+        showEye = messageSeenBy?.includes(messagingTo?._id),
         MessageHistory = () => {
             return (
                 <IonCard className="chats-wrapper">
@@ -34,7 +39,7 @@ export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], use
 
                         <IonLabel>
                             <div className="flex justify-content-start">
-                                <h2>{messagingTo?.firstName + " " + messagingTo.lastName}</h2>
+                                <h2>{messagingTo?.firstName + " " + messagingTo?.lastName}</h2>
                                 <img
                                     src="https://www.svgrepo.com/show/178831/badges-money.svg"
                                     alt=""
@@ -51,10 +56,10 @@ export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], use
 
                     </IonItem>
                     <div ref={chatbox} className="chat-box">
-                        {messages?.map((item, index) => <MessageItem key={index} item={item} currentUserId={user?._id} />)}
-                        {/* {lastMessageStatus()} */}
+                        {messages?.map((item, index) =>
+                        <MessageItem showEye = {showEye} index= {index} key={index} item={item} currentUserId={user?._id} messageSize ={messages?.length - 1 }/>)}
                     </div>
-                    <TypeBox socket={socket} />
+                    <TypeBox socket={socket} dispatch = {dispatch}/>
                 </IonCard>
             )
 
@@ -70,6 +75,5 @@ export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], use
                 </IonCard>
             )
         }
-
     return username ? <MessageHistory /> : <DefaultMessage />
 }

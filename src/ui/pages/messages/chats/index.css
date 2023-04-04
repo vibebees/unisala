@@ -39,7 +39,9 @@
 .chat-box__msg {
     clear: both;
 }
-
+.chat-box__msg-right {
+    float: right;
+}
 .msg-text-received {
     background: #98999b;
     width: fit-content;
@@ -60,9 +62,11 @@
     color: #fff;
     margin: 0.5rem;
     background: #4c8dff;
-    margin: 1rem;
+    margin: 0.7rem;
 }
-
+.msg-seen-eye {
+    float: right;
+}
 .chats-title {
     display: flex;
     flex-direction: column;

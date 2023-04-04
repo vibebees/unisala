@@ -2,7 +2,9 @@
 import { getMessagesByIdGql } from "../graphql/user"
 
 export const
-
+    lastMsgWasSentByMe = (message, user) => {
+        return message?.senderId === user?._id
+    },
     getSenderAndReceiver = (message, user) => {
 
         let { senderId, receiverId } = message
@@ -100,13 +102,21 @@ export const
         // })
 
     },
-    messageSeen = ({ messagingTo = {}, username = "", recentMessages = [], socket = {} }) => {
+    messageSeen = ({ messagingTo = {}, username = "", recentMessages = [], socket = {}, user = {} }) => {
         const seeingMessageFor = messagingTo?.username === username ? messagingTo?._id : ""
-        if (seeingMessageFor) {
+        if (socket?.current?.emit && !lastMsgWasSentByMe(recentMessages?.[0]?.recentMessage, user)) {
             const
                 seenMessage = recentMessages?.filter((item) => item?.user?._id === messagingTo?._id)?.[0],
                 notSeen = !(seenMessage?.recentMessage?.seen)
-            notSeen && socket?.current?.emit("messageSeen", { seenMessageId: seenMessage?.recentMessage?._id })
+              if (seenMessage?.recentMessage?._id) {
+                console.log("triggering message seen")
+                socket?.current?.emit("messageSeen", {
+                    seenMessageId: seenMessage?.recentMessage?._id,
+                    senderId: seenMessage?.recentMessage?.senderId,
+                    whoSaw: user?._id,
+                    receiverId: messagingTo?._id
+               })
+              }
         }
     },
     updatedRecentMessages = ({ newMessage, user, recentMessages, setMyNetworkRecentMessages, dispatch }) => {

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
 import { updateChatMessages, updatedRecentMessages } from "../../../utils"
 import { setMyNetworkRecentMessages } from "../../../store/action/userProfile"
+import { addSeenEye, removeSeenEye } from "../../../store/action/userActivity"
 // import notificationSound from "../../../assets/sounds/notification.mp3"
 // import sendingSound from "../../../assets/sounds/sending.mp3"
 const index = () => {
@@ -60,7 +61,8 @@ const index = () => {
             scrollBottom,
             connectionList,
             messages,
-            recentMessages
+            recentMessages,
+            dispatch: useDispatch()
         },
         chatListView = () => <Communicators {...props} />,
         chatView = () => <MessagingStation {...props} />,
@@ -102,9 +104,9 @@ const index = () => {
             socket.current.on("fetchRecentMessageForNetwork", (recentMessagesWithNetwork) => {
                 const mergedData = connectionList.map((conn) => {
                     const userId = conn.user._id
-                    const userMessages = recentMessagesWithNetwork.filter((msg) => msg.senderId === userId || msg.receiverId === userId)
+                    const userMessages = recentMessagesWithNetwork.filter((msg) => msg?.senderId === userId || msg?.receiverId === userId)
                     return { ...conn, recentMessage: userMessages?.[0] }
-                })
+                }) || []
                 dispatch(setMyNetworkRecentMessages(mergedData))
             })
 
@@ -125,13 +127,16 @@ const index = () => {
 
     useEffect(() => {
         socket.current = messageSocket()
+
         socket.current.on("getMessage", (data) => {
-            console.log("new message", data)
             // setTypingMessage(data)
             updateChatMessages({ newMessage: data, client, user })
             //also need to update the last message on chat list
             updatedRecentMessages({ newMessage: data, user, recentMessages, dispatch, setMyNetworkRecentMessages })
 
+        })
+        socket.current.on("messageRead", (seenMsg) => {
+            dispatch(addSeenEye(seenMsg.receiverId))
         })
 
         socket.current.on("connect", (msg) => {
@@ -148,6 +153,13 @@ const index = () => {
             socket.current.disconnect()
             console.log("Socket disconnected")
         }
+    }, [])
+
+    useEffect(() => {
+        socket?.current?.emit("addUser", { userId: user?._id, user })
+        socket?.current?.on("getUser", (allUsers) => {
+            console.log({ allUsers })
+        })
     }, [])
     return (
         <IonContent>

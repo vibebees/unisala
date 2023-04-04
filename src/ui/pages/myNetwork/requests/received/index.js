@@ -12,8 +12,7 @@ function index() {
     context: { server: USER_SERVICE_GQL }
   })
 
-  return receivedConnectionList?.receivedConnectionList?.connectionList
-    .length ? (
+  return receivedConnectionList?.receivedConnectionList?.connectionList?.length ? (
     <div className="grid-3">
       {receivedConnectionList?.receivedConnectionList?.connectionList.map(
         (item, index) => {
