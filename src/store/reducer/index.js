@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
     userActivity
 })
 const persistConfig = {
-    key: "developmentF",
+    key: "developmentF2",
     storage
 }
 

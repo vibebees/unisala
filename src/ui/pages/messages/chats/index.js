@@ -18,9 +18,10 @@ import "./index.css"
 import { TypeBox } from "./typeBox"
 import { MessageItem } from "./messageItem"
 import { Link, useParams } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { messageSeen } from "../../../../utils"
 
-export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {}, dispatch = () => {} }) => {
+export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], user = {}, messagingTo = {}, recentMessages = [] }) => {
 
     const
         lastMessageStatus = () => {
@@ -29,6 +30,7 @@ export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], use
         { username } = useParams(),
         { messageSeenBy } = useSelector((store) => store?.userActivity),
         showEye = messageSeenBy?.includes(messagingTo?._id),
+        dispatch = useDispatch(),
         MessageHistory = () => {
             return (
                 <IonCard className="chats-wrapper">
@@ -75,5 +77,10 @@ export const MessagingStation = ({ socket = {}, messages = [], chatbox = [], use
                 </IonCard>
             )
         }
+        useEffect(() => {
+            if (username) {
+              messageSeen({ messagingTo, username, recentMessages, socket, user, dispatch })
+            }
+          }, [username, recentMessages])
     return username ? <MessageHistory /> : <DefaultMessage />
 }

@@ -45,12 +45,6 @@ export const Communicators = ({ recentMessages = [], messagingTo = {}, socket = 
                 </Link>
             })
         }
-
-    useEffect(() => {
-        if (username) {
-            messageSeen({ messagingTo, username, recentMessages, socket, user })
-        }
-    }, [username])
     return (
         <>
             <IonCard className="chat-list">

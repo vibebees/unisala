@@ -12,8 +12,8 @@ import { useRef, useEffect, useState } from "react"
 import { messageSocket } from "../../../servers/endpoints"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
-import { updateChatMessages, updatedRecentMessages } from "../../../utils"
-import { setMyNetworkRecentMessages } from "../../../store/action/userProfile"
+import { getSenderAndReceiver, updateChatMessages, updatedRecentMessages } from "../../../utils"
+import { setMyNetworkRecentMessages, updateUnreadMessages } from "../../../store/action/userProfile"
 import { addSeenEye, removeSeenEye } from "../../../store/action/userActivity"
 // import notificationSound from "../../../assets/sounds/notification.mp3"
 // import sendingSound from "../../../assets/sounds/sending.mp3"
@@ -129,6 +129,7 @@ const index = () => {
         socket.current = messageSocket()
 
         socket.current.on("getMessage", (data) => {
+
             // setTypingMessage(data)
             updateChatMessages({ newMessage: data, client, user })
             //also need to update the last message on chat list
