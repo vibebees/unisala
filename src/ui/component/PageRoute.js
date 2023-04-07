@@ -14,12 +14,14 @@ const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 
 const messagingRoutes = () => (<>
+ <ProtectedRoute>
   <Route path="/messages" exact>
     <Messages />
   </Route>
   <Route path="/messages/:username" exact>
     <Messages />
   </Route>
+  </ProtectedRoute>
 </>)
 
 export const PageRoute = () => (
