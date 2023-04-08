@@ -9,94 +9,101 @@ import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { Link } from "react-router-dom"
 import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"
-import { useLazyQuery } from "@apollo/client"
-import { GetUserPost } from "../../../graphql/user"
+import { useLazyQuery, useQuery } from "@apollo/client"
+import { ConnectedList, getNewsFeed, GetUserPost } from "../../../graphql/user"
 import { userServer } from "../../../servers/endpoints"
 import axios from "axios"
+import { useSelector } from "react-redux"
+import { USER_SERVICE_GQL } from "../../../servers/types"
 const HomeFeed = ({ userInfo }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
+  const { user } = useSelector((store) => store?.userProfile)
+  const { data, loading, error } = useQuery(getNewsFeed, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { userId: user._id }
+  }),
+  { fetchMyNewsFeed } = data || {}
+  // const homefeed = [
+  //   {
+  //     type: "uni",
+  //     post: {
+  //       name: "Ligma University",
+  //       location: "Hammond, LA",
+  //       reviews: {
+  //         total: 67,
+  //         rating: 4.96
+  //       },
+  //       averageRating: "A",
+  //       acceptanceRate: 90,
+  //       actRange: {
+  //         min: 19,
+  //         max: 24
+  //       }
+  //     }
+  //   },
+  //   {
+  //     type: "uni",
+  //     post: {
+  //       name: "Southeastern University",
+  //       location: "Hammond, LA",
+  //       reviews: {
+  //         total: 67,
+  //         rating: 4.96
+  //       },
+  //       averageRating: "A",
+  //       acceptanceRate: 90,
+  //       actRange: {
+  //         min: 19,
+  //         max: 24
+  //       }
+  //     }
+  //   },
+  //   {
+  //     type: "post",
+  //     post: {
+  //       _id: "1",
+  //       postText: "It's the month of December! New month, new spirit! 💪",
+  //       postImage:
+  //         "https://s3.amazonaws.com/thumbnails.venngage.com/template/cc5f21fb-5090-4d3e-92c9-143b815b2d6c.png",
+  //       date: "2022-11-20T06:04:32.843Z",
+  //       upVoteCount: 12,
+  //       postCommentsCount: 0,
+  //       upVoted: false,
+  //       saved: false,
 
-  const homefeed = [
-    {
-      type: "uni",
-      post: {
-        name: "Ligma University",
-        location: "Hammond, LA",
-        reviews: {
-          total: 67,
-          rating: 4.96
-        },
-        averageRating: "A",
-        acceptanceRate: 90,
-        actRange: {
-          min: 19,
-          max: 24
-        }
-      }
-    },
-    {
-      type: "uni",
-      post: {
-        name: "Southeastern University",
-        location: "Hammond, LA",
-        reviews: {
-          total: 67,
-          rating: 4.96
-        },
-        averageRating: "A",
-        acceptanceRate: 90,
-        actRange: {
-          min: 19,
-          max: 24
-        }
-      }
-    },
-    {
-      type: "post",
-      post: {
-        _id: "1",
-        postText: "It's the month of December! New month, new spirit! 💪",
-        postImage:
-          "https://s3.amazonaws.com/thumbnails.venngage.com/template/cc5f21fb-5090-4d3e-92c9-143b815b2d6c.png",
-        date: "2022-11-20T06:04:32.843Z",
-        upVoteCount: 12,
-        postCommentsCount: 0,
-        upVoted: false,
-        saved: false,
+  //       user: {
+  //         userId: "6367b4a441301a00a7d93b15",
+  //         firstName: "Giga",
+  //         lastName: "Chadman",
+  //         username: "gigachadman",
+  //         picture:
+  //           "https://image.shutterstock.com/image-photo/stock-photo-portrait-of-smiling-red-haired-millennial-man-looking-at-camera-sitting-in-caf-or-coffeeshop-250nw-1194497251.jpg"
+  //       }
+  //     }
+  //   },
+  //   {
+  //     type: "post",
+  //     post: {
+  //       _id: "2",
+  //       postText: "yoo less goo! 🏃‍♀️💨",
+  //       postImage:
+  //         "https://img.itch.zone/aW1nLzkzMzY1NjMucG5n/315x250%23c/Gb%2BH2t.png",
+  //       date: "2022-11-20T06:04:32.843Z",
+  //       upVoteCount: 12,
+  //       postCommentsCount: 0,
+  //       upVoted: false,
+  //       saved: false,
 
-        user: {
-          userId: "6367b4a441301a00a7d93b15",
-          firstName: "Giga",
-          lastName: "Chadman",
-          username: "gigachadman",
-          picture:
-            "https://image.shutterstock.com/image-photo/stock-photo-portrait-of-smiling-red-haired-millennial-man-looking-at-camera-sitting-in-caf-or-coffeeshop-250nw-1194497251.jpg"
-        }
-      }
-    },
-    {
-      type: "post",
-      post: {
-        _id: "2",
-        postText: "yoo less goo! 🏃‍♀️💨",
-        postImage:
-          "https://img.itch.zone/aW1nLzkzMzY1NjMucG5n/315x250%23c/Gb%2BH2t.png",
-        date: "2022-11-20T06:04:32.843Z",
-        upVoteCount: 12,
-        postCommentsCount: 0,
-        upVoted: false,
-        saved: false,
-
-        user: {
-          userId: "6367b4a441301a00a7d93b15",
-          firstName: "Giga",
-          lastName: "Chadman",
-          username: "gigachadman"
-        }
-      }
-    }
-  ]
+  //       user: {
+  //         userId: "6367b4a441301a00a7d93b15",
+  //         firstName: "Giga",
+  //         lastName: "Chadman",
+  //         username: "gigachadman"
+  //       }
+  //     }
+  //   }
+  // ]
 
   // const [getNextPage, { loading, data }] = useLazyQuery(
   //   GetUserPost(userInfo?._id, page)
@@ -106,13 +113,14 @@ const HomeFeed = ({ userInfo }) => {
   //     setPostList(res?.data?.feed)
   //   })
   // }, [])
+  const homefeed = fetchMyNewsFeed
+  console.log(fetchMyNewsFeed, user._id)
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }}>
         {Array.isArray(homefeed) &&
-          homefeed.map((item, index) => {
-            const { post } = item
-            return item.type === "uni" ? (
+          homefeed.map((post, index) => {
+            return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
                 <CourseCard
                   image={post?.image}

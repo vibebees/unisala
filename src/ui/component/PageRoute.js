@@ -12,7 +12,7 @@ const UniSearchResults = lazy(() => import("../pages/uniSearchResults"))
 const UserSearchResults = lazy(() => import("../pages/userSearchResults"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
-
+const SpacePage = lazy(() => import("../pages/space"))
 const messagingRoutes = () => (<>
  <ProtectedRoute>
   <Route path="/messages" exact>
@@ -23,7 +23,13 @@ const messagingRoutes = () => (<>
   </Route>
   </ProtectedRoute>
 </>)
-
+const spaceRoutes = () => (<>
+  <ProtectedRoute>
+   <Route path="/space/:category" exact>
+     <SpacePage />
+   </Route>
+   </ProtectedRoute>
+ </>)
 export const PageRoute = () => (
   <Switch>
     <Suspense fallback="Loading...">
@@ -44,7 +50,7 @@ export const PageRoute = () => (
       </Route>
 
       {messagingRoutes()}
-
+      {spaceRoutes()}
       <Route path="/mynetwork" exact>
         <ProtectedRoute>
           <MyNetwork />

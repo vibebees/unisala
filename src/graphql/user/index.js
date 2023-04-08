@@ -651,5 +651,21 @@ export const AddComment = gql`
         senderId
         recipientId
       }
+    } `,
+  getNewsFeed = gql`
+    query fetchMyNewsFeed($userId: ID!) {
+      fetchMyNewsFeed(userId: $userId) {
+        postText
+        postImage
+        upVoted
+        postCommentsCount
+        type
+        date
+        _id
+        user {
+          firstName
+          lastName
+          _id
+      }
     }
-  `
+    }`
