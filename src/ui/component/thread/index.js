@@ -28,8 +28,7 @@ const Thread = ({ thread }) => {
   const [imageData, setImageData] = useState(null)
   useEffect(() => {
     // Specify the file key of the image you want to retrieve
-    const fileKey = "my-image.jpg"
-    const params = { Bucket: S3_BUCKET, Key: fileKey }
+    const params = { Bucket: S3_BUCKET, Key: picture }
 
     myS3Bucket.getObject(params, (err, data) => {
       if (err) {

@@ -13,6 +13,7 @@ import { useLazyQuery } from "@apollo/client"
 import { GetUserPost } from "../../../graphql/user"
 import { userServer } from "../../../servers/endpoints"
 import axios from "axios"
+import { InterviewScheduler } from "../../component/interviewScheduler"
 export const SpaceFeed = ({ userInfo }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
@@ -109,6 +110,7 @@ export const SpaceFeed = ({ userInfo }) => {
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }}>
+        <InterviewScheduler />
         {Array.isArray(spaceFeed) &&
           spaceFeed.map((item, index) => {
             const { post } = item
