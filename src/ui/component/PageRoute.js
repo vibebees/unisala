@@ -13,23 +13,29 @@ const UserSearchResults = lazy(() => import("../pages/userSearchResults"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 
-const messagingRoutes = () => (<>
-  <Route path="/messages" exact>
-    <Messages />
-  </Route>
-  <Route path="/messages/:username" exact>
-    <Messages />
-  </Route>
-</>)
+const messagingRoutes = () => (
+  <>
+    <Route path="/messages" exact>
+      <ProtectedRoute>
+        <Messages />
+      </ProtectedRoute>
+    </Route>
+    <Route path="/messages/:username" exact>
+      <ProtectedRoute>
+        <Messages />
+      </ProtectedRoute>
+    </Route>
+  </>
+)
 
 export const PageRoute = () => (
   <Switch>
     <Suspense fallback="Loading...">
-      <Route exact path="/home" >
+      <Route exact path="/home">
         <HomePage />
       </Route>
 
-      <Route exact path="/" >
+      <Route exact path="/">
         <Redirect to="/home" />
       </Route>
 
