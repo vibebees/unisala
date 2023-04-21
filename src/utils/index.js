@@ -1,8 +1,11 @@
 
 import { getMessagesByIdGql } from "../graphql/user"
+import { removeIdFromUnreadMessages, updateUnreadMessages } from "../store/action/userProfile"
 
 export const
-
+    lastMsgWasSentByMe = (message, user) => {
+        return message?.senderId === user?._id
+    },
     getSenderAndReceiver = (message, user) => {
 
         let { senderId, receiverId } = message
@@ -14,7 +17,23 @@ export const
         }
         return { senderId, receiverId }
     },
-    updateChatMessages = ({ newMessage, client, user }) => {
+    updatedRecentMessages = ({ newMessage, user, recentMessages, setMyNetworkRecentMessages, dispatch }) => {
+        const { senderId, receiverId } = getSenderAndReceiver(newMessage, user)
+
+        const updatedRecentMessages = recentMessages?.map((item) => {
+            if (item.user._id === receiverId) {
+                return {
+                    ...item,
+                    recentMessage: newMessage
+                }
+            }
+            return item
+        })
+        dispatch(setMyNetworkRecentMessages(updatedRecentMessages))
+        //here message's sender becomes receiver in my account
+        dispatch(updateUnreadMessages(receiverId))
+    },
+    updateChatMessages = ({ newMessage, client, user, recentMessages, dispatch, setMyNetworkRecentMessages }) => {
 
         const { senderId, receiverId } = getSenderAndReceiver(newMessage, user)
         // Read the current messages from the cache
@@ -33,7 +52,7 @@ export const
         ]
 
         // Write the updated messages back to the cache
-         client.writeQuery({
+        client.writeQuery({
             query: getMessagesByIdGql,
             variables: {
                 senderId: senderId,
@@ -48,79 +67,23 @@ export const
                 ]
             }
         })
-        // client.cache.modify({
-        //     fields: {
-        //         getMessagesByIdGql(allMessages, { readField }) {
-        //             const currentFriendConvo = allMessages.find(
-        //                 (item) =>
-        //                     item.pairs.includes(senderId) &&
-        //                     item.pairs.includes(receiverId)
-        //             )
-
-        //             if (!currentFriendConvo) {
-        //                 return allMessages
-        //             }
-        //             const existingMessages = currentFriendConvo.messages ?? []
-        //             const newMessageRef = client.cache.writeFragment({
-        //                 data: {
-        //                     id: uuidv4(),
-        //                     senderId,
-        //                     receiverId,
-        //                     seen: false,
-        //                     message: newMessage.message,
-        //                     __typename: "Message"
-        //                 },
-        //                 fragment: gql`
-        //                   fragment NewMessage on Message {
-        //                     seen
-        //                     senderId
-        //                     receiverId
-        //                     message {
-        //                       text
-        //                     }
-        //                   }
-        //                 `
-        //             })
-        //             const updatedData = allMessages.map((item) => {
-        //                 if (
-        //                     item.pairs.includes(senderId) &&
-        //                     item.pairs.includes(receiverId)
-        //                 ) {
-        //                     return {
-        //                         ...item,
-        //                         messages: [...existingMessages, newMessageRef]
-        //                     }
-        //                 }
-        //                 return item
-        //             })
-        //             return updatedData
-        //         }
-        //     },
-        //     variables: { senderId, receiverId }
-        // })
-
     },
-    messageSeen = ({ messagingTo = {}, username = "", recentMessages = [], socket = {} }) => {
+    messageSeen = ({ messagingTo = {}, username = "", recentMessages = [], socket = {}, user = {}, dispatch = () => { } }) => {
         const seeingMessageFor = messagingTo?.username === username ? messagingTo?._id : ""
-        if (seeingMessageFor) {
+        dispatch(removeIdFromUnreadMessages(seeingMessageFor))
+
+        if (socket?.current?.emit && !lastMsgWasSentByMe(recentMessages?.[0]?.recentMessage, user)) {
             const
                 seenMessage = recentMessages?.filter((item) => item?.user?._id === messagingTo?._id)?.[0],
                 notSeen = !(seenMessage?.recentMessage?.seen)
-            notSeen && socket?.current?.emit("messageSeen", { seenMessageId: seenMessage?.recentMessage?._id })
-        }
-    },
-    updatedRecentMessages = ({ newMessage, user, recentMessages, setMyNetworkRecentMessages, dispatch }) => {
-        const { senderId, receiverId } = getSenderAndReceiver(newMessage, user)
-
-        const updatedRecentMessages = recentMessages?.map((item) => {
-            if (item.user._id === receiverId) {
-              return {
-                ...item,
-                recentMessage: newMessage
-              }
+            if (seenMessage?.recentMessage?._id) {
+                console.log("triggering message seen")
+                socket?.current?.emit("messageSeen", {
+                    seenMessageId: seenMessage?.recentMessage?._id,
+                    senderId: seenMessage?.recentMessage?.senderId,
+                    whoSaw: user?._id,
+                    receiverId: messagingTo?._id
+                })
             }
-            return item
-          })
-          dispatch(setMyNetworkRecentMessages(updatedRecentMessages))
-
+        }
     }

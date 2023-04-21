@@ -13,8 +13,8 @@ import {
   logoLinkedin
 } from "ionicons/icons"
 import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
-import "./index.css"
 import Avatar from "../../../component/Avatar"
+import "./index.css"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
   const {

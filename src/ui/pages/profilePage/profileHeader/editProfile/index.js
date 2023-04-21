@@ -17,6 +17,9 @@ import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import { useMutation } from "@apollo/client"
 import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import Avatar from "../../../../component/Avatar"
+import { S3_BUCKET } from "../../../../../servers/endpoints"
+import { myS3Bucket } from "../../../../../utils/aws"
 import "./index.css"
 
 function index({ profileHeader }) {
@@ -32,10 +35,15 @@ function index({ profileHeader }) {
   })
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
+  const [profileImage, setProfileImage] = useState(null)
+  const [imageName, setImageName] = useState("")
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
     context: { server: USER_SERVICE_GQL },
-    variables: { ...input },
+    variables: {
+      ...input,
+      profilePicture: profileImage ? imageName : profilePic
+    },
     update: (cache, { data: { editProfile } }) => {
       const { getUser } = cache.readQuery({
         query: getUserGql,
@@ -93,7 +101,49 @@ function index({ profileHeader }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     editProfile()
+    profileImage && fileUpdate()
     setIsOpen(false)
+    setProfileImage(null)
+  }
+
+  let handleProfileImage = (e) => {
+    setProfileImage(e.target.files[0])
+    let filename = e.target.files[0].name.split(".") || ""
+    setImageName(filename[0] + Date.now() + "." + filename[1] || "")
+  }
+
+  const fileUpdate = async () => {
+    if (profileImage) {
+      const params = {
+        Bucket: S3_BUCKET,
+        Key: imageName,
+        ContentType: profileImage.type,
+        ACL: "public-read"
+      }
+
+      // Generate a pre-signed URL
+      await myS3Bucket.getSignedUrl("putObject", params, async (err, url) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+
+        // Upload the file to S3 using the pre-signed URL
+        const result = await fetch(url, {
+          method: "PUT",
+          body: profileImage,
+          headers: {
+            "Content-Type": profileImage.type
+          }
+        })
+
+        if (result.ok) {
+          // If the upload is successful, add the post with the S3 image URL
+        } else {
+          console.error("Failed to upload image to S3")
+        }
+      })
+    }
   }
 
   return (
@@ -111,6 +161,7 @@ function index({ profileHeader }) {
       <IonModal
         onDidDismiss={() => {
           setIsOpen(false)
+          setProfileImage(null)
         }}
         isOpen={isOpen}
         mode="ios"
@@ -119,7 +170,14 @@ function index({ profileHeader }) {
           <IonToolbar>
             <IonTitle>Edit Profile</IonTitle>
             <IonButtons slot="end">
-              <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+              <IonButton
+                onClick={() => {
+                  setIsOpen(false)
+                  setProfileImage(null)
+                }}
+              >
+                Close
+              </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
@@ -133,16 +191,25 @@ function index({ profileHeader }) {
 
             <div className="inline-1 mb-1">
               <div className="user-profile__edit">
-                <img
-                  src={profilePic}
-                  className="user-profile__img"
-                  alt="username"
-                />
+                {profileImage ? (
+                  <Avatar
+                    profilePic={URL.createObjectURL(profileImage)}
+                    username={username}
+                  />
+                ) : (
+                  <Avatar profilePic={profilePic} username={username} />
+                )}
               </div>
               <div className="upload-profile-pic-text">
                 <h5>Set Profile Picture</h5>
                 <p>You can change your profile picture or upload a photo</p>
-                <IonButton mode="ios">Upload</IonButton>
+                <label className="upload-file">
+                  <input
+                    type="file"
+                    accept=".png, .jpg, .jpeg"
+                    onChange={(e) => handleProfileImage(e)}
+                  />
+                </label>
               </div>
             </div>
 

@@ -1,9 +1,9 @@
-import { MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY, SEEN_MESSAGE } from "../types/messengerType"
+import { MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY, SEEN_MESSAGE, REMOVE_SEEN_MESSAGE } from "../types/messengerType"
 
 const initialState = {
     messagingTo: null,
     messageUpdated: false,
-    lastMessageRead: []
+    messageSeenBy: []
 }
 
 const userActivity = (state = initialState, action) => {
@@ -27,7 +27,12 @@ const userActivity = (state = initialState, action) => {
         case SEEN_MESSAGE:
             return {
                 ...state,
-                lastMessageRead: [...state.lastMessageRead, payload]
+                messageSeenBy: [...state.messageSeenBy, payload]
+            }
+        case REMOVE_SEEN_MESSAGE:
+            return {
+                ...state,
+                messageSeenBy: [state.messageSeenBy].filter((id) => id !== payload)
             }
         default:
             return state

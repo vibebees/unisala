@@ -6,6 +6,7 @@ import Authentication from "../authentication"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import Avatar from "../Avatar"
+import { imageAccess } from "../../../servers/endpoints"
 
 export const ProfilePop = ({
   setPopoverOpen,
@@ -13,6 +14,7 @@ export const ProfilePop = ({
   activeNavDrop
 }) => {
   const { user, loggedIn } = useSelector((state) => state.userProfile)
+  const profilePic = user?.picture ? imageAccess + user?.picture : null
 
   useEffect(() => {
     if (!loggedIn) {
@@ -44,7 +46,7 @@ export const ProfilePop = ({
           lines="none"
         >
           <IonAvatar slot="start">
-            <Avatar username={user.username} profilePic={user.picture} />
+            <Avatar username={user.username} profilePic={profilePic} />
           </IonAvatar>
           <IonLabel>
             <h2

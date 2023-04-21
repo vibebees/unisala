@@ -60,16 +60,15 @@ lib.axios = axios
 setupIonicReact()
 
 const App = () => {
-  const
-   [width, setWidth] = useState(window.innerWidth),
-   handleResize = () => {
-    const { innerWidth } = window
+  const [width, setWidth] = useState(window.innerWidth),
+    handleResize = () => {
+      const { innerWidth } = window
 
-    if (width !== innerWidth) {
-      setWidth(innerWidth)
-    }
-  },
-  socket = useRef(null)
+      if (width !== innerWidth) {
+        setWidth(innerWidth)
+      }
+    },
+    socket = useRef(null)
   useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {
@@ -97,7 +96,6 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <IonApp>
           <IonPage>
-
             <IonReactRouter>
               {width >= 768 && (
                 <div>

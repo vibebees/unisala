@@ -21,22 +21,8 @@ import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import "./index.css"
-
-const S3_BUCKET = "unisala-prod"
-
-// const S3_BUCKET = "unisala-test"
-
-AWS.config.update({
-  accessKeyId: "AKIAUVJSKU37X3A6PCBA",
-  secretAccessKey: "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",
-  region: "us-east-1"
-
-  // accessKeyId: "AKIAVB2USJPTRQRSNCXR",
-  // secretAccessKey: "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",
-  // region: "ap-south-1"
-})
-
-const myBucket = new AWS.S3()
+import { S3_BUCKET, imageAccess } from "../../../servers/endpoints"
+import { myS3Bucket } from "../../../utils/aws"
 
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)
@@ -46,6 +32,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
   const [file, setfile] = useState("")
   const [fileData, setFileData] = useState("")
   const [fileName, setFileName] = useState("")
+  const profilePic = user?.picture ? imageAccess + user?.picture : null
 
   const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
@@ -136,36 +123,79 @@ export const CreateAPost = ({ setPopup, popup }) => {
     }
   }
 
+  // const fileUpdate = async () => {
+  //   const fName = fileData?.name?.split(".") || ""
+  //   const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
+  //   if (fileData && file) {
+  //     const params = {
+  //       Body: fileData,
+  //       Bucket: S3_BUCKET,
+  //       Key: uploadFilename
+  //     }
+
+  //     await myBucket.putObject(params).send((err) => {
+  //       console.log(err)
+  //       if (err) {
+  //         present({
+  //           duration: 3000,
+  //           message: err.message,
+  //           buttons: [{ text: "X", handler: () => dismiss() }],
+  //           color: "primary",
+  //           mode: "ios"
+  //         })
+  //       }
+  //     })
+  //   }
+
+  //   addPost({
+  //     variables: {
+  //       postText: TextChecker(postText),
+  //       postImage: uploadFilename
+  //     }
+  //   })
+  // }
+
   const fileUpdate = async () => {
     const fName = fileData?.name?.split(".") || ""
     const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
+
     if (fileData && file) {
       const params = {
-        Body: fileData,
         Bucket: S3_BUCKET,
-        Key: uploadFilename
+        Key: uploadFilename,
+        ContentType: fileData.type,
+        ACL: "public-read"
       }
 
-      await myBucket.putObject(params).send((err) => {
-        console.log(err)
+      // Generate a pre-signed URL
+      await myS3Bucket.getSignedUrl("putObject", params, async (err, url) => {
         if (err) {
-          present({
-            duration: 3000,
-            message: err.message,
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
+          console.error(err)
+          return
+        }
+
+        // Upload the file to S3 using the pre-signed URL
+        const result = await fetch(url, {
+          method: "PUT",
+          body: fileData,
+          headers: {
+            "Content-Type": fileData.type
+          }
+        })
+
+        if (result.ok) {
+          // If the upload is successful, add the post with the S3 image URL
+          addPost({
+            variables: {
+              postText: TextChecker(postText),
+              postImage: uploadFilename
+            }
           })
+        } else {
+          console.error("Failed to upload image to S3")
         }
       })
     }
-
-    addPost({
-      variables: {
-        postText: TextChecker(postText),
-        postImage: uploadFilename
-      }
-    })
   }
 
   const handleSubmit = (e) => {
@@ -188,11 +218,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
-              <img
-                src={
-                  "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1670164432~exp=1670165032~hmac=36b9b40ac0ed5b3a668c8bd6a3773cb706f13b46413881b4a4f1079241cb9eb5"
-                }
-              />
+              <img src={profilePic} />
             </IonAvatar>
             <IonLabel className="ion-padding-start">
               <h2>{user.username}</h2>

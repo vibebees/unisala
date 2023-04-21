@@ -12,6 +12,7 @@ import {
   USER_SERVICE_GQL
 } from "../../../servers/types"
 import Avatar from "../Avatar"
+import { imageAccess } from "../../../servers/endpoints"
 
 function index() {
   const history = useHistory(),
@@ -117,11 +118,21 @@ function index() {
                     key={index}
                   >
                     <IonAvatar slot="start">
-                      {
-                        item?.elevatorInfo?.name ? <img
-                        src={ item?.elevatorInfo?.logo || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"}
-                      /> : <Avatar username={item?.username} profilePic={item?.picture} />
-                      }
+                      {item?.elevatorInfo?.name ? (
+                        <img
+                          src={
+                            item?.elevatorInfo?.logo ||
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
+                          }
+                        />
+                      ) : (
+                        <Avatar
+                          username={item?.username}
+                          profilePic={
+                            item?.picture ? imageAccess + item.picture : null
+                          }
+                        />
+                      )}
                     </IonAvatar>
                     <IonLabel>
                       <h2

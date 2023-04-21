@@ -1,6 +1,6 @@
+import { useMemo } from "react"
 import { createAvatar } from "@dicebear/core"
 import { thumbs } from "@dicebear/collection"
-import { useMemo } from "react"
 
 function Avatar({ profilePic, username }) {
   const avatar = useMemo(() => {
@@ -13,7 +13,16 @@ function Avatar({ profilePic, username }) {
   }, [profilePic, username])
 
   return (
-    <img src={profilePic ?? avatar} className="user-profile__img" alt="userName" />
+    <img
+      src={profilePic ?? avatar}
+      className="user-profile__img"
+      alt="userName"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover"
+      }}
+    />
   )
 }
 

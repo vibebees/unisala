@@ -2,9 +2,12 @@ import { IonCol, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
 import { imageOutline } from "ionicons/icons"
 import { useSelector } from "react-redux"
 import Avatar from "../Avatar"
+import { imageAccess } from "../../../servers/endpoints"
 
 export const Post = () => {
   const { user } = useSelector((state) => state.userProfile)
+  const profilePic = user?.picture ? imageAccess + user?.picture : null
+
   return (
     <div
       style={{
@@ -19,7 +22,7 @@ export const Post = () => {
             alignSelf: "center"
           }}
         >
-          <Avatar username={user.username} profilePic={user.picture} />
+          <Avatar username={user.username} profilePic={profilePic} />
         </IonAvatar>
         <input
           type="text"

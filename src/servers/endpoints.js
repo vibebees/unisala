@@ -15,7 +15,7 @@ import { io } from "socket.io-client"
 import { getMainDefinition } from "@apollo/client/utilities"
 const
     config = require("./config"),
-    { messagingServiceAddress, universityServiceAddress, messageSocketAddress, userServiceAddress } = urls,
+    { messagingServiceAddress, universityServiceAddress, messageSocketAddress, userServiceAddress, callSocketAddress } = urls,
     getNewToken = async () => {
         try {
             const { data } = await axios.post(
@@ -117,6 +117,8 @@ export
         cache: new InMemoryCache()
     }),
     messageSocket = () => io(messageSocketAddress),
+    callSocket = () => io(callSocketAddress),
+
     userServer = config.NODE_ENV === "PRODUCTION"
         ? urls["base"] + "/user/"
         : userServiceAddress,
@@ -125,4 +127,7 @@ export
         : userServiceAddress,
     universityServer = config.NODE_ENV === "PRODUCTION"
         ? urls["base"] + "/uni/"
-        : userServiceAddress
+        : userServiceAddress,
+         S3_BUCKET = "unisala-prod",
+         s3BucketUrl = `https://${S3_BUCKET}.s3.amazonaws.com`,
+         imageAccess = `${s3BucketUrl}/`

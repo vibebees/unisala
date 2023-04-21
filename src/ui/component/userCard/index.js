@@ -9,6 +9,7 @@ import { location } from "ionicons/icons"
 import { Link } from "react-router-dom"
 import Avatar from "../Avatar"
 import "./index.css"
+import { imageAccess } from "../../../servers/endpoints"
 
 function index({
   profileBanner,
@@ -19,6 +20,8 @@ function index({
   oneLineBio,
   children
 }) {
+  const profilePic = profileImg ? imageAccess + profileImg : null
+
   return (
     <IonCard className="user-card">
       <div className="user-card--user-banner">
@@ -27,7 +30,7 @@ function index({
         </div>
 
         <div className="user-card--profile">
-          <Avatar username={username} profilePic={profileImg} />
+          <Avatar username={username} profilePic={profilePic} />
         </div>
       </div>
       <IonCardContent className="user-card--info">

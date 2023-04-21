@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { IonGrid, IonRow, IonIcon, IonText, IonPopover } from "@ionic/react"
+import { IonGrid, IonRow, IonIcon, IonText, IonPopover, IonBadge } from "@ionic/react"
 import {
   chatbubbles,
   home,
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 import SearchBox from "./searchBox"
 import ProfilePop from "./profilePop"
 import jwtDecode from "jwt-decode"
+import { useSelector } from "react-redux"
 
 const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
   const popover = useRef(null)
@@ -19,7 +20,8 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
   const openPopover = (e) => {
     popover.current.event = e
     setPopoverOpen(true)
-  }
+  },
+    unreadMessagesCount = useSelector((state) => state?.userProfile?.unreadMessages?.length)
 
   const navigation = [
     {
@@ -33,9 +35,10 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
       link: "/mynetwork"
     },
     {
-      name: "Message",
+      name: "Messages",
       icon: chatbubbles,
-      link: "/messages"
+      link: "/messages",
+      count: unreadMessagesCount
     },
     {
       name: "Notification",
@@ -102,13 +105,18 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                         gap: "3px"
                       }}
                     >
-                      <IonIcon
-                        style={{
-                          fontSize: "25px"
-                        }}
-                        color={active === index ? "dark" : "medium"}
-                        icon={item.icon}
-                      />
+
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <IonIcon
+                  style={{
+                    fontSize: "25px"
+                  }}
+                  color={active === index ? "dark" : "medium"}
+                  icon={item.icon}
+                />
+                 {item.name === "Messages" && item.count > 0 && (<IonBadge>{item.count}</IonBadge>)}
+
+              </div>
 
                       <IonText color={active === index ? "dark" : "medium"}>
                         <p
@@ -118,6 +126,7 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                           }}
                         >
                           {item.name}
+
                         </p>
                       </IonText>
                     </div>

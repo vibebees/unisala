@@ -5,14 +5,13 @@ import {
     IonIcon
 } from "@ionic/react"
 import { send } from "ionicons/icons"
-import { useApolloClient } from "@apollo/client"
 import { useSelector } from "react-redux"
-export const TypeBox = ({ socket }) => {
+import { removeSeenEye } from "../../../../store/action/userActivity"
+export const TypeBox = ({ socket = {}, dispatch = () => {} }) => {
     const
         [messageInput, setMessageInput] = useState(""),
         { messagingTo } = useSelector((state) => state?.userActivity),
         { user } = useSelector((state) => state?.userProfile),
-        client = useApolloClient(),
         sendMessage = (e) => {
             e.preventDefault()
             const data = {
@@ -24,6 +23,7 @@ export const TypeBox = ({ socket }) => {
                 seen: false
             }
             socket.current.emit("createMessage", data)
+            dispatch(removeSeenEye(messagingTo._id))
             setMessageInput("")
         }
     return (<div className="flex">
@@ -33,6 +33,11 @@ export const TypeBox = ({ socket }) => {
             onIonChange={(e) => setMessageInput(e.target.value)}
             placeholder="Message"
             value={messageInput}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    sendMessage(e)
+                }
+            }}
         ></IonInput>
         <IonButton type="submit" mode="ios" onClick={sendMessage}>
             <IonIcon icon={send} />

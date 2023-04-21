@@ -9,7 +9,7 @@ import {
 import { useSelector } from "react-redux"
 import Avatar from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
-import { imageAccess } from "../../../servers/endpoints"
+import { screenGreaterThan1000 } from "./screens.greater.1000"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
@@ -18,8 +18,6 @@ export const screensMoreThan768 = ({
   loggedIn
 }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const profilePic = user?.picture ? imageAccess + user?.picture : null
-
   return (
     <IonCol
       size="auto"
@@ -35,16 +33,14 @@ export const screensMoreThan768 = ({
           <IonCard>
             <div className="aside-profile">
               <div className="user-profile-circle">
-                <Avatar
-                  username={user.username}
-                  profilePic={profilePic}
-                  size="medium"
-                />
+                <Avatar username={user.username} profilePic={user.profilePic} size="medium" />
               </div>
             </div>
             <div className="aside-profile-details">
               <IonText className="flex justify-content-center" color="dark">
-                <h6>{user?.firstName + " " + user?.lastName}</h6>
+                <h6>
+                  {user?.firstName + " " + user?.lastName}
+                </h6>
               </IonText>
               <IonText color="medium">
                 <p>@{user.username}</p>
@@ -99,6 +95,7 @@ export const screensMoreThan768 = ({
               )
             })}
           </IonCard>
+            {screenGreaterThan1000({ title: "Top User" })}
         </>
       ) : (
         <IonCard

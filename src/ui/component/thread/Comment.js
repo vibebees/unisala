@@ -1,10 +1,11 @@
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
-import Save from "./actions/Save"
 import { useState } from "react"
 import ReplyInput from "../ReplyInput"
 import ShowMore from "./ShowMore"
+import Avatar from "../Avatar"
 import "./index.css"
+import { imageAccess } from "../../../servers/endpoints"
 
 function Comment({ comment, postId }) {
   const {
@@ -17,15 +18,16 @@ function Comment({ comment, postId }) {
     repliesCount,
     upVoteCount,
     upVoted,
-    saved
+    picture
   } = comment
   const [reply, setReply] = useState(false)
+  const profilePic = picture && imageAccess + picture
 
   return (
     <div className="comment_thread">
       <div className="thread-header">
         <div className="thread_profile-pic">
-          <img src="https://picsum.photos/200/300" alt="user" />
+          <Avatar profilePic={profilePic} username={username} />
         </div>
         <div className="thread_userdetails">
           <h3>{firstName + " " + lastName}</h3>
