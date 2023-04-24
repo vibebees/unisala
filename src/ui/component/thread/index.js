@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { IonCard } from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
@@ -7,9 +8,7 @@ import ReplyInput from "../ReplyInput"
 import "./index.css"
 import ShowMore from "./ShowMore"
 import Avatar from "../Avatar"
-import { Link } from "react-router-dom"
-import { imageAccess, S3_BUCKET } from "../../../servers/endpoints"
-import { myS3Bucket } from "../../../utils/aws"
+import { imageAccess } from "../../../servers/endpoints"
 
 const Thread = ({ thread }) => {
   const {
@@ -24,22 +23,7 @@ const Thread = ({ thread }) => {
   } = thread
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
-  const [imageData, setImageData] = useState(null)
   const profilePic = picture && imageAccess + picture
-
-  // useEffect(() => {
-  //   // Specify the file key of the image you want to retrieve
-  //   const params = { Bucket: S3_BUCKET, Key: postImage }
-
-  //   myS3Bucket.getObject(params, (err, data) => {
-  //     if (err) {
-  //       console.log(err)
-  //     } else {
-  //       // Set the retrieved image data in state
-  //       setImageData(data.Body)
-  //     }
-  //   })
-  // }, [])
 
   return (
     <IonCard className="thread">
@@ -62,10 +46,8 @@ const Thread = ({ thread }) => {
         <div className="thread_comment">
           <p>{postText}</p>
         </div>
-        <div className="thread_comment">
-          {postImage && (
-            <img src={imageAccess + postImage} className="post-image-preview" />
-          )}
+        <div className="thread_image">
+          {postImage && <img src={imageAccess + postImage} />}
         </div>
         <div className="thread_footer">
           <Upvote

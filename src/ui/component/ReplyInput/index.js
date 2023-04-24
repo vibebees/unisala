@@ -1,12 +1,15 @@
 import { useState } from "react"
-import { IonTextarea, IonIcon, IonAvatar, useIonToast } from "@ionic/react"
+import { useSelector } from "react-redux"
+import { IonTextarea, IonIcon, useIonToast } from "@ionic/react"
 import { sendOutline } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
 import { AddComment, GetCommentList } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import Avatar from "../Avatar"
 import "./index.css"
 
 function ReplyInput({ setReply, postId, isReply, parentId }) {
+  const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
   const [present, dismiss] = useIonToast()
   const [addComment] = useMutation(AddComment, {
@@ -81,16 +84,9 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
 
   return (
     <form className="reply-input_form" onSubmit={submitReply}>
-      <IonAvatar className="form_avatar">
-        <img
-          style={{
-            width: "40px",
-            height: "40px"
-          }}
-          id="ReviewImg"
-          src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        />
-      </IonAvatar>
+      <div className="thread_profile-pic">
+        <Avatar username={user.username} profilePic={user.profilePic} />
+      </div>
       <div className="review-text_div">
         <IonTextarea
           onIonChange={(e) => {

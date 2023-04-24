@@ -1,11 +1,12 @@
+import { useState } from "react"
+import { Link } from "react-router-dom"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
-import { useState } from "react"
 import ReplyInput from "../ReplyInput"
 import ShowMore from "./ShowMore"
 import Avatar from "../Avatar"
-import "./index.css"
 import { imageAccess } from "../../../servers/endpoints"
+import "./index.css"
 
 function Comment({ comment, postId }) {
   const {
@@ -25,18 +26,20 @@ function Comment({ comment, postId }) {
 
   return (
     <div className="comment_thread">
-      <div className="thread-header">
-        <div className="thread_profile-pic">
-          <Avatar profilePic={profilePic} username={username} />
-        </div>
-        <div className="thread_userdetails">
-          <h3>{firstName + " " + lastName}</h3>
-          <div className="threads_username">
-            <p>@{username}</p>
-            <p className="threads_date">{date.toString().slice(0, 10)}</p>
+      <Link to={`/@/${username}`}>
+        <div className="thread-header">
+          <div className="thread_profile-pic">
+            <Avatar profilePic={profilePic} username={username} />
+          </div>
+          <div className="thread_userdetails">
+            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
+            <div className="threads_username">
+              <p>@{username}</p>
+              <p className="threads_date">{date.toString().slice(0, 10)}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
 
       <div className="thread_content">
         <div className="thread_comment">

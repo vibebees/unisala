@@ -55,6 +55,12 @@
   color: #4e4e4e;
 }
 
+.thread_image > img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
 .thread_footer {
   display: inline-flex;
   align-items: center;

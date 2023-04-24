@@ -31,7 +31,6 @@ export const CreateAPost = ({ setPopup, popup }) => {
   const [postText, setPostText] = useState("")
   const [file, setfile] = useState("")
   const [fileData, setFileData] = useState("")
-  const [fileName, setFileName] = useState("")
   const profilePic = user?.picture ? imageAccess + user?.picture : null
 
   const [addPost] = useMutation(AddPost, {
@@ -123,38 +122,6 @@ export const CreateAPost = ({ setPopup, popup }) => {
     }
   }
 
-  // const fileUpdate = async () => {
-  //   const fName = fileData?.name?.split(".") || ""
-  //   const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
-  //   if (fileData && file) {
-  //     const params = {
-  //       Body: fileData,
-  //       Bucket: S3_BUCKET,
-  //       Key: uploadFilename
-  //     }
-
-  //     await myBucket.putObject(params).send((err) => {
-  //       console.log(err)
-  //       if (err) {
-  //         present({
-  //           duration: 3000,
-  //           message: err.message,
-  //           buttons: [{ text: "X", handler: () => dismiss() }],
-  //           color: "primary",
-  //           mode: "ios"
-  //         })
-  //       }
-  //     })
-  //   }
-
-  //   addPost({
-  //     variables: {
-  //       postText: TextChecker(postText),
-  //       postImage: uploadFilename
-  //     }
-  //   })
-  // }
-
   const fileUpdate = async () => {
     const fName = fileData?.name?.split(".") || ""
     const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
@@ -191,6 +158,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
               postImage: uploadFilename
             }
           })
+          setfile("")
         } else {
           console.error("Failed to upload image to S3")
         }

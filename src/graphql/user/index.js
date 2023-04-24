@@ -660,6 +660,7 @@ export const AddComment = gql`
         postText
         postImage
         upVoted
+        upVoteCount
         postCommentsCount
         type
         date
@@ -667,6 +668,8 @@ export const AddComment = gql`
         user {
           firstName
           lastName
+          picture
+          username
           _id
         }
       }

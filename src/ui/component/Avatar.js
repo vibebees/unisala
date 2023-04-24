@@ -14,7 +14,7 @@ function Avatar({ profilePic, username }) {
 
   return (
     <img
-      src={profilePic ?? avatar}
+      src={profilePic || avatar}
       className="user-profile__img"
       alt="userName"
       style={{
