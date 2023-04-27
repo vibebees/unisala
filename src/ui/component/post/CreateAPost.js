@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import {
   IonAvatar,
@@ -14,15 +14,13 @@ import {
   IonButtons,
   useIonToast
 } from "@ionic/react"
-import AWS from "aws-sdk"
 import { imageOutline } from "ionicons/icons"
 import { AddPost, GetUserPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import "./index.css"
-import { S3_BUCKET, imageAccess } from "../../../servers/endpoints"
-import { myS3Bucket } from "../../../utils/aws"
+import { awsBucket, bucketName } from "../../../servers/s3.configs"
 
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)
@@ -76,6 +74,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
         color: "primary",
         mode: "ios"
       })
+      setfile("")
     },
     onError: (error) => {
       present({
@@ -128,14 +127,14 @@ export const CreateAPost = ({ setPopup, popup }) => {
 
     if (fileData && file) {
       const params = {
-        Bucket: S3_BUCKET,
+        Bucket: bucketName("user"),
         Key: uploadFilename,
         ContentType: fileData.type,
         ACL: "public-read"
       }
 
       // Generate a pre-signed URL
-      await myS3Bucket.getSignedUrl("putObject", params, async (err, url) => {
+      await awsBucket("user").getSignedUrl("putObject", params, async (err, url) => {
         if (err) {
           console.error(err)
           return

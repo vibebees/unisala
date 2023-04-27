@@ -1,17 +1,39 @@
 // eslint-disable-next-line no-use-before-define
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { awsBucket, bucketName, getImageUrl } from "../../../../../servers/s3.configs"
 import "./CoverImg.css"
 
-const CoverImg = () => {
+export const CoverImg = (props) => {
     const [width, setWidth] = React.useState(window.innerWidth)
+    const [coverImage, setCoverImage] = useState("default.jpg")
+    const [profileImage, setProfileImage] = useState("default2.jpg")
+
+    const [images, setImages] = React.useState(props?.images || [])
     const handleResize = () => {
         const { innerWidth } = window
 
         if (width !== innerWidth) {
             setWidth(innerWidth)
         }
-    }
-    React.useEffect(() => {
+    },
+    getImage = (type, Key = "default.jpg", setImageCallBack) => {
+        awsBucket(type).getObject({ Key }, (err, data) => {
+          if (err) {
+            console.log(err)
+          } else {
+            const blob = new Blob([data.Body], { type: "image/jpeg" })
+            const url = URL.createObjectURL(blob)
+            setImageCallBack(url)
+          }
+        })
+      }
+
+    useEffect(() => {
+        getImage("uni", images?.[0] || coverImage, setCoverImage)
+        getImage("uni", images?.[1] || profileImage, setProfileImage)
+      }, [images])
+
+    useEffect(() => {
         window.addEventListener("resize", handleResize)
         return () => {
             window.removeEventListener("resize", handleResize)
@@ -30,13 +52,11 @@ const CoverImg = () => {
                     style={{
                         width: "100%"
                     }}
-                    href="https://images.unsplash.com/20/cambridge.JPG?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=847&q=80"
+                    href={coverImage}
                 >
                     <img
                         style={{ transition: "0.3s" }}
-                        src={
-                            "https://images.unsplash.com/20/cambridge.JPG?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=847&q=80"
-                        }
+                        src={coverImage}
                         className="CoverImg_Img"
                         alt=""
                     />
@@ -51,9 +71,7 @@ const CoverImg = () => {
                 id="ProfileImg_div"
             >
                 <img
-                    src={
-                        "https://cdn.vox-cdn.com/thumbor/l5-CNuyDLr8IR8dWTW_7wqnT_bc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084622/5f1b1bd4b8800.image.jpg"
-                    }
+                    src={profileImage }
                     alt=""
                     id="ProfileImg_Img"
                 />
@@ -61,4 +79,3 @@ const CoverImg = () => {
         </div>
     )
 }
-export default CoverImg

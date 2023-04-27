@@ -128,6 +128,6 @@ export
     universityServer = config.NODE_ENV === "PRODUCTION"
         ? urls["base"] + "/uni/"
         : userServiceAddress,
-         S3_BUCKET = "unisala-prod",
-         s3BucketUrl = `https://${S3_BUCKET}.s3.amazonaws.com`,
-         imageAccess = `${s3BucketUrl}/`
+        S3_BUCKET = "unisala-prod",
+        s3BucketUrl = `https://${S3_BUCKET}.s3.amazonaws.com`,
+        imageAccess = `${s3BucketUrl}/`

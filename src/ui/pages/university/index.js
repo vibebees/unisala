@@ -8,7 +8,7 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/react"
-import UniProfile from "./uniProfile"
+import { UniProfile } from "./uniProfile"
 import SideDetails from "./sideDetails"
 import FAQ from "./tabDetails/FAQ/Index"
 import Discussion from "./tabDetails/Discussion"
@@ -288,7 +288,7 @@ export default function UniversityPage() {
         )}
         <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
           <div ref={profile}>
-            <UniProfile />
+            <UniProfile images = {uniData?.pictures}/>
           </div>
           <SideDetails
             forwardedRef={{

@@ -214,6 +214,7 @@ export
                         }
                     }
                 }
+                pictures
             }
         }`,
     UniSearch = (name) => gql`

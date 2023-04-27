@@ -19,8 +19,8 @@ import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 import Avatar from "../../../../component/Avatar"
 import { S3_BUCKET } from "../../../../../servers/endpoints"
-import { myS3Bucket } from "../../../../../utils/aws"
 import "./index.css"
+import { awsBucket } from "../../../../../servers/s3.configs"
 
 function index({ profileHeader }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =
@@ -122,7 +122,7 @@ function index({ profileHeader }) {
       }
 
       // Generate a pre-signed URL
-      await myS3Bucket.getSignedUrl("putObject", params, async (err, url) => {
+      await awsBucket("user").getSignedUrl("putObject", params, async (err, url) => {
         if (err) {
           console.error(err)
           return

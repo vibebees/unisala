@@ -24,7 +24,24 @@ function index() {
     }),
     [GetUser, searchUser] = useLazyQuery(userSearch(searchValue), {
       context: { server: USER_SERVICE_GQL }
-    })
+    }),
+    useDebounce = (value, delay) => {
+      const [debouncedValue, setDebouncedValue] = useState(value)
+
+      useEffect(() => {
+        const handler = setTimeout(() => {
+          setDebouncedValue(value)
+        }, delay)
+
+        return () => {
+          clearTimeout(handler)
+        }
+      }, [value, delay])
+
+      return debouncedValue
+    },
+    debouncedSearchValue = useDebounce(searchValue, 500),
+    [profilePic, setProfilePic] = useState("")
 
   useEffect(() => {
     if (searchValue.length > 2) {
@@ -52,7 +69,12 @@ function index() {
     }
   }, [unidata.data, searchUser.data])
 
-  useDebouncedEffect(HandleSearch, [searchValue], 1000)
+  // useDebouncedEffect(HandleSearch, [searchValue], 1000)
+  useEffect(() => {
+    if (searchValue.length > 2) {
+      HandleSearch()
+    }
+  }, [debouncedSearchValue])
 
   return (
     <>
