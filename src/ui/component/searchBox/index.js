@@ -11,8 +11,10 @@ import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
 } from "../../../servers/types"
-import Avatar from "../Avatar"
-import { imageAccess } from "../../../servers/endpoints"
+import { searchUniFromBar } from "../../../store/action/userActivity"
+import { useDispatch, useSelector } from "react-redux"
+import { awsBucket } from "../../../servers/s3.configs"
+import { SearchBarResultList } from "./searchResultList"
 
 function index() {
   const history = useHistory(),
@@ -25,56 +27,37 @@ function index() {
     [GetUser, searchUser] = useLazyQuery(userSearch(searchValue), {
       context: { server: USER_SERVICE_GQL }
     }),
-    useDebounce = (value, delay) => {
-      const [debouncedValue, setDebouncedValue] = useState(value)
-
-      useEffect(() => {
-        const handler = setTimeout(() => {
-          setDebouncedValue(value)
-        }, delay)
-
-        return () => {
-          clearTimeout(handler)
-        }
-      }, [value, delay])
-
-      return debouncedValue
-    },
-    debouncedSearchValue = useDebounce(searchValue, 500),
-    [profilePic, setProfilePic] = useState("")
+    dispatch = useDispatch()
 
   useEffect(() => {
-    if (searchValue.length > 2) {
-      setDropDownOptions(true)
-    } else {
-      setDropDownOptions(false)
-    }
+   if (searchValue) {
+    setDropDownOptions(true)
+   } else {
+    setDropDownOptions(false)
+   }
   }, [searchValue])
-  const HandleSearch = async () => {
-    await GetUni()
-    await GetUser()
+
+  const HandleSearch = () => {
+    // await GetUni()
+    // await GetUser()
+    dispatch(searchUniFromBar(searchValue, 5, setOptions))
   }
   // const debouncer = useCallback(debounce(GetUni, 1000), [])
 
-  useEffect(() => {
-    if (unidata?.data?.searchSchool && searchUser?.data?.searchUser?.user) {
-      setOptions([
-        ...unidata?.data?.searchSchool,
-        ...searchUser?.data?.searchUser?.user
-      ])
-    } else if (Array.isArray(unidata?.data?.searchSchool)) {
-      setOptions([...unidata?.data?.searchSchool])
-    } else if (Array.isArray(searchUser?.data?.searchUser?.user)) {
-      setOptions([...searchUser?.data?.searchUser?.user])
-    }
-  }, [unidata.data, searchUser.data])
+  // useEffect(() => {
+  //   if (unidata?.data?.searchSchool && searchUser?.data?.searchUser?.user) {
+  //     setOptions([
+  //       ...unidata?.data?.searchSchool,
+  //       ...searchUser?.data?.searchUser?.user
+  //     ])
+  //   } else if (Array.isArray(unidata?.data?.searchSchool)) {
+  //     setOptions([...unidata?.data?.searchSchool])
+  //   } else if (Array.isArray(searchUser?.data?.searchUser?.user)) {
+  //     setOptions([...searchUser?.data?.searchUser?.user])
+  //   }
+  // }, [unidata.data, searchUser.data])
 
-  // useDebouncedEffect(HandleSearch, [searchValue], 1000)
-  useEffect(() => {
-    if (searchValue.length > 2) {
-      HandleSearch()
-    }
-  }, [debouncedSearchValue])
+  useDebouncedEffect(HandleSearch, [searchValue], 1000)
 
   return (
     <>
@@ -120,63 +103,7 @@ function index() {
             </Link>
           </div>
           {Array?.isArray(options) &&
-            options.map((item, i) => {
-              return (
-                <Link
-                  to={
-                    item?.elevatorInfo?.name
-                      ? `/university/${item?.elevatorInfo?.name}`
-                      : `/@/${item?.username}`
-                  }
-                  key={i}
-                  onClick={() => setDropDownOptions(false)}
-                >
-                  <IonItem
-                    style={{
-                      margin: "0px",
-                      padding: "0px"
-                    }}
-                    lines="none"
-                    key={index}
-                  >
-                    <IonAvatar slot="start">
-                      {item?.elevatorInfo?.name ? (
-                        <img
-                          src={
-                            item?.elevatorInfo?.logo ||
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
-                          }
-                        />
-                      ) : (
-                        <Avatar
-                          username={item?.username}
-                          profilePic={
-                            item?.picture ? imageAccess + item.picture : null
-                          }
-                        />
-                      )}
-                    </IonAvatar>
-                    <IonLabel>
-                      <h2
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        {item?.elevatorInfo?.name ||
-                          `${item?.firstName} ${item?.lastName}`}
-                      </h2>
-                      <p
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        {item?.elevatorInfo?.city || item?.location}
-                      </p>
-                    </IonLabel>
-                  </IonItem>
-                </Link>
-              )
-            })}
+            options.map((item, i) => <SearchBarResultList item ={item} key = {i} setDropDownOptions = {setDropDownOptions}/>)}
         </div>
       )}
     </>

@@ -14,9 +14,9 @@ export
                 wouldTakeAgain
             }
         }`,
-    getSchoolInfo = (name) => gql`
+    getSchoolInfo = (name = "") => gql`
         query {
-            getSchoolInfo(name: "${name}") {
+            getSchoolInfo(name: "${name.trim()}") {
                 unitId
                 elevatorInfo {
                     name
@@ -242,6 +242,7 @@ export
                     value
                     diversity
                 }
+                pictures
             }
         }`,
     UniSearchDataList = (name) => gql`

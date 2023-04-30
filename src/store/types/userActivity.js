@@ -1,0 +1,1 @@
+export const UNI_SEARCH_RESULT = "UNI_SEARCH_RESULT"
