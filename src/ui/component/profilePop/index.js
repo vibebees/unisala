@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import Authentication from "../authentication"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 import { imageAccess } from "../../../servers/endpoints"
 
 export const ProfilePop = ({

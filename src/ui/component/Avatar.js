@@ -1,17 +1,20 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { createAvatar } from "@dicebear/core"
 import { thumbs } from "@dicebear/collection"
+import { getImage } from "../../servers/s3.configs"
 
-function Avatar({ profilePic, username }) {
+export function Avatar({ profilePic, username }) {
+
   const avatar = useMemo(() => {
     // eslint-disable-next-line no-sync
-    return createAvatar(thumbs, {
+    return username && createAvatar(thumbs, {
       size: 128,
       seed: username
       // ... other options
-    }).toDataUriSync()
+    })?.toDataUriSync()
   }, [profilePic, username])
 
+  console.log({ profilePic })
   return (
     <img
       src={profilePic || avatar}
@@ -25,5 +28,3 @@ function Avatar({ profilePic, username }) {
     />
   )
 }
-
-export default Avatar

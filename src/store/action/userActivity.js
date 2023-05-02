@@ -23,9 +23,9 @@ export
     removeSeenEye = (seenBy) => (dispatch) => {
       dispatch({ type: REMOVE_SEEN_MESSAGE, payload: seenBy })
     },
-    searchUniFromBar = (uniName, numberOfSuggestion = 5, setResult) => {
+    searchUniFromBar = (uniName = "", numberOfSuggestion = 5, setResult) => {
       return async (dispatch) => {
-          await axios
+        uniName.length > 0 && await axios
               .get(universityServer + `/keyword/schoolname/${uniName}/${numberOfSuggestion}`)
               .then((res) => {
                setResult(res?.data)

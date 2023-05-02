@@ -4,7 +4,7 @@ import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import ReplyInput from "../ReplyInput"
 import ShowMore from "./ShowMore"
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 import { imageAccess } from "../../../servers/endpoints"
 import "./index.css"
 
@@ -22,7 +22,7 @@ function Comment({ comment, postId }) {
     picture
   } = comment
   const [reply, setReply] = useState(false)
-  const profilePic = picture && imageAccess + picture
+  const profilePic = picture
 
   return (
     <div className="comment_thread">

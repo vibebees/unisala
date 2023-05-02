@@ -5,7 +5,7 @@ import { sendOutline } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
 import { AddComment, GetCommentList } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 import "./index.css"
 
 function ReplyInput({ setReply, postId, isReply, parentId }) {

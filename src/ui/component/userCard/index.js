@@ -7,9 +7,8 @@ import {
 } from "@ionic/react"
 import { location } from "ionicons/icons"
 import { Link } from "react-router-dom"
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 import "./index.css"
-import { imageAccess } from "../../../servers/endpoints"
 
 function index({
   profileBanner,
@@ -20,7 +19,7 @@ function index({
   oneLineBio,
   children
 }) {
-  const profilePic = profileImg ? imageAccess + profileImg : null
+  const profilePic = profileImg
 
   return (
     <IonCard className="user-card">
