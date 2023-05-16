@@ -21,6 +21,7 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import "./index.css"
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
+import { imageAccess } from "../../../servers/endpoints"
 
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)
