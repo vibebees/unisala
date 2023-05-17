@@ -10,11 +10,11 @@ export function Avatar({ profilePic, username }) {
     return username && createAvatar(thumbs, {
       size: 128,
       seed: username
+
       // ... other options
     })?.toDataUriSync()
   }, [profilePic, username])
 
-  console.log({ profilePic })
   return (
     <img
       src={profilePic || avatar}
