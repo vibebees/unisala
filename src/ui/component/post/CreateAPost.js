@@ -20,8 +20,9 @@ import { AddPost, GetUserPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import Avatar from "../Avatar"
-import { awsBucket, bucketName, imageAccess } from "../../../servers/s3.configs"
 import "./index.css"
+import { awsBucket, bucketName } from "../../../servers/s3.configs"
+import { imageAccess } from "../../../servers/endpoints"
 
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)

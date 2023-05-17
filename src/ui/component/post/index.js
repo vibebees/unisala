@@ -1,7 +1,7 @@
 import { IonCol, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
 import { imageOutline } from "ionicons/icons"
 import { useSelector } from "react-redux"
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 import { useEffect, useState } from "react"
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
 

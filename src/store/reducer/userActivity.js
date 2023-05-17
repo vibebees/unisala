@@ -1,9 +1,11 @@
 import { MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY, SEEN_MESSAGE, REMOVE_SEEN_MESSAGE } from "../types/messengerType"
+import { UNI_SEARCH_RESULT } from "../types/userActivity"
 
 const initialState = {
     messagingTo: null,
     messageUpdated: false,
-    messageSeenBy: []
+    messageSeenBy: [],
+    uniSearchResult: []
 }
 
 const userActivity = (state = initialState, action) => {
@@ -33,6 +35,11 @@ const userActivity = (state = initialState, action) => {
             return {
                 ...state,
                 messageSeenBy: [state.messageSeenBy].filter((id) => id !== payload)
+            }
+        case UNI_SEARCH_RESULT:
+            return {
+                ...state,
+                uniSearchResult: payload
             }
         default:
             return state

@@ -7,7 +7,7 @@ import {
   IonLabel
 } from "@ionic/react"
 import { useSelector } from "react-redux"
-import Avatar from "../../component/Avatar"
+import { Avatar } from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
 import { imageAccess } from "../../../servers/endpoints"
 export const screensMoreThan768 = ({
@@ -18,7 +18,7 @@ export const screensMoreThan768 = ({
   loggedIn
 }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const profilePic = user?.picture ? imageAccess + user?.picture : null
+  const profilePic = user?.picture
 
   return (
     <IonCol

@@ -25,6 +25,7 @@ function index() {
                 average={data?.report?.average}
                 act={data?.applicants?.actRange}
                 acceptanceRate={data?.applicants?.acceptanceRate}
+                picture={data?.pictures?.[0]}
               />
             </Link>
           )

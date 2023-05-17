@@ -7,8 +7,9 @@ import Save from "./actions/Save"
 import ReplyInput from "../ReplyInput"
 import "./index.css"
 import ShowMore from "./ShowMore"
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 import { imageAccess } from "../../../servers/endpoints"
+import { getImage } from "../../../servers/s3.configs"
 
 const Thread = ({ thread }) => {
   const {
@@ -23,14 +24,19 @@ const Thread = ({ thread }) => {
   } = thread
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
-  const profilePic = picture && imageAccess + picture
+  const [profilePic, setProfilePic] = useState(picture)
+  const [image, setImage] = useState(postImage)
 
+  useEffect(() => {
+    getImage("user", image, setImage)
+    getImage("user", profilePic, setProfilePic)
+  }, [profilePic])
   return (
     <IonCard className="thread">
       <Link to={`/@/${username}`}>
         <div className="thread-header">
           <div className="thread_profile-pic">
-            <Avatar profilePic={profilePic} username={username} />
+            <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails">
             <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
@@ -47,7 +53,7 @@ const Thread = ({ thread }) => {
           <p>{postText}</p>
         </div>
         <div className="thread_image">
-          {postImage && <img src={imageAccess + postImage} />}
+          {postImage && <img src={image} />}
         </div>
         <div className="thread_footer">
           <Upvote

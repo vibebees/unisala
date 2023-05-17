@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {
   IonGrid,
   IonRow,
@@ -14,9 +14,10 @@ import useIsData from "../../../hooks/useIsData"
 import useGrade from "../../../hooks/useGrade"
 import useGradeColor from "../../../hooks/useGradeColor"
 import "./index.css"
+import { getImage } from "../../../servers/s3.configs"
 
 const CourseCard = ({
-  image,
+  picture,
   name,
   city,
   rating,
@@ -26,7 +27,10 @@ const CourseCard = ({
   act,
   data
 }) => {
-  const [width, setWidth] = React.useState(window.innerWidth)
+  const
+   [width, setWidth] = React.useState(window.innerWidth),
+   [image, setImage] = React.useState("")
+
   const handleResize = () => {
     const { innerWidth } = window
 
@@ -34,7 +38,9 @@ const CourseCard = ({
       setWidth(innerWidth)
     }
   }
-  React.useEffect(() => {
+  console.log(picture)
+  useEffect(() => getImage("uni", picture, setImage), [picture])
+  useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {
       window.removeEventListener("resize", handleResize)
@@ -53,7 +59,7 @@ const CourseCard = ({
             <div className="card-image">
               <img
                 src={
-                  "https://cdn.vox-cdn.com/thumbor/l5-CNuyDLr8IR8dWTW_7wqnT_bc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084622/5f1b1bd4b8800.image.jpg"
+                  image || "https://cdn.vox-cdn.com/thumbor/l5-CNuyDLr8IR8dWTW_7wqnT_bc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084622/5f1b1bd4b8800.image.jpg"
                 }
                 alt="University"
                 style={{

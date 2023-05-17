@@ -124,10 +124,10 @@ export
         : userServiceAddress,
     messageServer = config.NODE_ENV === "PRODUCTION"
         ? urls["base"] + "/message/"
-        : userServiceAddress,
+        : messagingServiceAddress,
     universityServer = config.NODE_ENV === "PRODUCTION"
         ? urls["base"] + "/uni/"
-        : userServiceAddress,
+        : universityServiceAddress,
         S3_BUCKET = "unisala-prod",
         s3BucketUrl = `https://${S3_BUCKET}.s3.amazonaws.com`,
         imageAccess = `${s3BucketUrl}/`

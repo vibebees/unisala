@@ -7,7 +7,7 @@ import {
   IonLabel
 } from "@ionic/react"
 import { useSelector } from "react-redux"
-import Avatar from "../../component/Avatar"
+import { Avatar } from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 export const screensMoreThan768 = ({

@@ -25,7 +25,7 @@ export const GetProfessor = gql`
   `,
   getSchoolInfo = (name) => gql`
         query {
-            getSchoolInfo(name: "${name}") {
+            getSchoolInfo(name: "${name.trim()}") {
                 unitId
                 elevatorInfo {
                     name
@@ -259,6 +259,7 @@ export const GetProfessor = gql`
                     value
                     diversity
                 }
+                pictures
             }
         }`,
   UniSearchDataList = (name) => gql`
