@@ -22,6 +22,7 @@ export const Post = () => {
       }
     })
   }, [])
+
   return (
     <div
       style={{

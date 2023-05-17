@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import { useMutation } from "@apollo/client"
+import { useSelector } from "react-redux"
 import {
   IonAvatar,
   IonButton,
@@ -18,9 +19,9 @@ import { imageOutline } from "ionicons/icons"
 import { AddPost, GetUserPost } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import { useSelector } from "react-redux"
+import Avatar from "../Avatar"
+import { awsBucket, bucketName, imageAccess } from "../../../servers/s3.configs"
 import "./index.css"
-import { awsBucket, bucketName } from "../../../servers/s3.configs"
 
 export const CreateAPost = ({ setPopup, popup }) => {
   const { user } = useSelector((state) => state.userProfile)
@@ -134,34 +135,38 @@ export const CreateAPost = ({ setPopup, popup }) => {
       }
 
       // Generate a pre-signed URL
-      await awsBucket("user").getSignedUrl("putObject", params, async (err, url) => {
-        if (err) {
-          console.error(err)
-          return
-        }
-
-        // Upload the file to S3 using the pre-signed URL
-        const result = await fetch(url, {
-          method: "PUT",
-          body: fileData,
-          headers: {
-            "Content-Type": fileData.type
+      await awsBucket("user").getSignedUrl(
+        "putObject",
+        params,
+        async (err, url) => {
+          if (err) {
+            console.error(err)
+            return
           }
-        })
 
-        if (result.ok) {
-          // If the upload is successful, add the post with the S3 image URL
-          addPost({
-            variables: {
-              postText: TextChecker(postText),
-              postImage: uploadFilename
+          // Upload the file to S3 using the pre-signed URL
+          const result = await fetch(url, {
+            method: "PUT",
+            body: fileData,
+            headers: {
+              "Content-Type": fileData.type
             }
           })
-          setfile("")
-        } else {
-          console.error("Failed to upload image to S3")
+
+          if (result.ok) {
+            // If the upload is successful, add the post with the S3 image URL
+            addPost({
+              variables: {
+                postText: TextChecker(postText),
+                postImage: uploadFilename
+              }
+            })
+            setfile("")
+          } else {
+            console.error("Failed to upload image to S3")
+          }
         }
-      })
+      )
     }
   }
 
@@ -185,7 +190,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
-              <img src={profilePic} />
+              <Avatar username={user.username} profilePic={profilePic} />
             </IonAvatar>
             <IonLabel className="ion-padding-start">
               <h2>{user.username}</h2>

@@ -24,13 +24,15 @@ import useIsEmpty from "../../../hooks/useIsEmpty"
 import { isSideBar } from "../../../store/action/University"
 import { getSchoolInfo } from "../../../graphql/uni"
 import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
+import useDocTitle from "../../../hooks/useDocTitile"
 
 export default function UniversityPage() {
-  const { username, id } = useParams()
+  const { id } = useParams()
+  useDocTitle(id)
   const dispatch = useDispatch()
   const { loading, data } = useQuery(getSchoolInfo(id), {
     context: { server: UNIVERSITY_SERVICE_GQL }
-})
+  })
   useEffect(() => {
     dispatch(getUniData(data?.getSchoolInfo))
   }, [data])
@@ -288,7 +290,7 @@ export default function UniversityPage() {
         )}
         <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
           <div ref={profile}>
-            <UniProfile images = {uniData?.pictures}/>
+            <UniProfile images={uniData?.pictures} />
           </div>
           <SideDetails
             forwardedRef={{

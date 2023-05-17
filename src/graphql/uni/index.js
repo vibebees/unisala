@@ -1,20 +1,29 @@
 import { gql } from "@apollo/client"
 
-export
-    const
-    GetProfessor = (unitId) => gql`
-        query {
-            getProfessors(unitId: ${unitId}) {
-                unitId
-                overallRating
-                ratings
-                professorName
-                subject
-                levelOfDifficulty
-                wouldTakeAgain
-            }
-        }`,
-    getSchoolInfo = (name) => gql`
+export const GetProfessor = gql`
+    query GetProfessor(
+      $unitId: Float!
+      $page: Float!
+      $major: String
+      $overallRating: Float
+    ) {
+      getProfessors(
+        unitId: $unitId
+        page: $page
+        major: $major
+        overallRating: $overallRating
+      ) {
+        unitId
+        overallRating
+        ratings
+        professorName
+        subject
+        levelOfDifficulty
+        wouldTakeAgain
+      }
+    }
+  `,
+  getSchoolInfo = (name) => gql`
         query {
             getSchoolInfo(name: "${name}") {
                 unitId
@@ -171,6 +180,15 @@ export
                     studentLife
                     safety
                 }
+                professors {
+                  unitId
+                  overallRating
+                  ratings
+                  professorName
+                  subject
+                  levelOfDifficulty
+                  wouldTakeAgain
+                }
                 reviews {
                     rating
                     type
@@ -214,10 +232,9 @@ export
                         }
                     }
                 }
-                pictures
             }
         }`,
-    UniSearch = (name) => gql`
+  UniSearch = (name) => gql`
         query {
             searchSchool(name: "${name}") {
                 elevatorInfo {
@@ -244,7 +261,7 @@ export
                 }
             }
         }`,
-    UniSearchDataList = (name) => gql`
+  UniSearchDataList = (name) => gql`
         query {
             searchSchool(name: "${name}") {
                 elevatorInfo {

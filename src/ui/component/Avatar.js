@@ -16,7 +16,7 @@ function Avatar({ profilePic, username }) {
     <img
       src={profilePic || avatar}
       className="user-profile__img"
-      alt="userName"
+      alt={username}
       style={{
         width: "100%",
         height: "100%",

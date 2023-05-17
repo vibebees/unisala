@@ -108,7 +108,7 @@ function index({ userId, firstName }) {
                   setTimeout(() => e.target.complete(), 500)
                 }}
               >
-                <IonInfiniteScrollContent loadingText=""></IonInfiniteScrollContent>
+                <IonInfiniteScrollContent loadingText="loading..."></IonInfiniteScrollContent>
               </IonInfiniteScroll>
             )}
           </div>
