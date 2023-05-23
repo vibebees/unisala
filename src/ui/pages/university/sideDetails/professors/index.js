@@ -13,6 +13,7 @@ import { Query } from "@apollo/client/react/components"
 import { GetProfessor } from "../../../../../graphql/uni"
 import { useSelector } from "react-redux"
 import { ProfessorFilter } from "./filter"
+import { Avatar } from "../../../../component/Avatar"
 import { UNIVERSITY_SERVICE_GQL } from "../../../../../servers/types"
 import "./professors.css"
 
@@ -73,10 +74,9 @@ export const Professors = () => {
                                 height: "60px"
                               }}
                             >
-                              <img
-                                src="https://www.svgrepo.com/show/206842/professor.svg"
-                                alt=""
-                              />
+                              <IonAvatar>
+                                <Avatar username={professorName} />
+                              </IonAvatar>
                             </IonAvatar>
                           </div>
                         </div>

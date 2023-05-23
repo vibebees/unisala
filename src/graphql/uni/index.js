@@ -27,6 +27,7 @@ export const GetProfessor = gql`
         query {
             getSchoolInfo(name: "${name.trim()}") {
                 unitId
+                pictures
                 elevatorInfo {
                     name
                     address {
