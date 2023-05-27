@@ -17,7 +17,7 @@ const validate = (data) => {
     errors.password = "Password field is required"
   } else if (
     !data?.password?.match(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/gi
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/gi
     )
   ) {
     errors.password =
