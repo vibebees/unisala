@@ -1,14 +1,9 @@
 import { useState } from "react"
-import {
-  IonItem,
-  IonList,
-  IonSearchbar,
-  IonIcon,
-  IonSelect,
-  IonSelectOption
-} from "@ionic/react"
-import { star, starOutline } from "ionicons/icons"
-import { global } from "../../../../../mockData/utils"
+import { IonItem, IonList, IonSearchbar, IonIcon } from "@ionic/react"
+import { star, starOutline, close } from "ionicons/icons"
+import axios from "axios"
+import { universityServer } from "../../../../../servers/endpoints"
+// import { global } from "../../../../../mockData/utils"
 
 export function ProfessorFilter({
   setFilterMajors,
@@ -16,42 +11,92 @@ export function ProfessorFilter({
   setFilterRating,
   setPage
 }) {
-  // const { subjects } = global
-  // let [results, setResults] = useState([...subjects]),
-  //   [displayList, setDisplayList] = useState(false)
+  const [results, setResults] = useState([])
+  const [majorSearch, setMajorSearch] = useState("")
+  const [dropDownOptions, setDropDownOptions] = useState(false)
+  const [dropDownLoading, setDropDownLoading] = useState(false)
 
-  // const handleChange = (ev) => {
-  //   let query = ""
-  //   const { target } = ev
-  //   if (target) query = target.value.toLowerCase()
-  //   if (displayList) setDisplayList(true)
-  //   setResults(subjects.filter((d) => d.toLowerCase().indexOf(query) > -1))
-  // }
+  const handleChange = (ev) => {
+    setDropDownLoading(true)
+    const query = ev.target.value
+    setMajorSearch(query)
+    if (query.length === 0) {
+      setDropDownOptions(false)
+      setFilterMajors("")
+      setPage(0)
+    }
+    if (query.length < 3) {
+      setDropDownOptions(false)
+      return
+    }
+    setDropDownOptions(true)
+    axios.get(universityServer + `/keyword/spaces/${query}/5`).then((data) => {
+      setDropDownLoading(false)
+      setResults(data?.data)
+    })
+  }
 
   return (
     <div className="search-control">
       <div className="field-search-field">
-        <IonSelect
-          interface="popover"
-          placeholder="Select Majors"
-          className="select-field"
-          onIonChange={(e) => {
-            setFilterMajors(e.detail.value)
-            if (e.detail.value === "Any") {
-              setFilterMajors("")
-              setPage(0)
+        <IonSearchbar
+          animated={true}
+          debounce={1000}
+          placeholder="Search Majors"
+          onIonChange={(ev) => handleChange(ev)}
+          value={majorSearch}
+          onKeyPress={(ev) => {
+            if (majorSearch.length > 3 && ev.key === "Enter") {
+              setDropDownOptions(false)
+              setFilterMajors(majorSearch)
             }
           }}
+          style={{
+            position: "relative",
+            overflow: "inherit"
+          }}
         >
-          <IonSelectOption value="Any">Any</IonSelectOption>
-          <IonSelectOption value="Arts">Arts</IonSelectOption>
-          <IonSelectOption value="Mathematics">Mathematics</IonSelectOption>
-          <IonSelectOption value="Computer Science">
-            Computer Science
-          </IonSelectOption>
-        </IonSelect>
+          {dropDownOptions && (
+            <IonList
+              style={{
+                zIndex: 1000,
+                position: "absolute",
+                width: "100%",
+                top: "3.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "5px"
+              }}
+            >
+              {results?.length === 0 && !dropDownLoading && (
+                <IonItem>No results</IonItem>
+              )}
+              {results.length > 0 &&
+                results.map((result, index) => {
+                  return (
+                    <IonItem
+                      style={{
+                        cursor: "pointer"
+                      }}
+                      key={index}
+                      onClick={() => {
+                        setFilterMajors(result?.name)
+                        setDropDownOptions(false)
+                      }}
+                    >
+                      {result?.name}
+                    </IonItem>
+                  )
+                })}
+              {dropDownLoading && <IonItem>Loading...</IonItem>}
+            </IonList>
+          )}
+        </IonSearchbar>
 
-        <div>
+        <div
+          style={{
+            whiteSpace: "nowrap"
+          }}
+        >
           {[1, 2, 3, 4, 5].map((index) => (
             <IonIcon
               key={index}
@@ -73,24 +118,23 @@ export function ProfessorFilter({
               icon={index <= filterRating ? star : starOutline}
             />
           ))}
+          {filterRating > 0 && (
+            <IonIcon
+              style={{
+                color: "#A52A2A",
+                margin: "0 3px",
+                padding: "0",
+                fontWeight: "bold",
+                fontSize: "25px",
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                setFilterRating(0)
+              }}
+              icon={close}
+            />
+          )}
         </div>
-
-        {/* <IonSearchbar
-          animated={true}
-          debounce={1000}
-          placeholder="Computer Science"
-          onIonChange={(ev) => handleChange(ev)}
-        ></IonSearchbar>
-        {dropDownOptions && (
-          <IonList>
-            {results.map((result, index) => {
-              if (index > 3) {
-                return <IonItem key={index}>{result}</IonItem>
-              }
-              return ""
-            })}
-          </IonList>
-        )} */}
       </div>
     </div>
   )

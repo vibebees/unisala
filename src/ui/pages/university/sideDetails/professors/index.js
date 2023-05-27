@@ -41,10 +41,6 @@ export const Professors = () => {
           setProfData(data?.getProfessors)
         }, [data])
 
-        if (loading) {
-          return <h2>Loading ...</h2>
-        }
-
         return (
           <IonCard
             style={{ margin: "15px 0px 0px 0px" }}
@@ -59,7 +55,14 @@ export const Professors = () => {
               filterRating={filterRating}
               setPage={setPage}
             />
-            {profData?.length ? (
+            {loading && (
+              <IonRow>
+                <h1 className="text-center pt-1 pb-1" style={{ width: "100%" }}>
+                  Loading...
+                </h1>
+              </IonRow>
+            )}
+            {profData?.length > 0 && !loading && (
               <IonRow>
                 {profData.map((data, index) => {
                   const { overallRating, professorName, subject } = data
@@ -165,7 +168,8 @@ export const Professors = () => {
                   />
                 </div>
               </IonRow>
-            ) : (
+            )}
+            {!profData?.length && !loading && (
               <IonRow>
                 <h1 className="text-center pt-1 pb-1" style={{ width: "100%" }}>
                   No data
