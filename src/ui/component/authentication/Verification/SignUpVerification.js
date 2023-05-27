@@ -63,6 +63,7 @@ const SignUpVerification = ({ setauth }) => {
       input={input}
       verify={verify}
       loading={loading}
+      email={localStorage.getItem("email")}
     />
   )
 }
