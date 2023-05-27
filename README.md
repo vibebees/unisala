@@ -1,3 +1,15 @@
+#Act like a single break would crash the app, build like it's going to be alive forever
+
+# Build app on Ios
+        ionic capacitor add ios
+        npx cap open ios
+# Build app on Android
+        ionic capacitor add android
+        npx cap open android
+
+
+
+
 ##  Naming Convention
 
 ### File And Folder:

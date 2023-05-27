@@ -7,6 +7,7 @@
     "@capacitor/app": "4.1.1",
     "@capacitor/core": "4.6.3",
     "@capacitor/haptics": "4.1.0",
+    "@capacitor/ios": "5.0.3",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
     "@dicebear/collection": "^5.3.4",
@@ -69,7 +70,11 @@
     "build-win": "set CI=false&&react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-    "lint": "./node_modules/.bin/eslint ."
+    "lint": "./node_modules/.bin/eslint .",
+    "android": "npx cap add android",
+    "ios": "npx cap add ios",
+    "openandroid": "npx cap open android",
+    "ionic:build": "npm run build && ionic capacitor "
   },
   "eslintConfig": {
     "extends": [
