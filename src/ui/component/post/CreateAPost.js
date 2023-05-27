@@ -21,7 +21,6 @@ import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
-import { imageAccess } from "../../../servers/endpoints"
 import "./index.css"
 
 export const CreateAPost = ({ setPopup, popup }) => {
@@ -31,7 +30,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
   const [postText, setPostText] = useState("")
   const [file, setfile] = useState("")
   const [fileData, setFileData] = useState("")
-  const profilePic = user?.picture ? imageAccess + user?.picture : null
+  const profilePic = user?.picture
 
   const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },

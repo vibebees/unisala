@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
 import ProtectedRoute from "../../utils/lib/protectedRoute"
+import { StudyAbroadRoadmap } from "../pages/roadmap"
 
 const HomePage = lazy(() => import("../pages/home"))
 const ProfilePage = lazy(() => import("../pages/profilePage"))
@@ -79,6 +80,10 @@ export const PageRoute = () => (
 
       <Route path="/login" exact>
         <Login />
+      </Route>
+
+      <Route path="/roadmap" exact>
+        <StudyAbroadRoadmap />
       </Route>
 
       <Route path="" exact>

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   IonButtons,
   IonButton,
@@ -20,7 +20,10 @@ import { USER_SERVICE_GQL } from "../../../../../servers/types"
 import { Avatar } from "../../../../component/Avatar"
 import { S3_BUCKET } from "../../../../../servers/endpoints"
 import "./index.css"
-import { awsBucket } from "../../../../../servers/s3.configs"
+import { awsBucket, bucketName } from "../../../../../servers/s3.configs"
+import jwtDecode from "jwt-decode"
+import { getUserProfile } from "../../../../../store/action/userProfile"
+import { useDispatch } from "react-redux"
 
 function index({ profileHeader }) {
   const { firstName, lastName, oneLinerBio, location, profilePic, username } =
@@ -36,7 +39,8 @@ function index({ profileHeader }) {
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
   const [profileImage, setProfileImage] = useState(null)
-  const [imageName, setImageName] = useState("")
+  const [imageName, setImageName] = useState(""),
+    dispatch = useDispatch()
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
     context: { server: USER_SERVICE_GQL },
@@ -112,10 +116,11 @@ function index({ profileHeader }) {
     setImageName(filename[0] + Date.now() + "." + filename[1] || "")
   }
 
+  console.log({ profilePic })
   const fileUpdate = async () => {
     if (profileImage) {
       const params = {
-        Bucket: S3_BUCKET,
+        Bucket: bucketName("user"),
         Key: imageName,
         ContentType: profileImage.type,
         ACL: "public-read"
@@ -139,6 +144,7 @@ function index({ profileHeader }) {
 
         if (result.ok) {
           // If the upload is successful, add the post with the S3 image URL
+          console.log("Uploaded to S3")
         } else {
           console.error("Failed to upload image to S3")
         }

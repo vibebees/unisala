@@ -4,6 +4,7 @@ import { thumbs } from "@dicebear/collection"
 import { getImage } from "../../servers/s3.configs"
 
 export function Avatar({ profilePic, username }) {
+  const [profileImage, setProfileImage] = useState("")
 
   const avatar = useMemo(() => {
     // eslint-disable-next-line no-sync
@@ -14,10 +15,12 @@ export function Avatar({ profilePic, username }) {
       // ... other options
     })?.toDataUriSync()
   }, [profilePic, username])
-
+  useEffect(() => {
+    getImage("user", profilePic, setProfileImage)
+  }, [])
   return (
     <img
-      src={profilePic || avatar}
+      src={profileImage || avatar}
       className="user-profile__img"
       alt={username}
       style={{

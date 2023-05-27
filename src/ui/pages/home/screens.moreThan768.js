@@ -10,6 +10,8 @@ import { useSelector } from "react-redux"
 import { Avatar } from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
 import { imageAccess } from "../../../servers/endpoints"
+import { useEffect, useState } from "react"
+import { getImage } from "../../../servers/s3.configs"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
@@ -18,7 +20,6 @@ export const screensMoreThan768 = ({
   loggedIn
 }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const profilePic = user?.picture
 
   return (
     <IonCol
@@ -37,7 +38,7 @@ export const screensMoreThan768 = ({
               <div className="user-profile-circle">
                 <Avatar
                   username={user.username}
-                  profilePic={profilePic}
+                  profilePic={user?.picture}
                   size="medium"
                 />
               </div>
