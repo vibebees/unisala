@@ -30,11 +30,11 @@ function index() {
     dispatch = useDispatch()
 
   useEffect(() => {
-   if (searchValue) {
-    setDropDownOptions(true)
-   } else {
-    setDropDownOptions(false)
-   }
+    if (searchValue) {
+      setDropDownOptions(true)
+    } else {
+      setDropDownOptions(false)
+    }
   }, [searchValue])
 
   const HandleSearch = () => {
@@ -103,7 +103,13 @@ function index() {
             </Link>
           </div>
           {Array?.isArray(options) &&
-            options.map((item, i) => <SearchBarResultList item ={item} key = {i} setDropDownOptions = {setDropDownOptions}/>)}
+            options.map((item, i) => (
+              <SearchBarResultList
+                item={item}
+                key={i}
+                setDropDownOptions={setDropDownOptions}
+              />
+            ))}
         </div>
       )}
     </>

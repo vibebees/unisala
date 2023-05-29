@@ -10,7 +10,8 @@ import { Avatar } from "../Avatar"
 export const ProfilePop = ({
   setPopoverOpen,
   setActiveNavDrop,
-  activeNavDrop
+  activeNavDrop,
+  setActive
 }) => {
   const { user, loggedIn } = useSelector((state) => state.userProfile)
   const profilePic = user?.picture
@@ -41,7 +42,10 @@ export const ProfilePop = ({
           style={{
             borderBottom: "1px solid #e0e0e0"
           }}
-          onClick={() => setPopoverOpen(false)}
+          onClick={() => {
+            setPopoverOpen(false)
+            setActive("@")
+          }}
           lines="none"
         >
           <IonAvatar slot="start">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { IonCol, IonGrid, IonPopover, IonRow } from "@ionic/react"
 import "./auth.css"
 import SignIn from "./SignIn/Index"
@@ -8,6 +8,7 @@ import SignUpVerification from "./Verification/SignUpVerification"
 import ForgotPasswordVerification from "./Verification/ForgotPassword/ForgotPasswordVerification"
 import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 import UserNotVerified from "./Verification/UserNotVerified"
+import useWindowWidth from "../../../hooks/useWindowWidth"
 
 export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
   const [auth, setauth] = useState({
@@ -15,20 +16,7 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
     email: "",
     code: 0
   })
-  const [width, setWidth] = useState(window.innerWidth)
-  const handleResize = () => {
-    const { innerWidth } = window
-
-    if (width !== innerWidth) {
-      setWidth(innerWidth)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  })
+  const width = useWindowWidth()
 
   return (
     <>
