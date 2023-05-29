@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
 
 import AuthInput from "../AuthInput"
-import validate from "../../../../utils/components/validate"
+import { validateSignup } from "../../../../utils/components/validate"
 import { userServer } from "../../../../servers/endpoints"
 import { useDispatch } from "react-redux"
 import { registerUser } from "../../../../store/action/authenticationAction"
@@ -32,7 +32,7 @@ export const SignUpForm = ({ setauth }) => {
   }
   const submitHandler = (e) => {
       e.preventDefault()
-      seterrors(validate(input))
+      seterrors(validateSignup(input))
       setdatacheck(true)
     },
     dispatch = useDispatch()

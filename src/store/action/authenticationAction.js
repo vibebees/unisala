@@ -48,9 +48,8 @@ export const loginUser = ({
           }
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false)
-        console.log(err)
         present({
           duration: 3000,
           message: "Something went wrong!",
