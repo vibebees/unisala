@@ -33,7 +33,7 @@ export const screensMoreThan768 = ({
           <IonCard>
             <div className="aside-profile">
               <div className="user-profile-circle">
-                <Avatar username={user.username} profilePic={user.profilePic} size="medium" />
+                <Avatar username={user?.username} profilePic={user?.profilePic} size="medium" />
               </div>
             </div>
             <div className="aside-profile-details">
@@ -43,7 +43,7 @@ export const screensMoreThan768 = ({
                 </h6>
               </IonText>
               <IonText color="medium">
-                <p>@{user.username}</p>
+                <p>@{user?.username}</p>
               </IonText>
             </div>
           </IonCard>
@@ -95,7 +95,7 @@ export const screensMoreThan768 = ({
               )
             })}
           </IonCard>
-            {screenGreaterThan1000({ title: "Top User" })}
+          {screenGreaterThan1000({ title: "Top User" })}
         </>
       ) : (
         <IonCard

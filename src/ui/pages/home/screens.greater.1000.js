@@ -59,35 +59,35 @@ export const screenGreaterThan1000 = () => {
                 ].map((item, index) => {
                     return (
                         <Link to={"/space/" + item?.name} key={index}>
-                        <IonItem
-                            style={{
-                                margin: "0px",
-                                padding: "0px"
-                            }}
-                            lines="none"
-                            key={index}
-                        >
-                            <IonAvatar slot="start">
-                                <img src={item.img} />
-                            </IonAvatar>
-                            <IonLabel>
-                                <h2
-                                    style={{
-                                        margin: 0
-                                    }}
-                                >
-                                    {item.name}
-                                </h2>
-                                <p
-                                    style={{
-                                        margin: 0
-                                    }}
-                                >
-                                    {item.location}
-                                </p>
-                            </IonLabel>
-                        </IonItem>
-                      </Link>
+                            <IonItem
+                                style={{
+                                    margin: "0px",
+                                    padding: "0px"
+                                }}
+                                lines="none"
+                                key={index}
+                            >
+                                <IonAvatar slot="start">
+                                    <img src={item.img} />
+                                </IonAvatar>
+                                <IonLabel>
+                                    <h2
+                                        style={{
+                                            margin: 0
+                                        }}
+                                    >
+                                        {item.name}
+                                    </h2>
+                                    <p
+                                        style={{
+                                            margin: 0
+                                        }}
+                                    >
+                                        {item.location}
+                                    </p>
+                                </IonLabel>
+                            </IonItem>
+                        </Link>
 
                     )
                 })}

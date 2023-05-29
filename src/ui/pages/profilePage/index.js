@@ -54,7 +54,7 @@ const ProfilePage = () => {
     _id,
     doj
   } = getUser?.user || {}
-  const profilePic = picture && imageAccess + picture
+  const profilePic = picture
   const profileHeaderData = {
     _id,
     firstName,

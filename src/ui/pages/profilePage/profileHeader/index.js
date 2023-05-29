@@ -29,6 +29,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     socialLinks
   } = data
 
+  console.log({ profilePic })
   const icons = {
     twitter: logoTwitter,
     github: logoGithub,

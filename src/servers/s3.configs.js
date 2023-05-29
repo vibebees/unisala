@@ -46,17 +46,14 @@ export
         }
         return S3_BUCKET
     },
-    S3_BUCKET = "unisala-user-images",
-    s3BucketUrl = `https://${S3_BUCKET}.s3.amazonaws.com`,
-    imageAccess = `${s3BucketUrl}/`,
     getImage = (type, Key = "default.jpg", setImageCallBack) => {
         awsBucket(type).getObject({ Key }, (err, data) => {
-          if (err) {
-            console.log(err)
-          } else {
-            const blob = new Blob([data.Body], { type: "image/jpeg" })
-            const url = URL.createObjectURL(blob)
-            setImageCallBack(url)
-          }
+            if (err) {
+                console.log(err)
+            } else {
+                const blob = new Blob([data.Body], { type: "image/jpeg" })
+                const url = URL.createObjectURL(blob)
+                setImageCallBack(url)
+            }
         })
-      }
+    }
