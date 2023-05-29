@@ -1,10 +1,10 @@
+import axios from "axios"
 import { useRef } from "react"
 import { useIonToast } from "@ionic/react"
-import { useScript } from "../../../hooks/useScript"
-import axios from "axios"
-import urls from "../../../servers"
-import { userServer } from "../../../servers/endpoints"
+
 import "./auth.css"
+import { useScript } from "../../../hooks/useScript"
+import { userServer } from "../../../servers/endpoints"
 
 export const GoogleAuth = () => {
   const [present, dismiss] = useIonToast()
