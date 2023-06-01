@@ -12,7 +12,6 @@ export const UserNotVerified = ({ setauth, auth }) => {
 
   const verify = () => {
     setsave(true)
-    localStorage.setItem("email", email)
     axios
       .post(userServer + `/sendVerficationMail`, {
         email

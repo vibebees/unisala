@@ -75,9 +75,8 @@ export const registerUser = ({
       .then((res) => {
         setsave(false)
         if (res.data.success === true) {
-          localStorage.setItem("email", input.email)
           setdatacheck(false)
-          setauth({ state: "SignUpVerification" })
+          setauth({ state: "SignUpVerification", email: input.email })
           dispatch({
             type: USER_REGISTRATION,
             payload: res
