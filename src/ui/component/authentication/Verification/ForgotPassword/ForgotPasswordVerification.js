@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../../servers"
 import "../../auth.css"
 import VerificationCode from "../VerificationCode"
 import { userServer } from "../../../../../servers/endpoints"
@@ -76,6 +75,7 @@ const ForgotPasswordVerification = ({ auth, setauth }) => {
       input={input}
       verify={verify}
       loading={loading}
+      email={email}
     />
   )
 }
