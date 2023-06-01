@@ -1,13 +1,5 @@
-import { useState, useEffect } from "react"
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonContent,
-  IonCard,
-  IonPage
-} from "@ionic/react"
-import "./Home.css"
+import { useState } from "react"
+import { IonGrid, IonRow, IonCol, IonContent, IonCard } from "@ionic/react"
 import { personCircle } from "ionicons/icons"
 import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
@@ -23,6 +15,8 @@ import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { CreateAPost } from "../../component/post/CreateAPost"
+import useWindowWidth from "../../../hooks/useWindowWidth"
+import "./Home.css"
 
 export const Home = () => {
   useDocTitle("Unisala")
@@ -35,13 +29,6 @@ export const Home = () => {
           username: user?.username
         }
       }),
-    [width, setWidth] = useState(window.innerWidth),
-    handleResize = () => {
-      const { innerWidth } = window
-      if (width !== innerWidth) {
-        setWidth(innerWidth)
-      }
-    },
     [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     views = {
@@ -62,14 +49,8 @@ export const Home = () => {
       })
     },
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
-    [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false)
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+    [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
+    width = useWindowWidth()
 
   return (
     <IonContent color="light">

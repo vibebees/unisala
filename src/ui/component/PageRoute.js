@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
 import ProtectedRoute from "../../utils/lib/protectedRoute"
 import { StudyAbroadRoadmap } from "../pages/roadmap"
+import PreLoader from "./preloader"
 
 const HomePage = lazy(() => import("../pages/home"))
 const ProfilePage = lazy(() => import("../pages/profilePage"))
@@ -39,7 +40,7 @@ const spaceRoutes = () => (
 
 export const PageRoute = () => (
   <Switch>
-    <Suspense fallback="Loading...">
+    <Suspense fallback={<PreLoader />}>
       <Route exact path="/home">
         <HomePage />
       </Route>

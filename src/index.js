@@ -7,17 +7,16 @@ import "./index.css"
 import { Provider } from "react-redux"
 import { store } from "./store/store"
 import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
-    HttpLink,
-    ApolloLink,
-    fromPromise,
-    useApolloClient
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+  ApolloLink,
+  fromPromise,
+  useApolloClient
 } from "@apollo/client"
 
 import { createRoot } from "react-dom/client"
-import { AddPost } from "./graphql/user"
 import { client } from "./servers/endpoints"
 
 // const client = new ApolloClient({
@@ -26,13 +25,15 @@ import { client } from "./servers/endpoints"
 // })
 const root = createRoot(document.getElementById("root"))
 client.clearStore()
-root.render(<ApolloProvider client={client}>
+root.render(
+  <ApolloProvider client={client}>
     <Provider store={store}>
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
     </Provider>
-</ApolloProvider>)
+  </ApolloProvider>
+)
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA

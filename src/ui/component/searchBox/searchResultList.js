@@ -4,57 +4,51 @@ import { Link } from "react-router-dom"
 import { getImage } from "../../../servers/s3.configs"
 
 export const SearchBarResultList = ({ item, key, setDropDownOptions }) => {
+  const [profileImage, setProfileImage] = useState("")
 
-    const [profileImage, setProfileImage] = useState("")
+  useEffect(() => {
+    getImage("uni", item?.picture, setProfileImage)
+  }, [])
 
-    useEffect(() => {
-        getImage("uni", item?.picture, setProfileImage)
-      }, [])
-
-    return (
-        <Link
-          to={
-            item?.name
-              ? `/university/${item?.name}`
-              : `/@/${item?.username}`
-          }
-          key={key}
-          onClick={() => setDropDownOptions(false)}
-        >
-          <IonItem
+  return (
+    <Link
+      to={item?.name ? `/university/${item?.name}` : `/@/${item?.username}`}
+      key={key}
+      onClick={() => setDropDownOptions(false)}
+    >
+      <IonItem
+        style={{
+          margin: "0px",
+          padding: "0px"
+        }}
+        lines="none"
+        key={key}
+      >
+        <IonAvatar slot="start">
+          <img
+            src={
+              profileImage ||
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
+            }
+          />
+        </IonAvatar>
+        <IonLabel>
+          <h2
             style={{
-              margin: "0px",
-              padding: "0px"
+              margin: 0
             }}
-            lines="none"
-            key={key}
           >
-            <IonAvatar slot="start">
-              <img
-                src={
-                    profileImage ||
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
-                }
-              />
-            </IonAvatar>
-            <IonLabel>
-              <h2
-                style={{
-                  margin: 0
-                }}
-              >
-                {item?.name ||
-                  `${item?.firstName} ${item?.lastName}`}
-              </h2>
-              <p
-                style={{
-                  margin: 0
-                }}
-              >
-                {item?.elevatorInfo?.city || item?.location}
-              </p>
-            </IonLabel>
-          </IonItem>
-        </Link>
-      )
+            {item?.name || `${item?.firstName} ${item?.lastName}`}
+          </h2>
+          <p
+            style={{
+              margin: 0
+            }}
+          >
+            {item?.elevatorInfo?.city || item?.location}
+          </p>
+        </IonLabel>
+      </IonItem>
+    </Link>
+  )
 }
