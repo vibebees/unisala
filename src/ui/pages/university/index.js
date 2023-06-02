@@ -113,7 +113,6 @@ export default function UniversityPage() {
       clientHeight: app?.current?.clientHeight
     })
   }
-
   useEffect(() => {
     if (
       scrollTop - profile?.current?.clientHeight <
