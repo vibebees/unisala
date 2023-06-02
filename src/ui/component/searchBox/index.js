@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
 import { IonInput, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
-import { searchCircle } from "ionicons/icons"
+import { search, searchCircle } from "ionicons/icons"
 import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
@@ -27,13 +27,23 @@ function index() {
     [GetUser, searchUser] = useLazyQuery(userSearch(searchValue), {
       context: { server: USER_SERVICE_GQL }
     }),
-    dispatch = useDispatch()
+    dispatch = useDispatch(),
+    dropdownRef = useRef(null)
 
   useEffect(() => {
     if (searchValue) {
       setDropDownOptions(true)
     } else {
       setDropDownOptions(false)
+    }
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropDownOptions(false)
+      }
+    }
+    window.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside)
     }
   }, [searchValue])
 
@@ -72,9 +82,8 @@ function index() {
             setDropDownOptions(true)
           }}
           onkeydown={(e) => {
-            if (searchValue && e.keyCode === 13) {
+            if (searchValue && e.keyCode === 27) {
               setDropDownOptions(false)
-              return history.push(`/search/uni/${searchValue}`)
             }
           }}
         />
@@ -90,14 +99,14 @@ function index() {
         </Link>
       </div>
       {dropDownOptions && (
-        <div className="recommend-search">
+        <div className="recommend-search" ref={dropdownRef}>
           <div>
             <Link to={`/search/users/${searchValue}`}>
               <p
                 className="recommend-search__user"
                 onClick={() => setDropDownOptions(false)}
               >
-                Search for users contaning &quot;{searchValue}
+                Search for universities containing &quot;{searchValue}
                 &quot;
               </p>
             </Link>
