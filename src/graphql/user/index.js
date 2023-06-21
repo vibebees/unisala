@@ -50,7 +50,7 @@ export const AddComment = gql`
     }
   `,
   AddPost = gql`
-    mutation addPost($postText: String!, $postImage: String!) {
+    mutation addPost($postText: String, $postImage: String) {
       addPost(postText: $postText, postImage: $postImage) {
         status {
           success
@@ -273,6 +273,7 @@ export const AddComment = gql`
           banned
           active
           picture
+          coverPicture
           _id
           about {
             text
@@ -671,6 +672,58 @@ export const AddComment = gql`
           picture
           username
           _id
+        }
+      }
+    }
+  `,
+  getUniReview = gql`
+    query getUniReview($unitId: Float!, $page: Float, $pageSize: Float) {
+      getUniReview(unitId: $unitId, page: $page, pageSize: $pageSize) {
+        totalPosts
+        status {
+          success
+          message
+        }
+        Posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          user {
+            _id
+            firstName
+            lastName
+            picture
+            username
+          }
+          saved
+          upVoted
+        }
+      }
+    }
+  `,
+  addUniReview = gql`
+    mutation addUniReview(
+      $unitId: Float!
+      $postText: String!
+      $postImage: String
+    ) {
+      addUniReview(
+        unitId: $unitId
+        postText: $postText
+        postImage: $postImage
+      ) {
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postImage
+          postText
+          date
         }
       }
     }
