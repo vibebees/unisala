@@ -15,21 +15,23 @@ import {
 import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
 import { Avatar } from "../../../component/Avatar"
 import "./index.css"
+import { useEffect, useState } from "react"
+import { getImage } from "../../../../servers/s3.configs"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
+  const [coverImage, setCoverImage] = useState("")
   const {
     firstName,
     lastName,
     username,
     profilePic,
-    profileBanner,
+    coverPicture,
     oneLinerBio,
     location: userLocation,
     doj,
     socialLinks
   } = data
 
-  console.log({ profilePic })
   const icons = {
     twitter: logoTwitter,
     github: logoGithub,
@@ -51,13 +53,17 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     setTab(tabs)
   }
 
+  useEffect(() => {
+    getImage("user", coverPicture, setCoverImage)
+  }, [coverPicture])
+
   return (
     <IonCard className="profile-header mb-2">
       <div className="user-banner">
         <div className="user-banner__cover">
           <img
             src={
-              profileBanner ??
+              coverImage ||
               "https://img.freepik.com/premium-photo/back-school-education-banner-background_8087-1192.jpg?w=1380"
             }
             className="user-banner__cover--img"

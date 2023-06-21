@@ -273,7 +273,7 @@ const TestScore = ({ testScore, myProfile, username }) => {
     <>
       <IonCard className="mb-2">
         <IonCardContent className="card-bb  flex">
-          <h1>TestScore</h1>
+          <h1>Test Score</h1>
           {myProfile && (
             <div className="inline-flex">
               <IonIcon

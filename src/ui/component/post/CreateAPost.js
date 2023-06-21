@@ -172,7 +172,8 @@ export const CreateAPost = ({ setPopup, popup }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    fileUpdate()
+    fileData && file && fileUpdate()
+    !fileData && addPost({ variables: { postText: TextChecker(postText) } })
     setPopup(false)
   }
 

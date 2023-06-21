@@ -1,5 +1,5 @@
 import AboutUser from "./aboutUser"
-import Badges from "./badges"
+// import Badges from "./badges"
 import TestScore from "./testScore"
 import Education from "./education"
 
@@ -10,7 +10,7 @@ function index({ data }) {
       {(myProfile || (!myProfile && !about.private && about.text)) && (
         <AboutUser about={about} myProfile={myProfile} username={username} />
       )}
-      <Badges badge={badges} myProfile={myProfile} />
+      {/* <Badges badge={badges} myProfile={myProfile} /> */}
       {(myProfile ||
         (!myProfile && !education.private && education.schools.length > 0)) && (
         <Education

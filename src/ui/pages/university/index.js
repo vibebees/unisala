@@ -25,6 +25,7 @@ import { isSideBar } from "../../../store/action/University"
 import { getSchoolInfo } from "../../../graphql/uni"
 import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 import useDocTitle from "../../../hooks/useDocTitile"
+import Review from "./tabDetails/Discussion/Review"
 
 export default function UniversityPage() {
   const { id } = useParams()
@@ -314,16 +315,14 @@ export default function UniversityPage() {
             UniScroll={UniScroll}
             appState={appState}
           />
-          {/* <TabDetails /> */}
           <div
             style={{
               width: "97%",
               margin: "0 auto"
             }}
           >
-            {/* <FAQ /> */}
-            <Discussion />
-            {/* <Reviews /> */}
+            <Discussion uniId={data?.getSchoolInfo?.unitId} />
+            <Review uniId={data?.getSchoolInfo?.unitId} />
           </div>
         </div>
       </section>

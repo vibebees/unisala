@@ -23,7 +23,6 @@ import { getUserGql } from "../../../graphql/user"
 import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import { imageAccess } from "../../../servers/endpoints"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -43,7 +42,7 @@ const ProfilePage = () => {
     firstName,
     lastName,
     picture,
-    profileBanner,
+    coverPicture,
     oneLinerBio,
     location,
     socialLinks,
@@ -61,7 +60,7 @@ const ProfilePage = () => {
     lastName,
     username,
     profilePic,
-    profileBanner,
+    coverPicture,
     oneLinerBio,
     location,
     socialLinks,

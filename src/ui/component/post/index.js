@@ -2,8 +2,6 @@ import { IonCol, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
 import { imageOutline } from "ionicons/icons"
 import { useSelector } from "react-redux"
 import { Avatar } from "../Avatar"
-import { useEffect, useState } from "react"
-import { awsBucket, bucketName, getImage } from "../../../servers/s3.configs"
 
 export const Post = () => {
   const { user } = useSelector((state) => state.userProfile)

@@ -52,7 +52,7 @@ export const screensMoreThan768 = ({
               </IonText>
             </div>
           </IonCard>
-          <IonCard className="badges-card">
+          {/* <IonCard className="badges-card">
             <IonText color="dark">
               <h6
                 style={{
@@ -99,7 +99,7 @@ export const screensMoreThan768 = ({
                 </IonItem>
               )
             })}
-          </IonCard>
+          </IonCard> */}
         </>
       ) : (
         <IonCard
