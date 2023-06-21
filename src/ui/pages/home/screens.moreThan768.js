@@ -20,7 +20,6 @@ export const screensMoreThan768 = ({
   loggedIn
 }) => {
   const { user } = useSelector((state) => state.userProfile)
-
   return (
     <IonCol
       size="auto"
