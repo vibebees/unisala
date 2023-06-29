@@ -202,7 +202,8 @@ export const AddComment = gql`
       }
     }
   `,
-  GetReplyList = (id, pid) => gql`
+  GetReplyList = (id, pid) =>
+    gql`
             query {
                 replyList (postId:"${id}", parentId:"${pid}") {
                 success
@@ -431,7 +432,8 @@ export const AddComment = gql`
       }
     }
   `,
-  userSearch = (searchString) => gql`
+  userSearch = (searchString) =>
+    gql`
     query {
         searchUser(searchString: "${searchString}") {
             status {
@@ -512,7 +514,8 @@ export const AddComment = gql`
       }
     }
   `,
-  AddTestScore = (testScores) => gql`
+  AddTestScore = (testScores) =>
+    gql`
             mutation addTestScore($testScores: ${testScores}) {
                 addTestScore(testScore: $testScores) {
                 status {
@@ -664,6 +667,7 @@ export const AddComment = gql`
         upVoteCount
         postCommentsCount
         type
+        saved
         date
         _id
         user {
@@ -724,6 +728,25 @@ export const AddComment = gql`
           postImage
           postText
           date
+        }
+      }
+    }
+  `,
+  GetInterviewExperience = gql`
+    query getInterviewExperience($unitId: Float!) {
+      getInterviewExperience(unitId: $unitId) {
+        status {
+          success
+          message
+        }
+        interviewExperience {
+          uni_id
+          applied_level
+          status
+          attempt
+          university
+          conversation
+          major
         }
       }
     }
