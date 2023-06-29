@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import {
   IonCard,
   IonCardContent,
@@ -23,6 +23,7 @@ import AddGuestBookPop from "./AddGuestBookPop"
 import MorePop from "./MorePop"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
+import { Avatar } from "../../../component/Avatar"
 
 function index({ userId, firstName }) {
   const [page, setPage] = useState(0)
@@ -56,14 +57,14 @@ function index({ userId, firstName }) {
         <IonList lines="full">
           {Array.isArray(guestbookList) &&
             guestbookList.map((guestbookItem, i) => {
-              const { img, firstName, lastName, username } =
+              const { firstName, lastName, username, picture } =
                 guestbookItem?.user || {}
 
               const { message, date } = guestbookItem || {}
               return (
                 <IonItem key={i} className="guestbook-li">
                   <IonAvatar slot="start">
-                    <img src={img} />
+                    <Avatar username={username} profilePic={picture} />
                   </IonAvatar>
                   <IonLabel>
                     <Link to={`/@/${username}`}>
