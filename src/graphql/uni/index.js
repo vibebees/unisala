@@ -23,7 +23,8 @@ export const GetProfessor = gql`
       }
     }
   `,
-  getSchoolInfo = (name) => gql`
+  getSchoolInfo = (name) =>
+    gql`
         query {
             getSchoolInfo(name: "${name.trim()}") {
                 unitId
@@ -235,7 +236,8 @@ export const GetProfessor = gql`
                 }
             }
         }`,
-  UniSearch = (name) => gql`
+  UniSearch = (name) =>
+    gql`
         query {
             searchSchool(name: "${name}") {
                 elevatorInfo {
@@ -263,7 +265,8 @@ export const GetProfessor = gql`
                 pictures
             }
         }`,
-  UniSearchDataList = (name) => gql`
+  UniSearchDataList = (name) =>
+    gql`
         query {
             searchSchool(name: "${name}") {
                 elevatorInfo {

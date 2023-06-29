@@ -34,10 +34,10 @@ function index({ userId, firstName }) {
               <StateMessage
                 title={
                   user._id === userId
-                    ? `You have not saved anything yet!`
-                    : `${firstName} has not saved anything yet!`
+                    ? `You have not posted anything yet!`
+                    : `${firstName} has not posted anything yet!`
                 }
-                subtitle="All the saved posts will be visible here"
+                subtitle="All the posts will be visible here"
               >
                 <img src={emptyState} alt="empty state" className="state-img" />
               </StateMessage>

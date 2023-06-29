@@ -8,7 +8,6 @@ import ReplyInput from "../ReplyInput"
 import "./index.css"
 import ShowMore from "./ShowMore"
 import { Avatar } from "../Avatar"
-import { imageAccess } from "../../../servers/endpoints"
 import { getImage } from "../../../servers/s3.configs"
 
 const Thread = ({ thread }) => {
@@ -52,9 +51,7 @@ const Thread = ({ thread }) => {
         <div className="thread_comment">
           <p>{postText}</p>
         </div>
-        <div className="thread_image">
-          {postImage && <img src={image} />}
-        </div>
+        <div className="thread_image">{postImage && <img src={image} />}</div>
         <div className="thread_footer">
           <Upvote
             upVoteCount={upVoteCount}

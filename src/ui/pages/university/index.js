@@ -23,7 +23,7 @@ import { isSideBar } from "../../../store/action/University"
 import { getSchoolInfo } from "../../../graphql/uni"
 import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 import useDocTitle from "../../../hooks/useDocTitile"
-import Review from "./Discussion/Review"
+import Review from "./Discussion/Post"
 
 export default function UniversityPage() {
   const { id } = useParams()
