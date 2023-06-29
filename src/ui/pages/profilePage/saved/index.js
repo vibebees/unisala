@@ -19,6 +19,7 @@ function index({ userId, firstName }) {
   return (
     <Query
       query={GetSavedList}
+      fetchPolicy={"network-only"}
       variables={{ userId, page: 0 }}
       context={{ server: USER_SERVICE_GQL }}
     >
@@ -117,108 +118,5 @@ function index({ userId, firstName }) {
     </Query>
   )
 }
-
-// function index({ userId, firstName }) {
-//   const { user } = useSelector((state) => state.userProfile)
-//   const [page, setPage] = useState(0)
-
-//   const [getSavedList, { data, loading }] = useLazyQuery(GetSavedList, {
-//     context: { server: USER_SERVICE_GQL },
-//     variables: {
-//       userId,
-//       page: page
-//     }
-//   })
-
-//   useEffect(() => {
-//     getSavedList()
-//   }, [])
-
-//   const [threads, setThreads] = useState([])
-
-//   useEffect(() => {
-//     if (data) setThreads((pre) => [...pre, ...data?.savedList?.Posts])
-//   }, [data])
-
-//   if (!data?.savedList.Posts.length) {
-//     return (
-//       <IonCard>
-//         <StateMessage
-//           title={
-//             user._id === userId
-//               ? `You have not saved anything yet!`
-//               : `${firstName} has not saved anything yet!`
-//           }
-//           subtitle="All the saved posts will be visible here"
-//         >
-//           <img src={emptyState} alt="empty state" className="state-img" />
-//         </StateMessage>
-//       </IonCard>
-//     )
-//   }
-
-//   const UserThreads = () => {
-//     return (
-//       <div>
-//         {Array.isArray(threads) &&
-//           threads.map((item, index) => {
-//             return item.type === "university" ? (
-//               <Link key={index} to={`/university/${index}`}>
-//                 <CourseCard
-//                   image={item.image}
-//                   Title={item.Title}
-//                   description={item.description}
-//                   locations={item.location}
-//                   review={item.review}
-//                   avarage={item.avarage}
-//                   acceptance={item.acceptance}
-//                   act={item.act}
-//                   type={item.type}
-//                 />
-//               </Link>
-//             ) : (
-//               <div
-//                 style={{
-//                   width: "100%",
-//                   marginTop: "10px",
-//                   borderTop: "1px solid #e0e0e0"
-//                 }}
-//                 className="thread-card"
-//                 key={index}
-//               >
-//                 <Thread thread={item} id={item?._id} />
-//               </div>
-//             )
-//           })}
-
-//         {loading &&
-//           ["0", "1", "2"].map((item) => {
-//             return <ThreadScaletion key={item} />
-//           })}
-
-//         {/* <IonInfiniteScroll
-//           onIonInfinite={(e) => {
-//             setPage(page + 1)
-//             getSavedList({
-//               variables: {
-//                 userId,
-//                 page: page + 1
-//               }
-//             })
-//             setTimeout(() => e.target.complete(), 500)
-//           }}
-//         >
-//           <IonInfiniteScrollContent loadingText=""></IonInfiniteScrollContent>
-//         </IonInfiniteScroll> */}
-//       </div>
-//     )
-//   }
-
-//   return (
-//     <div className="user-thread">
-//       <UserThreads />
-//     </div>
-//   )
-// }
 
 export default index
