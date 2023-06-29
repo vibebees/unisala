@@ -10,9 +10,7 @@ import {
 } from "@ionic/react"
 import { UniProfile } from "./uniProfile"
 import SideDetails from "./sideDetails"
-import FAQ from "./tabDetails/FAQ/Index"
-import Discussion from "./tabDetails/Discussion"
-import Reviews from "./tabDetails/Review"
+import Discussion from "./Discussion"
 import { chevronBack } from "ionicons/icons"
 import { useParams } from "react-router"
 // Graphql
@@ -25,7 +23,7 @@ import { isSideBar } from "../../../store/action/University"
 import { getSchoolInfo } from "../../../graphql/uni"
 import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
 import useDocTitle from "../../../hooks/useDocTitile"
-import Review from "./tabDetails/Discussion/Review"
+import Review from "./Discussion/Review"
 
 export default function UniversityPage() {
   const { id } = useParams()
@@ -314,6 +312,7 @@ export default function UniversityPage() {
             librariesAnimate={LibrariesAnimate}
             UniScroll={UniScroll}
             appState={appState}
+            unitId={data?.getSchoolInfo?.unitId}
           />
           <div
             style={{

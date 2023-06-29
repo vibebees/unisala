@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
 import { Query } from "@apollo/client/react/components"
-import Thread from "../../../../component/thread"
-import { getUniReview } from "../../../../../graphql/user"
+import Thread from "../../../component/thread"
+import { getUniReview } from "../../../../graphql/user"
 
 export default function Review({ uniId }) {
   return (

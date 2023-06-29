@@ -9,9 +9,9 @@ import {
 } from "@ionic/react"
 import { useSelector } from "react-redux"
 import { sendOutline } from "ionicons/icons"
-import { Avatar } from "../../../../component/Avatar"
+import { Avatar } from "../../../component/Avatar"
 import { useMutation } from "@apollo/client"
-import { addUniReview, getUniReview } from "../../../../../graphql/user"
+import { addUniReview, getUniReview } from "../../../../graphql/user"
 
 export default function Discussion({ uniId }) {
   const { user } = useSelector((state) => state.userProfile)
@@ -46,7 +46,8 @@ export default function Discussion({ uniId }) {
         upVoteCount: 0,
         postCommentsCount: 0,
         upVoted: false,
-        saved: false
+        saved: false,
+        __typename: "Post"
       }
       const data = cache.readQuery({
         query: getUniReview,
@@ -164,8 +165,6 @@ export default function Discussion({ uniId }) {
           </form>
         </div>
       </IonCard>
-
-      {/* <Review uniId={uniId} /> */}
     </>
   )
 }

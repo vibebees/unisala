@@ -39,7 +39,8 @@ const SideDetails = ({
   forwardedRef,
   admissionAnimate,
   grantAnimate,
-  librariesAnimate
+  librariesAnimate,
+  unitId
 }) => {
   const { isSideBar } = useSelector((store) => store?.university)
   const sideMenu = [
@@ -198,9 +199,9 @@ const SideDetails = ({
           <section ref={forwardedRef.Professors}>
             <Professors />
           </section>
-          {/* <section ref={forwardedRef.Professors}>
-            <Interview />
-          </section> */}
+          <section ref={forwardedRef.Professors}>
+            <Interview unitId={unitId} />
+          </section>
         </IonCol>
       </IonRow>
     </IonGrid>
