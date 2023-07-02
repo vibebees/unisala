@@ -32,7 +32,17 @@ export default function index({ unitId }) {
           gap: "20px"
         }}
       >
-        {data?.getInterviewExperience?.interviewExperience.length > 0 &&
+        {!data?.getInterviewExperience?.interviewExperience?.length > 0 && (
+          <h1
+            style={{
+              textAlign: "center",
+              margin: "20px"
+            }}
+          >
+            No data available
+          </h1>
+        )}
+        {data?.getInterviewExperience?.interviewExperience?.length > 0 &&
           data?.getInterviewExperience?.interviewExperience.map(
             (data, index) => {
               return (
