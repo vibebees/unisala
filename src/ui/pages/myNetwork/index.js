@@ -23,7 +23,7 @@ function index() {
 
           <IonCol className="results-col">
             <Requests />
-            <Recommendations />
+            {/* <Recommendations /> */}
           </IonCol>
         </IonRow>
       </IonGrid>
