@@ -1,16 +1,28 @@
 import axios from "axios"
 import {
-    BEFORE_AUTH_TRACK_PATH, CLEAR_AUTH_ERROR, EMAIL_VERIFICATION_RESENT,
-    LOGOUT,
-    OAUTH, PASSWORD_RESET_ASK_EMAIL, PASSWORD_RESET_ASK_PASSWORD,
-    SHOW_ALERT,
-    USER_LOGIN, USER_LOGIN_ERROR,
-    USER_REGISTRATION
+  BEFORE_AUTH_TRACK_PATH,
+  CLEAR_AUTH_ERROR,
+  EMAIL_VERIFICATION_RESENT,
+  LOGOUT,
+  OAUTH,
+  PASSWORD_RESET_ASK_EMAIL,
+  PASSWORD_RESET_ASK_PASSWORD,
+  SHOW_ALERT,
+  USER_LOGIN,
+  USER_LOGIN_ERROR,
+  USER_REGISTRATION
 } from "./types"
 
-export const loginUser = ({ userServer, input, setLoading, present, dismiss, setauth }) => {
-
-  return (dispatch) => axios
+export const loginUser = ({
+  userServer,
+  input,
+  setLoading,
+  present,
+  dismiss,
+  setauth
+}) => {
+  return (dispatch) =>
+    axios
       .post(userServer + `/login`, input)
       .then((res) => {
         setLoading(false)
@@ -18,7 +30,7 @@ export const loginUser = ({ userServer, input, setLoading, present, dismiss, set
           dispatch({
             type: USER_LOGIN,
             payload: res?.data || {}
-        })
+          })
           window.innerWidth < 768
             ? window.location.replace("/home")
             : window.location.reload()
@@ -36,9 +48,8 @@ export const loginUser = ({ userServer, input, setLoading, present, dismiss, set
           }
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false)
-        console.log(err)
         present({
           duration: 3000,
           message: "Something went wrong!",
@@ -49,42 +60,50 @@ export const loginUser = ({ userServer, input, setLoading, present, dismiss, set
       })
 }
 
-export const registerUser = ({ userServer, input, setdatacheck, setauth, setsave, present, dismiss }) => {
-
-    return (dispatch) => axios
-        .post(userServer + `/register`, input)
-        .then((res) => {
-          setsave(false)
-          if (res.data.success === true) {
-            localStorage.setItem("email", input.email)
-            setdatacheck(false)
-            setauth({ state: "SignUpVerification" })
-            dispatch({
-                type: USER_REGISTRATION,
-                payload: res
-            })
-          }
-          if (res.data.success === false) {
-            present({
-              duration: 3000,
-              message: res.data.message,
-              buttons: [{ text: "X", handler: () => dismiss() }],
-              color: "primary",
-              mode: "ios"
-            })
-          }
-        })
-        .catch((err) => {
-          setsave(false)
+export const registerUser = ({
+  userServer,
+  input,
+  setdatacheck,
+  setauth,
+  setsave,
+  present,
+  dismiss
+}) => {
+  return (dispatch) =>
+    axios
+      .post(userServer + `/register`, input)
+      .then((res) => {
+        setsave(false)
+        if (res.data.success === true) {
+          localStorage.setItem("email", input.email)
+          setdatacheck(false)
+          setauth({ state: "SignUpVerification" })
+          dispatch({
+            type: USER_REGISTRATION,
+            payload: res
+          })
+        }
+        if (res.data.success === false) {
           present({
             duration: 3000,
-            message: err.response.data.message,
+            message: res.data.message,
             buttons: [{ text: "X", handler: () => dismiss() }],
             color: "primary",
             mode: "ios"
           })
-          setdatacheck(false)
+        }
+      })
+      .catch(() => {
+        setsave(false)
+        present({
+          duration: 3000,
+          message: "Something went wrong: 500",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
         })
+        setdatacheck(false)
+      })
 }
 
 // export const isLoggedIn = (user) => {

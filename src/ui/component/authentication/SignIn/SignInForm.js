@@ -1,12 +1,16 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
+
 import AuthInput from "../AuthInput"
 import { userServer } from "../../../../servers/endpoints"
+import { validateSignIn } from "../../../../utils/components/validate"
 import { useDispatch } from "react-redux"
 import { loginUser } from "../../../../store/action/authenticationAction"
 
 export const SignInForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
+  const [datacheck, setdatacheck] = useState(false)
+  const [errors, seterrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState({
     email: "",
@@ -17,29 +21,30 @@ export const SignInForm = ({ setauth }) => {
     setInput((pre) => {
       return { ...pre, [name]: value }
     })
+    seterrors({
+      ...errors,
+      [name]: ""
+    })
   }
 
   const submitHandler = (e) => {
       e.preventDefault()
+      seterrors(validateSignIn(input))
+      setdatacheck(true)
     },
     dispatch = useDispatch()
 
   const login = () => {
-    if (!input.email && !input.password) {
-      return present({
-        duration: 3000,
-        message: "Empty fields!",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
-    }
-
-    setLoading(true)
     dispatch(
       loginUser({ userServer, input, setLoading, present, dismiss, setauth })
     )
   }
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && datacheck) {
+      setLoading(true)
+      login()
+    }
+  }, [errors])
 
   return (
     <form onSubmit={submitHandler}>
@@ -51,6 +56,7 @@ export const SignInForm = ({ setauth }) => {
           type="text"
           name="email"
           value={input?.email}
+          validation={errors?.email}
         />
       </div>
       <div className="auth-input-div">
@@ -61,6 +67,7 @@ export const SignInForm = ({ setauth }) => {
           type="password"
           name="password"
           value={input?.password}
+          validation={errors?.password}
         />
       </div>
       <div className="auth-policy">
@@ -73,13 +80,7 @@ export const SignInForm = ({ setauth }) => {
           Forgot Password?
         </p>
       </div>
-      <IonButton
-        disabled={loading}
-        type="submit"
-        expand="full"
-        shape="round"
-        onClick={login}
-      >
+      <IonButton disabled={loading} type="submit" expand="full" shape="round">
         {loading ? <IonSpinner></IonSpinner> : "Login"}
       </IonButton>
       <IonRow className="auth-change inline-flex">

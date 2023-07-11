@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
+
 import AuthInput from "../AuthInput"
-import axios from "axios"
-import validate from "../../../../utils/components/validate"
+import { validateSignup } from "../../../../utils/components/validate"
 import { userServer } from "../../../../servers/endpoints"
 import { useDispatch } from "react-redux"
 import { registerUser } from "../../../../store/action/authenticationAction"
@@ -31,46 +31,26 @@ export const SignUpForm = ({ setauth }) => {
     })
   }
   const submitHandler = (e) => {
-    e.preventDefault()
-    seterrors(validate(input))
-    setdatacheck(true)
-  },
-  dispatch = useDispatch()
+      e.preventDefault()
+      seterrors(validateSignup(input))
+      setdatacheck(true)
+    },
+    dispatch = useDispatch()
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && datacheck) {
       setsave(true)
-      // dispatch(registerUser({ userServer, input, setdatacheck, setauth, setsave, present, dismiss }))
-      axios
-        .post(userServer + `/register`, input)
-        .then((res) => {
-          setsave(false)
-          if (res.data.success === true) {
-            localStorage.setItem("email", input.email)
-            setdatacheck(false)
-            setauth({ state: "SignUpVerification" })
-          }
-          if (res.data.success === false) {
-            present({
-              duration: 3000,
-              message: res.data.message,
-              buttons: [{ text: "X", handler: () => dismiss() }],
-              color: "primary",
-              mode: "ios"
-            })
-          }
+      dispatch(
+        registerUser({
+          userServer,
+          input,
+          setdatacheck,
+          setauth,
+          setsave,
+          present,
+          dismiss
         })
-        .catch(() => {
-          setsave(false)
-          present({
-            duration: 3000,
-            message: "Something went wrong!",
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-          setdatacheck(false)
-        })
+      )
     }
   }, [errors])
 

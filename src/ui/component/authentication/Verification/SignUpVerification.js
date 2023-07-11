@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../servers"
-import VerificationCode from "./VerificationCode"
+
 import "../auth.css"
+import VerificationCode from "./VerificationCode"
 import { userServer } from "../../../../servers/endpoints"
 
 const SignUpVerification = ({ setauth }) => {
@@ -41,6 +41,7 @@ const SignUpVerification = ({ setauth }) => {
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
+          localStorage.removeItem("email")
           window.location.reload()
         }
       })
@@ -62,6 +63,7 @@ const SignUpVerification = ({ setauth }) => {
       input={input}
       verify={verify}
       loading={loading}
+      email={localStorage.getItem("email")}
     />
   )
 }
