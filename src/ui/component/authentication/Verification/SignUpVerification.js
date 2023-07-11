@@ -6,7 +6,8 @@ import "../auth.css"
 import VerificationCode from "./VerificationCode"
 import { userServer } from "../../../../servers/endpoints"
 
-const SignUpVerification = ({ setauth }) => {
+const SignUpVerification = ({ auth }) => {
+
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
 
@@ -34,14 +35,13 @@ const SignUpVerification = ({ setauth }) => {
     axios
       .post(userServer + `/verifyEmail`, {
         ...input,
-        email: localStorage.getItem("email")
+        email: auth?.email
       })
       .then((res) => {
         setLoading(false)
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
-          localStorage.removeItem("email")
           window.location.reload()
         }
       })
@@ -63,7 +63,7 @@ const SignUpVerification = ({ setauth }) => {
       input={input}
       verify={verify}
       loading={loading}
-      email={localStorage.getItem("email")}
+      email={auth?.email}
     />
   )
 }

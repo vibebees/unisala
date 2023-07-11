@@ -37,7 +37,7 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
               ) : auth.state === "signup" ? (
                 <SignUp setauth={setauth} />
               ) : auth.state === "SignUpVerification" ? (
-                <SignUpVerification setauth={setauth} />
+                <SignUpVerification setauth={setauth} auth={auth}/>
               ) : auth.state === "emailVerify" ? (
                 <EmailVerify setauth={setauth} />
               ) : auth.state === "ForgotPasswordVerification" ? (

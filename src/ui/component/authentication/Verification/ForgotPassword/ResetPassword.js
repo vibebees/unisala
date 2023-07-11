@@ -2,7 +2,7 @@ import { useState } from "react"
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
 import AuthInput from "../../AuthInput"
-import urls from "../../../../../servers"
+
 import { validateSignup } from "../../../../../utils/components/validate"
 import "../../auth.css"
 import { userServer } from "../../../../../servers/endpoints"
