@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useHistory } from "react-router-dom"
-import { IonInput, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
+import { IonInput, IonIcon } from "@ionic/react"
 import { searchCircle } from "ionicons/icons"
 import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
@@ -12,8 +12,7 @@ import {
   USER_SERVICE_GQL
 } from "../../../servers/types"
 import { searchUniFromBar } from "../../../store/action/userActivity"
-import { useDispatch, useSelector } from "react-redux"
-import { awsBucket } from "../../../servers/s3.configs"
+import { useDispatch } from "react-redux"
 import { SearchBarResultList } from "./searchResultList"
 
 function index() {

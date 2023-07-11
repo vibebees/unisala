@@ -32,6 +32,7 @@ export default function UniversityPage() {
   const { loading, data } = useQuery(getSchoolInfo(id), {
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
+
   useEffect(() => {
     dispatch(getUniData(data?.getSchoolInfo))
   }, [data])
