@@ -646,6 +646,25 @@ export const AddComment = gql`
       }
     }
   `,
+  RecommendedConnectionList = gql`
+    query {
+      recommendedConnectionList {
+        status {
+          message
+          success
+        }
+        user {
+          _id
+          firstName
+          lastName
+          username
+          picture
+          coverPicture
+          location
+        }
+      }
+    }
+  `,
   addMessageGql = gql`
     mutation AddMessage($text: String!, $senderId: ID!, $recipientId: ID!) {
       addMessage(text: $text, senderId: $senderId, recipientId: $recipientId) {
