@@ -9,6 +9,8 @@ import { location } from "ionicons/icons"
 import { Link } from "react-router-dom"
 import { Avatar } from "../Avatar"
 import "./index.css"
+import { useEffect, useState } from "react"
+import { getImage } from "../../../servers/s3.configs"
 
 function index({
   profileBanner,
@@ -20,12 +22,23 @@ function index({
   children
 }) {
   const profilePic = profileImg
+  const [coverPicture, setCoverPicture] = useState("")
+
+  useEffect(() => {
+    getImage("user", profileBanner, setCoverPicture)
+  }, [])
 
   return (
     <IonCard className="user-card">
       <div className="user-card--user-banner">
         <div className="user-card--cover">
-          <img src={profileBanner} alt="userName banner" />
+          <img
+            src={
+              coverPicture ||
+              "https://images.unsplash.com/photo-1614849286521-4c58b2f0ff15?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            }
+            alt={`${username}'s cover picture`}
+          />
         </div>
 
         <div className="user-card--profile">
