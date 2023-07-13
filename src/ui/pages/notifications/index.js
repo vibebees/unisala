@@ -1,4 +1,3 @@
-import { useState } from "react"
 import {
   IonContent,
   IonGrid,
@@ -13,14 +12,6 @@ import "./index.css"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
-  const [tab, setTab] = useState(0)
-
-  const tabMenu = [
-    { id: 0, menu: "All Notifications" },
-    { id: 1, menu: "Threads" },
-    { id: 2, menu: "Reactions" },
-    { id: 3, menu: "Mentions" }
-  ]
 
   return (
     <IonContent>
@@ -29,27 +20,7 @@ const ProfilePage = () => {
           <IonCol>
             <IonCard className="mb-1">
               <IonCardContent>
-                <div className="flex card-bb pb-1">
-                  <h2>Notifications</h2>
-                  <p>Mark all as Read</p>
-                </div>
-
-                <div className="notificatons-tabs inline-2">
-                  {tabMenu.map((tabItem) => {
-                    const { id, menu } = tabItem
-                    return (
-                      <h5
-                        key={id}
-                        className={id === tab ? "notificatons-tabs--menu" : ""}
-                        onClick={() => {
-                          setTab(id)
-                        }}
-                      >
-                        {menu}
-                      </h5>
-                    )
-                  })}
-                </div>
+                <h2>Notifications</h2>
               </IonCardContent>
             </IonCard>
 
