@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react"
-import { Link, useHistory } from "react-router-dom"
-import { IonInput, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
-import { search, searchCircle } from "ionicons/icons"
-import "./index.css"
+import { Link } from "react-router-dom"
+import { IonInput, IonIcon } from "@ionic/react"
+import { searchCircle } from "ionicons/icons"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
@@ -11,13 +10,13 @@ import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
 } from "../../../servers/types"
-import { searchUniFromBar } from "../../../store/action/userActivity"
-import { useDispatch } from "react-redux"
+// import { searchUniFromBar } from "../../../store/action/userActivity"
+// import { useDispatch } from "react-redux"
 import { SearchBarResultList } from "./searchResultList"
+import "./index.css"
 
 function index() {
-  const history = useHistory(),
-    [searchValue, setSearchValue] = useState(""),
+  const [searchValue, setSearchValue] = useState(""),
     [dropDownOptions, setDropDownOptions] = useState(false),
     [options, setOptions] = useState([]),
     [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
@@ -26,7 +25,7 @@ function index() {
     [GetUser, searchUser] = useLazyQuery(userSearch(searchValue), {
       context: { server: USER_SERVICE_GQL }
     }),
-    dispatch = useDispatch(),
+    // dispatch = useDispatch(),
     dropdownRef = useRef(null)
 
   useEffect(() => {
@@ -47,24 +46,24 @@ function index() {
   }, [searchValue])
 
   const HandleSearch = () => {
-    // await GetUni()
-    // await GetUser()
-    dispatch(searchUniFromBar(searchValue, 5, setOptions))
+    GetUni()
+    GetUser()
+    // dispatch(searchUniFromBar(searchValue, 5, setOptions))
   }
   // const debouncer = useCallback(debounce(GetUni, 1000), [])
 
-  // useEffect(() => {
-  //   if (unidata?.data?.searchSchool && searchUser?.data?.searchUser?.user) {
-  //     setOptions([
-  //       ...unidata?.data?.searchSchool,
-  //       ...searchUser?.data?.searchUser?.user
-  //     ])
-  //   } else if (Array.isArray(unidata?.data?.searchSchool)) {
-  //     setOptions([...unidata?.data?.searchSchool])
-  //   } else if (Array.isArray(searchUser?.data?.searchUser?.user)) {
-  //     setOptions([...searchUser?.data?.searchUser?.user])
-  //   }
-  // }, [unidata.data, searchUser.data])
+  useEffect(() => {
+    if (unidata?.data?.searchSchool && searchUser?.data?.searchUser?.user) {
+      setOptions([
+        ...unidata?.data?.searchSchool,
+        ...searchUser?.data?.searchUser?.user
+      ])
+    } else if (Array.isArray(unidata?.data?.searchSchool)) {
+      setOptions([...unidata?.data?.searchSchool])
+    } else if (Array.isArray(searchUser?.data?.searchUser?.user)) {
+      setOptions([...searchUser?.data?.searchUser?.user])
+    }
+  }, [unidata.data, searchUser.data])
 
   useDebouncedEffect(HandleSearch, [searchValue], 1000)
 
@@ -87,7 +86,7 @@ function index() {
           }}
         />
         <Link
-          to={searchValue ? `/search/uni/${searchValue}` : "#"}
+          to={searchValue ? `/search?q=${searchValue}` : "#"}
           className="search-box__search-icon"
         >
           <IonIcon
@@ -97,19 +96,8 @@ function index() {
           />
         </Link>
       </div>
-      {dropDownOptions && (
+      {dropDownOptions && Array?.isArray(options) && options.length > 0 && (
         <div className="recommend-search" ref={dropdownRef}>
-          <div>
-            <Link to={`/search/users/${searchValue}`}>
-              <p
-                className="recommend-search__user"
-                onClick={() => setDropDownOptions(false)}
-              >
-                Search for universities containing &quot;{searchValue}
-                &quot;
-              </p>
-            </Link>
-          </div>
           {Array?.isArray(options) &&
             options.map((item, i) => (
               <SearchBarResultList

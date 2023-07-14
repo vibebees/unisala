@@ -10,8 +10,7 @@ const Messages = lazy(() => import("../pages/messages"))
 const MyNetwork = lazy(() => import("../pages/myNetwork"))
 const Notifications = lazy(() => import("../pages/notifications"))
 const UniversityPage = lazy(() => import("../pages/university"))
-const UniSearchResults = lazy(() => import("../pages/uniSearchResults"))
-const UserSearchResults = lazy(() => import("../pages/userSearchResults"))
+const Search = lazy(() => import("../pages/search"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 const SpacePage = lazy(() => import("../pages/space"))
@@ -71,12 +70,8 @@ export const PageRoute = () => (
         </ProtectedRoute>
       </Route>
 
-      <Route path="/search/uni/:name" exact>
-        <UniSearchResults />
-      </Route>
-
-      <Route path="/search/users/:name" exact>
-        <UserSearchResults />
+      <Route path="/search" exact>
+        <Search />
       </Route>
 
       <Route path="/login" exact>

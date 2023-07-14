@@ -27,9 +27,8 @@ const CourseCard = ({
   act,
   data
 }) => {
-  const
-   [width, setWidth] = React.useState(window.innerWidth),
-   [image, setImage] = React.useState("")
+  const [width, setWidth] = React.useState(window.innerWidth),
+    [image, setImage] = React.useState("")
 
   const handleResize = () => {
     const { innerWidth } = window
@@ -38,7 +37,6 @@ const CourseCard = ({
       setWidth(innerWidth)
     }
   }
-  console.log(picture)
   useEffect(() => getImage("uni", picture, setImage), [picture])
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -59,7 +57,8 @@ const CourseCard = ({
             <div className="card-image">
               <img
                 src={
-                  image || "https://cdn.vox-cdn.com/thumbor/l5-CNuyDLr8IR8dWTW_7wqnT_bc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084622/5f1b1bd4b8800.image.jpg"
+                  image ||
+                  "https://cdn.vox-cdn.com/thumbor/l5-CNuyDLr8IR8dWTW_7wqnT_bc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084622/5f1b1bd4b8800.image.jpg"
                 }
                 alt="University"
                 style={{
