@@ -1,4 +1,3 @@
-import { useState } from "react"
 import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { Link } from "react-router-dom"
@@ -10,18 +9,15 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 const HomeFeed = ({ userInfo }) => {
   const { user } = useSelector((store) => store?.userProfile)
   const { data, loading, error } = useQuery(getNewsFeed, {
-      context: { server: USER_SERVICE_GQL },
-      variables: { userId: user._id }
-    }),
-    { fetchMyNewsFeed } = data || {}
-
-  const homefeed = fetchMyNewsFeed
+    context: { server: USER_SERVICE_GQL },
+    variables: { userId: user._id }
+  })
 
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }}>
-        {Array.isArray(homefeed) &&
-          homefeed.map((post, index) => {
+        {Array.isArray(data?.fetchMyNewsFeed) &&
+          data?.fetchMyNewsFeed.map((post, index) => {
             return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
                 <CourseCard
