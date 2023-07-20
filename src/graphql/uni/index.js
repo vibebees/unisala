@@ -269,6 +269,7 @@ export const GetProfessor = gql`
     gql`
         query {
             searchSchool(name: "${name}") {
+              pictures
                 elevatorInfo {
                     name
                     city

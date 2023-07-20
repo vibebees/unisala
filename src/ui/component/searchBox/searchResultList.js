@@ -7,12 +7,20 @@ export const SearchBarResultList = ({ item, key, setDropDownOptions }) => {
   const [profileImage, setProfileImage] = useState("")
 
   useEffect(() => {
-    getImage("uni", item?.picture, setProfileImage)
+    if (item?.pictures?.length > 0) {
+      getImage("uni", item?.pictures[0], setProfileImage)
+    } else {
+      getImage("user", item?.picture, setProfileImage)
+    }
   }, [])
 
   return (
     <Link
-      to={item?.name ? `/university/${item?.name}` : `/@/${item?.username}`}
+      to={
+        item?.username
+          ? `/@/${item?.username}`
+          : `/university/${item?.elevatorInfo?.name}`
+      }
       key={key}
       onClick={() => setDropDownOptions(false)}
     >
@@ -38,7 +46,7 @@ export const SearchBarResultList = ({ item, key, setDropDownOptions }) => {
               margin: 0
             }}
           >
-            {item?.name || `${item?.firstName} ${item?.lastName}`}
+            {item?.elevatorInfo?.name || `${item?.firstName} ${item?.lastName}`}
           </h2>
           <p
             style={{
