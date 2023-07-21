@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import { IonCard } from "@ionic/react"
+import {useEffect, useState} from "react"
+import {Link} from "react-router-dom"
+import {IonCard} from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import Save from "./actions/Save"
 import ReplyInput from "../ReplyInput"
 import "./index.css"
 import ShowMore from "./ShowMore"
-import { Avatar } from "../Avatar"
-import { getImage } from "../../../servers/s3.configs"
+import {Avatar} from "../Avatar"
+import {imageAccess} from "../../../servers/endpoints"
+import {getImage} from "../../../servers/s3.configs"
 
-const Thread = ({ thread }) => {
+const Thread = ({thread}) => {
   const {
     _id,
     date,
@@ -21,7 +22,7 @@ const Thread = ({ thread }) => {
     postImage,
     saved
   } = thread
-  const { firstName, lastName, username, picture } = thread.user || {}
+  const {firstName, lastName, username, picture} = thread.user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
   const [image, setImage] = useState(postImage)
@@ -29,7 +30,7 @@ const Thread = ({ thread }) => {
   useEffect(() => {
     getImage("user", image, setImage)
     getImage("user", profilePic, setProfilePic)
-  }, [profilePic])
+  }, [])
   return (
     <IonCard className="thread">
       <Link to={`/@/${username}`}>
@@ -38,7 +39,7 @@ const Thread = ({ thread }) => {
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails">
-            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
+            <h3 style={{color: "#222428"}}>{firstName + " " + lastName}</h3>
             <div className="threads_username">
               <p>@{username}</p>
               <p className="threads_date">{date.toString().slice(0, 10)}</p>

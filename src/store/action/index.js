@@ -1,8 +1,8 @@
-import { execute, useQuery } from "@apollo/client"
+import {execute, useQuery} from "@apollo/client"
 import axios from "axios"
-import { getSchoolInfo } from "../../graphql/uni"
+import {getSchoolInfo} from "../../graphql/uni"
 import urls from "../../servers"
-import { universityServer } from "../../servers/endpoints"
+import {universityServer} from "../../servers/endpoints"
 import {
     INTRODUCTORY_QUESTION,
     SEARCH_GET_REQUEST,
@@ -74,7 +74,7 @@ export const handleSearchSubmit = (search) => {
 
 export const uniQuery = () => {
     return (dispatch) => {
-        const { loading, data } = execute(getSchoolInfo)
+        const {loading, data} = execute(getSchoolInfo)
         dispatch(getUniData(data))
     }
 }

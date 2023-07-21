@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from "react"
-import { createAvatar } from "@dicebear/core"
-import { thumbs } from "@dicebear/collection"
-import { getImage } from "../../servers/s3.configs"
+import {useEffect, useMemo, useState} from "react"
+import {createAvatar} from "@dicebear/core"
+import {thumbs} from "@dicebear/collection"
+import {getImage} from "../../servers/s3.configs"
 
-export function Avatar({ profilePic, username }) {
-  const [profileImage, setProfileImage] = useState("")
+export function Avatar({profilePic, username}) {
+  const [profileImage, setProfileImage] = useState(profilePic)
 
   const avatar = useMemo(() => {
     // eslint-disable-next-line no-sync

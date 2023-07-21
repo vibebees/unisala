@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
-import { IonApp, IonPage, IonRouterOutlet, setupIonicReact } from "@ionic/react"
-import { IonReactRouter } from "@ionic/react-router"
-import { PersistGate } from "redux-persist/integration/react"
-import { persistor, store } from "./store/store"
-import { useDispatch, useSelector, Provider } from "react-redux"
+import {useEffect, useState} from "react"
+import {IonApp, IonPage, IonRouterOutlet, setupIonicReact} from "@ionic/react"
+import {IonReactRouter} from "@ionic/react-router"
+import {PersistGate} from "redux-persist/integration/react"
+import {persistor, store} from "./store/store"
+import {useDispatch, useSelector, Provider} from "react-redux"
 import jwtDecode from "jwt-decode"
 
 /* Core CSS required for Ionic components to work properly */
@@ -24,12 +24,13 @@ import "@ionic/react/css/text-transformation.css"
 import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 import Nav from "./ui/component/NavBar"
-import { PageRoute } from "./ui/component/PageRoute"
+import {PageRoute} from "./ui/component/PageRoute"
 import AuthModal from "./ui/component/authentication"
-import { getUserProfile } from "./store/action/userProfile"
+import {getUserProfile} from "./store/action/userProfile"
 import useWindowWidth from "./hooks/useWindowWidth"
 import MobileNav from "./ui/component/MobileNav"
-import { CreateAPost } from "./ui/component/post/CreateAPost"
+import {CreateAPost} from "./ui/component/post/CreateAPost"
+import {getPresingedUrl} from "./store/action/authenticationAction"
 
 /* Theme variables */
 
@@ -56,7 +57,10 @@ const App = () => {
   useEffect(() => {
     const accessToken = localStorage?.getItem("accessToken"),
       decode = accessToken && jwtDecode(accessToken)
-    dispatch(getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) }))
+    dispatch(getUserProfile({user: {...decode}, loggedIn: Boolean(decode)}))
+    dispatch(getPresingedUrl("USER"))
+    dispatch(getPresingedUrl("UNI"))
+
   }, [])
 
   return (

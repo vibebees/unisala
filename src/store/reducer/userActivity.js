@@ -1,5 +1,5 @@
-import { MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY, SEEN_MESSAGE, REMOVE_SEEN_MESSAGE } from "../types/messengerType"
-import { UNI_SEARCH_RESULT } from "../types/userActivity"
+import {MESSAGE_TO_PROFILE, MESSAGE_SEND_SUCCESS, MESSAGE_SEND_SUCCESS_FINALLY, SEEN_MESSAGE, REMOVE_SEEN_MESSAGE} from "../types/messengerType"
+import {UNI_SEARCH_RESULT, UNI_SERV_SIGNED_URL, USER_SERV_SIGNED_URL} from "../types/userActivity"
 
 const initialState = {
     messagingTo: null,
@@ -9,7 +9,7 @@ const initialState = {
 }
 
 const userActivity = (state = initialState, action) => {
-    const { type, payload } = action
+    const {type, payload} = action
     switch (type) {
         case MESSAGE_TO_PROFILE:
             return {
