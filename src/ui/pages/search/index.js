@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import {useMemo, useState} from "react"
 import {
   IonCard,
   IonCardContent,
@@ -8,11 +8,11 @@ import {
   IonContent,
   IonCardTitle
 } from "@ionic/react"
-import { useLocation, Link } from "react-router-dom"
-import { UniSearchDataList } from "../../../graphql/uni"
-import { userSearch } from "../../../graphql/user"
+import {useLocation, Link} from "react-router-dom"
+import {UniSearchDataList} from "../../../graphql/uni"
+import {userSearch} from "../../../graphql/user"
 import useDocTitle from "../../../hooks/useDocTitile"
-import { useQuery } from "@apollo/client"
+import {useQuery} from "@apollo/client"
 import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
@@ -29,11 +29,11 @@ function index() {
   const query = searchParams.get("q")
   useDocTitle("Search ᛫ " + query)
 
-  const { data: unidata } = useQuery(UniSearchDataList(query), {
-    context: { server: UNIVERSITY_SERVICE_GQL }
+  const {data: unidata} = useQuery(UniSearchDataList(query), {
+    context: {server: UNIVERSITY_SERVICE_GQL}
   })
-  const { data: searchUser } = useQuery(userSearch(query), {
-    context: { server: USER_SERVICE_GQL }
+  const {data: searchUser} = useQuery(userSearch(query), {
+    context: {server: USER_SERVICE_GQL}
   })
 
   const tabs = useMemo(() => {
@@ -147,7 +147,7 @@ function index() {
                   </h3>
                   <div>
                     {Array.isArray(unidata?.searchSchool) &&
-                    unidata?.searchSchool.length ? (
+                      unidata?.searchSchool.length ? (
                       unidata?.searchSchool.map((data, index) => {
                         return (
                           <Link
@@ -160,7 +160,7 @@ function index() {
                               average={data?.report?.average}
                               act={data?.applicants?.actRange}
                               acceptanceRate={data?.applicants?.acceptanceRate}
-                              picture={data?.pictures?.[0]}
+                              pictures={data?.pictures}
                             />
                           </Link>
                         )

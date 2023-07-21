@@ -4,8 +4,9 @@ import {Link} from "react-router-dom"
 import {getImage, universityDefaultImage} from "../../../servers/s3.configs"
 
 export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
-  const [profileImage, setProfileImage] = useState(item?.picture || universityDefaultImage)
+  const [profileImage, setProfileImage] = useState(item?.pictures?.[0] || universityDefaultImage)
 
+  console.log({item})
   return (
     <Link
       to={

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {
   IonGrid,
   IonRow,
@@ -17,7 +17,7 @@ import "./index.css"
 import {getImage, universityDefaultImage} from "../../../servers/s3.configs"
 
 const CourseCard = ({
-  picture,
+  pictures,
   name,
   city,
   rating,
@@ -28,8 +28,8 @@ const CourseCard = ({
   data
 }) => {
   const
-    [width, setWidth] = React.useState(window.innerWidth),
-    [images, setImages] = React.useState(picture)
+    [width, setWidth] = useState(window.innerWidth),
+    [images, setImages] = useState(pictures)
 
   const handleResize = () => {
     const {innerWidth} = window
