@@ -4,6 +4,7 @@ import App from "./App"
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration"
 import reportWebVitals from "./reportWebVitals"
 import "./index.css"
+import "./theme/tailwind.css"
 import { Provider } from "react-redux"
 import { store } from "./store/store"
 import {
