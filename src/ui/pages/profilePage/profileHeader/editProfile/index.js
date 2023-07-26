@@ -245,8 +245,13 @@ function index({ profileHeader }) {
         <IonContent className="ion-padding modal-content">
           <form onSubmit={handleSubmit}>
             <div className="mb-1">
-              <h5>Update Profile Cover Image</h5>
-              <p>Recommended dimensions 1200px x 400px (max. 4MB)</p>
+              <h5 className="font-semibold mb-2 text-black/7">
+                Update Profile Cover Image
+                <span className="text-xs font-semibold ml-2 text-slate-700">
+                  ( Recommended 1200px x 400px. Max size: 4 mb)
+                </span>
+              </h5>
+
               <label className="upload-file">
                 <input
                   type="file"
@@ -256,7 +261,7 @@ function index({ profileHeader }) {
               </label>
             </div>
 
-            <div className="inline-1 mb-1">
+            <div className="inline-1 my-4">
               <div className="user-profile__edit">
                 {profileImage ? (
                   <Avatar
@@ -268,8 +273,12 @@ function index({ profileHeader }) {
                 )}
               </div>
               <div className="upload-profile-pic-text">
-                <h5>Set Profile Picture</h5>
-                <p>You can change your profile picture or upload a photo</p>
+                <h5 className="font-semibold mb-2 text-black/7">
+                  Set Profile Picture
+                </h5>
+                <p className="text-sm mb-2">
+                  You can change your profile picture or upload a photo
+                </p>
                 <label className="upload-file">
                   <input
                     type="file"
@@ -280,77 +289,79 @@ function index({ profileHeader }) {
               </div>
             </div>
 
-            <div className="mb-1">
-              <h5>User Name</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="username"
-                required
-                className="input-box mt-05"
-                placeholder="User Name"
-                value={input?.username}
-              ></IonInput>
-            </div>
+            <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-2">
+                <h5>User Name</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="username"
+                  required
+                  className="input-box "
+                  placeholder="User Name"
+                  value={input?.username}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>First Name</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="firstName"
-                required
-                className="input-box mt-05"
-                placeholder="First Name"
-                value={input?.firstName}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>First Name</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="firstName"
+                  required
+                  className="input-box "
+                  placeholder="First Name"
+                  value={input?.firstName}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>Last Name</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="lastName"
-                required
-                className="input-box mt-05"
-                placeholder="Last Name"
-                value={input?.lastName}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>Last Name</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="lastName"
+                  required
+                  className="input-box "
+                  placeholder="Last Name"
+                  value={input?.lastName}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>Location</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="location"
-                className="input-box mt-05"
-                placeholder="Location"
-                value={input?.location}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>Location</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="location"
+                  className="input-box "
+                  placeholder="Location"
+                  value={input?.location}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>One-liner Bio</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="oneLinerBio"
-                className="input-box mt-05"
-                placeholder="One-liner Bio"
-                value={input?.oneLinerBio}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>One-liner Bio</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="oneLinerBio"
+                  className="input-box "
+                  placeholder="One-liner Bio"
+                  value={input?.oneLinerBio}
+                ></IonInput>
+              </div>
 
-            <IonButton
-              disabled={loading}
-              type="submit"
-              mode="ios"
-              expand="block"
-            >
-              {loading ? <IonSpinner /> : "Save Changes"}
-            </IonButton>
+              <IonButton
+                disabled={loading}
+                type="submit"
+                mode="ios"
+                expand="block"
+              >
+                {loading ? <IonSpinner /> : "Save Changes"}
+              </IonButton>
+            </div>
           </form>
         </IonContent>
       </IonModal>
