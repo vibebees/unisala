@@ -212,11 +212,11 @@ function index({ profileHeader }) {
       <IonButton
         color="light"
         mode="ios"
-        className="icon-text"
+        className="icon-text font-bold tracking-wide text-lg flex"
         onClick={() => setIsOpen(true)}
       >
-        <IonIcon className="grey-icon-32 mr-1" icon={create} />
-        {windowWidth >= 768 && "Edit"}
+        <IonIcon className="grey-icon-10 mr-1" color="" icon={create} />
+        <span>{windowWidth >= 768 && "Edit"}</span>
       </IonButton>
 
       <IonModal

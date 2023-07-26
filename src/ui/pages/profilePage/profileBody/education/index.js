@@ -198,14 +198,15 @@ function Education({ education, myProfile, username }) {
                       <p>{degree}</p>
                       <p>{major}</p>
                       <p>
-                        {startDate} - {graduationDate}
+                        {startDate} / {graduationDate}
                       </p>
                     </IonLabel>
                     {myProfile && (
                       <>
                         <IonIcon
-                          className="grey-icon-32 mr-1"
+                          className="mr-1 cursor-pointer"
                           icon={create}
+                          color="secondary"
                           onClick={() => {
                             setIsOpen(true)
                             setIsEdit(true)
@@ -213,8 +214,9 @@ function Education({ education, myProfile, username }) {
                           }}
                         />
                         <IonIcon
-                          className="grey-icon-32 mr-1"
+                          className="cursor-pointer"
                           icon={trash}
+                          color="danger"
                           onClick={() => {
                             deleteEducation({
                               variables: { id: education._id }
