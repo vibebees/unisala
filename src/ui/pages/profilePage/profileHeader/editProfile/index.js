@@ -22,6 +22,8 @@ import { awsBucket, bucketName } from "../../../../../servers/s3.configs"
 import "./index.css"
 
 function index({ profileHeader }) {
+  // for autocomplete location
+
   const {
     firstName,
     lastName,
@@ -296,10 +298,8 @@ function index({ profileHeader }) {
                   mode="md"
                   onIonChange={handleChange}
                   name="username"
-                  required
                   className="input-box "
-                  placeholder="User Name"
-                  value={input?.username}
+                  placeholder={input?.username || "User name"}
                 ></IonInput>
               </div>
 
@@ -309,10 +309,8 @@ function index({ profileHeader }) {
                   mode="md"
                   onIonChange={handleChange}
                   name="firstName"
-                  required
                   className="input-box "
-                  placeholder="First Name"
-                  value={input?.firstName}
+                  placeholder={input?.firstName || "First Name"}
                 ></IonInput>
               </div>
 
@@ -322,10 +320,8 @@ function index({ profileHeader }) {
                   mode="md"
                   onIonChange={handleChange}
                   name="lastName"
-                  required
                   className="input-box "
-                  placeholder="Last Name"
-                  value={input?.lastName}
+                  placeholder={input?.lastName || "Last Name"}
                 ></IonInput>
               </div>
 
@@ -336,8 +332,7 @@ function index({ profileHeader }) {
                   onIonChange={handleChange}
                   name="location"
                   className="input-box "
-                  placeholder="Location"
-                  value={input?.location}
+                  placeholder={input?.location || "Location"}
                 ></IonInput>
               </div>
 
@@ -348,8 +343,7 @@ function index({ profileHeader }) {
                   onIonChange={handleChange}
                   name="oneLinerBio"
                   className="input-box "
-                  placeholder="One-liner Bio"
-                  value={input?.oneLinerBio}
+                  placeholder={input?.oneLinerBio || "One-liner Bio"}
                 ></IonInput>
               </div>
 
