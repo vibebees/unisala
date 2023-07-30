@@ -1,4 +1,11 @@
-import { GET_USER_PROFILE, GET_USER_FRIENDS, MY_NETWORK_RECENT_MESSAGES, UNREAD_MESSAGES, REMOVE_UNREAD_MESSAGES } from "../action/types"
+import {
+  GET_USER_PROFILE,
+  GET_USER_FRIENDS,
+  MY_NETWORK_RECENT_MESSAGES,
+  UNREAD_MESSAGES,
+  REMOVE_UNREAD_MESSAGES,
+  UPDATE_USER_PROFILE
+} from "../action/types"
 
 const initialState = {
   user: {},
@@ -17,6 +24,13 @@ const UserProfile = (state = initialState, action) => {
         user: payload.user,
         loggedIn: payload.loggedIn
       }
+    case UPDATE_USER_PROFILE:
+      return {
+        ...state,
+        user: payload.user,
+        loggedIn: payload.loggedIn
+      }
+
     case GET_USER_FRIENDS:
       return {
         ...state,
