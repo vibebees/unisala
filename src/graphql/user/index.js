@@ -65,6 +65,14 @@ export const AddComment = gql`
       }
     }
   `,
+  EditPost = gql`
+    mutation editPost($postId: String!, $postText: String, $postImage: String) {
+      editPost(postId: $postId, postText: $postText, postImage: $postImage) {
+        success
+        message
+      }
+    }
+  `,
   DeletePost = gql`
     mutation deletePost($postId: String!) {
       deletePost(postId: $postId) {
