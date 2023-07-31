@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   IonCard,
   IonInfiniteScroll,
@@ -16,17 +16,30 @@ import CourseCard from "../../../component/courseCard"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 
 function index({ userId, firstName }) {
+  // state to check if posts is deleted or updated, if yes then we will refetch the user's posts
+  const [refetchPosts, setRefetchPosts] = useState(false)
+
   return (
     <Query
       query={GetUserPost}
       variables={{ userId, page: 0 }}
       context={{ server: USER_SERVICE_GQL }}
     >
-      {({ data, loading, fetchMore }) => {
+      {({ data, loading, fetchMore, refetch }) => {
         const { Posts } = data?.getUserPost || []
         const { totalPosts } = data?.getUserPost || 0
         const { user } = useSelector((state) => state.userProfile)
         const [page, setPage] = useState(0)
+
+        /* efftec to refetch the posts */
+
+        useEffect(() => {
+          refetch()
+
+          /* once refeched make state to false as more fetching might be required */
+
+          setRefetchPosts(false)
+        }, [refetchPosts])
 
         if (!data?.getUserPost.Posts.length) {
           return (
@@ -73,7 +86,11 @@ function index({ userId, firstName }) {
                     className="thread-card"
                     key={index}
                   >
-                    <Thread thread={item} id={item?._id} />
+                    <Thread
+                      setRefetchPosts={setRefetchPosts}
+                      thread={item}
+                      id={item?._id}
+                    />
                   </div>
                 )
               })}

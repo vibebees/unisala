@@ -65,6 +65,14 @@ export const AddComment = gql`
       }
     }
   `,
+  DeletePost = gql`
+    mutation deletePost($postId: String!) {
+      deletePost(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
   EditAbout = gql`
     mutation editAbout($about: String!) {
       editAbout(about: $about) {

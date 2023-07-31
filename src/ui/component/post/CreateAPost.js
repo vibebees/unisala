@@ -187,7 +187,7 @@ export const CreateAPost = ({ setPopup, popup }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="">
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
