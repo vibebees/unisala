@@ -4,7 +4,7 @@ import { arrowRedoCircle } from "ionicons/icons"
 function Reply({ repliesCount, setReply }) {
   return (
     <IonButtons
-      className="post-button"
+      className="post-button cursor-pointer"
       onClick={() => setReply((state) => !state)}
     >
       <IonIcon

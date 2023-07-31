@@ -216,14 +216,14 @@ const Thread = ({ thread, setRefetchPosts }) => {
                   }}
                   className=" w-full py-1.5 rounded-lg  flex justify-center items-center gap-1 text-gray font-bold hover:bg-[#f1eeee]"
                 >
-                  <IonIcon icon={create} />
-                  Edit
+                  <IonIcon icon={create} className="text-xl" />
+                  Update
                 </button>
                 <button
                   onClick={() => deletePost()}
-                  className=" w-full py-1.5 rounded-lg  flex justify-center items-center gap-1 text-gray font-bold hover:bg-[#f1eeee]"
+                  className=" w-full py-1.5 rounded-lg  flex justify-center items-center gap-1.5 text-gray font-bold hover:bg-[#f1eeee]"
                 >
-                  <IonIcon icon={trash} />
+                  <IonIcon icon={trash} className="text-xl" />
                   Delete
                 </button>
               </div>
