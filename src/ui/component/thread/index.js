@@ -103,7 +103,7 @@ const Thread = ({ thread, setRefetchPosts }) => {
     onCompleted: (data) => {
       const { editPost } = data
 
-      if (editPost.success) {
+      if (editPost?.status?.success) {
         // change state to indicate the parent thread that refetching is required since post is updated
         setRefetchPosts(true)
 
