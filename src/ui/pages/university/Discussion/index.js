@@ -24,7 +24,6 @@ export default function Discussion({ uniId }) {
     variables: { unitId: uniId, postText: reply },
     onCompleted: (data) => {
       if (data?.addPost.status.success) {
-        console.log("add post", data?.addPost)
         present({
           duration: 3000,
           message: data?.addPost.status.message,
@@ -50,13 +49,12 @@ export default function Discussion({ uniId }) {
         saved: false,
         __typename: "Post"
       }
+
       const data = cache.readQuery({
         query: GetUserPost,
         variables: { unitId: uniId, page: 0, pageSize: 10, userId: user._id },
         context: { server: "USER_SERVICE_GQL" }
       })
-
-      // console.log("0000000000", data?.addPost)
 
       cache.writeQuery({
         query: GetUserPost,
@@ -64,8 +62,8 @@ export default function Discussion({ uniId }) {
         context: { server: "USER_SERVICE_GQL" },
         data: {
           addPost: {
-            ...data?.addPost,
-            Posts: [post, ...data?.addPost.Posts]
+            addPost,
+            Posts: [post, addPost.Posts]
           }
         }
       })
