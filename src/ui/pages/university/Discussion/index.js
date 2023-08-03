@@ -11,7 +11,7 @@ import { useSelector } from "react-redux"
 import { sendOutline } from "ionicons/icons"
 import { Avatar } from "../../../component/Avatar"
 import { useMutation } from "@apollo/client"
-import { addUniReview, getUniReview } from "../../../../graphql/user"
+import { AddPost, GetUserPost } from "../../../../graphql/user"
 
 export default function Discussion({ uniId }) {
   const { user } = useSelector((state) => state.userProfile)
@@ -19,23 +19,24 @@ export default function Discussion({ uniId }) {
   const input = React.useRef()
   const [reply, setReply] = React.useState("")
 
-  const [submitUniReview] = useMutation(addUniReview, {
+  const [submitUniReview] = useMutation(AddPost, {
     context: { server: "USER_SERVICE_GQL" },
     variables: { unitId: uniId, postText: reply },
     onCompleted: (data) => {
-      if (data.addUniReview.status.success) {
+      if (data?.addPost.status.success) {
+        console.log("add post", data?.addPost)
         present({
           duration: 3000,
-          message: data.addUniReview.status.message,
+          message: data?.addPost.status.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
       }
     },
-    update: (cache, { data: { addUniReview } }) => {
+    update: (cache, { data: { addPost } }) => {
       const post = {
-        ...addUniReview.post,
+        ...addPost?.post,
         user: {
           _id: user._id,
           username: user.username,
@@ -50,18 +51,21 @@ export default function Discussion({ uniId }) {
         __typename: "Post"
       }
       const data = cache.readQuery({
-        query: getUniReview,
-        variables: { unitId: uniId, page: 0, pageSize: 10 },
+        query: GetUserPost,
+        variables: { unitId: uniId, page: 0, pageSize: 10, userId: user._id },
         context: { server: "USER_SERVICE_GQL" }
       })
+
+      // console.log("0000000000", data?.addPost)
+
       cache.writeQuery({
-        query: getUniReview,
-        variables: { unitId: uniId, page: 0, pageSize: 10 },
+        query: GetUserPost,
+        variables: { unitId: uniId, page: 0, pageSize: 10, userId: user._id },
         context: { server: "USER_SERVICE_GQL" },
         data: {
-          getUniReview: {
-            ...data?.getUniReview,
-            Posts: [post, ...data?.getUniReview.Posts]
+          addPost: {
+            ...data?.addPost,
+            Posts: [post, ...data?.addPost.Posts]
           }
         }
       })
