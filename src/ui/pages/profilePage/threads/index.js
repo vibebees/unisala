@@ -35,9 +35,8 @@ function index({ userId, firstName }) {
 
         useEffect(() => {
           refetch()
-
-          /* once refeched make state to false as more fetching might be required */
           setRefetchPosts(false)
+          // once refeched make state to false as more fetching might be required
         }, [refetchPosts])
 
         if (!data?.getUserPost.Posts.length) {

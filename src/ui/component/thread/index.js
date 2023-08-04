@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import {
-  IonButton,
-  IonCard,
-  IonContent,
-  IonIcon,
-  IonModal,
-  useIonToast
-} from "@ionic/react"
+import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import Save from "./actions/Save"
@@ -42,8 +35,10 @@ const Thread = ({ thread, setRefetchPosts }) => {
     postCommentsCount,
     upVoted,
     postImage,
-    saved
+    saved,
+    user
   } = thread
+
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
@@ -66,6 +61,7 @@ const Thread = ({ thread, setRefetchPosts }) => {
   // delete thread
   const [deletePost] = useMutation(DeletePost, {
     context: { server: USER_SERVICE_GQL },
+
     variables: {
       postId: _id
     },
@@ -231,7 +227,9 @@ const Thread = ({ thread, setRefetchPosts }) => {
           </div>
         </div>
       )}
-      {postCommentsCount > 0 && <ShowMore postId={_id} />}
+      {postCommentsCount > 0 && (
+        <ShowMore setRefetchPosts={setRefetchPosts} postId={_id} user={user} />
+      )}
     </IonCard>
   )
 }

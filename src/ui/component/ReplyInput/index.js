@@ -44,7 +44,10 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
           data: {
             commentList: {
               ...post.commentList,
-              comments: [{ ...addComment }, ...post.commentList.comments]
+              comments: [
+                { ...addComment },
+                post.commentList.length > 0 && { ...post.commentList.comments }
+              ]
             }
           }
         })
@@ -52,7 +55,7 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
     onCompleted: () => {
       present({
         duration: 3000,
-        message: "Post added",
+        message: "Comment added",
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "primary",
         mode: "ios"

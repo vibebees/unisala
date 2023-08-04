@@ -50,15 +50,15 @@ export const AddComment = gql`
     }
   `,
   AddPost = gql`
-    mutation addPost($postText: String, $postImage: String,  $unitId: Float) {
-      addPost(postText: $postText, postImage: $postImage,  unitId: $unitId) {
+    mutation addPost($postText: String, $postImage: String, $unitId: Float) {
+      addPost(postText: $postText, postImage: $postImage, unitId: $unitId) {
         status {
           success
           message
         }
         post {
           _id
-\          postText
+          postText
           postImage
           date
         }
@@ -78,6 +78,14 @@ export const AddComment = gql`
   DeletePost = gql`
     mutation deletePost($postId: String!) {
       deletePost(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
+  DeleteComment = gql`
+    mutation deleteComment($id: String!) {
+      deleteComment(id: $id) {
         success
         message
       }
