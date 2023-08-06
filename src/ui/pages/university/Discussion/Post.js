@@ -2,18 +2,18 @@ import { useState } from "react"
 import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
 import { Query } from "@apollo/client/react/components"
 import Thread from "../../../component/thread"
-import { getUniReview } from "../../../../graphql/user"
+import { GetUserPost } from "../../../../graphql/user"
 
 export default function Review({ uniId }) {
   return (
     <Query
-      query={getUniReview}
+      query={GetUserPost}
       variables={{ unitId: uniId, page: 0, pageSize: 10 }}
       context={{ server: "USER_SERVICE_GQL" }}
     >
       {({ data, loading, fetchMore }) => {
-        const Posts = data?.getUniReview?.Posts || []
-        const totalPosts = data?.getUniReview?.totalPosts || 0
+        const Posts = data?.getUserPost?.Posts || []
+        const totalPosts = data?.getUserPost?.totalPosts || 0
         const [page, setPage] = useState(0)
 
         return (
@@ -51,10 +51,10 @@ export default function Review({ uniId }) {
                       if (!fetchMoreResult) return prev
                       return Object.assign({}, prev, {
                         getUserPost: {
-                          ...prev.getUniReview,
+                          ...prev.getUserPost,
                           Posts: [
-                            ...prev.getUniReview.Posts,
-                            ...fetchMoreResult.getUniReview.Posts
+                            ...prev.getUserPost.Posts,
+                            ...fetchMoreResult.getUserPost.Posts
                           ]
                         }
                       })
