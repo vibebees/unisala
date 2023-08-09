@@ -32,6 +32,10 @@ const config = require("./config"),
           : userServiceAddress + "/refreshToken",
         { refreshToken: localStorage.getItem("refreshToken") }
       )
+      if (!data.success) {
+        localStorage.removeItem("refreshToken")
+        localStorage.removeItem("accessToken")
+      }
       data?.refreshToken &&
         localStorage.setItem("refreshToken", data?.refreshToken || "")
       data?.accessToken &&

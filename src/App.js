@@ -3,7 +3,7 @@ import {IonApp, IonPage, IonRouterOutlet, setupIonicReact} from "@ionic/react"
 import {IonReactRouter} from "@ionic/react-router"
 import {PersistGate} from "redux-persist/integration/react"
 import {persistor, store} from "./store/store"
-import {useDispatch, useSelector, Provider} from "react-redux"
+import {useDispatch, Provider} from "react-redux"
 import jwtDecode from "jwt-decode"
 
 /* Core CSS required for Ionic components to work properly */
@@ -29,8 +29,9 @@ import AuthModal from "./ui/component/authentication"
 import {getUserProfile} from "./store/action/userProfile"
 import useWindowWidth from "./hooks/useWindowWidth"
 import MobileNav from "./ui/component/MobileNav"
-import {CreateAPost} from "./ui/component/post/CreateAPost"
-import {getPresingedUrl} from "./store/action/authenticationAction"
+import { CreateAPost } from "./ui/component/post/CreateAPost"
+import { userServer } from "./servers/endpoints"
+import { getPresingedUrl } from "./store/action/authenticationAction"
 
 /* Theme variables */
 
@@ -55,12 +56,36 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const accessToken = localStorage?.getItem("accessToken"),
-      decode = accessToken && jwtDecode(accessToken)
-    dispatch(getUserProfile({user: {...decode}, loggedIn: Boolean(decode)}))
+    const getNewToken = async () => {
+      if (!localStorage.getItem("refreshToken")) {
+        dispatch(getUserProfile({ user: {}, loggedIn: false }))
+        return
+      }
+      try {
+        const { data } = await axios.post(userServer + "/refreshToken", {
+          refreshToken: localStorage.getItem("refreshToken")
+        })
+        if (!data.success) {
+          localStorage.removeItem("refreshToken")
+          localStorage.removeItem("accessToken")
+          dispatch(getUserProfile({ user: {}, loggedIn: false }))
+        }
+        data?.refreshToken &&
+          localStorage.setItem("refreshToken", data?.refreshToken || "")
+        data?.accessToken &&
+          localStorage.setItem("accessToken", data?.accessToken || "")
+        const decode = jwtDecode(data?.accessToken)
+        dispatch(
+          getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getNewToken()
+
     dispatch(getPresingedUrl("USER"))
     dispatch(getPresingedUrl("UNI"))
-
   }, [])
 
   return (

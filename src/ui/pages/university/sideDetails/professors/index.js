@@ -25,6 +25,15 @@ export const Professors = () => {
   const [page, setPage] = useState(0)
   const unitId = uniData?.unitId
 
+  const emoji = {
+    0: "https://cdn-icons-png.flaticon.com/128/166/166527.png",
+    1: "https://cdn-icons-png.flaticon.com/128/166/166527.png",
+    2: "https://cdn-icons-png.flaticon.com/128/11269/11269926.png",
+    3: "https://cdn-icons-png.flaticon.com/128/166/166549.png",
+    4: "https://cdn-icons-png.flaticon.com/128/2584/2584606.png",
+    5: "https://cdn-icons-png.flaticon.com/128/5624/5624232.png"
+  }
+
   return (
     <Query
       query={GetProfessor}
@@ -115,7 +124,7 @@ export const Professors = () => {
                               <img
                                 width={25}
                                 alt="happy"
-                                src="https://cdn-icons-png.flaticon.com/512/282/282578.png"
+                                src={emoji[Math.trunc(overallRating)]}
                               />
                             </div>
                           </IonText>
