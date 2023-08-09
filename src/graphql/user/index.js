@@ -50,15 +50,15 @@ export const AddComment = gql`
     }
   `,
   AddPost = gql`
-    mutation addPost($postText: String, $postImage: String) {
-      addPost(postText: $postText, postImage: $postImage) {
+    mutation addPost($postText: String, $postImage: String,  $unitId: Float) {
+      addPost(postText: $postText, postImage: $postImage,  unitId: $unitId) {
         status {
           success
           message
         }
         post {
           _id
-          postText
+\          postText
           postImage
           date
         }
@@ -323,8 +323,8 @@ export const AddComment = gql`
     }
   `,
   GetUserPost = gql`
-    query getUserPost($userId: String!, $page: Float!) {
-      getUserPost(userId: $userId, page: $page, pageSize: 5) {
+    query getUserPost($userId: String, $page: Float!, $unitId: Float) {
+      getUserPost(userId: $userId, page: $page, pageSize: 5, unitId: $unitId) {
         totalPosts
         Posts {
           _id
@@ -695,58 +695,6 @@ export const AddComment = gql`
           picture
           username
           _id
-        }
-      }
-    }
-  `,
-  getUniReview = gql`
-    query getUniReview($unitId: Float!, $page: Float, $pageSize: Float) {
-      getUniReview(unitId: $unitId, page: $page, pageSize: $pageSize) {
-        totalPosts
-        status {
-          success
-          message
-        }
-        Posts {
-          _id
-          postImage
-          postText
-          date
-          upVoteCount
-          postCommentsCount
-          user {
-            _id
-            firstName
-            lastName
-            picture
-            username
-          }
-          saved
-          upVoted
-        }
-      }
-    }
-  `,
-  addUniReview = gql`
-    mutation addUniReview(
-      $unitId: Float!
-      $postText: String!
-      $postImage: String
-    ) {
-      addUniReview(
-        unitId: $unitId
-        postText: $postText
-        postImage: $postImage
-      ) {
-        status {
-          success
-          message
-        }
-        post {
-          _id
-          postImage
-          postText
-          date
         }
       }
     }

@@ -4,14 +4,14 @@ import {
   IonCardTitle,
   IonCardSubtitle
 } from "@ionic/react"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import {useSelector} from "react-redux"
+import {Link} from "react-router-dom"
 import CourseCard from "../../../../component/courseCard"
 import noResultsFound from "../../../../../assets/no-results.jpg"
 import "./index.css"
 
 function index() {
-  const { searchData } = useSelector((store) => store?.university || [])
+  const {searchData} = useSelector((store) => store?.university || [])
 
   return searchData?.length ? (
     <>
@@ -25,14 +25,14 @@ function index() {
                 average={data?.report?.average}
                 act={data?.applicants?.actRange}
                 acceptanceRate={data?.applicants?.acceptanceRate}
-                picture={data?.pictures?.[0]}
+                picture={data?.pictures}
               />
             </Link>
           )
         })}
     </>
   ) : (
-    <IonCard style={{ textAlign: "center" }}>
+    <IonCard style={{textAlign: "center"}}>
       <img alt="unisala: no results found" src={noResultsFound} />
       <IonCardHeader>
         <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>

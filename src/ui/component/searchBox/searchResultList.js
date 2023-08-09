@@ -1,19 +1,12 @@
-import { IonAvatar, IonItem, IonLabel } from "@ionic/react"
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import { getImage } from "../../../servers/s3.configs"
+import {IonAvatar, IonItem, IonLabel} from "@ionic/react"
+import {useEffect, useState} from "react"
+import {Link} from "react-router-dom"
+import {getImage, universityDefaultImage} from "../../../servers/s3.configs"
 
-export const SearchBarResultList = ({ item, key, setDropDownOptions }) => {
-  const [profileImage, setProfileImage] = useState("")
+export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
+  const [profileImage, setProfileImage] = useState(item?.pictures?.[0] || universityDefaultImage)
 
-  useEffect(() => {
-    if (item?.pictures?.length > 0) {
-      getImage("uni", item?.pictures[0], setProfileImage)
-    } else {
-      getImage("user", item?.picture, setProfileImage)
-    }
-  }, [])
-
+  console.log({item})
   return (
     <Link
       to={

@@ -1,7 +1,10 @@
+import {UNI_SERV_SIGNED_URL, USER_SERV_SIGNED_URL} from "../types/userActivity"
 
 export let initial = {
     refreshToken: null,
-    accessToken: null
+    accessToken: null,
+    uniSeviceSignedUrl: null,
+    userSeviceSignedUrl: null
 }
 // const auth = (state = initial, action) => {
 //     switch (action.type) {
@@ -14,20 +17,22 @@ export let initial = {
 // export default auth
 
 const authentication = (state = initial, action) => {
-    switch (action.type) {
+    const {type, payload} = action
+
+    switch (type) {
         case "USER_REGISTRATION":
             return state
 
         case "USER_LOGIN":
             state = {
                 ...state,
-                refreshToken: action.payload.refreshToken,
-                accessToken: action.payload.accessToken,
-                message: action.payload.message,
-                firstName: action.payload.firstName,
-                lastName: action.payload.lastName,
-                username: action.payload.username,
-                id: action.payload.id
+                refreshToken: payload.refreshToken,
+                accessToken: payload.accessToken,
+                message: payload.message,
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                username: payload.username,
+                id: payload.id
 
             }
 
@@ -36,13 +41,13 @@ const authentication = (state = initial, action) => {
 
             return state
         case "OAUTH":
-            localStorage.setItem("username", action.payload.username)
-            localStorage.setItem("token", action.payload.token)
+            localStorage.setItem("username", payload.username)
+            localStorage.setItem("token", payload.token)
             state = {
                 ...state,
-                userId: action.payload.userId,
-                token: action.payload.token,
-                username: action.payload.username
+                userId: payload.userId,
+                token: payload.token,
+                username: payload.username
             }
             return state
         case "LOGOUT":
@@ -64,17 +69,17 @@ const authentication = (state = initial, action) => {
             }
             return state
         case "BEFORE_AUTH_TRACK_PATH":
-            if (typeof action.payload === "string") {
+            if (action.typeofpayload === "string") {
                 state = {
                     ...state,
-                    beforeAuthPath: action.payload
+                    beforeAuthPath: payload
                 }
             }
             return state
         case "SHOW_ALERT":
             state = {
                 ...state,
-                showAuthAlert: action.payload
+                showAuthAlert: payload
             }
             return state
         case "EMAIL_VERIFICATION_RESENT":
@@ -113,6 +118,19 @@ const authentication = (state = initial, action) => {
                 loginFailed: false
             }
             return state
+
+        case UNI_SERV_SIGNED_URL:
+            console.log("00000000", payload?.url)
+            state = {
+                ...state,
+                uniSeviceSignedUrl: payload?.url
+            }
+            return state
+        case USER_SERV_SIGNED_URL:
+            return {
+                ...state,
+                userSeviceSignedUrl: payload?.url
+            }
         default:
             return state
 

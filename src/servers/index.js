@@ -11,10 +11,10 @@ module.exports = (() => {
   }
   if (config.NODE_ENV === "TEST") {
     return {
-      messagingServiceAddress: "http://100.26.217.90/msg",
-      universityServiceAddress: "http://100.26.217.90/uni",
+      messagingServiceAddress: "http://test.unisala.com/msg",
+      universityServiceAddress: "http://test.unisala.com/uni",
       messageSocketAddress: "ws://localhost:2224",
-      userServiceAddress: "http://100.26.217.90/user",
+      userServiceAddress: "http://test.unisala.com/user",
       callSocketAddress: "ws://localhost:4445"
     }
   }
