@@ -12,14 +12,9 @@ import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
 import { useMutation, useQuery } from "@apollo/client"
 import { DeleteComment, GetUserPost } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import { useSelector } from "react-redux"
 
-function Comment({
-  comment,
-  postId,
-  parentId,
-
-  setRefetchPosts
-}) {
+function Comment({ comment, postId, parentId }) {
   const {
     _id,
     firstName,
@@ -40,8 +35,8 @@ function Comment({
   const [editable, setEditable] = useState(false)
   // username of current visited profile
   const profileUsername = useParams().username
-
-  // find user ot get user id as we need user id to fetch posts and update cache
+  console.log(profileUsername, "name")
+  const { user: loggedinUser } = useSelector((state) => state.userProfile)
 
   const [deleteComment] = useMutation(DeleteComment, {
     context: { server: USER_SERVICE_GQL },
@@ -172,7 +167,7 @@ function Comment({
         />
       )}
 
-      {comment.username === profileUsername && (
+      {comment.username === loggedinUser?.username && (
         <div className="absolute top-0 right-6">
           <div className="relative">
             <button onClick={() => setShowOptions((prev) => !prev)}>

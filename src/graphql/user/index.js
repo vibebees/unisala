@@ -50,8 +50,18 @@ export const AddComment = gql`
     }
   `,
   AddPost = gql`
-    mutation addPost($postText: String, $postImage: String, $unitId: Float) {
-      addPost(postText: $postText, postImage: $postImage, unitId: $unitId) {
+    mutation addPost(
+      $postText: String
+      $postImage: String
+      $unitId: Float
+      $tags: [ID]
+    ) {
+      addPost(
+        postText: $postText
+        postImage: $postImage
+        unitId: $unitId
+        tags: $tags
+      ) {
         status {
           success
           message
@@ -740,6 +750,50 @@ export const AddComment = gql`
           university
           conversation
           major
+        }
+      }
+    }
+  `,
+  GetSpaceCategory = gql`
+    query searchSpaceCategory($q: String!, $count: Int) {
+      searchSpaceCategory(q: $q, count: $count) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+        }
+      }
+    }
+  `,
+  GetAllPostBySpaceCategoryID = gql`
+    query getAllPostBySpaceCategoryID($id: ID, $limit: Int, $page: Int) {
+      getAllPostBySpaceCategoryID(id: $id, limit: $limit, page: $page) {
+        status {
+          success
+          message
+        }
+        posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
+          tags
         }
       }
     }

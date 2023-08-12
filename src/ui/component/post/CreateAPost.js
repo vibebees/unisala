@@ -16,14 +16,18 @@ import {
   useIonToast
 } from "@ionic/react"
 import { imageOutline } from "ionicons/icons"
-import { AddPost, GetUserPost } from "../../../graphql/user"
+import {
+  AddPost,
+  GetAllPostBySpaceCategoryID,
+  GetUserPost
+} from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
 import "./index.css"
 
-export const CreateAPost = ({ setPopup, popup }) => {
+export const CreateAPost = ({ setPopup, popup, tags }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const imgfile = useRef()
@@ -49,24 +53,46 @@ export const CreateAPost = ({ setPopup, popup }) => {
         upVoted: false,
         saved: false
       }
-      const data = cache.readQuery({
-        query: GetUserPost,
-        variables: { userId: user._id, page: 0 },
-        context: { server: USER_SERVICE_GQL }
-      })
-      data &&
-        cache.writeQuery({
+      if (!tags) {
+        const data = cache.readQuery({
           query: GetUserPost,
           variables: { userId: user._id, page: 0 },
-          context: { server: USER_SERVICE_GQL },
-          data: {
-            getUserPost: {
-              ...data.getUserPost,
-              Posts: [post, ...data.getUserPost.Posts]
-            }
-          }
+          context: { server: USER_SERVICE_GQL }
         })
+        data &&
+          cache.writeQuery({
+            query: GetUserPost,
+            variables: { userId: user._id, page: 0 },
+            context: { server: USER_SERVICE_GQL },
+            data: {
+              getUserPost: {
+                ...data.getUserPost,
+                Posts: [post, ...data.getUserPost.Posts]
+              }
+            }
+          })
+      } else {
+        const data = cache.readQuery({
+          query: GetAllPostBySpaceCategoryID,
+          variables: { id: tags[0] }, // tags array is made such that the 0th index is space id and 1st index is parent id
+          context: { server: USER_SERVICE_GQL }
+        })
+
+        data &&
+          cache.writeQuery({
+            query: GetAllPostBySpaceCategoryID,
+            variables: { id: tags[0] },
+            context: { server: USER_SERVICE_GQL },
+            data: {
+              getAllPostBySpaceCategoryID: {
+                ...data.getAllPostBySpaceCategoryID,
+                posts: [post, ...data.getAllPostBySpaceCategoryID.posts]
+              }
+            }
+          })
+      }
     },
+
     onCompleted: () => {
       present({
         duration: 3000,
@@ -158,7 +184,8 @@ export const CreateAPost = ({ setPopup, popup }) => {
             addPost({
               variables: {
                 postText: TextChecker(postText),
-                postImage: uploadFilename
+                postImage: uploadFilename,
+                tags
               }
             })
             setfile("")
@@ -173,7 +200,13 @@ export const CreateAPost = ({ setPopup, popup }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     fileData && file && fileUpdate()
-    !fileData && addPost({ variables: { postText: TextChecker(postText) } })
+    !fileData &&
+      addPost({
+        variables: {
+          postText: TextChecker(postText),
+          tags
+        }
+      })
     setPopup(false)
   }
 

@@ -51,7 +51,6 @@ function ShowMore({ postId, parentId, user, setRefetchPosts }) {
               postId={postId}
               parentId={parentId}
               setRefetchComments={setRefetchComments}
-              setRefetchPosts={setRefetchPosts}
             />
           )
         })}

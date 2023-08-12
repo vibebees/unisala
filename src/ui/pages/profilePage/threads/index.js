@@ -16,9 +16,6 @@ import CourseCard from "../../../component/courseCard"
 import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
 
 function index({ userId, firstName }) {
-  // state to check if posts is deleted or updated, if yes then we will refetch the user's posts
-  const [refetchPosts, setRefetchPosts] = useState(false)
-
   return (
     <Query
       query={GetUserPost}
@@ -30,14 +27,6 @@ function index({ userId, firstName }) {
         const { totalPosts } = data?.getUserPost || 0
         const { user } = useSelector((state) => state.userProfile)
         const [page, setPage] = useState(0)
-
-        /* efftec to refetch the posts */
-
-        useEffect(() => {
-          refetch()
-          setRefetchPosts(false)
-          // once refeched make state to false as more fetching might be required
-        }, [refetchPosts])
 
         if (!data?.getUserPost.Posts.length) {
           return (
@@ -84,11 +73,7 @@ function index({ userId, firstName }) {
                     className="thread-card"
                     key={index}
                   >
-                    <Thread
-                      setRefetchPosts={setRefetchPosts}
-                      thread={item}
-                      id={item?._id}
-                    />
+                    <Thread refetch={refetch} thread={item} id={item?._id} />
                   </div>
                 )
               })}

@@ -9,95 +9,23 @@ import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { Link } from "react-router-dom"
 import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"
-import { useLazyQuery } from "@apollo/client"
-import { GetUserPost } from "../../../graphql/user"
+import { useLazyQuery, useQuery } from "@apollo/client"
+import { GetAllPostBySpaceCategoryID, GetUserPost } from "../../../graphql/user"
 import { userServer } from "../../../servers/endpoints"
 import axios from "axios"
 import { InterviewScheduler } from "../../component/interviewScheduler"
-export const SpaceFeed = ({ userInfo }) => {
+import { USER_SERVICE_GQL } from "../../../servers/types"
+export const SpaceFeed = ({ userInfo, spaceId }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
 
-  const spaceFeed = [
-    {
-      type: "uni",
-      post: {
-        name: "Ligma University",
-        location: "Hammond, LA",
-        reviews: {
-          total: 67,
-          rating: 4.96
-        },
-        averageRating: "A",
-        acceptanceRate: 90,
-        actRange: {
-          min: 19,
-          max: 24
-        }
-      }
-    },
-    {
-      type: "uni",
-      post: {
-        name: "Southeastern University",
-        location: "Hammond, LA",
-        reviews: {
-          total: 67,
-          rating: 4.96
-        },
-        averageRating: "A",
-        acceptanceRate: 90,
-        actRange: {
-          min: 19,
-          max: 24
-        }
-      }
-    },
-    {
-      type: "post",
-      post: {
-        _id: "1",
-        postText: "It's the month of December! New month, new spirit! 💪",
-        postImage:
-          "https://s3.amazonaws.com/thumbnails.venngage.com/template/cc5f21fb-5090-4d3e-92c9-143b815b2d6c.png",
-        date: "2022-11-20T06:04:32.843Z",
-        upVoteCount: 12,
-        postCommentsCount: 0,
-        upVoted: false,
-        saved: false,
+  const { data, error, refetch } = useQuery(GetAllPostBySpaceCategoryID, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { id: spaceId }
+  })
 
-        user: {
-          userId: "6367b4a441301a00a7d93b15",
-          firstName: "Giga",
-          lastName: "Chadman",
-          username: "gigachadman",
-          picture:
-            "https://image.shutterstock.com/image-photo/stock-photo-portrait-of-smiling-red-haired-millennial-man-looking-at-camera-sitting-in-caf-or-coffeeshop-250nw-1194497251.jpg"
-        }
-      }
-    },
-    {
-      type: "post",
-      post: {
-        _id: "2",
-        postText: "yoo less goo! 🏃‍♀️💨",
-        postImage:
-          "https://img.itch.zone/aW1nLzkzMzY1NjMucG5n/315x250%23c/Gb%2BH2t.png",
-        date: "2022-11-20T06:04:32.843Z",
-        upVoteCount: 12,
-        postCommentsCount: 0,
-        upVoted: false,
-        saved: false,
-
-        user: {
-          userId: "6367b4a441301a00a7d93b15",
-          firstName: "Giga",
-          lastName: "Chadman",
-          username: "gigachadman"
-        }
-      }
-    }
-  ]
+  const { getAllPostBySpaceCategoryID: allPosts } = data || {}
+  console.log(allPosts)
 
   // const [getNextPage, { loading, data }] = useLazyQuery(
   //   GetUserPost(userInfo?._id, page)
@@ -110,11 +38,10 @@ export const SpaceFeed = ({ userInfo }) => {
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }}>
-        <InterviewScheduler />
-        {Array.isArray(spaceFeed) &&
-          spaceFeed.map((item, index) => {
-            const { post } = item
-            return item.type === "uni" ? (
+        {Array.isArray(allPosts?.posts) &&
+          allPosts?.posts.map((post, index) => {
+            // const { post } = item
+            return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
                 <CourseCard
                   image={post?.image}
@@ -136,7 +63,7 @@ export const SpaceFeed = ({ userInfo }) => {
                 }}
                 key={index}
               >
-                <Thread thread={post} id={post?._id} />
+                <Thread thread={post} refetch={refetch} id={post?._id} />
               </div>
             )
           })}

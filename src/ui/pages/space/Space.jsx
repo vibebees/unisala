@@ -13,7 +13,7 @@ import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
-import { GetProfileCard } from "../../../graphql/user"
+import { GetProfileCard, GetSpaceCategory } from "../../../graphql/user"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import { SpaceFeed } from "./SpaceFeed"
 import UnisalaIntro from "./UnisalaIntro"
@@ -23,8 +23,11 @@ import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { CreateAPost } from "../../component/post/CreateAPost"
+import { useParams } from "react-router-dom"
 
 export const Spaces = () => {
+  const params = useParams()
+
   useDocTitle("Unisala")
   const { user, loggedIn } = useSelector((store) => store?.userProfile),
     profileData =
@@ -71,10 +74,34 @@ export const Spaces = () => {
     }
   }, [])
 
+  // from the params check if this is a parent space, the below query only returns id if it is parent space
+  const { data } = useQuery(GetSpaceCategory, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { q: params.category }
+  })
+  const { searchSpaceCategory } = data || {}
+  const spaceId = searchSpaceCategory?.spaceCategory[0]?._id
+  const parentId = searchSpaceCategory?.spaceCategory[0]?.parentId // this could be null as the current space could be parent in itself
+  let tags = []
+
+  // condition because we do not want to send null datas to backend
+  if (spaceId) {
+    tags.push(spaceId)
+  }
+  if (parentId) {
+    tags.push(parentId)
+  }
+
+  console.log("spave id", spaceId)
+
   return (
     <IonContent color="light">
       <VerifyPostPop setPopup={setVerifyAPostPopUp} popup={verfiyAPostPopUp} />
-      <CreateAPost setPopup={setCreateAPostPopUp} popup={createAPostPopUp} />
+      <CreateAPost
+        setPopup={setCreateAPostPopUp}
+        popup={createAPostPopUp}
+        tags={tags}
+      />
 
       {width < 768 && views.lessThan768}
       <IonGrid
@@ -109,7 +136,11 @@ export const Spaces = () => {
                 <Post />
               </IonCard>
             )}
-            {loggedIn ? <SpaceFeed userInfo={user} /> : <UnisalaIntro />}
+            {loggedIn ? (
+              <SpaceFeed spaceId={spaceId} userInfo={user} />
+            ) : (
+              <UnisalaIntro />
+            )}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
         </IonRow>

@@ -25,7 +25,7 @@ import {
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 
-const Thread = ({ thread, setRefetchPosts }) => {
+const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
   const {
     _id,
@@ -65,11 +65,14 @@ const Thread = ({ thread, setRefetchPosts }) => {
     variables: {
       postId: _id
     },
+    update: (cache) => {},
     onCompleted: (data) => {
       const { deletePost } = data
       if (deletePost.success) {
         // change state to indicate the parent thread that refetching is required
-        setRefetchPosts(true)
+        setShowOptions(false)
+        refetch()
+
         present({
           duration: 3000,
           message: "Post Deleted",
@@ -101,7 +104,6 @@ const Thread = ({ thread, setRefetchPosts }) => {
 
       if (editPost?.status?.success) {
         // change state to indicate the parent thread that refetching is required since post is updated
-        setRefetchPosts(true)
 
         // change editable back to false
         setEditable(false)
@@ -196,7 +198,7 @@ const Thread = ({ thread, setRefetchPosts }) => {
 
       {/* check if the post is that of the logged in user, then only show options to
       delete and update */}
-      {loggedinUser.username === thread.user.username && (
+      {loggedinUser?.username === thread.user.username && (
         <div className="absolute top-4 right-8">
           <div className="relative">
             <button onClick={() => setShowOptions((prev) => !prev)}>
@@ -227,9 +229,7 @@ const Thread = ({ thread, setRefetchPosts }) => {
           </div>
         </div>
       )}
-      {postCommentsCount > 0 && (
-        <ShowMore setRefetchPosts={setRefetchPosts} postId={_id} user={user} />
-      )}
+      {postCommentsCount > 0 && <ShowMore postId={_id} user={user} />}
     </IonCard>
   )
 }
