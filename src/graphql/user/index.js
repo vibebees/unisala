@@ -797,4 +797,19 @@ export const AddComment = gql`
         }
       }
     }
+  `,
+  GetTopActiveSpaces = gql`
+    query getTopActiveSpaces($limit: Int) {
+      getTopActiveSpaces(limit: $limit) {
+        status {
+          success
+          message
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+        }
+      }
+    }
   `

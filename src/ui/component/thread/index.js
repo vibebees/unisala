@@ -69,7 +69,7 @@ const Thread = ({ thread, refetch }) => {
     onCompleted: (data) => {
       const { deletePost } = data
       if (deletePost.success) {
-        // change state to indicate the parent thread that refetching is required
+        // refetch posts
         setShowOptions(false)
         refetch()
 
@@ -103,8 +103,8 @@ const Thread = ({ thread, refetch }) => {
       const { editPost } = data
 
       if (editPost?.status?.success) {
-        // change state to indicate the parent thread that refetching is required since post is updated
-
+        // refetch posts
+        refetch()
         // change editable back to false
         setEditable(false)
         present({

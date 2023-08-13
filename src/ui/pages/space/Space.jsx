@@ -13,7 +13,11 @@ import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
-import { GetProfileCard, GetSpaceCategory } from "../../../graphql/user"
+import {
+  GetProfileCard,
+  GetSpaceCategory,
+  GetTopActiveSpaces
+} from "../../../graphql/user"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import { SpaceFeed } from "./SpaceFeed"
 import UnisalaIntro from "./UnisalaIntro"
@@ -29,6 +33,17 @@ export const Spaces = () => {
   const params = useParams()
 
   useDocTitle("Unisala")
+
+  // TOP SPACES
+  const { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
+    variables: { limit: 6 },
+    context: { server: USER_SERVICE_GQL }
+  })
+
+  console.log(topSpaceData, "1")
+  const { getTopActiveSpaces } = topSpaceData || {}
+  // console.log(getTopActiveSpaces)
+
   const { user, loggedIn } = useSelector((store) => store?.userProfile),
     profileData =
       loggedIn &&
@@ -48,7 +63,10 @@ export const Spaces = () => {
     [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     views = {
-      greaterThan1000: screenGreaterThan1000({ title: "Top Space" }),
+      greaterThan1000: screenGreaterThan1000({
+        title: "Top Space",
+        topSpaces: getTopActiveSpaces?.spaceCategory
+      }),
       greaterThan768: screensMoreThan768({
         activeTab,
         setActiveTab,
@@ -91,8 +109,6 @@ export const Spaces = () => {
   if (parentId) {
     tags.push(parentId)
   }
-
-  console.log("spave id", spaceId)
 
   return (
     <IonContent color="light">
@@ -142,7 +158,10 @@ export const Spaces = () => {
               <UnisalaIntro />
             )}
           </IonCol>
-          {width > 1000 && views.greaterThan1000}
+
+          <IonCol className="max-w-max">
+            {width > 1000 && views.greaterThan1000}
+          </IonCol>
         </IonRow>
       </IonGrid>
     </IonContent>

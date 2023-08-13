@@ -25,7 +25,6 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   })
 
   const { getAllPostBySpaceCategoryID: allPosts } = data || {}
-  console.log(allPosts)
 
   // const [getNextPage, { loading, data }] = useLazyQuery(
   //   GetUserPost(userInfo?._id, page)
