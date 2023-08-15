@@ -2,7 +2,7 @@ name: Prod
 
 on:
   push:
-    branches: [main]
+    branches: [release]
 
 jobs:
   deploy:
@@ -22,11 +22,11 @@ jobs:
         npm run build
 
     - name: copy file via ssh key
-      uses: appleboy/scp-action@master
+      uses: appleboy/scp-action@release
       with:
-        host: "44.204.233.28"
+        host: "35.154.130.113"
         username: "ec2-user"
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.P_SSH_PRIVATE_KEY }}
         port: 22
         source: "build/*"
         target: "/var/www/html/"
