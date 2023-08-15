@@ -1,4 +1,4 @@
-name: Prod
+name: Test/Release
 
 on:
   push:
@@ -16,17 +16,31 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: build
+    - name : install & build
       run: |
-        npm i -f
-        npm run build
+        npm i --force
+        CI=false npm run build
 
     - name: copy file via ssh key
-      uses: appleboy/scp-action@release
+      if: ${{github.ref == 'refs/heads/release'}}
+      uses: appleboy/scp-action@master
       with:
         host: "35.154.130.113"
         username: "ec2-user"
         key: ${{ secrets.P_SSH_PRIVATE_KEY }}
         port: 22
         source: "build/*"
-        target: "/var/www/html/"
+        target: "~/unisala-web"
+        
+    - name: ssh
+      if: ${{github.ref == 'refs/heads/release'}}
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: "35.154.130.113"
+        username: "ec2-user"
+        key: ${{ secrets.P_SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd unisala-web/build
+          sudo rm -rf /var/www/html/* 
+          sudo cp -r * /var/www/html
