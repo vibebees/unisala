@@ -26,10 +26,7 @@ const config = require("./config"),
   } = urls,
   getNewToken = async () => {
     try {
-      const { data } = await axios.post(
-        config.NODE_ENV === "PRODUCTION"
-          ? urls["base"] + "/user/refreshToken"
-          : userServiceAddress + "/refreshToken",
+      const { data } = await axios.post(userServiceAddress + "/refreshToken",
         { refreshToken: localStorage.getItem("refreshToken") }
       )
       if (!data.success) {
@@ -78,24 +75,15 @@ const config = require("./config"),
     }
   }),
   messageServerGql = new HttpLink({
-    uri:
-      config.NODE_ENV === "PRODUCTION"
-        ? urls["base"] + "/message/graphql"
-        : messagingServiceAddress + "/graphql",
+    uri: messagingServiceAddress + "/graphql",
     server: MESSAGE_SERVICE_GQL
   }),
   universityServerGql = new HttpLink({
-    uri:
-      config.NODE_ENV === "PRODUCTION"
-        ? urls["base"] + "/uni/graphql"
-        : universityServiceAddress + "/graphql",
+    uri: universityServiceAddress + "/graphql",
     server: UNIVERSITY_SERVICE_GQL
   }),
   userServerGql = new HttpLink({
-    uri:
-      config.NODE_ENV === "PRODUCTION"
-        ? urls["base"] + "/user/graphql"
-        : userServiceAddress + "/graphql",
+    uri: userServiceAddress + "/graphql",
     server: USER_SERVICE_GQL
   }),
   authLink = setContext((_, { headers }) => {
@@ -129,15 +117,6 @@ export const client = new ApolloClient({
   }),
   messageSocket = () => io(messageSocketAddress),
   callSocket = () => io(callSocketAddress),
-  userServer =
-    config.NODE_ENV === "PRODUCTION"
-      ? urls["base"] + "/user/"
-      : userServiceAddress,
-  messageServer =
-    config.NODE_ENV === "PRODUCTION"
-      ? urls["base"] + "/message/"
-      : messagingServiceAddress,
-  universityServer =
-    config.NODE_ENV === "PRODUCTION"
-      ? urls["base"] + "/uni/"
-      : universityServiceAddress
+  userServer = userServiceAddress,
+  messageServer = messagingServiceAddress,
+  universityServer = universityServiceAddress
