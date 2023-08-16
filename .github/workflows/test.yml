@@ -19,7 +19,9 @@ jobs:
     - name : install & build
       run: |
         npm i --force
-        CI=false npm run build
+        CI=false NODE_ENV=TEST npm run build
+      env:
+        NODE_ENV: TEST
 
     - name: copy file via ssh key
       if: ${{github.ref == 'refs/heads/test'}}
