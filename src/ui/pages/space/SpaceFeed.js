@@ -12,9 +12,10 @@ import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScal
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { GetAllPostBySpaceCategoryID, GetUserPost } from "../../../graphql/user"
 import { userServer } from "../../../servers/endpoints"
-import axios from "axios"
-import { InterviewScheduler } from "../../component/interviewScheduler"
+import emptyState from "../../../assets/emptyState.png"
+
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import StateMessage from "../../component/stateMessage/index"
 export const SpaceFeed = ({ userInfo, spaceId }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
@@ -37,6 +38,11 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }}>
+        {allPosts?.posts.length === 0 && (
+          <StateMessage title="Be the first one to post in this space">
+            <img src={emptyState} alt="empty state" className="state-img" />
+          </StateMessage>
+        )}
         {Array.isArray(allPosts?.posts) &&
           allPosts?.posts.map((post, index) => {
             // const { post } = item

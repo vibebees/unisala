@@ -79,7 +79,9 @@ const ProfileHeader = ({ tab, setTab, data }) => {
 
       <div className="short-info-wrapper">
         <IonText color="dark">
-          <h1 className="text-xl font-bold">{firstName + " " + lastName}</h1>
+          <h1 className="text-xl capitalize font-bold">
+            {firstName + " " + lastName}
+          </h1>
           <IonCardSubtitle className="font-bold">@{username}</IonCardSubtitle>
         </IonText>
 

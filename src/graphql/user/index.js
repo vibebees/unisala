@@ -765,6 +765,11 @@ export const AddComment = gql`
           _id
           name
           parentId
+          description
+          image
+          user {
+            username
+          }
         }
       }
     }
@@ -810,6 +815,28 @@ export const AddComment = gql`
           name
           parentId
         }
+      }
+    }
+  `,
+  AddSpaceCategory = gql`
+    mutation addSpaceCategory($name: String!, $description: String) {
+      addSpaceCategory(name: $name, description: $description) {
+        status {
+          success
+          message
+        }
+        spaceCategory {
+          _id
+          name
+        }
+      }
+    }
+  `,
+  DeleteSpace = gql`
+    mutation deleteSpaceCategoryById($id: ID!) {
+      deleteSpaceCategoryById(id: $id) {
+        success
+        message
       }
     }
   `

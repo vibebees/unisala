@@ -28,6 +28,9 @@ import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { CreateAPost } from "../../component/post/CreateAPost"
 import { useParams } from "react-router-dom"
+import SpaceHeader from "./SpaceHeader"
+import PreLoader from "../../component/preloader"
+import { SpaceNotFound } from "../../component/PageNotFound"
 
 export const Spaces = () => {
   const params = useParams()
@@ -40,9 +43,7 @@ export const Spaces = () => {
     context: { server: USER_SERVICE_GQL }
   })
 
-  console.log(topSpaceData, "1")
   const { getTopActiveSpaces } = topSpaceData || {}
-  // console.log(getTopActiveSpaces)
 
   const { user, loggedIn } = useSelector((store) => store?.userProfile),
     profileData =
@@ -64,7 +65,7 @@ export const Spaces = () => {
     [activeTab, setActiveTab] = useState(0),
     views = {
       greaterThan1000: screenGreaterThan1000({
-        title: "Top Space",
+        title: "Top Spaces",
         topSpaces: getTopActiveSpaces?.spaceCategory
       }),
       greaterThan768: screensMoreThan768({
@@ -92,22 +93,29 @@ export const Spaces = () => {
     }
   }, [])
 
-  // from the params check if this is a parent space, the below query only returns id if it is parent space
-  const { data } = useQuery(GetSpaceCategory, {
+  const { data, loading } = useQuery(GetSpaceCategory, {
     context: { server: USER_SERVICE_GQL },
     variables: { q: params.category }
   })
   const { searchSpaceCategory } = data || {}
-  const spaceId = searchSpaceCategory?.spaceCategory[0]?._id
-  const parentId = searchSpaceCategory?.spaceCategory[0]?.parentId // this could be null as the current space could be parent in itself
-  let tags = []
 
+  const spaceId = searchSpaceCategory?.spaceCategory?._id
+  const parentId = searchSpaceCategory?.spaceCategory?.parentId // this could be null as the current space could be parent in itself
+  let tags = []
   // condition because we do not want to send null datas to backend
   if (spaceId) {
     tags.push(spaceId)
   }
   if (parentId) {
     tags.push(parentId)
+  }
+
+  if (loading) {
+    return <PreLoader />
+  }
+
+  if (!searchSpaceCategory?.spaceCategory) {
+    return <SpaceNotFound />
   }
 
   return (
@@ -142,15 +150,18 @@ export const Spaces = () => {
               minHeight: "calc(90vh)"
             }}
           >
+            <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
             {loggedIn && width >= 768 && (
-              <IonCard
-                style={{ marginBottom: "20px" }}
-                onClick={() => {
-                  setCreateAPostPopUp(true)
-                }}
-              >
-                <Post />
-              </IonCard>
+              <>
+                <IonCard
+                  style={{ marginBottom: "20px" }}
+                  onClick={() => {
+                    setCreateAPostPopUp(true)
+                  }}
+                >
+                  <Post />
+                </IonCard>
+              </>
             )}
             {loggedIn ? (
               <SpaceFeed spaceId={spaceId} userInfo={user} />
