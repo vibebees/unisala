@@ -21,7 +21,9 @@ jobs:
       - name: install & build
         run: |
           npm i --force
-          CI=false npm run build
+          CI=false NODE_ENV=PRODUCTION npm run build
+        env:
+          NODE_ENV: PRODUCTION
 
       - name: copy file via ssh key to first server
         uses: appleboy/scp-action@master
@@ -60,7 +62,9 @@ jobs:
       - name: install & build
         run: |
           npm i --force
-          CI=false npm run build
+          CI=false NODE_ENV=PRODUCTION npm run build
+        env:
+          NODE_ENV: PRODUCTION
 
       - name: copy file via ssh key to second server
         uses: appleboy/scp-action@master
