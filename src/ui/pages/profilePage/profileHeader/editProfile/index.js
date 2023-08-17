@@ -20,8 +20,12 @@ import { Avatar } from "../../../../component/Avatar"
 import useWindowWidth from "../../../../../hooks/useWindowWidth"
 import { awsBucket, bucketName } from "../../../../../servers/s3.configs"
 import "./index.css"
-
+import { useDispatch } from "react-redux"
+import { updateUserProfile } from "../../../../../store/action/userProfile"
+import { useHistory } from "react-router-dom"
 function index({ profileHeader }) {
+  // for autocomplete location
+
   const {
     firstName,
     lastName,
@@ -31,21 +35,15 @@ function index({ profileHeader }) {
     username,
     coverPicture
   } = profileHeader
-  const [input, setInput] = useState({
-    firstName,
-    lastName,
-    username,
-    oneLinerBio,
-    location,
-    profilePic
-  })
+  const [input, setInput] = useState(profileHeader)
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
   const [profileImage, setProfileImage] = useState(null)
   const [coverImage, setCoverImage] = useState(null)
   const [imageName, setImageName] = useState("")
   const [coverImageName, setCoverImageName] = useState("")
-
+  const dispatch = useDispatch()
+  const history = useHistory()
   const [editProfile, { loading }] = useMutation(EditProfile, {
     context: { server: USER_SERVICE_GQL },
     variables: {
@@ -73,7 +71,15 @@ function index({ profileHeader }) {
       })
     },
     onCompleted: (data) => {
+      // update uesr details in redux
       if (data?.editProfile?.status?.success) {
+        // if username is changed just refresh the page
+        if (profileHeader?.username !== input.username) {
+          history.push("/@/" + input?.username)
+        }
+        //  change user details in store
+        dispatch(updateUserProfile({ user: { ...input }, loggedIn: true }))
+
         present({
           duration: 3000,
           message: "Profile Updated",
@@ -212,11 +218,11 @@ function index({ profileHeader }) {
       <IonButton
         color="light"
         mode="ios"
-        className="icon-text"
+        className="icon-text font-bold tracking-wide text-lg flex"
         onClick={() => setIsOpen(true)}
       >
-        <IonIcon className="grey-icon-32 mr-1" icon={create} />
-        {windowWidth >= 768 && "Edit"}
+        <IonIcon className="grey-icon-10 mr-1" color="" icon={create} />
+        <span>{windowWidth >= 768 && "Edit"}</span>
       </IonButton>
 
       <IonModal
@@ -245,8 +251,13 @@ function index({ profileHeader }) {
         <IonContent className="ion-padding modal-content">
           <form onSubmit={handleSubmit}>
             <div className="mb-1">
-              <h5>Update Profile Cover Image</h5>
-              <p>Recommended dimensions 1200px x 400px (max. 4MB)</p>
+              <h5 className="font-semibold mb-2 text-black/7">
+                Update Profile Cover Image
+                <span className="text-xs font-semibold ml-2 text-slate-700">
+                  ( Recommended 1200px x 400px. Max size: 4 mb)
+                </span>
+              </h5>
+
               <label className="upload-file">
                 <input
                   type="file"
@@ -256,7 +267,7 @@ function index({ profileHeader }) {
               </label>
             </div>
 
-            <div className="inline-1 mb-1">
+            <div className="inline-1 my-4">
               <div className="user-profile__edit">
                 {profileImage ? (
                   <Avatar
@@ -268,8 +279,12 @@ function index({ profileHeader }) {
                 )}
               </div>
               <div className="upload-profile-pic-text">
-                <h5>Set Profile Picture</h5>
-                <p>You can change your profile picture or upload a photo</p>
+                <h5 className="font-semibold mb-2 text-black/7">
+                  Set Profile Picture
+                </h5>
+                <p className="text-sm mb-2">
+                  You can change your profile picture or upload a photo
+                </p>
                 <label className="upload-file">
                   <input
                     type="file"
@@ -280,77 +295,71 @@ function index({ profileHeader }) {
               </div>
             </div>
 
-            <div className="mb-1">
-              <h5>User Name</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="username"
-                required
-                className="input-box mt-05"
-                placeholder="User Name"
-                value={input?.username}
-              ></IonInput>
-            </div>
+            <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-2">
+                <h5>User Name</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="username"
+                  className="input-box "
+                  placeholder={profileHeader?.username || "User name"}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>First Name</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="firstName"
-                required
-                className="input-box mt-05"
-                placeholder="First Name"
-                value={input?.firstName}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>First Name</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="firstName"
+                  className="input-box "
+                  placeholder={profileHeader?.firstName || "First Name"}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>Last Name</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="lastName"
-                required
-                className="input-box mt-05"
-                placeholder="Last Name"
-                value={input?.lastName}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>Last Name</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="lastName"
+                  className="input-box "
+                  placeholder={profileHeader?.lastName || "Last Name"}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>Location</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="location"
-                className="input-box mt-05"
-                placeholder="Location"
-                value={input?.location}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>Location</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="location"
+                  className="input-box "
+                  placeholder={profileHeader?.location || "Location"}
+                ></IonInput>
+              </div>
 
-            <div className="mb-1">
-              <h5>One-liner Bio</h5>
-              <IonInput
-                mode="md"
-                onIonChange={handleChange}
-                name="oneLinerBio"
-                className="input-box mt-05"
-                placeholder="One-liner Bio"
-                value={input?.oneLinerBio}
-              ></IonInput>
-            </div>
+              <div className="flex flex-col space-y-2">
+                <h5>One-liner Bio</h5>
+                <IonInput
+                  mode="md"
+                  onIonChange={handleChange}
+                  name="oneLinerBio"
+                  className="input-box "
+                  placeholder={profileHeader?.oneLinerBio || "One-liner Bio"}
+                ></IonInput>
+              </div>
 
-            <IonButton
-              disabled={loading}
-              type="submit"
-              mode="ios"
-              expand="block"
-            >
-              {loading ? <IonSpinner /> : "Save Changes"}
-            </IonButton>
+              <IonButton
+                disabled={loading}
+                type="submit"
+                mode="ios"
+                expand="block"
+              >
+                {loading ? <IonSpinner /> : "Save Changes"}
+              </IonButton>
+            </div>
           </form>
         </IonContent>
       </IonModal>

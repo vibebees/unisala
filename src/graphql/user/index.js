@@ -50,18 +50,54 @@ export const AddComment = gql`
     }
   `,
   AddPost = gql`
-    mutation addPost($postText: String, $postImage: String,  $unitId: Float) {
-      addPost(postText: $postText, postImage: $postImage,  unitId: $unitId) {
+    mutation addPost(
+      $postText: String
+      $postImage: String
+      $unitId: Float
+      $tags: [ID]
+    ) {
+      addPost(
+        postText: $postText
+        postImage: $postImage
+        unitId: $unitId
+        tags: $tags
+      ) {
         status {
           success
           message
         }
         post {
           _id
-\          postText
+          postText
           postImage
           date
         }
+      }
+    }
+  `,
+  EditPost = gql`
+    mutation editPost($postId: String!, $postText: String, $postImage: String) {
+      editPost(postId: $postId, postText: $postText, postImage: $postImage) {
+        status {
+          success
+          message
+        }
+      }
+    }
+  `,
+  DeletePost = gql`
+    mutation deletePost($postId: String!) {
+      deletePost(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
+  DeleteComment = gql`
+    mutation deleteComment($id: String!) {
+      deleteComment(id: $id) {
+        success
+        message
       }
     }
   `,
@@ -715,6 +751,92 @@ export const AddComment = gql`
           conversation
           major
         }
+      }
+    }
+  `,
+  GetSpaceCategory = gql`
+    query searchSpaceCategory($q: String!, $count: Int) {
+      searchSpaceCategory(q: $q, count: $count) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+          description
+          image
+          user {
+            username
+          }
+        }
+      }
+    }
+  `,
+  GetAllPostBySpaceCategoryID = gql`
+    query getAllPostBySpaceCategoryID($id: ID, $limit: Int, $page: Int) {
+      getAllPostBySpaceCategoryID(id: $id, limit: $limit, page: $page) {
+        status {
+          success
+          message
+        }
+        posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
+          tags
+        }
+      }
+    }
+  `,
+  GetTopActiveSpaces = gql`
+    query getTopActiveSpaces($limit: Int) {
+      getTopActiveSpaces(limit: $limit) {
+        status {
+          success
+          message
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+        }
+      }
+    }
+  `,
+  AddSpaceCategory = gql`
+    mutation addSpaceCategory($name: String!, $description: String) {
+      addSpaceCategory(name: $name, description: $description) {
+        status {
+          success
+          message
+        }
+        spaceCategory {
+          _id
+          name
+        }
+      }
+    }
+  `,
+  DeleteSpace = gql`
+    mutation deleteSpaceCategoryById($id: ID!) {
+      deleteSpaceCategoryById(id: $id) {
+        success
+        message
       }
     }
   `

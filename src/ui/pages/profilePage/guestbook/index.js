@@ -134,7 +134,7 @@ function index({ userId, firstName }) {
             }
             subtitle="All the guestbook messages will be visible here"
           >
-            <img src={emptyState} alt="empty state" className="state-img" />
+            <img src={emptyState} alt="empty state" className="" />
           </StateMessage>
         </IonCard>
       )}

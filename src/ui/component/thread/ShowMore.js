@@ -1,15 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IonButton, IonSpinner } from "@ionic/react"
 import { useLazyQuery } from "@apollo/client"
 import { GetCommentList } from "../../../graphql/user"
 import Comment from "./Comment"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 
-function ShowMore({ postId, parentId }) {
+function ShowMore({ postId, parentId, user, setRefetchPosts }) {
   const [showMore, setShowMore] = useState(false)
-  const [getCommentList, { data, loading }] = useLazyQuery(GetCommentList, {
-    context: { server: USER_SERVICE_GQL }
-  })
+
+  const [refetchComments, setRefetchComments] = useState(false)
+  const [getCommentList, { data, loading, refetch }] = useLazyQuery(
+    GetCommentList,
+    {
+      context: { server: USER_SERVICE_GQL }
+    }
+  )
+
+  useEffect(() => {
+    refetch()
+    setRefetchComments(false)
+  }, [refetchComments])
 
   return (
     <>
@@ -34,7 +44,15 @@ function ShowMore({ postId, parentId }) {
 
       {showMore &&
         data?.commentList?.comments?.map((reply, i) => {
-          return <Comment comment={reply} key={i} postId={postId} />
+          return (
+            <Comment
+              comment={reply}
+              key={i}
+              postId={postId}
+              parentId={parentId}
+              setRefetchComments={setRefetchComments}
+            />
+          )
         })}
     </>
   )

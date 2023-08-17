@@ -165,8 +165,9 @@ const EducationPop = ({
             <h5>Start Date</h5>
             <IonInput
               mode="md"
-              className="input-box"
+              className="input-box input-box ion-padding-end"
               name="startDate"
+              type="date"
               onIonChange={handelChange}
               placeholder="Start Date"
               value={input?.startDate}
@@ -176,7 +177,8 @@ const EducationPop = ({
             <h5>Graduation Date</h5>
             <IonInput
               mode="md"
-              className="input-box"
+              className="input-box ion-padding-end"
+              type="date"
               name="graduationDate"
               onIonChange={handelChange}
               placeholder="Graduation Date"

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   IonCard,
   IonInfiniteScroll,
@@ -22,7 +22,7 @@ function index({ userId, firstName }) {
       variables={{ userId, page: 0 }}
       context={{ server: USER_SERVICE_GQL }}
     >
-      {({ data, loading, fetchMore }) => {
+      {({ data, loading, fetchMore, refetch }) => {
         const { Posts } = data?.getUserPost || []
         const { totalPosts } = data?.getUserPost || 0
         const { user } = useSelector((state) => state.userProfile)
@@ -73,7 +73,7 @@ function index({ userId, firstName }) {
                     className="thread-card"
                     key={index}
                   >
-                    <Thread thread={item} id={item?._id} />
+                    <Thread refetch={refetch} thread={item} id={item?._id} />
                   </div>
                 )
               })}

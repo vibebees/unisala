@@ -79,8 +79,10 @@ const ProfileHeader = ({ tab, setTab, data }) => {
 
       <div className="short-info-wrapper">
         <IonText color="dark">
-          <h1>{firstName + " " + lastName}</h1>
-          <IonCardSubtitle>@{username}</IonCardSubtitle>
+          <h1 className="text-xl capitalize font-bold">
+            {firstName + " " + lastName}
+          </h1>
+          <IonCardSubtitle className="font-bold">@{username}</IonCardSubtitle>
         </IonText>
 
         <div className="inline-2 flex-wrap">
@@ -90,7 +92,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
               {userLocation}
             </IonCardSubtitle>
           )}
-          <IonCardSubtitle className="icon-text">
+          <IonCardSubtitle className="icon-text font-semibold">
             <IonIcon className="icon-16" icon={calendar} />
             joined {doj.split("T")[0].split("-").join("/")}
           </IonCardSubtitle>

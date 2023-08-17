@@ -23,11 +23,15 @@ import { getUserGql } from "../../../graphql/user"
 import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import { useSelector } from "react-redux"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
   const [tab, setTab] = useState(0)
   const { username } = useParams()
+
+  const { user: loggedInUser } = useSelector((state) => state.userProfile)
+
   const { data } = useQuery(getUserGql, {
     context: { server: USER_SERVICE_GQL },
     variables: { username: username }
@@ -37,7 +41,9 @@ const ProfilePage = () => {
   const { getUser } = data || {}
   const accessToken = localStorage.getItem("accessToken")
   const decode = accessToken ? jwtDecode(accessToken) : {}
-  const myProfile = username === decode?.username
+
+  const myProfile = username === loggedInUser?.username
+
   const {
     firstName,
     lastName,
@@ -53,7 +59,9 @@ const ProfilePage = () => {
     _id,
     doj
   } = getUser?.user || {}
+
   const profilePic = picture
+
   const profileHeaderData = {
     _id,
     firstName,
@@ -68,6 +76,7 @@ const ProfilePage = () => {
     doj,
     connectionType: getUser?.connectionType
   }
+
   const profileBodyData = {
     username,
     about,
