@@ -20,16 +20,16 @@ import "./Home.css"
 
 export const Home = () => {
   useDocTitle("Unisala")
-  const { user, loggedIn } = useSelector((store) => store?.userProfile),
-    profileData =
-      loggedIn &&
-      useQuery(GetProfileCard, {
-        context: { server: USER_SERVICE_GQL },
-        variables: {
-          username: user?.username
-        }
-      }),
-    [activeProfile, setActiveProfile] = useState(false),
+  const
+  { user, loggedIn } = useSelector((store) => store?.userProfile ?? {}),
+  profileData = useQuery(GetProfileCard, {
+    skip: !loggedIn,
+    context: { server: USER_SERVICE_GQL },
+    variables: {
+      username: user?.username ?? "" // Default to empty string if username is not available
+    }
+  }),
+  [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     views = {
       greaterThan1000: screenGreaterThan1000(),
