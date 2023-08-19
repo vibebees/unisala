@@ -13,8 +13,7 @@ import {
   IonToolbar,
   IonTitle,
   IonButtons,
-  useIonToast,
-  IonTextarea
+  useIonToast
 } from "@ionic/react"
 import { imageOutline } from "ionicons/icons"
 import {
@@ -221,8 +220,8 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <div className="form-container-class">
-        <form onSubmit={handleSubmit} className="post-preview">
+      <form onSubmit={handleSubmit} className="">
+        <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
               <Avatar username={user.username} profilePic={profilePic} />
@@ -232,13 +231,13 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
             </IonLabel>
           </IonItem>
           <IonText color="dark">
-            <IonTextarea
+            <textarea
               className="post-textarea"
               placeholder="Write something..."
-              autoGrow={true}
               onChange={(e) => setPostText(e.target.value)}
             />
           </IonText>
+
           {file ? (
             <img src={file} className="post-image-preview" />
           ) : (
@@ -260,16 +259,17 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
               />
             </div>
           )}
-          <IonButton
-            className="post-pop-button"
-            type="submit"
-            expand="full"
-            shape="round"
-          >
-            Post
-          </IonButton>
-        </form>
-      </div>
+        </div>
+
+        <IonButton
+          className="post-pop-button"
+          type="submit"
+          expand="full"
+          shape="round"
+        >
+          Post
+        </IonButton>
+      </form>
     </IonModal>
   )
 }

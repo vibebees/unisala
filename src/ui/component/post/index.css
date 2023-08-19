@@ -11,23 +11,19 @@
     font-weight: 600;
 }
 
-.post-textarea {
+.post-preview{
+    padding: 0px 15px 15px 15px;
+}
+
+.post-textarea{
     padding: 10px;
     background-color: #fff;
     resize: none;
     width: 100%;
     border: none;
-    max-height: 300px;  /* Adjust this value as needed */
-    overflow-y: auto; 
+    /* height: 50px; */
+    overflow: hidden;
 }
-
-.post-preview {
-    display: flex;
-    flex-direction: column;
-    /* remove height: 100%; */
-    justify-content: space-between;  /* Adjust content spacing */
-}
-
 
 .post-textarea:focus{
     outline: none;
@@ -72,6 +68,3 @@
     color: #818080;
 }
 
-.form-container-class {
-    overflow-y: auto;
-}
