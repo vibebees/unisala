@@ -26,7 +26,10 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
 import "./index.css"
-
+import ReactQuill from "react-quill"
+import JoditEditor from "jodit-react"
+import "react-quill/dist/quill.snow.css"
+import TextEditor from "../../../utils/components/TextEditor"
 export const CreateAPost = ({ setPopup, popup, tags }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
@@ -210,9 +213,10 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     setPopup(false)
   }
 
+  // text editor
   return (
     <IonModal onDidDismiss={() => setPopup(false)} isOpen={popup}>
-      <IonHeader>
+      <IonHeader className="">
         <IonToolbar>
           <IonTitle>Start a thread</IonTitle>
           <IonButtons slot="end">
@@ -230,25 +234,26 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
               <h2>{user.username}</h2>
             </IonLabel>
           </IonItem>
-          <IonText color="dark">
-            <textarea
-              className="post-textarea"
-              placeholder="Write something..."
-              onChange={(e) => setPostText(e.target.value)}
-            />
-          </IonText>
+
+          <TextEditor postText={postText} setPostText={setPostText} />
 
           {file ? (
             <img src={file} className="post-image-preview" />
           ) : (
-            <div>
+            <div className="mt-20 flex justify-center items-center">
               <label
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleImageDrop}
                 htmlFor="post-image"
-                className="post-image-drop"
+                className="flex flex-col items-center"
               >
-                <IonIcon icon={imageOutline} />
+                <IonIcon
+                  icon={imageOutline}
+                  className="text-3xl text-[#818080]"
+                />
+                <h5 className="text-[#818080] font-medium text-xl">
+                  Upload your image
+                </h5>
               </label>
               <input
                 type="file"
@@ -265,6 +270,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           className="post-pop-button"
           type="submit"
           expand="full"
+          slot=""
           shape="round"
         >
           Post
