@@ -32,9 +32,9 @@ export const screenGreaterThan1000 = ({ title, topSpaces }) => {
           {Array.isArray(topSpaces) &&
             topSpaces.map((item, index) => {
               return (
-                <Link to={"/space/" + item?.name} key={index}>
+                <Link to={"/space/" + item?.name} className="" key={index}>
                   <IonItem
-                    className=""
+                    className="max-w-[250px]"
                     fill="solid"
                     style={{
                       "--background": "white",
@@ -49,14 +49,14 @@ export const screenGreaterThan1000 = ({ title, topSpaces }) => {
                         }
                       />
                     </IonAvatar>
-                    <IonLabel>
+                    <IonLabel className="ion-text-wrap">
                       <h2 className="capitalize">{item.name}</h2>
                       <p
                         style={{
                           margin: 0
                         }}
                       >
-                        {item.location}
+                        {item?.location}
                       </p>
                     </IonLabel>
                   </IonItem>
