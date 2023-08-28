@@ -1,36 +1,37 @@
 .auth-pop {
     --width: auto;
     padding: 0;
-    margin:0
+    margin: 0
 }
 
-.auth-pop ion-grid{
+.auth-pop ion-grid {
     max-width: 700px;
     width: 90vw;
     padding: 0;
 }
 
-.auth-pop ion-col{
+.auth-pop ion-col {
     padding: 0;
 }
 
-.auth-img{
+.auth-img {
     width: 250px;
     height: 100%;
     object-fit: cover;
 }
 
-.auth-start{
+.auth-start {
     display: flex;
     justify-content: flex-start;
     margin: 5px 0;
 }
 
-.auth-start p, .auth-start h2{
+.auth-start p,
+.auth-start h2 {
     border-bottom: 3px solid #3880ff;
 }
 
-.sign-content{
+.sign-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,23 +39,23 @@
     min-height: 85vh;
 }
 
-.auth-name{
+.auth-name {
     display: flex;
     gap: 10px;
 }
 
-.auth-button{
+.auth-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin:5px 0;
+    margin: 5px 0;
     height: 40px;
     flex-direction: column;
     width: 100%;
     min-width: 235px;
 }
 
-.apple-auth-btn{
+.apple-auth-btn {
     height: 40px;
     border-radius: 100px;
     width: 235px;
@@ -62,21 +63,21 @@
     border-radius: 100px !important;
 }
 
-.apple-auth-btn svg{
+.apple-auth-btn svg {
     width: 35px !important;
     height: 55px !important;
 }
 
-.auth-name input{
+.auth-name input {
     width: 100%;
 }
 
-.auth-input-div{
+.auth-input-div {
     margin-top: 5px;
 }
 
-.auth-input{
-    border:1px solid #c4c4c4;
+.auth-input {
+    border: 1px solid #c4c4c4;
     background: #ddd;
     height: 35px;
     border-radius: 50px;
@@ -85,23 +86,24 @@
 }
 
 .auth-input:autofill {
-    border:1px solid #c4c4c4;
+    border: 1px solid #c4c4c4;
     -webkit-text-fill-color: #000;
     -webkit-box-shadow: 0 0 0 30px #ddd inset !important;
 }
 
-.auth-input-val-div{
+.auth-input-val-div {
     position: relative;
 }
-.auth-validation-div{
+
+.auth-validation-div {
     position: absolute;
     top: 100%;
-    left:0;
+    left: 0;
     right: 0;
     z-index: 999;
 }
 
-.auth-validation{
+.auth-validation {
     background-color: rgb(224, 57, 57);
     position: relative;
     color: white;
@@ -112,7 +114,7 @@
     border-radius: 10px;
 }
 
-.auth-validation div{
+.auth-validation div {
     position: absolute;
     height: 10px;
     width: 10px;
@@ -123,48 +125,51 @@
     left: 50%
 }
 
-.auth-input:focus{
+.auth-input:focus {
     outline: none;
 }
 
-.auth-label{
+.auth-label {
     line-height: 30px;
 }
 
-.auth-policy{
+.auth-policy {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
 }
-.auth-policy label{
+
+.auth-policy label {
     padding-left: 5px;
 }
-.auth-policy ion-checkbox{
+
+.auth-policy ion-checkbox {
     height: 16px;
     width: 16px;
 }
 
-.auth-change{
+.auth-change {
     margin: 15px 0;
     cursor: pointer;
 }
 
-.auth-change a{
+.auth-change a {
     cursor: pointer;
 }
 
-.sign-content h4{
+.sign-content h4 {
     margin: 0 0 5px 0;
 }
 
-.auth-or{
+.auth-or {
     display: flex;
     justify-content: center;
     margin: 10px 0;
 }
-.auth-or-p{
+
+.auth-or-p {
     position: relative;
     text-align: center;
     margin: auto;
@@ -192,10 +197,41 @@
     height: 2px;
 }
 
-.verify-dec{
+.verify-dec {
     background-color: #e8f1fa;
     font-size: 15px;
     border-radius: 10px;
     padding: 10px;
     border: 1px solid #c4c4c4;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-enter {
+    animation: fadeIn 0.5s ease-in-out forwards;
+    opacity: 0;
+}
+
+.fade-exit {
+    animation: fadeOut 0.5s ease-in-out forwards;
+    opacity: 1;
 }

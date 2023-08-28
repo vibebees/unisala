@@ -6,8 +6,7 @@ import "../auth.css"
 import VerificationCode from "./VerificationCode"
 import { userServer } from "../../../../servers/endpoints"
 
-const SignUpVerification = ({ auth }) => {
-
+const SignUpVerification = ({ auth, setauth }) => {
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
 
@@ -42,7 +41,7 @@ const SignUpVerification = ({ auth }) => {
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
-          window.location.reload()
+          setauth({ state: "welcomeForm" })
         }
       })
       .catch((err) => {

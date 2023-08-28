@@ -839,4 +839,19 @@ export const AddComment = gql`
         message
       }
     }
+  `,
+  GetAllQuestions = gql`
+    query {
+      getAllQuestions {
+        status {
+          success
+          message
+        }
+        questions {
+          text
+          type
+          options
+        }
+      }
+    }
   `

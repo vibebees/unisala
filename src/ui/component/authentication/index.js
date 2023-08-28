@@ -6,9 +6,10 @@ import SignUp from "./SignUp/Index"
 import EmailVerify from "./Verification/ForgotPassword/EmailVerify"
 import SignUpVerification from "./Verification/SignUpVerification"
 import ForgotPasswordVerification from "./Verification/ForgotPassword/ForgotPasswordVerification"
-import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 import UserNotVerified from "./Verification/UserNotVerified"
 import useWindowWidth from "../../../hooks/useWindowWidth"
+import WelcomSteps from "./Welcome"
+import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 
 export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
   const [auth, setauth] = useState({
@@ -16,6 +17,7 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
     email: "",
     code: 0
   })
+
   const width = useWindowWidth()
 
   return (
@@ -37,7 +39,7 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
               ) : auth.state === "signup" ? (
                 <SignUp setauth={setauth} />
               ) : auth.state === "SignUpVerification" ? (
-                <SignUpVerification setauth={setauth} auth={auth}/>
+                <SignUpVerification setauth={setauth} auth={auth} />
               ) : auth.state === "emailVerify" ? (
                 <EmailVerify setauth={setauth} />
               ) : auth.state === "ForgotPasswordVerification" ? (
@@ -46,9 +48,11 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
                 <ResetPassword setauth={setauth} auth={auth} />
               ) : auth.state === "userNotVerified" ? (
                 <UserNotVerified setauth={setauth} auth={auth} />
+              ) : auth.state === "welcomeForm" ? (
+                <WelcomSteps />
               ) : null}
             </IonCol>
-            {width > 764 && (
+            {width > 764 && auth.state !== "welcomeForm" && (
               <IonCol size="auto">
                 <img
                   src="https://images.unsplash.com/photo-1597920940566-a77511f9327d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80"
