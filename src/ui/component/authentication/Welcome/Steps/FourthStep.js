@@ -46,8 +46,11 @@ const FourthStep = () => {
   let [results, setResults] = useState([])
   const [searchInput, setSearchInput] = useState(false)
   const [currentSearchTypes, setCurrentSearchTypes] = useState("")
-  const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
-    useContext(WelcomeData)
+  const {
+    data: QuestionData,
+    setWelcomeFormdata,
+    welcomeFormdata
+  } = useContext(WelcomeData)
   const getMajors = async (query) => {
     const { data } = await authInstance.get(`/uni/keyword/spaces/${query}/10`)
     console.log(data)
@@ -59,8 +62,8 @@ const FourthStep = () => {
     if (target) query = target.value.toLowerCase()
     getMajors(query)
   }
-  const ThirdQuestion = mockWelcomedata.data.getAllQuestions.questions[2].text,
-    Questionoptions = mockWelcomedata.data.getAllQuestions.questions[2].options
+  const ThirdQuestion = QuestionData.getAllQuestions.questions[2].text,
+    Questionoptions = QuestionData.getAllQuestions.questions[2].options
 
   const handleclick = (uniId, name) => {
     let newdata = {

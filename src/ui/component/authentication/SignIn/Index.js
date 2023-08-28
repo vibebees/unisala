@@ -3,10 +3,18 @@ import GoogleAuth from "../GoogleAuth"
 import SignInForm from "./SignInForm"
 import AppleAuth from "../AppleAuth"
 import "../auth.css"
+import clsx from "clsx"
 
-export const SignIn = ({ setauth, setActiveNavDrop }) => {
+export const SignIn = ({ setauth, setActiveNavDrop, auth }) => {
   return (
-    <div className="sign-content">
+    <div
+      className={clsx(
+        "sign-content",
+        auth?.state === "welcomeForm"
+          ? "opacity-0 pointer-events-none"
+          : "opacity-100 pointer-events-auto"
+      )}
+    >
       <IonText className="auth-start">
         <h2>Sign in</h2>
       </IonText>

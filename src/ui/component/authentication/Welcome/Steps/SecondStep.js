@@ -49,8 +49,11 @@ const mockdata = [
 const SecondStep = () => {
   const [searchInput, setSearchInput] = useState(false),
     [results, setResults] = useState([]),
-    { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
-      useContext(WelcomeData),
+    {
+      data: QuestionData,
+      setWelcomeFormdata,
+      welcomeFormdata
+    } = useContext(WelcomeData),
     [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchInput), {
       context: { server: UNIVERSITY_SERVICE_GQL }
     })
@@ -68,8 +71,8 @@ const SecondStep = () => {
     getMajors(query)
   }
 
-  const firstQuestion = mockWelcomedata.data.getAllQuestions.questions[0].text,
-    Questionoptions = mockWelcomedata.data.getAllQuestions.questions[0].options
+  const firstQuestion = QuestionData.getAllQuestions.questions[0].text,
+    Questionoptions = QuestionData.getAllQuestions.questions[0].options
 
   console.log(firstQuestion, Questionoptions)
 

@@ -35,7 +35,11 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
           <IonRow style={{ overflow: "hidden" }}>
             <IonCol>
               {auth.state === "signin" ? (
-                <SignIn setauth={setauth} setActiveNavDrop={setActiveNavDrop} />
+                <SignIn
+                  setauth={setauth}
+                  auth={auth}
+                  setActiveNavDrop={setActiveNavDrop}
+                />
               ) : auth.state === "signup" ? (
                 <SignUp setauth={setauth} />
               ) : auth.state === "SignUpVerification" ? (

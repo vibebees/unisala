@@ -27,8 +27,11 @@ import axios from "axios"
 const ThirdStep = () => {
   let [results, setResults] = useState([])
   const [searchInput, setSearchInput] = useState(false)
-  const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
-    useContext(WelcomeData)
+  const {
+    data: QuestionData,
+    setWelcomeFormdata,
+    welcomeFormdata
+  } = useContext(WelcomeData)
   const getMajors = async (query) => {
     const { data } = await axios.get(
       `http://localhost:4444/uni/keyword/spaces/${query}/10`
@@ -43,8 +46,8 @@ const ThirdStep = () => {
     getMajors(query)
   }
 
-  const SecondQuestion = mockWelcomedata.data.getAllQuestions.questions[1].text,
-    Questionoptions = mockWelcomedata.data.getAllQuestions.questions[1].options
+  const SecondQuestion = QuestionData.getAllQuestions.questions[1].text,
+    Questionoptions = QuestionData.getAllQuestions.questions[1].options
 
   const handleclick = (e) => {
     const data = e.target.value

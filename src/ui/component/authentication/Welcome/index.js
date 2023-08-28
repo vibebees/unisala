@@ -12,83 +12,31 @@ import FifthStep from "./Steps/FifthStep"
 import Indicators from "./Steps/Indicators"
 import StepsButtons from "./Steps/StepsButtons"
 import clsx from "clsx"
+import PreLoader from "../../preloader"
 
 export const WelcomeData = createContext()
-const mockWelcomedata = {
-  data: {
-    getAllQuestions: {
-      status: {
-        success: true,
-        message: "Successfully fetch all questions."
-      },
-      questions: [
-        {
-          text: "What’s your interested field of study?",
-          type: "interestedSubjects",
-          options: [
-            "Computer science",
-            "Biology",
-            "Business",
-            "Mechanical engineering"
-          ],
-          qnsNumber: 1,
-          nextQuestion: true
-        },
-        {
-          text: "Where are you at applying to University?",
-          type: "userStatus",
-          options: [
-            "Just looking",
-            "Actively Applying",
-            "Studying",
-            "Graduated"
-          ],
-          qnsNumber: 2,
-          nextQuestion: true
-        },
-        {
-          text: "Search University?",
-          type: "interestedUni",
-          options: [
-            "Just looking",
-            "Actively Applying",
-            "Studying",
-            "Graduated"
-          ],
-          qnsNumber: 3,
-          nextQuestion: true
-        },
-        {
-          text: "About level you want to study:",
-          type: "studyLevel",
-          options: [
-            "Undergraduate (Bachelor)",
-            "Postgraduate (Masters)",
-            "Doctorate (PhD)"
-          ],
-          qnsNumber: 4,
-          nextQuestion: false
-        }
-      ]
-    }
-  }
-}
 const index = () => {
   const [currentStep, setCurrentStep] = useState(1)
 
   const [welcomeFormdata, setWelcomeFormdata] = useState({
-    interestedSubjects: [],
-    userStatus: "",
-    interestedUni: [],
-    studyLevel: ""
-  })
+      interestedSubjects: [],
+      userStatus: "",
+      interestedUni: [],
+      studyLevel: ""
+    }),
+    { data, loading, error } = useQuery(GetAllQuestions, {
+      context: { server: USER_SERVICE_GQL }
+    })
 
-  const { data, loading, error } = useQuery(GetAllQuestions, {
-    context: { clientName: USER_SERVICE_GQL }
-  })
-
-  if (data) {
-    console.log(data)
+  if (loading) {
+    return (
+      <>
+        <PreLoader />
+      </>
+    )
+  }
+  if (error) {
+    console.log(error)
   }
 
   const stepComponents = [
@@ -103,7 +51,7 @@ const index = () => {
     <div className="h-96 overflow-hidden max-w-6xl w-full">
       <WelcomeData.Provider
         value={{
-          mockWelcomedata,
+          data,
           welcomeFormdata,
           setWelcomeFormdata
         }}

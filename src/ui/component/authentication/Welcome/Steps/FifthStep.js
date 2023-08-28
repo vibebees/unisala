@@ -25,8 +25,11 @@ import { WelcomeData } from ".."
 const FifthStep = () => {
   let [results, setResults] = useState([])
   const [searchInput, setSearchInput] = useState(false)
-  const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
-    useContext(WelcomeData)
+  const {
+    data: QuestionData,
+    setWelcomeFormdata,
+    welcomeFormdata
+  } = useContext(WelcomeData)
   const getMajors = async (query) => {
     const { data } = await authInstance.get(`/uni/keyword/spaces/${query}/10`)
     console.log(data)
@@ -39,8 +42,8 @@ const FifthStep = () => {
     getMajors(query)
   }
 
-  const FourthQuestion = mockWelcomedata.data.getAllQuestions.questions[3].text,
-    Questionoptions = mockWelcomedata.data.getAllQuestions.questions[3].options
+  const FourthQuestion = QuestionData.getAllQuestions.questions[3].text,
+    Questionoptions = QuestionData.getAllQuestions.questions[3].options
 
   const handleclick = (e) => {
     const data = e.target.value

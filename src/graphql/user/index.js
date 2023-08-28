@@ -851,6 +851,8 @@ export const AddComment = gql`
           text
           type
           options
+          qnsNumber
+          nextQuestion
         }
       }
     }
