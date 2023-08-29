@@ -160,7 +160,7 @@ const Thread = ({ thread, refetch }) => {
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-24 mb-8"
+                className="h-48 mb-8"
               />
               <br />
 

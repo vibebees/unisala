@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import { DeleteComment, GetUserPost } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
+import ReactQuill from "react-quill"
 
 function Comment({ comment, postId, parentId }) {
   const {
@@ -108,14 +109,12 @@ function Comment({ comment, postId, parentId }) {
         <div className="thread_comment">
           {editable ? (
             <div>
-              <textarea
-                name=""
-                className="w-2/3  outline-none resize-none border-b-2 border-black"
+              <ReactQuill
+                theme="snow"
                 defaultValue={commentText}
-                // onChange={handleChange}
-              >
-                {/* {commentText} */}
-              </textarea>
+                className="h-48 mb-8"
+              />
+
               <br />
 
               <IonButton

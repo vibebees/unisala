@@ -10,7 +10,7 @@ const TextEditor = ({ postText, setPostText }) => {
         setPostText(e)
       }}
       theme="snow"
-      className="h-24"
+      className="h-44"
     />
   )
 }
