@@ -2,79 +2,57 @@ import React, { useState, useContext } from "react"
 import {
   IonGrid,
   IonText,
-  IonButton,
-  IonHeader,
-  IonContent,
-  IonNavLink,
   IonCheckbox,
-  IonToolbar,
-  IonTitle,
   IonRow,
   IonItem,
-  IonLabel,
+  IonSkeletonText,
+  IonThumbnail,
   IonList,
-  IonSearchbar,
-  IonModal
+  IonSearchbar
 } from "@ionic/react"
-import { searchCircle } from "ionicons/icons"
-import ThirdStep from "./ThirdStep"
-import Indicators from "./Indicators"
-import FirstStep from "./FirstStep"
-import SearchInput from "../../../SearchInput"
-import { authInstance } from "../../../../../api/axiosInstance"
 import { WelcomeData } from ".."
-import { UniSearchDataList } from "../../../../../graphql/uni"
-import { UNIVERSITY_SERVICE_GQL } from "../../../../../servers/types"
-import { useLazyQuery } from "@apollo/client"
-
-const mockdata = [
-  "computer science",
-  "biology",
-  "business",
-  "mechanical engineering",
-  "astrology",
-  "astronomy",
-  "mathematics",
-  "physics",
-  "chemistry",
-  "geology",
-  "geography",
-  "history",
-  "economics",
-  "accounting",
-  "finance",
-  "marketing"
-]
+import { universityServer } from "../../../../../servers/endpoints"
+import axios from "axios"
+import { useDebouncedEffect } from "../../../../../hooks/useDebouncedEffect"
 
 const SecondStep = () => {
   const [searchInput, setSearchInput] = useState(false),
+    [searcTerm, setSearchTerm] = useState(""),
+    [isLoading, setIsLoading] = useState(false),
     [results, setResults] = useState([]),
     {
       data: QuestionData,
       setWelcomeFormdata,
       welcomeFormdata
-    } = useContext(WelcomeData),
-    [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchInput), {
-      context: { server: UNIVERSITY_SERVICE_GQL }
-    })
+    } = useContext(WelcomeData)
 
-  const getMajors = async (query) => {
-    const { data } = await authInstance.get(`/uni/keyword/spaces/${query}/10`)
-    console.log(data)
-    setResults(data)
+  const getMajors = async () => {
+    const token = localStorage.getItem("accessToken")
+    setIsLoading(true)
+    try {
+      const res = await axios.get(
+        `${universityServer}/keyword/spaces/${searcTerm}/10`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      setResults(res.data)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleInput = (ev) => {
-    let query = ""
-    const { target } = ev
-    if (target) query = target.value.toLowerCase()
-    getMajors(query)
+  const handleInput = () => {
+    getMajors()
   }
 
   const firstQuestion = QuestionData.getAllQuestions.questions[0].text,
     Questionoptions = QuestionData.getAllQuestions.questions[0].options
-
-  console.log(firstQuestion, Questionoptions)
 
   const handleclick = (e) => {
     const data = e.target.value
@@ -92,8 +70,9 @@ const SecondStep = () => {
         return { ...prev, interestedSubjects: newdata }
       })
     }
-    console.log(welcomeFormdata)
   }
+
+  useDebouncedEffect(handleInput, [searcTerm], 1500)
 
   return (
     <div>
@@ -106,11 +85,11 @@ const SecondStep = () => {
               </h1>
             </IonText>
           </IonGrid>
-          <IonGrid className="mt-8 grid grid-cols-2 gap-8 ">
+          <IonGrid className="mt-8 grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
             {Questionoptions.map((item, index) => {
               return (
                 <>
-                  <IonRow class="gap-2">
+                  <IonRow class="gap-2" key={index}>
                     <IonCheckbox value={item} onClick={handleclick}>
                       {item}
                     </IonCheckbox>
@@ -139,31 +118,67 @@ const SecondStep = () => {
               <div>
                 {searchInput && (
                   <>
-                    <div className="absolute z-50 bottom-0  -top-11 bg-neutral-200 right-0 w-1/2 border-2">
+                    <div className="absolute z-50 bottom-0  -top-11 bg-neutral-200 right-0 max-md:w-full max-md:bottom-32  max-md:shadow-md  w-1/2 ">
                       <IonSearchbar
                         placeholder="Search for a major"
                         className=" font-medium text-neutral-600"
-                        debounce={1000}
-                        onIonInput={(ev) => handleInput(ev)}
+                        value={searcTerm}
+                        onIonInput={(e) => setSearchTerm(e.target.value)}
                       ></IonSearchbar>
-                      <IonList className="overflow-y-scroll h-full">
-                        {mockdata.map((item, index) => {
-                          return (
+                      <IonList className="overflow-y-scroll searchlist h-full border rounded-md">
+                        <>
+                          {isLoading && (
                             <>
-                              <IonItem key={index}>
-                                <ion-checkbox
-                                  value={item}
-                                  onClick={handleclick}
-                                >
-                                  {item}
-                                </ion-checkbox>
-                                <span className="px-2 text-sm font-medium text-neutral-600">
-                                  {item}
-                                </span>
-                              </IonItem>
+                              <div className="border  h-12 w-full">
+                                <IonThumbnail slot="start" className="w-full">
+                                  <IonSkeletonText
+                                    animated={true}
+                                  ></IonSkeletonText>
+                                </IonThumbnail>
+                              </div>
+                              <div className="border  h-12 w-full">
+                                <IonThumbnail slot="start" className="w-full">
+                                  <IonSkeletonText
+                                    animated={true}
+                                  ></IonSkeletonText>
+                                </IonThumbnail>
+                              </div>
+                              <div className="border  h-12 w-full">
+                                <IonThumbnail slot="start" className="w-full">
+                                  <IonSkeletonText
+                                    animated={true}
+                                  ></IonSkeletonText>
+                                </IonThumbnail>
+                              </div>
+                              <div className="border  h-12 w-full">
+                                <IonThumbnail slot="start" className="w-full">
+                                  <IonSkeletonText
+                                    animated={true}
+                                  ></IonSkeletonText>
+                                </IonThumbnail>
+                              </div>
                             </>
-                          )
-                        })}
+                          )}
+                        </>
+                        {!isLoading &&
+                          results.length > 0 &&
+                          results.map((item, index) => {
+                            return (
+                              <>
+                                <IonItem key={index}>
+                                  <ion-checkbox
+                                    value={item.id}
+                                    onClick={handleclick}
+                                  >
+                                    {item.name}
+                                  </ion-checkbox>
+                                  <span className="px-2 text-sm font-medium text-neutral-600">
+                                    {item.name}
+                                  </span>
+                                </IonItem>
+                              </>
+                            )
+                          })}
                       </IonList>
                     </div>
                   </>

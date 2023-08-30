@@ -86,6 +86,7 @@ export const registerUser = ({
         setsave(false)
         if (res.data.success === true) {
           setdatacheck(false)
+          console.log(input)
           setauth({ state: "SignUpVerification", email: input.email })
           dispatch({
             type: USER_REGISTRATION,

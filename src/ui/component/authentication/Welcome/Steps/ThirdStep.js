@@ -32,19 +32,6 @@ const ThirdStep = () => {
     setWelcomeFormdata,
     welcomeFormdata
   } = useContext(WelcomeData)
-  const getMajors = async (query) => {
-    const { data } = await axios.get(
-      `http://localhost:4444/uni/keyword/spaces/${query}/10`
-    )
-    console.log(data)
-    setResults(data)
-  }
-  const handleInput = (ev) => {
-    let query = ""
-    const { target } = ev
-    if (target) query = target.value.toLowerCase()
-    getMajors(query)
-  }
 
   const SecondQuestion = QuestionData.getAllQuestions.questions[1].text,
     Questionoptions = QuestionData.getAllQuestions.questions[1].options
@@ -63,7 +50,7 @@ const ThirdStep = () => {
   return (
     <div>
       <div>
-        <IonGrid className="mx-12 mt-6 ">
+        <IonGrid className="mx-12 max-md:mx-4 mt-6 ">
           <IonGrid>
             <IonText color="primary">
               <h1 className="font-semibold text-xl  text-neutral-600">
@@ -71,7 +58,7 @@ const ThirdStep = () => {
               </h1>
             </IonText>
           </IonGrid>
-          <IonGrid className="mt-8 grid grid-cols-2 gap-8 ">
+          <IonGrid className="mt-8 grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
             {Questionoptions.map((item, index) => {
               return (
                 <>
@@ -102,8 +89,6 @@ const ThirdStep = () => {
                     ...welcomeFormdata,
                     userStatus: e.target.value
                   })
-
-                  console.log(welcomeFormdata)
                 }}
                 placeholder="Other"
               ></IonInput>

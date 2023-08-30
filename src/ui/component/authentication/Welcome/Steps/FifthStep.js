@@ -16,31 +16,15 @@ import {
   IonSearchbar,
   IonModal
 } from "@ionic/react"
-import SecondStep from "./SecondStep"
-import Indicators from "./Indicators"
-import FourthStep from "./FourthStep"
-import { authInstance } from "../../../../../api/axiosInstance"
 import { WelcomeData } from ".."
+import { useMutation } from "@apollo/client"
 
 const FifthStep = () => {
-  let [results, setResults] = useState([])
-  const [searchInput, setSearchInput] = useState(false)
   const {
     data: QuestionData,
     setWelcomeFormdata,
     welcomeFormdata
   } = useContext(WelcomeData)
-  const getMajors = async (query) => {
-    const { data } = await authInstance.get(`/uni/keyword/spaces/${query}/10`)
-    console.log(data)
-    setResults(data)
-  }
-  const handleInput = (ev) => {
-    let query = ""
-    const { target } = ev
-    if (target) query = target.value.toLowerCase()
-    getMajors(query)
-  }
 
   const FourthQuestion = QuestionData.getAllQuestions.questions[3].text,
     Questionoptions = QuestionData.getAllQuestions.questions[3].options
@@ -52,7 +36,6 @@ const FifthStep = () => {
     } else {
       setWelcomeFormdata({ ...welcomeFormdata, studyLevel: data })
     }
-    console.log(welcomeFormdata)
   }
 
   return (
@@ -66,7 +49,7 @@ const FifthStep = () => {
               </h1>
             </IonText>
           </IonGrid>
-          <IonGrid className="mt-8 grid grid-cols-2 gap-8 ">
+          <IonGrid className="mt-8 grid grid-cols-2 max-md:grid-cols-1 gap-8 ">
             {Questionoptions.map((item, index) => {
               return (
                 <>

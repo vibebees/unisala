@@ -30,6 +30,7 @@ const SignUpVerification = ({ auth, setauth }) => {
         mode: "ios"
       })
     }
+    console.log(auth)
     setLoading(true)
     axios
       .post(userServer + `/verifyEmail`, {

@@ -2,81 +2,72 @@ import React, { useState, useContext } from "react"
 import {
   IonGrid,
   IonText,
-  IonButton,
-  IonHeader,
-  IonContent,
-  IonNavLink,
   IonCheckbox,
-  IonToolbar,
-  IonTitle,
   IonRow,
   IonItem,
-  IonLabel,
+  IonSkeletonText,
+  IonThumbnail,
   IonList,
-  IonSearchbar,
-  IonModal
+  IonSearchbar
 } from "@ionic/react"
-import SecondStep from "./SecondStep"
-import Indicators from "./Indicators"
-import ThirdStep from "./ThirdStep"
-import FifthStep from "./FifthStep"
 import { WelcomeData } from ".."
-import { authInstance } from "../../../../../api/axiosInstance"
-
-const mockdata = [
-  "computer science",
-  "biology",
-  "business",
-  "mechanical engineering",
-  "astrology",
-  "astronomy",
-  "mathematics",
-  "physics",
-  "chemistry",
-  "geology",
-  "geography",
-  "history",
-  "economics",
-  "accounting",
-  "finance",
-  "marketing"
-]
+import axios from "axios"
+import { universityServer } from "../../../../../servers/endpoints"
+import { useDebouncedEffect } from "../../../../../hooks/useDebouncedEffect"
+import Noimagefound from "./../../../../../assets/no_image_found.png"
+import clsx from "clsx"
 
 const FourthStep = () => {
-  let [results, setResults] = useState([])
-  const [searchInput, setSearchInput] = useState(false)
-  const [currentSearchTypes, setCurrentSearchTypes] = useState("")
-  const {
-    data: QuestionData,
-    setWelcomeFormdata,
-    welcomeFormdata
-  } = useContext(WelcomeData)
-  const getMajors = async (query) => {
-    const { data } = await authInstance.get(`/uni/keyword/spaces/${query}/10`)
-    console.log(data)
-    setResults(data)
+  const [results, setResults] = useState([]),
+    [searcTerm, setSearchTerm] = useState(""),
+    [isLoading, setIsLoading] = useState(false),
+    [currentSearchTypes, setCurrentSearchTypes] = useState(""),
+    {
+      data: QuestionData,
+      setWelcomeFormdata,
+      welcomeFormdata
+    } = useContext(WelcomeData)
+
+  const getUniversitites = async () => {
+    const token = localStorage.getItem("accessToken")
+    setIsLoading(true)
+    try {
+      const res = await axios.get(
+        `${universityServer}/keyword/schoolname/${token}/5`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      setResults(res.data)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
-  const handleInput = (ev) => {
-    let query = ""
-    const { target } = ev
-    if (target) query = target.value.toLowerCase()
-    getMajors(query)
+
+  const handleInput = () => {
+    getUniversitites()
   }
+
   const ThirdQuestion = QuestionData.getAllQuestions.questions[2].text,
     Questionoptions = QuestionData.getAllQuestions.questions[2].options
 
-  const handleclick = (uniId, name) => {
+  const handleclick = (e) => {
     let newdata = {
-      uniId,
-      name,
+      unitId: e.target.value,
       searchType: currentSearchTypes
     }
+
     const alreadyExists = welcomeFormdata.interestedUni.find(
-      (item) => item.uniId === uniId
+      (item) => item.unitId === e.target.value
     )
     if (alreadyExists) {
       const newInterestedUni = welcomeFormdata.interestedUni.filter(
-        (item) => item.uniId !== uniId
+        (item) => item.unitId !== e.target.value
       )
       setWelcomeFormdata({
         ...welcomeFormdata,
@@ -92,6 +83,8 @@ const FourthStep = () => {
     console.log(welcomeFormdata)
   }
 
+  useDebouncedEffect(handleInput, [searcTerm], 1500)
+
   return (
     <div>
       <div>
@@ -103,6 +96,66 @@ const FourthStep = () => {
               </h1>
             </IonText>
           </IonGrid>
+          <div
+            key={11112222}
+            className={clsx(
+              "hidden overflow-hidden  duration-300 ease-linear transition-all  max-md:block ",
+              currentSearchTypes.trim() === "" ? "h-0 " : "h-56 "
+            )}
+          >
+            <div className=" mt-2 max-md:block  bg-neutral-200  w-4/5 ">
+              <IonSearchbar
+                placeholder={`Search ${currentSearchTypes}...`}
+                className=" font-medium text-neutral-600"
+                onIonInput={(e) => setSearchTerm(e.target.value)}
+              ></IonSearchbar>
+              <IonList className="overflow-y-scroll searchlist border rounded-md  h-36">
+                <>
+                  {isLoading && (
+                    <>
+                      <div className="border  h-12 w-full">
+                        <IonThumbnail slot="start" className="w-full">
+                          <IonSkeletonText animated={true}></IonSkeletonText>
+                        </IonThumbnail>
+                      </div>
+
+                      <div className="border  h-12 w-full">
+                        <IonThumbnail slot="start" className="w-full">
+                          <IonSkeletonText animated={true}></IonSkeletonText>
+                        </IonThumbnail>
+                      </div>
+                    </>
+                  )}
+                </>
+                {!isLoading &&
+                  results.length > 0 &&
+                  results.map((item, index) => {
+                    return (
+                      <>
+                        <IonItem key={index}>
+                          <ion-checkbox
+                            value={item.unitId}
+                            onClick={handleclick}
+                          >
+                            {item.name}
+                          </ion-checkbox>
+
+                          <img
+                            src={item.picture ? item.picture : Noimagefound}
+                            alt={item.name}
+                            className="w-10 h-11 mx-2 ml-4 rounded-sm"
+                          />
+
+                          <span className="px-2 text-sm font-medium text-neutral-600">
+                            {item.name}
+                          </span>
+                        </IonItem>
+                      </>
+                    )
+                  })}
+              </IonList>
+            </div>
+          </div>
           <IonGrid className="mt-8 grid grid-cols-1 gap-5">
             {Questionoptions.map((item, index) => {
               return (
@@ -126,34 +179,92 @@ const FourthStep = () => {
                         {item}
                       </label>
                     </div>
-                    <div>
+                    <div className="max-md:hidden" key={5198187718}>
                       {currentSearchTypes.trim() !== "" && (
                         <>
-                          <div className="absolute z-50 bottom-10  -top-11 bg-neutral-200 right-0 w-1/2 border-2">
+                          <div className="absolute z-50 bottom-10  -top-11 bg-neutral-200 right-24  w-[55%] ">
                             <IonSearchbar
-                              placeholder="Search for a major"
+                              placeholder={`Search ${currentSearchTypes}...`}
                               className=" font-medium text-neutral-600"
-                              debounce={1000}
-                              onIonInput={(ev) => handleInput(ev)}
+                              onIonInput={(e) => setSearchTerm(e.target.value)}
                             ></IonSearchbar>
-                            <IonList className="overflow-y-scroll h-full">
-                              {mockdata.map((item, index) => {
-                                return (
+                            <IonList className="overflow-y-scroll searchlist border rounded-md h-full">
+                              <>
+                                {isLoading && (
                                   <>
-                                    <IonItem key={index}>
-                                      <ion-checkbox
-                                        value={item}
-                                        onClick={handleclick}
+                                    <div className="border  h-12 w-full">
+                                      <IonThumbnail
+                                        slot="start"
+                                        className="w-full"
                                       >
-                                        {item}
-                                      </ion-checkbox>
-                                      <span className="px-2 text-sm font-medium text-neutral-600">
-                                        {item}
-                                      </span>
-                                    </IonItem>
+                                        <IonSkeletonText
+                                          animated={true}
+                                        ></IonSkeletonText>
+                                      </IonThumbnail>
+                                    </div>
+                                    <div className="border  h-12 w-full">
+                                      <IonThumbnail
+                                        slot="start"
+                                        className="w-full"
+                                      >
+                                        <IonSkeletonText
+                                          animated={true}
+                                        ></IonSkeletonText>
+                                      </IonThumbnail>
+                                    </div>
+                                    <div className="border  h-12 w-full">
+                                      <IonThumbnail
+                                        slot="start"
+                                        className="w-full"
+                                      >
+                                        <IonSkeletonText
+                                          animated={true}
+                                        ></IonSkeletonText>
+                                      </IonThumbnail>
+                                    </div>
+                                    <div className="border  h-12 w-full">
+                                      <IonThumbnail
+                                        slot="start"
+                                        className="w-full"
+                                      >
+                                        <IonSkeletonText
+                                          animated={true}
+                                        ></IonSkeletonText>
+                                      </IonThumbnail>
+                                    </div>
                                   </>
-                                )
-                              })}
+                                )}
+                              </>
+                              {!isLoading &&
+                                results.length > 0 &&
+                                results.map((item, index) => {
+                                  return (
+                                    <>
+                                      <IonItem key={index}>
+                                        <ion-checkbox
+                                          value={item.unitId}
+                                          onClick={handleclick}
+                                        >
+                                          {item.name}
+                                        </ion-checkbox>
+
+                                        <img
+                                          src={
+                                            item.picture
+                                              ? item.picture
+                                              : Noimagefound
+                                          }
+                                          alt={item.name}
+                                          className="w-10 h-11 mx-2 ml-4 rounded-sm"
+                                        />
+
+                                        <span className="px-2 text-sm font-medium text-neutral-600">
+                                          {item.name}
+                                        </span>
+                                      </IonItem>
+                                    </>
+                                  )
+                                })}
                             </IonList>
                           </div>
                         </>

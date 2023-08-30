@@ -11,7 +11,7 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
     }
 
   return (
-    <div className="w-full left-0 flex bottom-0 mb-6 px-6 absolute">
+    <div className="w-full left-0  flex bottom-0 mb-6 px-6 absolute">
       <IonButton
         fill="clear"
         className={clsx(

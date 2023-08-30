@@ -48,7 +48,7 @@ const index = () => {
   ]
 
   return (
-    <div className="h-96 overflow-hidden max-w-6xl w-full">
+    <div className="h-96  max-md:h-[80vh]   overflow-hidden max-md:grid max-md:place-content-start max-w-6xl w-full">
       <WelcomeData.Provider
         value={{
           data,

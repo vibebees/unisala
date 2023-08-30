@@ -235,3 +235,15 @@
     animation: fadeOut 0.5s ease-in-out forwards;
     opacity: 1;
 }
+
+.searchlist::-webkit-scrollbar {
+    background-color: #c4c4c4a1;
+    width: 5px;
+
+}
+
+.searchlist::-webkit-scrollbar-thumb {
+
+    background-color: #352c2cb3;
+    border-radius: 10px;
+}

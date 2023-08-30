@@ -26,7 +26,7 @@ export const Login = () => {
             ) : auth.state === "signup" ? (
               <SignUp setauth={setauth} auth={auth} />
             ) : auth.state === "SignUpVerification" ? (
-              <SignUpVerification setauth={setauth} />
+              <SignUpVerification setauth={setauth} auth={auth} />
             ) : auth.state === "emailVerify" ? (
               <EmailVerify setauth={setauth} />
             ) : auth.state === "ForgotPasswordVerification" ? (
