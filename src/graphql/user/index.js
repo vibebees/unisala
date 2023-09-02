@@ -850,7 +850,10 @@ export const AddComment = gql`
         questions {
           text
           type
-          options
+          options {
+            key
+            value
+          }
           qnsNumber
           nextQuestion
         }

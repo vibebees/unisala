@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from "react"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { IonInput, IonIcon } from "@ionic/react"
 import { searchCircle } from "ionicons/icons"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { userSearch } from "../../../graphql/user"
+
 import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
@@ -18,6 +19,7 @@ import "./index.css"
 function index() {
   const [searchValue, setSearchValue] = useState(""),
     [dropDownOptions, setDropDownOptions] = useState(false),
+    history = useHistory(),
     [options, setOptions] = useState([]),
     [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
       context: { server: UNIVERSITY_SERVICE_GQL }
@@ -74,6 +76,12 @@ function index() {
           type="text"
           placeholder="Search"
           className="search-input-box"
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              setDropDownOptions(false)
+              history.push(searchValue ? `/search?q=${searchValue}` : "#")
+            }
+          }}
           value={searchValue}
           onIonChange={(e) => {
             setSearchValue(e.detail.value)

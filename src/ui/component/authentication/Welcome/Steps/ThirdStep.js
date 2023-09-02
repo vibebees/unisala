@@ -64,14 +64,14 @@ const ThirdStep = () => {
                 <>
                   <IonRow class="gap-2">
                     <IonCheckbox
-                      checked={item === welcomeFormdata.userStatus}
-                      value={item}
+                      checked={item.value === welcomeFormdata.userStatus}
+                      value={item.value}
                       onClick={handleclick}
                     >
-                      {item}
+                      {item.key}
                     </IonCheckbox>
                     <label className="text-sm font-medium text-neutral-600">
-                      {item}
+                      {item.key}
                     </label>
                   </IonRow>
                 </>

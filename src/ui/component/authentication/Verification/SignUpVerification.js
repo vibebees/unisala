@@ -30,7 +30,7 @@ const SignUpVerification = ({ auth, setauth }) => {
         mode: "ios"
       })
     }
-    console.log(auth)
+
     setLoading(true)
     axios
       .post(userServer + `/verifyEmail`, {
@@ -46,6 +46,7 @@ const SignUpVerification = ({ auth, setauth }) => {
         }
       })
       .catch((err) => {
+        console.log(err)
         setLoading(false)
         present({
           duration: 3000,

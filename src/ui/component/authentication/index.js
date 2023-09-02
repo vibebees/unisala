@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IonCol, IonGrid, IonPopover, IonRow } from "@ionic/react"
 import "./auth.css"
 import SignIn from "./SignIn/Index"
@@ -17,6 +17,8 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
     email: "",
     code: 0
   })
+
+  useEffect(() => {}, [auth])
 
   const width = useWindowWidth()
 

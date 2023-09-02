@@ -163,20 +163,20 @@ const FourthStep = () => {
                   <IonRow key={index} class="gap-2 flex w-full  col-span-1">
                     <div className="flex items-center  gap-3">
                       <IonCheckbox
-                        value={item}
-                        checked={item === currentSearchTypes}
+                        value={item.value}
+                        checked={item.value === currentSearchTypes}
                         onClick={(e) => {
-                          if (item === currentSearchTypes) {
+                          if (item.value === currentSearchTypes) {
                             setCurrentSearchTypes("")
                           } else {
                             setCurrentSearchTypes(e.target.value)
                           }
                         }}
                       >
-                        {item}
+                        {item.value}
                       </IonCheckbox>
                       <label className="text-sm font-medium text-neutral-600">
-                        {item}
+                        {item.value}
                       </label>
                     </div>
                     <div className="max-md:hidden" key={5198187718}>

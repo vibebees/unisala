@@ -17,7 +17,6 @@ import {
   IonModal
 } from "@ionic/react"
 import { WelcomeData } from ".."
-import { useMutation } from "@apollo/client"
 
 const FifthStep = () => {
   const {
@@ -55,14 +54,14 @@ const FifthStep = () => {
                 <>
                   <IonRow class="gap-2">
                     <IonCheckbox
-                      checked={item === welcomeFormdata.studyLevel}
-                      value={item}
+                      checked={item.value === welcomeFormdata.studyLevel}
+                      value={item.value}
                       onClick={handleclick}
                     >
-                      {item}
+                      {item.key}
                     </IonCheckbox>
                     <label className="text-sm font-medium text-neutral-600">
-                      {item}
+                      {item.key}
                     </label>
                   </IonRow>
                 </>

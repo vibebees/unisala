@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useState, createContext } from "react"
-import { IonContent, IonNav } from "@ionic/react"
 import FirstStep from "./Steps/FirstStep"
 import { useQuery } from "@apollo/client"
 import { GetAllQuestions } from "../../../../graphql/user"
@@ -21,7 +20,12 @@ const index = () => {
   const [welcomeFormdata, setWelcomeFormdata] = useState({
       interestedSubjects: [],
       userStatus: "",
-      interestedUni: [],
+      interestedUni: [
+        {
+          unitId: "",
+          searchType: ""
+        }
+      ],
       studyLevel: ""
     }),
     { data, loading, error } = useQuery(GetAllQuestions, {
@@ -35,8 +39,11 @@ const index = () => {
       </>
     )
   }
+
   if (error) {
-    console.log(error)
+    return (
+      <div className="text-center text-red-500 py-4">Something went wrong</div>
+    )
   }
 
   const stepComponents = [
@@ -48,36 +55,38 @@ const index = () => {
   ]
 
   return (
-    <div className="h-96  max-md:h-[80vh]   overflow-hidden max-md:grid max-md:place-content-start max-w-6xl w-full">
-      <WelcomeData.Provider
-        value={{
-          data,
-          welcomeFormdata,
-          setWelcomeFormdata
-        }}
-      >
-        <Indicators currentStep={currentStep} />
-        <div className="flex">
-          {stepComponents.map((step, index) => (
-            <div
-              key={index}
-              className={clsx("absolute", {
-                "z-10": currentStep === index + 1,
-                "z-0 opacity-0": currentStep !== index + 1,
-                "fade-enter": currentStep === index + 1,
-                "fade-exit": currentStep !== index + 1
-              })}
-            >
-              {step}
-            </div>
-          ))}
-        </div>
-        <StepsButtons
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-        />
-      </WelcomeData.Provider>
-    </div>
+    <>
+      <div className="h-96  max-md:h-[80vh]   overflow-hidden max-md:grid max-md:place-content-start max-w-6xl w-full">
+        <WelcomeData.Provider
+          value={{
+            data,
+            welcomeFormdata,
+            setWelcomeFormdata
+          }}
+        >
+          <Indicators currentStep={currentStep} />
+          <div className="flex">
+            {stepComponents.map((step, index) => (
+              <div
+                key={index}
+                className={clsx("absolute", {
+                  "z-10": currentStep === index + 1,
+                  "z-0 opacity-0": currentStep !== index + 1,
+                  "fade-enter": currentStep === index + 1,
+                  "fade-exit": currentStep !== index + 1
+                })}
+              >
+                {step}
+              </div>
+            ))}
+          </div>
+          <StepsButtons
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+          />
+        </WelcomeData.Provider>
+      </div>
+    </>
   )
 }
 
