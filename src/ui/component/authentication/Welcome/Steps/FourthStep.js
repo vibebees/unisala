@@ -33,7 +33,7 @@ const FourthStep = () => {
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/schoolname/${token}/5`,
+        `${universityServer}/keyword/schoolname/${searcTerm}/5`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -58,7 +58,7 @@ const FourthStep = () => {
 
   const handleclick = (e) => {
     let newdata = {
-      unitId: e.target.value,
+      unitId: parseInt(e.target.value),
       searchType: currentSearchTypes
     }
 

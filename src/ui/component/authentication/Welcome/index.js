@@ -20,12 +20,7 @@ const index = () => {
   const [welcomeFormdata, setWelcomeFormdata] = useState({
       interestedSubjects: [],
       userStatus: "",
-      interestedUni: [
-        {
-          unitId: "",
-          searchType: ""
-        }
-      ],
+      interestedUni: [],
       studyLevel: ""
     }),
     { data, loading, error } = useQuery(GetAllQuestions, {

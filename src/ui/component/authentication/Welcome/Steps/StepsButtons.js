@@ -14,11 +14,13 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
       useContext(WelcomeData),
     dispatch = useDispatch(),
     [present, dismiss] = useIonToast(),
+     accessToken = localStorage.getItem("accessToken"),
+     decode = jwtDecode(accessToken),
     [users, setUsers] = useState({
-      email: "",
-      firstName: "",
-      lastName: "",
-      username: ""
+      email: decode.email,
+      firstName: decode.firstName,
+      lastName: decode.lastName,
+      username: decode.username
     })
   // eslint-disable-next-line require-await
 
@@ -29,10 +31,19 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
       ...welcomeFormdata
     },
     update: (cache, { data: { editProfile } }) => {
-      const { getUser } = cache.readQuery({
+
+      const result = cache.readQuery({
         query: getUserGql,
         variables: { username: users.username }
       })
+
+      const getUser = result?.getUser
+
+      if (!getUser) {
+        // Handle the error or return early
+        return
+      }
+
       cache.writeQuery({
         query: getUserGql,
         variables: { username: users.username },
@@ -68,8 +79,9 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
       }
     },
     onError: (error) => {
+      console.log(error)
       present({
-        duration: 3000,
+        duration: 30000,
         message: error.message,
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
@@ -81,17 +93,11 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
   const handleSubmit = () => {
     console.log(welcomeFormdata)
     try {
-      const accessToken = localStorage.getItem("accessToken")
-      const decode = jwtDecode(accessToken)
+
       dispatch(
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
       )
-      setUsers({
-        email: decode.email,
-        firstName: decode.firstName,
-        lastName: decode.lastName,
-        username: decode.username
-      })
+
       editProfile()
     } catch (error) {
       console.log(error)

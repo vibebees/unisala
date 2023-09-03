@@ -152,7 +152,7 @@ export const AddComment = gql`
   `,
   EditProfile = gql`
     mutation editProfile(
-      $profilePicture: String
+      $picture: String
       $coverPicture: String
       $username: String!
       $firstName: String!
@@ -160,9 +160,14 @@ export const AddComment = gql`
       $location: String
       $oneLinerBio: String
       $birthday: String
+      $interestedSubjects:[ID],
+      $userStatus:String
+      $studyLevel: String
+      $interestedUni: [interestedUniversity]
+
     ) {
       editProfile(
-        profilePicture: $profilePicture
+        picture: $picture
         coverPicture: $coverPicture
         username: $username
         firstName: $firstName
@@ -170,6 +175,10 @@ export const AddComment = gql`
         location: $location
         oneLinerBio: $oneLinerBio
         birthday: $birthday
+        interestedSubjects: $interestedSubjects,
+        userStatus: $userStatus,
+        studyLevel: $studyLevel
+        interestedUni: $interestedUni
       ) {
         status {
           success

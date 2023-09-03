@@ -51,8 +51,8 @@ const SecondStep = () => {
     getMajors()
   }
 
-  const firstQuestion = QuestionData.getAllQuestions.questions[0].text,
-    Questionoptions = QuestionData.getAllQuestions.questions[0].options
+  const firstQuestion = QuestionData?.getAllQuestions?.questions[0]?.text || "",
+    Questionoptions = QuestionData?.getAllQuestions?.questions[0]?.options || []
 
   const handleclick = (e) => {
     const data = e.target.value
