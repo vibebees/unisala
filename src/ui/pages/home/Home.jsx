@@ -1,35 +1,43 @@
-import { useState } from "react"
-import { IonGrid, IonRow, IonCol, IonContent, IonCard } from "@ionic/react"
-import { personCircle } from "ionicons/icons"
-import Post from "../../component/post/index"
-import { useQuery } from "@apollo/client"
-import { useSelector } from "react-redux"
-import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
-import { GetProfileCard } from "../../../graphql/user"
-import unisalaImg from "../../../assets/unisala-intro.png"
-import HomeFeed from "./HomeFeed"
-import UnisalaIntro from "./UnisalaIntro"
-import { screenLessThan768 } from "./screens.lessThan768"
-import { screensMoreThan768 } from "./screens.moreThan768"
-import { screenGreaterThan1000 } from "./screens.greater.1000"
-import useDocTitle from "../../../hooks/useDocTitile"
-import { USER_SERVICE_GQL } from "../../../servers/types"
-import { CreateAPost } from "../../component/post/CreateAPost"
-import useWindowWidth from "../../../hooks/useWindowWidth"
-import "./Home.css"
+import { useState } from "react";
+import { IonGrid, IonRow, IonCol, IonContent, IonCard } from "@ionic/react";
+import { personCircle } from "ionicons/icons";
+import Post from "../../component/post/index";
+import { useQuery } from "@apollo/client";
+import { useSelector } from "react-redux";
+import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop";
+import { GetProfileCard, GetTopActiveSpaces } from "../../../graphql/user";
+import unisalaImg from "../../../assets/unisala-intro.png";
+import HomeFeed from "./HomeFeed";
+import UnisalaIntro from "./UnisalaIntro";
+import { screenLessThan768 } from "./screens.lessThan768";
+import { screensMoreThan768 } from "./screens.moreThan768";
+import { screenGreaterThan1000 } from "./screens.greater.1000";
+import useDocTitle from "../../../hooks/useDocTitile";
+import { USER_SERVICE_GQL } from "../../../servers/types";
+import { CreateAPost } from "../../component/post/CreateAPost";
+import useWindowWidth from "../../../hooks/useWindowWidth";
+import "./Home.css";
 
 export const Home = () => {
-  useDocTitle("Unisala")
-  const
-  { user, loggedIn } = useSelector((store) => store?.userProfile ?? {}),
-  profileData = useQuery(GetProfileCard, {
-    skip: !loggedIn,
+  useDocTitle("Unisala");
+
+  const { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
+    variables: { limit: 6 },
     context: { server: USER_SERVICE_GQL },
-    variables: {
-      username: user?.username ?? "" // Default to empty string if username is not available
-    }
-  }),
-  [activeProfile, setActiveProfile] = useState(false),
+  });
+
+  const { getTopActiveSpaces } = topSpaceData || {};
+
+  const { user, loggedIn } = useSelector((store) => store?.userProfile),
+    profileData =
+      loggedIn &&
+      useQuery(GetProfileCard, {
+        context: { server: USER_SERVICE_GQL },
+        variables: {
+          username: user?.username,
+        },
+      }),
+    [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     views = {
       greaterThan1000: screenGreaterThan1000(),
@@ -38,19 +46,20 @@ export const Home = () => {
         setActiveTab,
         unisalaImg,
         profileData,
-        loggedIn
+        loggedIn,
+        topSpaces: getTopActiveSpaces?.spaceCategory,
       }),
       lessThan768: screenLessThan768({
         setActiveProfile,
         personCircle,
         activeProfile,
         loggedIn,
-        username: user.username
-      })
+        username: user.username,
+      }),
     },
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
-    width = useWindowWidth()
+    width = useWindowWidth();
 
   return (
     <IonContent color="light">
@@ -62,13 +71,13 @@ export const Home = () => {
         style={{
           width: width >= 768 ? "95%" : "100%",
           margin: "auto",
-          maxWidth: "1200px"
+          maxWidth: "1200px",
         }}
       >
         <IonRow
           style={{
             justifyContent: "flex-start",
-            margin: "0 auto"
+            margin: "0 auto",
           }}
           className="max-width-container"
         >
@@ -77,14 +86,14 @@ export const Home = () => {
             style={{
               maxWidth: "700px",
               margin: "auto",
-              minHeight: "calc(90vh)"
+              minHeight: "calc(90vh)",
             }}
           >
             {loggedIn && width >= 768 && (
               <IonCard
                 style={{ marginBottom: "20px" }}
                 onClick={() => {
-                  setCreateAPostPopUp(true)
+                  setCreateAPostPopUp(true);
                 }}
               >
                 <Post />
@@ -96,5 +105,5 @@ export const Home = () => {
         </IonRow>
       </IonGrid>
     </IonContent>
-  )
-}
+  );
+};

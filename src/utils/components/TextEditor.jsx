@@ -1,18 +1,18 @@
-import React from "react"
-import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
+import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const TextEditor = ({ postText, setPostText }) => {
   return (
     <ReactQuill
       value={postText}
       onChange={(e) => {
-        setPostText(e)
+        setPostText(e);
       }}
       theme="snow"
-      className="h-24"
+      className="h-44 text-black"
     />
-  )
-}
+  );
+};
 
-export default TextEditor
+export default TextEditor;

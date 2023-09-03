@@ -87,34 +87,36 @@ const SpaceForm = ({ setIsOpen }) => {
     <form className=" p-4" onSubmit={handleSubmit}>
       <IonRow>
         <IonCol>
-          <IonLabel className="font-semibold">
+          <IonLabel className="font-semibold " color="dark">
             Name <span className="text-[red]">*</span>
           </IonLabel>
           <IonInput
             type="text"
-            fill="outline"
             placeholder="Name of your space"
+            fill="outline"
             required
             ref={spaceNameRef}
-            className="mt-2 text-sm outline outline-1 w-full focus-within:outline-[blue]"
+            color="dark"
+            className="mt-2  border border-black w-full "
           ></IonInput>
         </IonCol>
       </IonRow>
 
       <IonRow className="mt-4">
         <IonCol>
-          <IonLabel className="font-semibold">
+          <IonLabel className="font-semibold" color={"dark"}>
             Description
             <span className="ml-1 text-xs font-500 text-gray-700">
               ( Describe about your space in short)
             </span>
           </IonLabel>
           <IonInput
+            color="dark"
             type="text"
             ref={descriptionRef}
             fill="outline"
             placeholder="This space is about ....."
-            className="mt-2 text-sm outline outline-1 w-full focus-within:outline-[blue]"
+            className="mt-2 text-sm border border-black  w-full"
           ></IonInput>
         </IonCol>
       </IonRow>
