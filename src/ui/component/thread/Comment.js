@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import Upvote from "./actions/Upvote";
-import Reply from "./actions/Reply";
-import ReplyInput from "../ReplyInput";
-import ShowMore from "./ShowMore";
-import { Avatar } from "../Avatar";
-import { imageAccess } from "../../../servers/endpoints";
-import "./index.css";
-import { IonButton, IonIcon, useIonToast } from "@ionic/react";
-import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons";
-import { useMutation, useQuery } from "@apollo/client";
-import { DeleteComment, GetUserPost } from "../../../graphql/user";
-import { USER_SERVICE_GQL } from "../../../servers/types";
-import { useSelector } from "react-redux";
-import ReactQuill from "react-quill";
+import { useState } from "react"
+import { Link, useParams } from "react-router-dom"
+import Upvote from "./actions/Upvote"
+import Reply from "./actions/Reply"
+import ReplyInput from "../ReplyInput"
+import ShowMore from "./ShowMore"
+import { Avatar } from "../Avatar"
+import { imageAccess } from "../../../servers/endpoints"
+import "./index.css"
+import { IonButton, IonIcon, useIonToast } from "@ionic/react"
+import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
+import { useMutation, useQuery } from "@apollo/client"
+import { DeleteComment, GetUserPost } from "../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../servers/types"
+import { useSelector } from "react-redux"
+import ReactQuill from "react-quill"
 
 function Comment({ comment, postId, parentId }) {
   const {
@@ -26,18 +26,18 @@ function Comment({ comment, postId, parentId }) {
     repliesCount,
     upVoteCount,
     upVoted,
-    picture,
-  } = comment;
+    picture
+  } = comment
 
-  const [present, dismiss] = useIonToast();
-  const [showOptions, setShowOptions] = useState(false);
-  const [reply, setReply] = useState(false);
-  const profilePic = picture;
-  const [editable, setEditable] = useState(false);
+  const [present, dismiss] = useIonToast()
+  const [showOptions, setShowOptions] = useState(false)
+  const [reply, setReply] = useState(false)
+  const profilePic = picture
+  const [editable, setEditable] = useState(false)
   // username of current visited profile
-  const profileUsername = useParams().username;
-  console.log(profileUsername, "name");
-  const { user: loggedinUser } = useSelector((state) => state.userProfile);
+  const profileUsername = useParams().username
+  console.log(profileUsername, "name")
+  const { user: loggedinUser } = useSelector((state) => state.userProfile)
 
   const [deleteComment] = useMutation(DeleteComment, {
     context: { server: USER_SERVICE_GQL },
@@ -46,25 +46,25 @@ function Comment({ comment, postId, parentId }) {
       cache.modify({
         id: cache.identify({
           __typename: parentId ? "Comment" : "Post",
-          _id: postId,
+          _id: postId
         }),
         fields: {
-          postCommentsCount: (prev) => prev - 1,
-        },
-      });
+          postCommentsCount: (prev) => prev - 1
+        }
+      })
       cache.modify({
         id: cache.identify({
           __typename: parentId ? "Comment" : "Post",
-          _id: parentId,
+          _id: parentId
         }),
         fields: {
-          repliesCount: (prev) => prev - 1,
-        },
-      });
+          repliesCount: (prev) => prev - 1
+        }
+      })
     },
     onCompleted: (data) => {
-      setShowOptions(false);
-      const { deleteComment } = data;
+      setShowOptions(false)
+      const { deleteComment } = data
 
       if (deleteComment?.success) {
         // setRefetchComments(true)
@@ -74,19 +74,19 @@ function Comment({ comment, postId, parentId }) {
           message: "Comment Deleted",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
-          mode: "ios",
-        });
+          mode: "ios"
+        })
       } else {
         present({
           duration: 3000,
           message: "Can not delete comment",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
-          mode: "ios",
-        });
+          mode: "ios"
+        })
       }
-    },
-  });
+    }
+  })
 
   return (
     <div className="comment_thread relative">
@@ -122,7 +122,7 @@ function Comment({ comment, postId, parentId }) {
                 className="ion-no-padding  capitalize  px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
                 size="small"
                 style={{
-                  "--ripple-color": "transparent",
+                  "--ripple-color": "transparent"
                 }}
                 onClick={() => setEditable(false)}
               >
@@ -134,7 +134,7 @@ function Comment({ comment, postId, parentId }) {
                 size="small"
                 // onClick={editPost}
                 style={{
-                  "--ripple-color": "transparent",
+                  "--ripple-color": "transparent"
                 }}
               >
                 Save
@@ -177,8 +177,8 @@ function Comment({ comment, postId, parentId }) {
               <div className="absolute w-[160px] -right-6 top-5 bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
                 <button
                   onClick={() => {
-                    setEditable(true);
-                    setShowOptions(false);
+                    setEditable(true)
+                    setShowOptions(false)
                   }}
                   className=" w-full py-1.5 rounded-lg  flex justify-center items-center gap-1 text-gray font-bold hover:bg-[#f1eeee]"
                 >
@@ -200,7 +200,7 @@ function Comment({ comment, postId, parentId }) {
 
       {repliesCount > 0 && <ShowMore postId={postId} parentId={_id} />}
     </div>
-  );
+  )
 }
 
-export default Comment;
+export default Comment
