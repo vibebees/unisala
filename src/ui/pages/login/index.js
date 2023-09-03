@@ -21,7 +21,7 @@ export const Login = () => {
       <IonGrid>
         <IonRow style={{ overflow: "hidden" }}>
           <IonCol>
-            {auth.state === "signinn" ? (
+            {auth.state === "signin" ? (
               <SignIn auth={auth} setauth={setauth} />
             ) : auth.state === "signup" ? (
               <SignUp setauth={setauth} auth={auth} />
