@@ -59,7 +59,7 @@ const SpaceHeader = ({ spaceDetails }) => {
 
         setTimeout(() => {
           history.push("/home")
-        }, 1000)
+        }, 100)
       } else {
         present({
           duration: 3000,
