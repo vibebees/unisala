@@ -369,6 +369,8 @@ export const AddComment = gql`
           date
           upVoteCount
           postCommentsCount
+          userId # Use userId instead of user
+
           user {
             _id
             firstName
