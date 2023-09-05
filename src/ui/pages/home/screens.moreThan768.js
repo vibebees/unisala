@@ -12,14 +12,19 @@ import BadgesTab from "./BadgeTab"
 import { imageAccess } from "../../../servers/endpoints"
 import { useEffect, useState } from "react"
 import { getImage } from "../../../servers/s3.configs"
+import { useLocation } from "react-router"
+import TopSpaces from "../../component/TopSpaces/TopSpaces"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
   unisalaImg,
   profileData,
-  loggedIn
+  loggedIn,
+  topSpaces
 }) => {
   const { user } = useSelector((state) => state.userProfile)
+  const location = useLocation()
+
   return (
     <IonCol
       size="auto"
@@ -51,54 +56,16 @@ export const screensMoreThan768 = ({
               </IonText>
             </div>
           </IonCard>
-          {/* <IonCard className="badges-card">
-            <IonText color="dark">
-              <h6
-                style={{
-                  padding: "10px"
-                }}
-              >
-                Badges
-              </h6>
-            </IonText>
-            <BadgesTab activeTab={activeTab} setActiveTab={setActiveTab} />
-            {profileData?.user?.badges?.earnedBadges?.map((item, index) => {
-              return (
-                <IonItem
-                  style={{
-                    margin: "0px",
-                    padding: "0px"
-                  }}
-                  lines="none"
-                  key={index}
-                >
-                  <IonAvatar slot="start">
-                    <img
-                      src={
-                        "https://www.svgrepo.com/show/178831/badges-money.svg"
-                      }
-                    />
-                  </IonAvatar>
-                  <IonLabel>
-                    <h2
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      {item?.title}
-                    </h2>
-                    <p
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      {item?.description}
-                    </p>
-                  </IonLabel>
-                </IonItem>
-              )
-            })}
-          </IonCard> */}
+
+          <IonCol>
+            <IonCard className="">
+              <IonText color="dark">
+                <h6 className="text-center my-2 font-semibold">Top Spaces</h6>
+              </IonText>
+
+              <TopSpaces topSpaces={topSpaces} />
+            </IonCard>
+          </IonCol>
         </>
       ) : (
         <IonCard

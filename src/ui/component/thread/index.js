@@ -136,7 +136,7 @@ const Thread = ({ thread, refetch }) => {
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails">
-            <h3 style={{color: "#222428"}}>{firstName + " " + lastName}</h3>
+            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
             <div className="threads_username">
               <p>@{username}</p>
               <p className="threads_date">{date.toString().slice(0, 10)}</p>
@@ -160,7 +160,7 @@ const Thread = ({ thread, refetch }) => {
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-24 mb-8"
+                className="h-48 mb-8 text-black"
               />
               <br />
 
