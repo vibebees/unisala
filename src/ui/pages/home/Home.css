@@ -133,3 +133,11 @@
         transform: translateX(-3px);
     }
 }
+
+
+svg {
+    position: absolute;
+    top: -28px;
+    left: 45px;
+
+}

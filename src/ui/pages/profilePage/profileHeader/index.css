@@ -21,7 +21,8 @@
     position: absolute;
     bottom: -4rem;
     left: 1rem;
-    border: 5px solid #fff;
+
+
 }
 
 .profile-img-btns {
@@ -116,24 +117,46 @@
     cursor: pointer;
 }
 
+.progress_container {
+    position: absolute;
+    top: -29.3px;
+    left: -30.3px;
+    z-index: 20;
+
+
+}
+
 @media (min-width: 768px) {
     .user-banner__cover {
         height: 300px;
     }
+
     .short-info-wrapper {
         margin: 5.5rem 2rem 0;
     }
+
     .user-profile {
         width: 140px;
         height: 140px;
         bottom: -5rem;
         left: 2rem;
     }
+
     .inline-2 {
         gap: 2rem;
         align-items: center;
     }
+
     .profile-header__tab-menu--h4 {
         font-size: 1rem;
+    }
+
+    .progress_container {
+        position: absolute;
+        top: -10.2px;
+        left: -10.2px;
+        z-index: 20;
+
+
     }
 }
