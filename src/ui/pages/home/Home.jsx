@@ -26,18 +26,17 @@ export const Home = () => {
     context: { server: USER_SERVICE_GQL }
   })
 
-  const { getTopActiveSpaces } = topSpaceData || {}
-
-  const { user, loggedIn } = useSelector((store) => store?.userProfile),
-    profileData =
-      loggedIn &&
-      useQuery(GetProfileCard, {
-        context: { server: USER_SERVICE_GQL },
-        variables: {
-          username: user?.username
-        }
-      }),
-    [activeProfile, setActiveProfile] = useState(false),
+  const { getTopActiveSpaces } = topSpaceData || {},
+  { user, loggedIn } = useSelector((store) => store?.userProfile || {}),
+  profileDataResult = useQuery(GetProfileCard, {
+    context: { server: USER_SERVICE_GQL },
+    variables: {
+      username: user?.username
+    },
+    skip: !loggedIn || !user?.username
+  }),
+   profileData = profileDataResult?.data || null,
+  [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     views = {
       greaterThan1000: screenGreaterThan1000(),
