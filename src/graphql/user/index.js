@@ -369,6 +369,8 @@ export const AddComment = gql`
           date
           upVoteCount
           postCommentsCount
+          userId # Use userId instead of user
+
           user {
             _id
             firstName
@@ -837,6 +839,36 @@ export const AddComment = gql`
       deleteSpaceCategoryById(id: $id) {
         success
         message
+      }
+    }
+  `,
+  EditSpace = gql`
+    mutation editSpaceCategoryById(
+      $id: ID!
+      $name: String
+      $image: String
+      $description: String
+    ) {
+      editSpaceCategoryById(
+        id: $id
+        name: $name
+        image: $image
+        description: $description
+      ) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+          image
+          description
+          user {
+            _id
+          }
+        }
       }
     }
   `

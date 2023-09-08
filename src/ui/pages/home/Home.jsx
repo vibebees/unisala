@@ -5,7 +5,7 @@ import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
-import { GetProfileCard } from "../../../graphql/user"
+import { GetProfileCard, GetTopActiveSpaces } from "../../../graphql/user"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
 import UnisalaIntro from "./UnisalaIntro"
@@ -20,15 +20,22 @@ import "./Home.css"
 
 export const Home = () => {
   useDocTitle("Unisala")
-  const
-  { user, loggedIn } = useSelector((store) => store?.userProfile ?? {}),
-  profileData = useQuery(GetProfileCard, {
-    skip: !loggedIn,
+
+  const { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
+    variables: { limit: 6 },
+    context: { server: USER_SERVICE_GQL }
+  })
+
+  const { getTopActiveSpaces } = topSpaceData || {},
+  { user, loggedIn } = useSelector((store) => store?.userProfile || {}),
+  profileDataResult = useQuery(GetProfileCard, {
     context: { server: USER_SERVICE_GQL },
     variables: {
-      username: user?.username ?? "" // Default to empty string if username is not available
-    }
+      username: user?.username
+    },
+    skip: !loggedIn || !user?.username
   }),
+   profileData = profileDataResult?.data || null,
   [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     views = {
@@ -38,7 +45,8 @@ export const Home = () => {
         setActiveTab,
         unisalaImg,
         profileData,
-        loggedIn
+        loggedIn,
+        topSpaces: getTopActiveSpaces?.spaceCategory
       }),
       lessThan768: screenLessThan768({
         setActiveProfile,
