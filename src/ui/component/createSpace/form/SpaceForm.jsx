@@ -1,5 +1,6 @@
 import {
   IonCol,
+  IonIcon,
   IonInput,
   IonLabel,
   IonRow,
@@ -12,11 +13,16 @@ import { useMutation } from "@apollo/client"
 import { AddSpaceCategory } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { useHistory } from "react-router"
-
+import { imageOutline } from "ionicons/icons"
+import axios from "axios"
+import { userServer } from "../../../../servers/endpoints"
 const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
   const [redirecting, setRedirecting] = useState(false)
   const history = useHistory()
+
+  const [file, setFile] = useState(null)
+
   // MUTATION TO CREATE A NEW SPACE
 
   const [addSpaceCategory, { error }] = useMutation(AddSpaceCategory, {
@@ -75,6 +81,17 @@ const SpaceForm = ({ setIsOpen }) => {
   // handler to create new space
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    // if (file) {
+    //   const res = await axios.post(
+    //     userServer + `/space/addSpaceCategoryImage/${}`,
+    //     {
+    //       image: file
+    //     }
+    //   )
+
+    // }
+
     addSpaceCategory({
       variables: {
         name: spaceNameRef?.current?.value,
@@ -121,6 +138,46 @@ const SpaceForm = ({ setIsOpen }) => {
         </IonCol>
       </IonRow>
 
+      <IonRow>
+        {/* <label
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleImageDrop}
+                htmlFor="post-image"
+                className="flex flex-col items-center"
+              >
+                <IonIcon
+                  icon={imageOutline}
+                  className="text-3xl text-[#818080]"
+                />
+                <h5 className="text-[#818080] font-medium text-xl">
+                  Upload your image
+                </h5>
+              </label>
+              <input
+                type="file"
+                ref={imgfile}
+                hidden
+                onChange={handleChangeImage}
+                id="post-image"
+              /> */}
+
+        <label
+          htmlFor="image-upload"
+          className="mt-8 w-full flex flex-col justify-center items-center"
+        >
+          <IonIcon icon={imageOutline} class="text-3xl text-[#818080]" />
+          <IonText className="text-[#818080] font-medium text-xl">
+            Upload you Image
+          </IonText>
+        </label>
+        <input
+          type="file"
+          id="image-upload"
+          hidden
+          accept="image/*"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+      </IonRow>
       <SubmitSpace redirecting={redirecting} />
     </form>
   )

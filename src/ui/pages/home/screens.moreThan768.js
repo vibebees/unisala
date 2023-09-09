@@ -4,7 +4,8 @@ import {
   IonText,
   IonAvatar,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonButton
 } from "@ionic/react"
 import { useSelector } from "react-redux"
 import { Avatar } from "../../component/Avatar"
@@ -14,6 +15,7 @@ import { useEffect, useState } from "react"
 import { getImage } from "../../../servers/s3.configs"
 import { useLocation } from "react-router"
 import TopSpaces from "../../component/TopSpaces/TopSpaces"
+import { Link } from "react-router-dom"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
@@ -37,7 +39,13 @@ export const screensMoreThan768 = ({
     >
       {loggedIn ? (
         <>
-          <IonCard>
+          <Link to="/space" style={{ marginTop: "120px" }}>
+            <IonText className="text-[#3880FF] mt-6 text-center font-semibold">
+              <h1>Browse Spaces</h1>
+            </IonText>
+          </Link>
+
+          <IonCard className="mt-6">
             <div className="aside-profile">
               <div className="user-profile-circle">
                 <Avatar

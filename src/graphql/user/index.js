@@ -869,4 +869,22 @@ export const AddComment = gql`
         }
       }
     }
+  `,
+  GetOwnSpace = gql`
+    query GetOwnSpace($count: Int) {
+      getOwnSpaceCategory(count: $count) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          user {
+            username
+            _id
+          }
+        }
+      }
+    }
   `

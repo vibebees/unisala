@@ -129,7 +129,7 @@ const Thread = ({ thread, refetch }) => {
   })
 
   return (
-    <IonCard className="thread relative">
+    <IonCard className="thread relative ">
       <Link to={`/@/${username}`}>
         <div className="thread-header">
           <div className="thread_profile-pic">
@@ -160,7 +160,7 @@ const Thread = ({ thread, refetch }) => {
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-48 mb-8"
+                className="h-48 mb-10"
               />
               <br />
 

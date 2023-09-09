@@ -10,6 +10,7 @@ import { useSelector } from "react-redux"
 import { Avatar } from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
+import { Link } from "react-router-dom"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
@@ -18,6 +19,7 @@ export const screensMoreThan768 = ({
   loggedIn
 }) => {
   const { user } = useSelector((state) => state.userProfile)
+
   return (
     <IonCol
       size="auto"
@@ -30,17 +32,24 @@ export const screensMoreThan768 = ({
     >
       {loggedIn ? (
         <>
-          <IonCard>
+          <Link to="/space" style={{ marginTop: "120px" }}>
+            <IonText className="text-[#3880FF] mt-6 text-center font-semibold">
+              <h1>Browse Spaces</h1>
+            </IonText>
+          </Link>
+          <IonCard className="mt-6">
             <div className="aside-profile">
               <div className="user-profile-circle">
-                <Avatar username={user?.username} profilePic={user?.profilePic} size="medium" />
+                <Avatar
+                  username={user?.username}
+                  profilePic={user?.profilePic}
+                  size="medium"
+                />
               </div>
             </div>
             <div className="aside-profile-details">
               <IonText className="flex justify-content-center" color="dark">
-                <h6>
-                  {user?.firstName + " " + user?.lastName}
-                </h6>
+                <h6>{user?.firstName + " " + user?.lastName}</h6>
               </IonText>
               <IonText color="medium">
                 <p>@{user?.username}</p>
