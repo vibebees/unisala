@@ -30,6 +30,7 @@ export const SignInForm = ({ setauth }) => {
   const submitHandler = (e) => {
       e.preventDefault()
       seterrors(validateSignIn(input))
+      localStorage.setItem("address", input.email)
       setdatacheck(true)
     },
     dispatch = useDispatch()
