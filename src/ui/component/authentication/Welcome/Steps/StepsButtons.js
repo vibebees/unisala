@@ -14,8 +14,8 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
       useContext(WelcomeData),
     dispatch = useDispatch(),
     [present, dismiss] = useIonToast(),
-     accessToken = localStorage.getItem("accessToken"),
-     decode = jwtDecode(accessToken),
+    accessToken = localStorage.getItem("accessToken"),
+    decode = jwtDecode(accessToken),
     [users, setUsers] = useState({
       email: decode.email,
       firstName: decode.firstName,
@@ -31,7 +31,6 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
       ...welcomeFormdata
     },
     update: (cache, { data: { editProfile } }) => {
-
       const result = cache.readQuery({
         query: getUserGql,
         variables: { username: users.username }
@@ -77,6 +76,9 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
           mode: "ios"
         })
       }
+      window.innerWidth < 768
+        ? window.location.replace("/home")
+        : window.location.reload()
     },
     onError: (error) => {
       console.log(error)
@@ -93,7 +95,6 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
   const handleSubmit = () => {
     console.log(welcomeFormdata)
     try {
-
       dispatch(
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
       )

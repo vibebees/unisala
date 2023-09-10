@@ -24,11 +24,11 @@ export const SignIn = ({ setauth, setActiveNavDrop, auth }) => {
             width: "234px"
           }}
         >
-          <GoogleAuth />
+          <GoogleAuth setauth={setauth} />
         </div>
       </div>
       <div className="auth-button">
-        <AppleAuth />
+        <AppleAuth setauth={setauth} />
       </div>
 
       <div className="auth-or">
