@@ -24,6 +24,7 @@ import {
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
+
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
 import "./index.css"
 import ReactQuill from "react-quill"
@@ -224,7 +225,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form onSubmit={handleSubmit} className="">
+      <form onSubmit={handleSubmit} className="overflow-y-scroll threadScroll">
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
@@ -235,39 +236,22 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
             </IonLabel>
           </IonItem>
 
-          <TextEditor postText={postText} setPostText={setPostText} />
+          <TextEditor
+            postText={postText}
+            setPostText={setPostText}
+            file={file}
+            handleChangeImage={handleChangeImage}
+            handleImageDrop={handleImageDrop}
+            imageOutline={imageOutline}
+            imgfile={imgfile}
+            showImage={true}
+          />
 
-          {file ? (
-            <img src={file} className="post-image-preview" />
-          ) : (
-            <div className="mt-20 flex justify-center items-center">
-              <label
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={handleImageDrop}
-                htmlFor="post-image"
-                className="flex flex-col items-center"
-              >
-                <IonIcon
-                  icon={imageOutline}
-                  className="text-3xl text-[#818080]"
-                />
-                <h5 className="text-[#818080] font-medium text-xl">
-                  Upload your image
-                </h5>
-              </label>
-              <input
-                type="file"
-                ref={imgfile}
-                hidden
-                onChange={handleChangeImage}
-                id="post-image"
-              />
-            </div>
-          )}
+          {file && <img src={file} className="post-image-preview" />}
         </div>
 
         <IonButton
-          className="post-pop-button"
+          className="post-pop-button mt-5"
           type="submit"
           expand="full"
           slot=""

@@ -135,7 +135,7 @@
 }
 
 
-svg {
+.progress-ring {
     position: absolute;
     top: -28px;
     left: 45px;

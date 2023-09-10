@@ -9,6 +9,7 @@ import "./index.css"
 import ShowMore from "./ShowMore"
 import { Avatar } from "../Avatar"
 import { getImage } from "../../../servers/s3.configs"
+import ThreadExpand from "./ThreadExpand"
 import {
   create,
   createOutline,
@@ -188,7 +189,9 @@ const Thread = ({ thread, refetch }) => {
               </IonButton>
             </div>
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: postText }}></div>
+            <>
+              <ThreadExpand htmlText={postText} maxLines={8} />
+            </>
           )}
         </div>
         <div className="thread_image">{postImage && <img src={image} />}</div>

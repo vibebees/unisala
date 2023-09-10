@@ -56,6 +56,7 @@ export const screensMoreThan768 = ({
                 version="1.1"
                 width="160px"
                 height="160px"
+                className="progress-ring"
               >
                 <defs>
                   <linearGradient id="GradientColor">

@@ -196,6 +196,7 @@ li {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
   }
+
   .grid-3 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -207,6 +208,7 @@ li {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
   .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -219,4 +221,21 @@ li {
   position: sticky;
   top: 0;
   overflow: auto;
+}
+
+
+.threadScroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.threadScroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.threadScroll::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.threadScroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

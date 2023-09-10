@@ -55,12 +55,14 @@ export const AddComment = gql`
       $postImage: String
       $unitId: Float
       $tags: [ID]
+      $postTag: String
     ) {
       addPost(
         postText: $postText
         postImage: $postImage
         unitId: $unitId
         tags: $tags
+        postTag: $postTag
       ) {
         status {
           success
