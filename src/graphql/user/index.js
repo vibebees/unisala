@@ -798,7 +798,6 @@ export const AddComment = gql`
             picture
             username
           }
-          tags
         }
       }
     }
