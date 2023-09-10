@@ -871,8 +871,8 @@ export const AddComment = gql`
     }
   `,
   GetOwnSpace = gql`
-    query GetOwnSpace($count: Int) {
-      getOwnSpaceCategory(count: $count) {
+    query GetOwnSpace($limit: Int, $page: Int) {
+      getOwnSpaceCategory(limit: $limit, page: $page) {
         status {
           message
           success
@@ -883,6 +883,37 @@ export const AddComment = gql`
           user {
             username
             _id
+          }
+        }
+      }
+    }
+  `,
+  GenerateSpaceNewsFeed = gql`
+    query GenerateSpaceNewsFeed($limit: Int, $page: Int) {
+      generateSpaceNewsFeedSystem(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          tags {
+            _id
+            name
+          }
+          user {
+            _id
+            firstName
+            lastName
+            picture
+            username
           }
         }
       }

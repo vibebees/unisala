@@ -33,7 +33,7 @@ const SpaceIndexLeftBar = ({ user, data }) => {
         </div>
       </IonCard>
 
-      <IonCard className="mt-8 pt-2 max-h-[348px] overflow-y-auto">
+      <IonCard className="mt-8 pt-2 max-h-[348px] overflow-y-auto ">
         <h1 className="text-base text-black font-medium text-center">
           Your Spaces
         </h1>

@@ -5,6 +5,7 @@ import { personCircle } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import {
+  GenerateSpaceNewsFeed,
   GetOwnSpace,
   GetTopActiveSpaces,
   GetUserPost
@@ -28,17 +29,18 @@ const SpaceIndex = () => {
   const { getTopActiveSpaces } = topSpaceData || {}
 
   const { data: yourSpaceData } = useQuery(GetOwnSpace, {
-    variables: { count: 10 },
+    variables: { limit: 100, page: 0 },
     context: { server: USER_SERVICE_GQL }
   })
   const { getOwnSpaceCategory } = yourSpaceData || {}
 
-  const { data: userPosts } = useQuery(GetUserPost, {
-    variables: { userId: user._id, page: 0 },
+  console.log(yourSpaceData)
+  const { data: spaceNewsFeed } = useQuery(GenerateSpaceNewsFeed, {
+    variables: { limit: 100, page: 0 },
     context: { server: USER_SERVICE_GQL }
   })
 
-  const { getUserPost } = userPosts || {}
+  const { generateSpaceNewsFeedSystem } = spaceNewsFeed || {}
   const [width, setWidth] = useState(window.innerWidth)
   const [activeProfile, setActiveProfile] = useState(false)
 
@@ -101,7 +103,7 @@ const SpaceIndex = () => {
             }}
           >
             {loggedIn ? (
-              <SpaceIndexFeed posts={getUserPost?.Posts} />
+              <SpaceIndexFeed posts={generateSpaceNewsFeedSystem?.posts} />
             ) : (
               <UnisalaIntro />
             )}
