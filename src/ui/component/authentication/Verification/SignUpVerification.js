@@ -14,6 +14,7 @@ const SignUpVerification = ({ auth }) => {
   const [input, setInput] = useState({
     verificationCode: ""
   })
+
   const HandleChange = (e) => {
     const { name, value } = e.target
     setInput((pre) => {
@@ -32,12 +33,16 @@ const SignUpVerification = ({ auth }) => {
       })
     }
     setLoading(true)
+    const emailInput = localStorage.getItem("address") || ""
+    localStorage.removeItem("address")
+
     axios
       .post(userServer + `/verifyEmail`, {
         ...input,
-        email: auth?.email
+        email: emailInput
       })
       .then((res) => {
+
         setLoading(false)
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data.accessToken)
