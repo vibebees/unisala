@@ -160,11 +160,10 @@ export const AddComment = gql`
       $location: String
       $oneLinerBio: String
       $birthday: String
-      $interestedSubjects:[ID],
-      $userStatus:String
+      $interestedSubjects: [ID]
+      $userStatus: String
       $studyLevel: String
       $interestedUni: [interestedUniversity]
-
     ) {
       editProfile(
         picture: $picture
@@ -175,8 +174,8 @@ export const AddComment = gql`
         location: $location
         oneLinerBio: $oneLinerBio
         birthday: $birthday
-        interestedSubjects: $interestedSubjects,
-        userStatus: $userStatus,
+        interestedSubjects: $interestedSubjects
+        userStatus: $userStatus
         studyLevel: $studyLevel
         interestedUni: $interestedUni
       ) {
@@ -378,6 +377,7 @@ export const AddComment = gql`
           date
           upVoteCount
           postCommentsCount
+          userId # Use userId instead of user
           user {
             _id
             firstName
@@ -865,6 +865,36 @@ export const AddComment = gql`
           }
           qnsNumber
           nextQuestion
+        }
+      }
+    }
+  `,
+  EditSpace = gql`
+    mutation editSpaceCategoryById(
+      $id: ID!
+      $name: String
+      $image: String
+      $description: String
+    ) {
+      editSpaceCategoryById(
+        id: $id
+        name: $name
+        image: $image
+        description: $description
+      ) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+          image
+          description
+          user {
+            _id
+          }
         }
       }
     }

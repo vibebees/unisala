@@ -24,6 +24,8 @@ import {
 } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -91,7 +93,7 @@ const Thread = ({ thread, refetch }) => {
 
   const handleChange = (e) => {
     // for now handling change of text only
-    setUpdatedData((prev) => ({ ...prev, postText: e.target.value }))
+    setUpdatedData((prev) => ({ ...prev, postText: e }))
   }
 
   // update thread
@@ -134,7 +136,7 @@ const Thread = ({ thread, refetch }) => {
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails">
-            <h3 style={{color: "#222428"}}>{firstName + " " + lastName}</h3>
+            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
             <div className="threads_username">
               <p>@{username}</p>
               <p className="threads_date">{date.toString().slice(0, 10)}</p>
@@ -146,18 +148,25 @@ const Thread = ({ thread, refetch }) => {
         <div className="thread_comment">
           {editable ? (
             <div>
-              <textarea
+              {/* <textarea
                 name=""
                 className="w-2/3  outline-none resize-none border-b-2 border-black"
                 onChange={handleChange}
               >
                 {postText}
-              </textarea>
+              </textarea> */}
+              <ReactQuill
+                theme="snow"
+                onChange={handleChange}
+                // value={postText}
+                defaultValue={postText}
+                className="h-48 mb-8 text-black"
+              />
               <br />
 
               <IonButton
                 fill="clear"
-                className="ion-no-padding  capitalize  px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
+                className="ion-no-padding  capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
                 size="small"
                 style={{
                   "--ripple-color": "transparent"
@@ -179,7 +188,7 @@ const Thread = ({ thread, refetch }) => {
               </IonButton>
             </div>
           ) : (
-            <p>{postText}</p>
+            <div dangerouslySetInnerHTML={{ __html: postText }}></div>
           )}
         </div>
         <div className="thread_image">{postImage && <img src={image} />}</div>

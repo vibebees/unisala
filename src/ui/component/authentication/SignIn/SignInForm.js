@@ -30,6 +30,7 @@ const SignInForm = ({ setauth }) => {
   const submitHandler = (e) => {
       e.preventDefault()
       seterrors(validateSignIn(input))
+      localStorage.setItem("address", input.email)
       setdatacheck(true)
       console.log("enter pressed")
     },

@@ -12,6 +12,9 @@ import { sendOutline } from "ionicons/icons"
 import { Avatar } from "../../../component/Avatar"
 import { useMutation } from "@apollo/client"
 import { AddPost, GetUserPost } from "../../../../graphql/user"
+import "react-quill/dist/quill.snow.css"
+import "./style.css"
+import ReactQuill from "react-quill"
 
 export default function Discussion({ uniId }) {
   const { user } = useSelector((state) => state.userProfile)
@@ -128,7 +131,7 @@ export default function Discussion({ uniId }) {
               }}
               id="ReviewText_div"
             >
-              <IonTextarea
+              {/* <IonTextarea
                 ref={input}
                 onIonChange={(e) => {
                   setReply(e.target.value)
@@ -143,7 +146,24 @@ export default function Discussion({ uniId }) {
                 type="text"
                 className="border border-gray-400"
                 placeholder="Ask or Start a discussion."
-              />
+              /> */}
+
+            <ReactQuill
+              value={reply}
+              onChange={(value) => setReply(value)}
+              placeholder="Ask or Start a discussion."
+              theme="snow"
+              className="editor-school-review"
+              modules={{
+                toolbar: [
+                  [{ "header": "1" }, { "header": "2" }],
+                  ["bold", "italic", "underline", "strike"],
+                  [{ "list": "ordered"}, { "list": "bullet" }],
+                  ["link", "image"],
+                  ["clean"]
+                ]
+              }}
+            />
               <button
                 type="submit"
                 style={{

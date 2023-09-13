@@ -21,10 +21,10 @@ module.exports = (() => {
 
   if (config.NODE_ENV === "PRODUCTION") {
     return {
-      messagingServiceAddress: "http://unisala.com/msg",
-      universityServiceAddress: "http://unisala.com/uni",
+      messagingServiceAddress: "https://unisala.com/msg",
+      universityServiceAddress: "https://unisala.com/uni",
       messageSocketAddress: "ws://unisala.com/msg",
-      userServiceAddress: "http://unisala.com/user",
+      userServiceAddress: "https://unisala.com/user",
       callSocketAddress: "ws://localhost:4445"
     }
   }
