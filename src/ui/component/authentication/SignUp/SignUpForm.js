@@ -40,6 +40,7 @@ export const SignUpForm = ({ setauth }) => {
   useEffect(() => {
     if (Object.keys(errors).length === 0 && datacheck) {
       setsave(true)
+      localStorage.setItem("email", input.email)
       dispatch(
         registerUser({
           userServer,
