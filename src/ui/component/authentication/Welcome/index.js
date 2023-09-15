@@ -14,7 +14,7 @@ import clsx from "clsx"
 import PreLoader from "../../preloader"
 
 export const WelcomeData = createContext()
-const index = () => {
+const index = ({ setNewUser }) => {
   const [currentStep, setCurrentStep] = useState(1)
 
   const [welcomeFormdata, setWelcomeFormdata] = useState({
@@ -51,7 +51,7 @@ const index = () => {
 
   return (
     <>
-      <div className="fixed  left-0 top-0 z-[10] max-md:px-8 py-5 bg-black bg-opacity-30 h-full grid place-items-center w-full">
+      <div className="fixed  left-0 top-0 z-[200] max-md:px-8 py-5 bg-black bg-opacity-30 h-full grid place-items-center w-full">
         <div className="h-96 relative z-50 max-md:h-[80vh]  bg-white shadow-lg  overflow-hidden   max-w-3xl w-full">
           <WelcomeData.Provider
             value={{
@@ -79,6 +79,7 @@ const index = () => {
             <StepsButtons
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
+              setNewUser={setNewUser}
             />
           </WelcomeData.Provider>
         </div>

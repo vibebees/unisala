@@ -38,7 +38,7 @@ export const Home = () => {
     profileData = profileDataResult?.data || null,
     [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
-    newUser = localStorage.getItem("newUser"),
+    [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
     views = {
       greaterThan1000: screenGreaterThan1000(),
       greaterThan768: screensMoreThan768({
@@ -102,7 +102,7 @@ export const Home = () => {
             {loggedIn ? <HomeFeed userInfo={user} /> : <UnisalaIntro />}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
-          {loggedIn && newUser && <WelcomeSteps />}
+          {loggedIn && newUser && <WelcomeSteps setNewUser={setNewUser} />}
         </IonRow>
       </IonGrid>
     </IonContent>

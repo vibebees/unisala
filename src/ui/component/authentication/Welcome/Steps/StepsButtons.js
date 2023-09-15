@@ -9,7 +9,7 @@ import { getUserProfile } from "../../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-const StepsButtons = ({ currentStep, setCurrentStep }) => {
+const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
   const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
       useContext(WelcomeData),
     dispatch = useDispatch(),
@@ -77,6 +77,7 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
         })
       }
       localStorage.removeItem("newUser")
+      setNewUser(false)
     },
     onError: (error) => {
       console.log(error)
