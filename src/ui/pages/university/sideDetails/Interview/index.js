@@ -6,7 +6,7 @@ import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 export default function index({ unitId }) {
   const { data } = useQuery(GetInterviewExperience, {
-    variables: { unitId },
+    variables: { unitId, page: 1, pageSize: 10 },
     context: { server: USER_SERVICE_GQL }
   })
 

@@ -739,8 +739,12 @@ export const AddComment = gql`
     }
   `,
   GetInterviewExperience = gql`
-    query getInterviewExperience($unitId: Float!) {
-      getInterviewExperience(unitId: $unitId) {
+    query getInterviewExperience($unitId: Float!, $page: Int, $pageSize: Int) {
+      getInterviewExperience(
+        unitId: $unitId
+        page: $page
+        pageSize: $pageSize
+      ) {
         status {
           success
           message
@@ -868,6 +872,26 @@ export const AddComment = gql`
           description
           user {
             _id
+          }
+        }
+      }
+    }
+  `,
+  GetUserRoadMapSummary = gql`
+    query getUserRoadMapSummary($userId: String!) {
+      getUserRoadMapSummary(userId: $userId) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          summary
+          date
+          user {
+            _id
+            firstName
+            lastName
           }
         }
       }

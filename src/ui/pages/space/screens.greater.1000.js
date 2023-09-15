@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom"
 import CreateSpace from "../../component/createSpace/CreateSpace"
 import TopSpaces from "../../component/TopSpaces/TopSpaces"
+import clsx from "clsx"
 
 export const screenGreaterThan1000 = ({ title, topSpaces }) => {
   return (
