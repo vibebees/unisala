@@ -46,7 +46,10 @@ const SignUpVerification = ({ auth, setauth }) => {
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
-          setauth({ state: "welcomeForm" })
+          localStorage.setItem("newUser", "true")
+          window.innerWidth < 768
+            ? window.location.replace("/home")
+            : window.location.reload()
         }
       })
       .catch((err) => {

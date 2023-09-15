@@ -76,9 +76,7 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
           mode: "ios"
         })
       }
-      window.innerWidth < 768
-        ? window.location.replace("/home")
-        : window.location.reload()
+      localStorage.removeItem("newUser")
     },
     onError: (error) => {
       console.log(error)
@@ -93,6 +91,15 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
   })
 
   const handleSubmit = () => {
+    if (currentStep === 5 && welcomeFormdata.studyLevel === "") {
+      return present({
+        duration: 3000,
+        message: "Please select atleast one study level",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
     console.log(welcomeFormdata)
     try {
       dispatch(
@@ -103,6 +110,37 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const handleNext = () => {
+    if (currentStep === 2 && welcomeFormdata.interestedSubjects.length === 0) {
+      return present({
+        duration: 3000,
+        message: "Please select atleast one subject",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+    if (currentStep === 3 && welcomeFormdata.userStatus === "") {
+      return present({
+        duration: 3000,
+        message: "Please select atleast one status",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+    if (currentStep === 4 && welcomeFormdata.interestedUni.length === 0) {
+      return present({
+        duration: 3000,
+        message: "Please select atleast one university",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+    setCurrentStep(currentStep + 1)
   }
 
   return (
@@ -122,9 +160,7 @@ const StepsButtons = ({ currentStep, setCurrentStep }) => {
       {currentStep === 5 ? (
         <IonButton onClick={handleSubmit}>Submit</IonButton>
       ) : (
-        <IonButton onClick={() => setCurrentStep(currentStep + 1)}>
-          Next
-        </IonButton>
+        <IonButton onClick={handleNext}>Next</IonButton>
       )}
     </div>
   )

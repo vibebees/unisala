@@ -15,13 +15,13 @@ import Indicators from "./Indicators"
 const FirstStep = () => {
   return (
     <div>
-      <IonGrid className="mx-4 mt-12">
+      <IonGrid className="mx-4 max-md:mx-2 max-md:mt-9 mt-12">
         <IonGrid>
           <IonText color="primary">
             <h1 className="font-bold text-2xl text-center mt-5 text-neutral-600">
               Welcome to Vibes Bee
             </h1>
-            <p className=" text-base leading-7 text-center mt-7 font-normal text-neutral-500 mx-14">
+            <p className=" text-base max-md:mx-5 leading-7 text-center mt-7 font-normal text-neutral-500 mx-14">
               We are thrilled to have you join us on your journey towards
               studying abroad and achieving your academic dreams. At Vibes Bee,
               we are dedicated to guiding and supporting students like you

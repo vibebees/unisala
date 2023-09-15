@@ -54,8 +54,6 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
                 <ResetPassword setauth={setauth} auth={auth} />
               ) : auth.state === "userNotVerified" ? (
                 <UserNotVerified setauth={setauth} auth={auth} />
-              ) : auth.state === "welcomeForm" ? (
-                <WelcomSteps />
               ) : null}
             </IonCol>
             {width > 764 && auth.state !== "welcomeForm" && (

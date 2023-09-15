@@ -77,7 +77,7 @@ const SecondStep = () => {
   return (
     <div>
       <div>
-        <IonGrid className="!px-12 mt-6 ">
+        <IonGrid className="!px-12 max-md:!px-5 mt-6 ">
           <IonGrid>
             <IonText color="primary">
               <h1 className="font-semibold text-xl  text-neutral-600">
@@ -118,7 +118,7 @@ const SecondStep = () => {
               <div>
                 {searchInput && (
                   <>
-                    <div className="absolute z-50 bottom-0  -top-11 bg-neutral-200 right-0 max-md:w-full max-md:bottom-32  max-md:shadow-md  w-1/2 ">
+                    <div className="absolute z-50 bottom-10 max-md:-top-10   -top-14 bg-neutral-200 right-0 max-md:w-full max-md:bottom-36  max-md:shadow-md  w-1/2 ">
                       <IonSearchbar
                         placeholder="Search for a major"
                         className=" font-medium text-neutral-600"

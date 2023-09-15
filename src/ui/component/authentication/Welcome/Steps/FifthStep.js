@@ -40,7 +40,7 @@ const FifthStep = () => {
   return (
     <div>
       <div>
-        <IonGrid className="mx-12 mt-14 ">
+        <IonGrid className="mx-12 max-md:mx-3 mt-14 ">
           <IonGrid>
             <IonText color="primary">
               <h1 className="font-semibold text-xl  text-neutral-600">
