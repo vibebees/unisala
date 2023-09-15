@@ -39,7 +39,7 @@ export const screensMoreThan768 = ({
     >
       {loggedIn ? (
         <>
-          <IonCard className="mt-6">
+          <IonCard className="">
             <div className="aside-profile">
               <div className="user-profile-circle">
                 <Avatar
@@ -59,12 +59,6 @@ export const screensMoreThan768 = ({
             </div>
           </IonCard>
 
-          <Link to="/space" style={{ marginTop: "120px" }}>
-            <IonText className="text-[#3880FF] mt-6 text-center font-semibold">
-              <h1>Browse Spaces</h1>
-            </IonText>
-          </Link>
-
           <IonCol>
             <IonCard className="">
               <IonText color="dark">
@@ -72,6 +66,18 @@ export const screensMoreThan768 = ({
               </IonText>
 
               <TopSpaces topSpaces={topSpaces} />
+              <Link to="/space" style={{ marginTop: "120px" }}>
+                <IonText
+                  className="max-w-[250px] text-[#3880FF] text-center  font-semibold"
+                  fill="solid"
+                  style={{
+                    "--background": "white",
+                    "--background-hover": "#eee"
+                  }}
+                >
+                  <h1 className="py-4">Browse More Spaces</h1>
+                </IonText>
+              </Link>
             </IonCard>
           </IonCol>
         </>

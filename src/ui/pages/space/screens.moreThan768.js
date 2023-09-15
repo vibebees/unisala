@@ -32,11 +32,11 @@ export const screensMoreThan768 = ({
     >
       {loggedIn ? (
         <>
-          <Link to="/space" style={{ marginTop: "120px" }}>
+          {/* <Link to="/space" style={{ marginTop: "120px" }}>
             <IonText className="text-[#3880FF] mt-6 text-center font-semibold">
               <h1>Browse Spaces</h1>
             </IonText>
-          </Link>
+          </Link> */}
           <IonCard className="mt-6">
             <div className="aside-profile">
               <div className="user-profile-circle">

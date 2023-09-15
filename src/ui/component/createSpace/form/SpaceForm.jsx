@@ -51,6 +51,7 @@ const SpaceForm = ({ setIsOpen }) => {
       } else {
         // SPACE CREATING SUCCESSFUL
         setRedirecting(true)
+
         present({
           duration: 3000,
           message: "Space has been created",
