@@ -46,7 +46,7 @@ export const StudyAbroadRoadmap = () => {
       <IonGrid style={{ maxWidth: "900px", margin: "auto" }} className="w-full">
         <ProgressReport />
         <IonRow class="w-full gap-6 h-full mt-10 ">
-          <IonCol className="h-full ">
+          {/* <IonCol className="h-full ">
             <h4 className="font-semibold pl-4">Other useful information</h4>
             <div className="h-full mt-4 bg-neutral-100 border border-neutral-400 border-opacity-20 rounded-md px-5 py-6">
               <p className="text-sm text-neutral-600">
@@ -64,11 +64,11 @@ export const StudyAbroadRoadmap = () => {
                 officia! Ipsum, voluptas corrupti.
               </p>
             </div>
-          </IonCol>
+          </IonCol> */}
           <IonCol>
             <h4 className="font-semibold pl-4">Your next steps</h4>
             <div className="h-full mt-4 px-4 bg-neutral-100 border border-neutral-400 border-opacity-20 rounded-md py-6">
-              <div className="flex items-center ">
+              <div className="flex items-center  w-full">
                 <StepInput
                   currentstep={"1/10"}
                   label={"Enter your ILETS Test Result"}
