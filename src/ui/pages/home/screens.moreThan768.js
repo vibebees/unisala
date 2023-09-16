@@ -60,7 +60,7 @@ export const screensMoreThan768 = ({
           </IonCard>
 
           <IonCol>
-            <IonCard className="">
+            <IonCard className="overflow-y-auto max-h-[348px]">
               <IonText color="dark">
                 <h6 className="text-center my-2 font-semibold">Top Spaces</h6>
               </IonText>

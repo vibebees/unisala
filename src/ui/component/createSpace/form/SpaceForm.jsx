@@ -14,8 +14,8 @@ import { AddSpaceCategory } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { useHistory } from "react-router"
 import { imageOutline } from "ionicons/icons"
+import { spaceServer } from "../../../../servers/endpoints"
 import axios from "axios"
-import { userServer } from "../../../../servers/endpoints"
 const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
   const [redirecting, setRedirecting] = useState(false)
@@ -23,11 +23,12 @@ const SpaceForm = ({ setIsOpen }) => {
 
   const [file, setFile] = useState(null)
 
+  const formData = new FormData()
   // MUTATION TO CREATE A NEW SPACE
 
   const [addSpaceCategory, { error }] = useMutation(AddSpaceCategory, {
     context: { server: USER_SERVICE_GQL },
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
       if (!data?.addSpaceCategory?.status?.success) {
         // SPACE CREATION UNSUCCESSFUL
         present({
@@ -51,6 +52,23 @@ const SpaceForm = ({ setIsOpen }) => {
       } else {
         // SPACE CREATING SUCCESSFUL
         setRedirecting(true)
+        console.log(data, "new space data aayoo")
+        if (file) {
+          console.log("file foudndd", file)
+          formData.append("image", file[0])
+          const res = await axios.post(
+            spaceServer +
+              `/addSpaceCategoryImage/${data?.addSpaceCategory?.spaceCategory?._id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            }
+          )
+
+          console.log(res, "file")
+        }
 
         present({
           duration: 3000,
@@ -82,17 +100,6 @@ const SpaceForm = ({ setIsOpen }) => {
   // handler to create new space
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    // if (file) {
-    //   const res = await axios.post(
-    //     userServer + `/space/addSpaceCategoryImage/${}`,
-    //     {
-    //       image: file
-    //     }
-    //   )
-
-    // }
-
     addSpaceCategory({
       variables: {
         name: spaceNameRef?.current?.value,
@@ -102,7 +109,7 @@ const SpaceForm = ({ setIsOpen }) => {
   }
 
   return (
-    <form className=" p-4" onSubmit={handleSubmit}>
+    <form className="p-4 overflow-y-auto" onSubmit={handleSubmit}>
       <IonRow>
         <IonCol>
           <IonLabel className="font-semibold " color="dark">
@@ -139,46 +146,33 @@ const SpaceForm = ({ setIsOpen }) => {
         </IonCol>
       </IonRow>
 
-      <IonRow>
-        {/* <label
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={handleImageDrop}
-                htmlFor="post-image"
-                className="flex flex-col items-center"
-              >
-                <IonIcon
-                  icon={imageOutline}
-                  className="text-3xl text-[#818080]"
-                />
-                <h5 className="text-[#818080] font-medium text-xl">
-                  Upload your image
-                </h5>
-              </label>
-              <input
-                type="file"
-                ref={imgfile}
-                hidden
-                onChange={handleChangeImage}
-                id="post-image"
-              /> */}
-
-        <label
-          htmlFor="image-upload"
-          className="mt-8 w-full flex flex-col justify-center items-center"
-        >
-          <IonIcon icon={imageOutline} class="text-3xl text-[#818080]" />
-          <IonText className="text-[#818080] font-medium text-xl">
-            Upload you Image
-          </IonText>
-        </label>
-        <input
-          type="file"
-          id="image-upload"
-          hidden
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
+      {file ? (
+        <img
+          src={URL.createObjectURL(file[0])}
+          alt=""
+          className="aspect-video mt-4"
         />
-      </IonRow>
+      ) : (
+        <IonRow>
+          <label
+            htmlFor="image-upload"
+            className="mt-8 w-full flex flex-col justify-center items-center"
+          >
+            <IonIcon icon={imageOutline} class="text-3xl text-[#818080]" />
+            <IonText className="text-[#818080] font-medium text-xl">
+              Upload you Image
+            </IonText>
+          </label>
+          <input
+            type="file"
+            id="image-upload"
+            hidden
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files)}
+          />
+        </IonRow>
+      )}
+
       <SubmitSpace redirecting={redirecting} />
     </form>
   )
