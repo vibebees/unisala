@@ -14,7 +14,7 @@ import { AddSpaceCategory } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { useHistory } from "react-router"
 import { imageOutline } from "ionicons/icons"
-import { spaceServer } from "../../../../servers/endpoints"
+import { userServer } from "../../../../servers/endpoints"
 import axios from "axios"
 const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
@@ -57,8 +57,8 @@ const SpaceForm = ({ setIsOpen }) => {
           console.log("file founddd", file)
           formData.append("image", file[0])
           const res = await axios.post(
-            spaceServer +
-              `/addSpaceCategoryImage/${data?.addSpaceCategory?.spaceCategory?._id}`,
+            userServer +
+              `/space/addSpaceCategoryImage/${data?.addSpaceCategory?.spaceCategory?._id}`,
             formData,
             {
               headers: {

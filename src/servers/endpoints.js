@@ -22,8 +22,7 @@ const config = require("./config"),
     universityServiceAddress,
     messageSocketAddress,
     userServiceAddress,
-    callSocketAddress,
-    spaceAddress
+    callSocketAddress
   } = urls,
   getNewToken = async () => {
     try {
@@ -120,5 +119,4 @@ export const client = new ApolloClient({
   callSocket = () => io(callSocketAddress),
   userServer = userServiceAddress,
   messageServer = messagingServiceAddress,
-  universityServer = universityServiceAddress,
-  spaceServer = spaceAddress
+  universityServer = universityServiceAddress

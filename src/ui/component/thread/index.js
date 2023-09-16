@@ -57,10 +57,10 @@ const Thread = ({ thread, refetch }) => {
     postId: _id
   })
 
-  useEffect(() => {
-    getImage("user", image, setImage)
-    getImage("user", profilePic, setProfilePic)
-  }, [profilePic])
+  // useEffect(() => {
+  //   getImage("user", image, setImage)
+  //   getImage("user", profilePic, setProfilePic)
+  // }, [profilePic])
   const { user: loggedinUser } = useSelector((state) => state.userProfile)
 
   // delete thread
@@ -199,7 +199,9 @@ const Thread = ({ thread, refetch }) => {
             <div dangerouslySetInnerHTML={{ __html: postText }}></div>
           )}
         </div>
-        <div className="thread_image">{postImage && <img src={image} />}</div>
+        <div className="thread_image">
+          {postImage && <img src={postImage} />}
+        </div>
         <div className="thread_footer">
           <Upvote
             upVoteCount={upVoteCount}

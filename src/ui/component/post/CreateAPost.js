@@ -30,15 +30,17 @@ import ReactQuill from "react-quill"
 import JoditEditor from "jodit-react"
 import "react-quill/dist/quill.snow.css"
 import TextEditor from "../../../utils/components/TextEditor"
+import axios from "axios"
+import { userServer } from "../../../servers/endpoints"
 export const CreateAPost = ({ setPopup, popup, tags }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
-  const [file, setfile] = useState("")
+  const [file, setFile] = useState(null)
   const [fileData, setFileData] = useState("")
   const profilePic = user?.picture
-
+  const formData = new FormData()
   const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
     update: (cache, { data: { addPost } }) => {
@@ -96,7 +98,22 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
       }
     },
 
-    onCompleted: () => {
+    onCompleted: async (data) => {
+      console.log(data)
+      if (file) {
+        formData.append("image", file)
+        const res = await axios.post(
+          userServer + `/post/addPostImage/${data.addPost.post._id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+
+        console.log(res)
+      }
       present({
         duration: 3000,
         message: "Post added",
@@ -104,7 +121,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
         color: "primary",
         mode: "ios"
       })
-      setfile("")
+      // setfile("")
     },
     onError: (error) => {
       present({
@@ -117,102 +134,101 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     }
   })
 
-  const handleChangeImage = (e) => {
-    e.preventDefault()
-    const file = imgfile?.current?.files[0]
-    setFileData(file)
-    const reader = new FileReader()
+  // const handleChangeImage = (e) => {
+  //   e.preventDefault()
+  //   const file = imgfile?.current?.files[0]
+  //   setFileData(file)
+  //   const reader = new FileReader()
 
-    reader.onloadend = () => {
-      setfile(reader.result)
-    }
-    if (file) {
-      reader.readAsDataURL(file)
-      setfile(reader.result)
-    } else {
-      setfile("")
-    }
-  }
+  //   reader.onloadend = () => {
+  //     setfile(reader.result)
+  //   }
+  //   if (file) {
+  //     reader.readAsDataURL(file)
+  //     setfile(reader.result)
+  //   } else {
+  //     setfile("")
+  //   }
+  // }
 
-  const handleImageDrop = (e) => {
-    e.preventDefault()
-    const file = e?.dataTransfer?.files[0]
-    setFileData(file)
-    const reader = new FileReader()
+  // const handleImageDrop = (e) => {
+  //   e.preventDefault()
+  //   const file = e?.dataTransfer?.files[0]
+  //   setFileData(file)
+  //   const reader = new FileReader()
 
-    reader.onloadend = () => {
-      setfile(reader.result)
-    }
-    if (file) {
-      reader.readAsDataURL(file)
-      setfile(reader.result)
-    } else {
-      setfile("")
-    }
-  }
+  //   reader.onloadend = () => {
+  //     setfile(reader.result)
+  //   }
+  //   if (file) {
+  //     reader.readAsDataURL(file)
+  //     setfile(reader.result)
+  //   } else {
+  //     setfile("")
+  //   }
+  // }
 
-  const fileUpdate = async () => {
-    const fName = fileData?.name?.split(".") || ""
-    const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
+  // const fileUpdate = async () => {
+  //   const fName = fileData?.name?.split(".") || ""
+  //   const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
 
-    if (fileData && file) {
-      const params = {
-        Bucket: bucketName("user"),
-        Key: uploadFilename,
-        ContentType: fileData.type,
-        ACL: "public-read"
-      }
+  //   if (fileData && file) {
+  //     const params = {
+  //       Bucket: bucketName("user"),
+  //       Key: uploadFilename,
+  //       ContentType: fileData.type,
+  //       ACL: "public-read"
+  //     }
 
-      // Generate a pre-signed URL
-      await awsBucket("user").getSignedUrl(
-        "putObject",
-        params,
-        async (err, url) => {
-          if (err) {
-            console.error(err)
-            return
-          }
+  //     // Generate a pre-signed URL
+  //     await awsBucket("user").getSignedUrl(
+  //       "putObject",
+  //       params,
+  //       async (err, url) => {
+  //         if (err) {
+  //           console.error(err)
+  //           return
+  //         }
 
-          // Upload the file to S3 using the pre-signed URL
-          const result = await fetch(url, {
-            method: "PUT",
-            body: fileData,
-            headers: {
-              "Content-Type": fileData.type
-            }
-          })
+  //         // Upload the file to S3 using the pre-signed URL
+  //         const result = await fetch(url, {
+  //           method: "PUT",
+  //           body: fileData,
+  //           headers: {
+  //             "Content-Type": fileData.type
+  //           }
+  //         })
 
-          if (result.ok) {
-            // If the upload is successful, add the post with the S3 image URL
-            addPost({
-              variables: {
-                postText: TextChecker(postText),
-                postImage: uploadFilename,
-                tags
-              }
-            })
-            setfile("")
-          } else {
-            console.error("Failed to upload image to S3")
-          }
-        }
-      )
-    }
-  }
+  //         if (result.ok) {
+  //           // If the upload is successful, add the post with the S3 image URL
+  //           addPost({
+  //             variables: {
+  //               postText: TextChecker(postText),
+  //               postImage: uploadFilename,
+  //               tags
+  //             }
+  //           })
+  //           setfile("")
+  //         } else {
+  //           console.error("Failed to upload image to S3")
+  //         }
+  //       }
+  //     )
+  //   }
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    fileData && file && fileUpdate()
-    !fileData &&
-      addPost({
-        variables: {
-          postText: TextChecker(postText),
-          tags
-        }
-      })
+    addPost({
+      variables: {
+        postText: TextChecker(postText),
+        tags
+      }
+    })
     setPopup(false)
   }
 
+  console.log(file)
   // text editor
   return (
     <IonModal onDidDismiss={() => setPopup(false)} isOpen={popup}>
@@ -224,7 +240,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form onSubmit={handleSubmit} className="">
+      <form onSubmit={handleSubmit} className="overflow-y-auto">
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
@@ -238,12 +254,15 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           <TextEditor postText={postText} setPostText={setPostText} />
 
           {file ? (
-            <img src={file} className="post-image-preview" />
+            <img
+              src={URL.createObjectURL(file)}
+              className="post-image-preview mt-16"
+            />
           ) : (
             <div className="mt-20 flex justify-center items-center">
               <label
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={handleImageDrop}
+                // onDrop={handleImageDrop}
                 htmlFor="post-image"
                 className="flex flex-col items-center"
               >
@@ -259,7 +278,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
                 type="file"
                 ref={imgfile}
                 hidden
-                onChange={handleChangeImage}
+                onChange={(e) => setFile(e.target.files[0])}
                 id="post-image"
               />
             </div>
