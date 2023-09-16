@@ -18,8 +18,7 @@ export const GoogleAuth = ({ setauth }) => {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
           if (res?.data.isFirstLogin) {
-            console.log("isFirstLogin")
-            setauth({ state: "welcomeForm" })
+            localStorage.setItem("newUser", "true")
           } else {
             window.innerWidth < 768
               ? window.location.replace("/home")
