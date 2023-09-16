@@ -65,6 +65,7 @@ const SpaceForm = ({ setIsOpen }) => {
               }
             }
           )
+          console.log(res, "file added successfully")
         }
 
         present({
