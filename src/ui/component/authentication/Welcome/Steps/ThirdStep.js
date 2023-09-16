@@ -1,32 +1,8 @@
-import React, { useState, useContext } from "react"
-import {
-  IonGrid,
-  IonText,
-  IonButton,
-  IonHeader,
-  IonContent,
-  IonNavLink,
-  IonCheckbox,
-  IonToolbar,
-  IonTitle,
-  IonRow,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonList,
-  IonSearchbar,
-  IonModal
-} from "@ionic/react"
-import SecondStep from "./SecondStep"
-import Indicators from "./Indicators"
-import FourthStep from "./FourthStep"
-import { authInstance } from "../../../../../api/axiosInstance"
+import React, { useContext } from "react"
+import { IonGrid, IonText, IonCheckbox, IonRow, IonInput } from "@ionic/react"
 import { WelcomeData } from ".."
-import axios from "axios"
 
 const ThirdStep = () => {
-  let [results, setResults] = useState([])
-  const [searchInput, setSearchInput] = useState(false)
   const {
     data: QuestionData,
     setWelcomeFormdata,
@@ -35,7 +11,6 @@ const ThirdStep = () => {
 
   const SecondQuestion = QuestionData.getAllQuestions.questions[1].text,
     Questionoptions = QuestionData.getAllQuestions.questions[1].options
-
   const handleclick = (e) => {
     const data = e.target.value
     if (data === welcomeFormdata.userStatus) {
@@ -43,10 +18,7 @@ const ThirdStep = () => {
     } else {
       setWelcomeFormdata({ ...welcomeFormdata, userStatus: data })
     }
-
-    console.log(welcomeFormdata)
   }
-
   return (
     <div>
       <div>
