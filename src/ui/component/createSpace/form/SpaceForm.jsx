@@ -52,9 +52,8 @@ const SpaceForm = ({ setIsOpen }) => {
       } else {
         // SPACE CREATING SUCCESSFUL
         setRedirecting(true)
-        console.log(data, "new space data aayoo")
+
         if (file) {
-          console.log("file foudndd", file)
           formData.append("image", file[0])
           const res = await axios.post(
             spaceServer +
@@ -66,8 +65,6 @@ const SpaceForm = ({ setIsOpen }) => {
               }
             }
           )
-
-          console.log(res, "file")
         }
 
         present({

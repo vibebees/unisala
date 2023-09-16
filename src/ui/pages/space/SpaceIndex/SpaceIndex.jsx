@@ -34,7 +34,6 @@ const SpaceIndex = () => {
   })
   const { getOwnSpaceCategory } = yourSpaceData || {}
 
-  console.log(yourSpaceData)
   const { data: spaceNewsFeed } = useQuery(GenerateSpaceNewsFeed, {
     variables: { limit: 100, page: 0 },
     context: { server: USER_SERVICE_GQL }
