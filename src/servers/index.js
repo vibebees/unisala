@@ -7,7 +7,7 @@ module.exports = (() => {
       messageSocketAddress: "ws://localhost:2224",
       userServiceAddress: "http://localhost:4444",
       callSocketAddress: "ws://localhost:4445",
-      spaceAddress: "http://localhost:4444/space"
+      spaceAddress: "http://localhost:4444/user/space"
     }
   }
   if (config.NODE_ENV === "TEST") {
