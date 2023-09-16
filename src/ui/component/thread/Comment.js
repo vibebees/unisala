@@ -36,7 +36,7 @@ function Comment({ comment, postId, parentId }) {
   const [editable, setEditable] = useState(false)
   // username of current visited profile
   const profileUsername = useParams().username
-  console.log(profileUsername, "name")
+
   const { user: loggedinUser } = useSelector((state) => state.userProfile)
 
   const [deleteComment] = useMutation(DeleteComment, {
@@ -141,7 +141,7 @@ function Comment({ comment, postId, parentId }) {
               </IonButton>
             </div>
           ) : (
-            <p>{commentText}</p>
+            <p dangerouslySetInnerHTML={{ __html: commentText }}></p>
           )}
         </div>
 

@@ -27,7 +27,7 @@ function ShowMore({ postId, parentId, user, setRefetchPosts }) {
         fill="clear"
         color="primary"
         size="small"
-        style={{ margin: "1rem 0 0 5rem" }}
+        style={{ margin: "2rem 0 0 5rem" }}
         onClick={() => {
           setShowMore((state) => !state)
           getCommentList({

@@ -25,7 +25,7 @@ export const screenGreaterThan1000 = ({ title, topSpaces }) => {
         }}
       >
         {title === "Top Spaces" && <CreateSpace />}
-        <IonCard className="">
+        <IonCard className="min-w-[250px]">
           <IonText color="dark">
             <h6 className="text-center my-2 font-semibold"> {title}</h6>
           </IonText>

@@ -71,6 +71,8 @@ const SpaceHeader = ({ spaceDetails }) => {
       }
     }
   })
+
+  console.log(spaceDetails.image)
   return (
     <IonCard className="profile-header">
       <IonCardHeader className="ion-no-padding">

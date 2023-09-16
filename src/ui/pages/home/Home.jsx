@@ -22,7 +22,7 @@ import WelcomeSteps from "../../component/authentication/Welcome"
 export const Home = () => {
   useDocTitle("Unisala")
   const { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
-    variables: { limit: 6 },
+    variables: { limit: 4 },
     context: { server: USER_SERVICE_GQL }
   })
 

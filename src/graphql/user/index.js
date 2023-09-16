@@ -807,7 +807,6 @@ export const AddComment = gql`
             picture
             username
           }
-          tags
         }
       }
     }
@@ -894,6 +893,55 @@ export const AddComment = gql`
           description
           user {
             _id
+          }
+        }
+      }
+    }
+  `,
+  GetOwnSpace = gql`
+    query GetOwnSpace($limit: Int, $page: Int) {
+      getOwnSpaceCategory(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          user {
+            username
+            _id
+          }
+        }
+      }
+    }
+  `,
+  GenerateSpaceNewsFeed = gql`
+    query GenerateSpaceNewsFeed($limit: Int, $page: Int) {
+      generateSpaceNewsFeedSystem(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          tags {
+            _id
+            name
+          }
+          user {
+            _id
+            firstName
+            lastName
+            picture
+            username
           }
         }
       }

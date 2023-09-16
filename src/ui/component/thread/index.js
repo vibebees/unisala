@@ -38,8 +38,11 @@ const Thread = ({ thread, refetch }) => {
     upVoted,
     postImage,
     saved,
-    user
+    user,
+    tags
   } = thread
+
+  console.log(thread)
 
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
@@ -129,38 +132,43 @@ const Thread = ({ thread, refetch }) => {
   })
 
   return (
-    <IonCard className="thread relative">
-      <Link to={`/@/${username}`}>
-        <div className="thread-header">
-          <div className="thread_profile-pic">
-            <Avatar profilePic={profilePic} username={firstName + lastName} />
-          </div>
-          <div className="thread_userdetails">
-            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
-            <div className="threads_username">
-              <p>@{username}</p>
-              <p className="threads_date">{date.toString().slice(0, 10)}</p>
+    <IonCard className="thread relative ">
+      <div className="flex justify-start space-x-6">
+        <Link to={`/@/${username}`}>
+          <div className="thread-header">
+            <div className="thread_profile-pic">
+              <Avatar profilePic={profilePic} username={firstName + lastName} />
+            </div>
+            <div className="thread_userdetails">
+              <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
+              <div className="threads_username">
+                <p>@{username}</p>
+                <p className="threads_date">{date.toString().slice(0, 10)}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+
+        {tags?.length > 0 && (
+          <Link to={`/space/${tags[0].name}`}>
+            <button className="outline outline-2 px-1 text-xs">{`${tags[0]?.name?.substring(
+              0,
+              25
+            )} ${tags[0]?.name?.length > 25 ? "..." : ""}`}</button>
+          </Link>
+        )}
+      </div>
+
       <div className="thread_content">
         <div className="thread_comment">
           {editable ? (
             <div>
-              {/* <textarea
-                name=""
-                className="w-2/3  outline-none resize-none border-b-2 border-black"
-                onChange={handleChange}
-              >
-                {postText}
-              </textarea> */}
               <ReactQuill
                 theme="snow"
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-48 mb-8 text-black"
+                className="h-48 mb-10"
               />
               <br />
 
