@@ -15,7 +15,7 @@
   overflow: hidden;
 }
 
-.thread_profile-pic > img {
+.thread_profile-pic>img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -55,7 +55,7 @@
   color: #4e4e4e;
 }
 
-.thread_image > img {
+.thread_image>img {
   width: 100%;
   max-width: 400px;
   height: auto;
@@ -71,4 +71,11 @@
 
 .comment_thread {
   margin: 1rem 0 0 3rem;
+}
+
+.searchbar-input {
+  font-size: 14px !important;
+  box-shadow: none !important;
+  border: 1px solid #cccccc84 !important;
+  border-radius: 8px !important;
 }

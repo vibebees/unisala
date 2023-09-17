@@ -6,7 +6,7 @@ import "./auth.css"
 import { useScript } from "../../../hooks/useScript"
 import { userServer } from "../../../servers/endpoints"
 
-export const GoogleAuth = () => {
+export const GoogleAuth = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef()
   const onGoogleSignIn = (user) => {
@@ -17,9 +17,14 @@ export const GoogleAuth = () => {
         if (res.data.success) {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
-          window.innerWidth < 768
-            ? window.location.replace("/home")
-            : window.location.reload()
+          if (res?.data.isFirstLogin) {
+            console.log("isFirstLogin")
+            setauth({ state: "welcomeForm" })
+          } else {
+            window.innerWidth < 768
+              ? window.location.replace("/home")
+              : window.location.reload()
+          }
         }
         if (!res.data.success) {
           present({
@@ -35,7 +40,8 @@ export const GoogleAuth = () => {
 
   useScript("https://accounts.google.com/gsi/client", () => {
     window.google.accounts.id.initialize({
-      client_id: "1001592245381-rbpoecv2se6v3avlkisbbsfpl09cjfs4.apps.googleusercontent.com",
+      client_id:
+        "1001592245381-rbpoecv2se6v3avlkisbbsfpl09cjfs4.apps.googleusercontent.com",
       callback: onGoogleSignIn,
       auto_select: false
     })

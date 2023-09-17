@@ -35,7 +35,7 @@ export const UserNotVerified = ({ setauth, auth }) => {
             color: "primary",
             mode: "ios"
           })
-          setauth({ state: "SignUpVerification" })
+          setauth({ state: "SignUpVerification", email: email })
         }
       })
       .catch((err) => {

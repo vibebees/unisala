@@ -7,7 +7,7 @@ import { validateSignIn } from "../../../../utils/components/validate"
 import { useDispatch } from "react-redux"
 import { loginUser } from "../../../../store/action/authenticationAction"
 
-export const SignInForm = ({ setauth }) => {
+const SignInForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const [datacheck, setdatacheck] = useState(false)
   const [errors, seterrors] = useState({})
@@ -32,6 +32,7 @@ export const SignInForm = ({ setauth }) => {
       seterrors(validateSignIn(input))
       localStorage.setItem("address", input.email)
       setdatacheck(true)
+      console.log("enter pressed")
     },
     dispatch = useDispatch()
 
@@ -81,9 +82,14 @@ export const SignInForm = ({ setauth }) => {
           Forgot Password?
         </p>
       </div>
-      <IonButton disabled={loading} type="submit" expand="full" shape="round">
+      <button
+        disabled={loading}
+        type="submit"
+        onSubmit={submitHandler}
+        className="block text-center bg-blue-600 w-full outline-none text-sm text-white uppercase rounded-2xl tracking-wide py-2 text-opacity-90 hover:opacity-90"
+      >
         {loading ? <IonSpinner></IonSpinner> : "Login"}
-      </IonButton>
+      </button>
       <IonRow className="auth-change inline-flex">
         <p>Not Registered Yet?</p>
         <a

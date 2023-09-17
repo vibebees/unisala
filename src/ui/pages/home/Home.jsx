@@ -17,27 +17,28 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 import { CreateAPost } from "../../component/post/CreateAPost"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import "./Home.css"
+import WelcomeSteps from "../../component/authentication/Welcome"
 
 export const Home = () => {
   useDocTitle("Unisala")
-
   const { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
-    variables: { limit: 6 },
+    variables: { limit: 4 },
     context: { server: USER_SERVICE_GQL }
   })
 
   const { getTopActiveSpaces } = topSpaceData || {},
-  { user, loggedIn } = useSelector((store) => store?.userProfile || {}),
-  profileDataResult = useQuery(GetProfileCard, {
-    context: { server: USER_SERVICE_GQL },
-    variables: {
-      username: user?.username
-    },
-    skip: !loggedIn || !user?.username
-  }),
-   profileData = profileDataResult?.data || null,
-  [activeProfile, setActiveProfile] = useState(false),
+    { user, loggedIn } = useSelector((store) => store?.userProfile || {}),
+    profileDataResult = useQuery(GetProfileCard, {
+      context: { server: USER_SERVICE_GQL },
+      variables: {
+        username: user?.username
+      },
+      skip: !loggedIn || !user?.username
+    }),
+    profileData = profileDataResult?.data || null,
+    [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
+    [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
     views = {
       greaterThan1000: screenGreaterThan1000(),
       greaterThan768: screensMoreThan768({
@@ -101,6 +102,7 @@ export const Home = () => {
             {loggedIn ? <HomeFeed userInfo={user} /> : <UnisalaIntro />}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
+          {loggedIn && newUser && <WelcomeSteps setNewUser={setNewUser} />}
         </IonRow>
       </IonGrid>
     </IonContent>

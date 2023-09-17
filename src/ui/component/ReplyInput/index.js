@@ -7,6 +7,7 @@ import { AddComment, GetCommentList } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
 import "./index.css"
+import ReactQuill from "react-quill"
 
 function ReplyInput({ setReply, postId, isReply, parentId }) {
   const { user } = useSelector((state) => state.userProfile)
@@ -91,7 +92,7 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
         <Avatar username={user.username} profilePic={user.profilePic} />
       </div>
       <div className="review-text_div">
-        <IonTextarea
+        {/* <IonTextarea
           onIonChange={(e) => {
             setCommentText(e.target.value)
           }}
@@ -99,6 +100,14 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
           type="text"
           className="review-text"
           placeholder="Give your opinion"
+        /> */}
+        <ReactQuill
+          theme="snow"
+          className="h-32 text-black w-full"
+          onChange={(e) => {
+            setCommentText(e)
+          }}
+          value={commentText}
         />
         <button type="submit" className="reply-text_button">
           <IonIcon icon={sendOutline} />

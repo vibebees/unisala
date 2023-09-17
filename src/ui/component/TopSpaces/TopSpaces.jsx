@@ -25,13 +25,6 @@ const TopSpaces = ({ topSpaces }) => {
             </IonAvatar>
             <IonLabel className="ion-text-wrap">
               <h2 className="capitalize">{item.name}</h2>
-              <p
-                style={{
-                  margin: 0
-                }}
-              >
-                {item?.location}
-              </p>
             </IonLabel>
           </IonItem>
         </Link>

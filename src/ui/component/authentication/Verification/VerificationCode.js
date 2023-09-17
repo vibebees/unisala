@@ -10,30 +10,29 @@ const VerificationCode = ({ verify, email, loading, HandleChange, input }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
+    verify()
   }
 
   const receiveCode = () => {
-    axios
-      .post(userServer + `/sendVerficationMail`, { email })
-      .then((res) => {
-        if (res.data.success) {
-          present({
-            duration: 3000,
-            message: res.data.message,
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-        }
-      })
+    axios.post(userServer + `/sendVerficationMail`, { email }).then((res) => {
+      if (res.data.success) {
+        present({
+          duration: 3000,
+          message: res.data.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
+    })
 
-      present({
-        duration: 3000,
-        message: "new code has been sent to your email",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
+    present({
+      duration: 3000,
+      message: "new code has been sent to your email",
+      buttons: [{ text: "X", handler: () => dismiss() }],
+      color: "primary",
+      mode: "ios"
+    })
   }
 
   return (
@@ -55,16 +54,14 @@ const VerificationCode = ({ verify, email, loading, HandleChange, input }) => {
           value={input?.verificationCode}
         />
       </div>
-      <IonButton
+      <button
         disabled={loading}
         type="submit"
-        className="ion-margin-top"
-        expand="full"
-        shape="round"
-        onClick={verify}
+        onSubmit={verify}
+        className="block mt-5 text-center bg-blue-600 w-full outline-none text-sm text-white uppercase rounded-2xl tracking-wide py-2 text-opacity-90 hover:opacity-90"
       >
         {loading ? <IonSpinner></IonSpinner> : "Next"}
-      </IonButton>
+      </button>
       <IonText color="primary" className="auth-change">
         <p
           onClick={() => {

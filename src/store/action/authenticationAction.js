@@ -12,8 +12,11 @@ import {
   USER_LOGIN_ERROR,
   USER_REGISTRATION
 } from "./types"
-import {universityServer, userServer} from "../../servers/endpoints"
-import {UNI_SERV_SIGNED_URL, USER_SERV_SIGNED_URL} from "../types/userActivity"
+import { universityServer, userServer } from "../../servers/endpoints"
+import {
+  UNI_SERV_SIGNED_URL,
+  USER_SERV_SIGNED_URL
+} from "../types/userActivity"
 
 export const loginUser = ({
   userServer,
@@ -24,7 +27,6 @@ export const loginUser = ({
   setauth
 }) => {
   return (dispatch) => {
-
     axios
       .post(userServer + `/login`, input)
       .then((res) => {
@@ -38,16 +40,17 @@ export const loginUser = ({
             ? window.location.replace("/home")
             : window.location.reload()
         }
+
         if (!res.data.success) {
           present({
             duration: 3000,
             message: res.data.message,
-            buttons: [{text: "X", handler: () => dismiss()}],
+            buttons: [{ text: "X", handler: () => dismiss() }],
             color: "primary",
             mode: "ios"
           })
           if (res.data.status === 302) {
-            setauth({state: "userNotVerified", email: input.email})
+            setauth({ state: "userNotVerified", email: input.email })
           }
         }
       })
@@ -56,12 +59,12 @@ export const loginUser = ({
         present({
           duration: 3000,
           message: error.message,
-          buttons: [{text: "X", handler: () => dismiss()}],
+          buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
         if (error.status === 302) {
-          setauth({state: "userNotVerified", email: input.email})
+          setauth({ state: "userNotVerified", email: input.email })
         }
       })
   }
@@ -83,7 +86,8 @@ export const registerUser = ({
         setsave(false)
         if (res.data.success === true) {
           setdatacheck(false)
-          setauth({state: "SignUpVerification", email: input.email})
+          console.log(input)
+          setauth({ state: "SignUpVerification", email: input.email })
           dispatch({
             type: USER_REGISTRATION,
             payload: res
@@ -93,7 +97,7 @@ export const registerUser = ({
           present({
             duration: 3000,
             message: res.data.message,
-            buttons: [{text: "X", handler: () => dismiss()}],
+            buttons: [{ text: "X", handler: () => dismiss() }],
             color: "primary",
             mode: "ios"
           })
@@ -104,7 +108,7 @@ export const registerUser = ({
         present({
           duration: 3000,
           message: "Something went wrong: 500",
-          buttons: [{text: "X", handler: () => dismiss()}],
+          buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
@@ -285,8 +289,7 @@ export const registerUser = ({
 // }
 
 export const getPresingedUrl = (type) => {
-  let
-    serviceToCall = null,
+  let serviceToCall = null,
     serviceThatSigned
   if (type === "UNI") {
     serviceToCall = universityServer
@@ -294,7 +297,6 @@ export const getPresingedUrl = (type) => {
   } else {
     serviceToCall = userServer
     serviceThatSigned = USER_SERV_SIGNED_URL
-
   }
   return async (dispatch) => {
     await axios

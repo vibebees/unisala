@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router"
 import ProtectedRoute from "../../utils/lib/protectedRoute"
 import { StudyAbroadRoadmap } from "../pages/roadmap"
 import PreLoader from "./preloader"
+const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
 const HomePage = lazy(() => import("../pages/home"))
 const ProfilePage = lazy(() => import("../pages/profilePage"))
@@ -30,9 +31,14 @@ const messagingRoutes = () => (
 const spaceRoutes = () => (
   <>
     <ProtectedRoute>
-      <Route path="/space/:category" exact>
-        <SpacePage />
-      </Route>
+      <Switch>
+        <Route path="/space" exact>
+          <SpaceIndex />
+        </Route>
+        <Route path="/space/:category" exact>
+          <SpacePage />
+        </Route>
+      </Switch>
     </ProtectedRoute>
   </>
 )
@@ -82,7 +88,7 @@ export const PageRoute = () => (
         <StudyAbroadRoadmap />
       </Route>
 
-      <Route path="" exact>
+      <Route path="*" exact>
         <PageNotFound />
       </Route>
     </Suspense>

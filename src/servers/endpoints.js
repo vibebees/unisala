@@ -22,13 +22,14 @@ const config = require("./config"),
     universityServiceAddress,
     messageSocketAddress,
     userServiceAddress,
-    callSocketAddress
+    callSocketAddress,
+    spaceAddress
   } = urls,
   getNewToken = async () => {
     try {
-      const { data } = await axios.post(userServiceAddress + "/refreshToken",
-        { refreshToken: localStorage.getItem("refreshToken") }
-      )
+      const { data } = await axios.post(userServiceAddress + "/refreshToken", {
+        refreshToken: localStorage.getItem("refreshToken")
+      })
       if (!data.success) {
         localStorage.removeItem("refreshToken")
         localStorage.removeItem("accessToken")
@@ -119,4 +120,5 @@ export const client = new ApolloClient({
   callSocket = () => io(callSocketAddress),
   userServer = userServiceAddress,
   messageServer = messagingServiceAddress,
-  universityServer = universityServiceAddress
+  universityServer = universityServiceAddress,
+  spaceServer = spaceAddress

@@ -152,7 +152,7 @@ export const AddComment = gql`
   `,
   EditProfile = gql`
     mutation editProfile(
-      $profilePicture: String
+      $picture: String
       $coverPicture: String
       $username: String!
       $firstName: String!
@@ -160,9 +160,13 @@ export const AddComment = gql`
       $location: String
       $oneLinerBio: String
       $birthday: String
+      $interestedSubjects: [ID]
+      $userStatus: String
+      $studyLevel: String
+      $interestedUni: [interestedUniversity]
     ) {
       editProfile(
-        profilePicture: $profilePicture
+        picture: $picture
         coverPicture: $coverPicture
         username: $username
         firstName: $firstName
@@ -170,6 +174,10 @@ export const AddComment = gql`
         location: $location
         oneLinerBio: $oneLinerBio
         birthday: $birthday
+        interestedSubjects: $interestedSubjects
+        userStatus: $userStatus
+        studyLevel: $studyLevel
+        interestedUni: $interestedUni
       ) {
         status {
           success
@@ -370,7 +378,6 @@ export const AddComment = gql`
           upVoteCount
           postCommentsCount
           userId # Use userId instead of user
-
           user {
             _id
             firstName
@@ -800,7 +807,6 @@ export const AddComment = gql`
             picture
             username
           }
-          tags
         }
       }
     }
@@ -842,6 +848,26 @@ export const AddComment = gql`
       }
     }
   `,
+  GetAllQuestions = gql`
+    query {
+      getAllQuestions {
+        status {
+          success
+          message
+        }
+        questions {
+          text
+          type
+          options {
+            key
+            value
+          }
+          qnsNumber
+          nextQuestion
+        }
+      }
+    }
+  `,
   EditSpace = gql`
     mutation editSpaceCategoryById(
       $id: ID!
@@ -867,6 +893,55 @@ export const AddComment = gql`
           description
           user {
             _id
+          }
+        }
+      }
+    }
+  `,
+  GetOwnSpace = gql`
+    query GetOwnSpace($limit: Int, $page: Int) {
+      getOwnSpaceCategory(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          user {
+            username
+            _id
+          }
+        }
+      }
+    }
+  `,
+  GenerateSpaceNewsFeed = gql`
+    query GenerateSpaceNewsFeed($limit: Int, $page: Int) {
+      generateSpaceNewsFeedSystem(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          tags {
+            _id
+            name
+          }
+          user {
+            _id
+            firstName
+            lastName
+            picture
+            username
           }
         }
       }

@@ -40,6 +40,7 @@ export const SignUpForm = ({ setauth }) => {
   useEffect(() => {
     if (Object.keys(errors).length === 0 && datacheck) {
       setsave(true)
+      localStorage.setItem("email", input.email)
       dispatch(
         registerUser({
           userServer,
@@ -110,9 +111,13 @@ export const SignUpForm = ({ setauth }) => {
           Forgot Password?
         </p>
       </div>
-      <IonButton disabled={save} type="submit" expand="full" shape="round">
+      <button
+        type="submit"
+        onSubmit={submitHandler}
+        className="block text-center bg-blue-600 w-full outline-none text-sm text-white uppercase rounded-2xl tracking-wide py-2 text-opacity-90 hover:opacity-90"
+      >
         {save ? <IonSpinner></IonSpinner> : "Register"}
-      </IonButton>
+      </button>
       <IonRow className="auth-change inline-flex">
         <p>Already a member?</p>
         <a
