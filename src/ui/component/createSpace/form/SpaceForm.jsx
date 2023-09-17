@@ -13,7 +13,7 @@ import { useMutation } from "@apollo/client"
 import { AddSpaceCategory } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { useHistory } from "react-router"
-import { imageOutline } from "ionicons/icons"
+import { closeOutline, imageOutline } from "ionicons/icons"
 import { userServer } from "../../../../servers/endpoints"
 import axios from "axios"
 const SpaceForm = ({ setIsOpen }) => {
@@ -146,11 +146,20 @@ const SpaceForm = ({ setIsOpen }) => {
       </IonRow>
 
       {file ? (
-        <img
-          src={URL.createObjectURL(file[0])}
-          alt=""
-          className="aspect-video mt-4"
-        />
+        <div className="relative">
+          <img
+            src={URL.createObjectURL(file[0])}
+            alt=""
+            className="post-image-preview aspect-video mt-4"
+          />
+          <button onClick={() => setFile(null)}>
+            <IonIcon
+              className="absolute -top-3 text-2xl right-1"
+              color="dark"
+              icon={closeOutline}
+            />
+          </button>
+        </div>
       ) : (
         <IonRow>
           <label

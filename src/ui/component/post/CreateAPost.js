@@ -15,7 +15,7 @@ import {
   IonButtons,
   useIonToast
 } from "@ionic/react"
-import { imageOutline } from "ionicons/icons"
+import { closeOutline, imageOutline } from "ionicons/icons"
 import {
   AddPost,
   GetAllPostBySpaceCategoryID,
@@ -99,7 +99,6 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     },
 
     onCompleted: async (data) => {
-      console.log(data)
       if (file) {
         formData.append("image", file)
         const res = await axios.post(
@@ -228,7 +227,6 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     setPopup(false)
   }
 
-  console.log(file)
   // text editor
   return (
     <IonModal onDidDismiss={() => setPopup(false)} isOpen={popup}>
@@ -254,10 +252,20 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           <TextEditor postText={postText} setPostText={setPostText} />
 
           {file ? (
-            <img
-              src={URL.createObjectURL(file)}
-              className="post-image-preview mt-16"
-            />
+            <div className="relative">
+              <img
+                src={URL.createObjectURL(file)}
+                className="post-image-preview mt-16"
+              />
+
+              <button onClick={() => setFile(null)}>
+                <IonIcon
+                  icon={closeOutline}
+                  color="dark"
+                  className="absolute right-1  text-2xl -top-3 "
+                />
+              </button>
+            </div>
           ) : (
             <div className="mt-20 flex justify-center items-center">
               <label
