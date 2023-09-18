@@ -42,8 +42,6 @@ const Thread = ({ thread, refetch }) => {
     tags
   } = thread
 
-  console.log(thread)
-
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
