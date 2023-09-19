@@ -29,6 +29,7 @@ import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
+import PageNotFound from "../../PageNotFound"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -45,7 +46,7 @@ const Thread = ({ thread, refetch }) => {
     postImage = "",
     saved,
     user = {}
-  } = thread
+  } = thread || {}
 
   // Null check added here:
   const {
@@ -140,8 +141,10 @@ const Thread = ({ thread, refetch }) => {
     }
   })
 
-  return (
-    <div className="max-w-2xl w-full mx-auto mb-10">
+return (
+    thread === null
+    ? <PageNotFound/>
+    : <div className="max-w-2xl w-full mx-auto mb-10">
       <IonCard className=" relative mb-0 pt-4 pb-6 ">
         <Link to={`/@/${username}`} className="px-4">
           <div className="thread-header">
