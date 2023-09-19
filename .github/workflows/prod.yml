@@ -30,7 +30,7 @@ jobs:
         with:
           host: "43.204.142.210"
           username: "ec2-user"
-          key: ${{ secrets.P_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.P_SSH_PRIVATE_KEY_FOR_RELEASE }}
           port: 22
           source: "build/*"
           target: "~/unisala-web"
@@ -40,7 +40,7 @@ jobs:
         with:
           host: "43.204.142.210"
           username: "ec2-user"
-          key: ${{ secrets.P_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.P_SSH_PRIVATE_KEY_FOR_RELEASE }}
           port: 22
           script: |
             cd unisala-web/build
@@ -71,7 +71,7 @@ jobs:
         with:
           host: "35.154.130.113"
           username: "ec2-user"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.P_SSH_PRIVATE_KEY }}
           port: 22
           source: "build/*"
           target: "~/unisala-web"
@@ -81,7 +81,7 @@ jobs:
         with:
           host: "35.154.130.113"
           username: "ec2-user"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.P_SSH_PRIVATE_KEY }}
           port: 22
           script: |
             cd unisala-web/build
