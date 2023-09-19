@@ -41,14 +41,19 @@ const Thread = ({ thread, refetch }) => {
     upVoteCount = 0,
     comments = [],
     postCommentsCount = 0,
-    upVoted = false,
+    upVoted,
     postImage = "",
-    saved = false,
+    saved,
     user = {}
   } = thread
 
   // Null check added here:
-  const { firstName = "", lastName = "", username = "", picture = "" } = user || {}
+  const {
+    firstName = "",
+    lastName = "",
+    username = "",
+    picture = ""
+  } = user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
   const [image, setImage] = useState(postImage)
@@ -135,9 +140,6 @@ const Thread = ({ thread, refetch }) => {
     }
   })
 
-  console.log(username, "username")
-  console.log(firstName)
-
   return (
     <div className="max-w-2xl w-full mx-auto mb-10">
       <IonCard className=" relative mb-0 pt-4 pb-6 ">
@@ -160,13 +162,6 @@ const Thread = ({ thread, refetch }) => {
           <div className="thread_comment">
             {editable ? (
               <div>
-                {/* <textarea
-                name=""
-                className="w-2/3  outline-none resize-none border-b-2 border-black"
-                onChange={handleChange}
-              >
-                {postText}
-              </textarea> */}
                 <ReactQuill
                   theme="snow"
                   onChange={handleChange}

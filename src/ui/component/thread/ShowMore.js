@@ -39,7 +39,6 @@ function ShowMore({
   if (loading) return <IonSpinner />
 
   if (singlePost) {
-    console.log("singlePost is right")
     return (
       <>
         {data?.commentList?.comments?.map((reply, i) => {

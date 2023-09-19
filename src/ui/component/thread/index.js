@@ -240,7 +240,9 @@ const Thread = ({ thread, refetch }) => {
           </div>
         </div>
       )}
-      {postCommentsCount > 0 && <ShowMore postId={_id} user={user} />}
+      {postCommentsCount > 0 && (
+        <ShowMore postId={_id} user={user} isReply={false} />
+      )}
     </IonCard>
   )
 }

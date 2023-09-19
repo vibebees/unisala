@@ -89,11 +89,9 @@ function Comment({ comment, postId, parentId, singlePost }) {
     }
   })
 
-  console.log(singlePost, "singlePost")
-
   return (
     <div className=" relative  mt-2 ">
-      <div className=" mx-14 pt-3 pl-4 rounded-xl pb-2 relative bg-neutral-200 bg-opacity-60 commentShadow ">
+      <div className=" mx-14 max-md:mx-1 pt-3 pl-4 rounded-xl pb-2 relative bg-neutral-200 bg-opacity-60 commentShadow ">
         <Link to={`/@/${username}`}>
           <div className="thread-header !gap-2">
             <div className="thread_profile-pic scale-75">
@@ -171,7 +169,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
         {reply && (
           <ReplyInput
             setReply={setReply}
-            parentId={_id}
+            parentId={parentId ?? _id}
             postId={postId}
             isReply={true}
           />
@@ -220,7 +218,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
           View all comments
         </Link>
       )}
-      <div className="ml-20 border-l-2 border-opacity-30 border-neutral-400">
+      <div className="ml-20 max-md:ml-8 max-sm:ml-4 border-l-2 max-md:pl-12 max-sm:pl-0 border-opacity-30 border-neutral-400">
         {repliesCount > 0 && singlePost && (
           <ShowMore postId={postId} parentId={_id} singlePost={singlePost} />
         )}

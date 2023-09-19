@@ -91,6 +91,7 @@ export const AddComment = gql`
           postImage
           date
           upVoted
+          images
           upVoteCount
           user {
             _id
