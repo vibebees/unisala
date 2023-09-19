@@ -58,7 +58,7 @@ export const screenGreaterThan1000 = () => {
                     }
                 ].map((item, index) => {
                     return (
-                        <Link to={"/space/" + item?.name} key={index}>
+                        <Link to={"/university/" + item?.name} key={index}>
                             <IonItem
                                 style={{
                                     margin: "0px",

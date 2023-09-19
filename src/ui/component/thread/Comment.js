@@ -149,7 +149,10 @@ function Comment({ comment, postId, parentId, singlePost }) {
                 </IonButton>
               </div>
             ) : (
-              <p dangerouslySetInnerHTML={{ __html: commentText }} />
+              <p
+                className="text-sm"
+                dangerouslySetInnerHTML={{ __html: commentText }}
+              ></p>
             )}
           </div>
 
