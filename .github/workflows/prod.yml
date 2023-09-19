@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  deploy-to-first-server:
+  deploy-to-lg-server:
     if: github.ref == 'refs/heads/release'
     runs-on: ubuntu-latest
 
@@ -30,7 +30,7 @@ jobs:
         with:
           host: "43.204.142.210"
           username: "ec2-user"
-          key: ${{ secrets.P_SSH_PRIVATE_KEY_FOR_RELEASE }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_FOR_RELEASE }}
           port: 22
           source: "build/*"
           target: "~/unisala-web"
@@ -40,14 +40,14 @@ jobs:
         with:
           host: "43.204.142.210"
           username: "ec2-user"
-          key: ${{ secrets.P_SSH_PRIVATE_KEY_FOR_RELEASE }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_FOR_RELEASE }}
           port: 22
           script: |
             cd unisala-web/build
             sudo rm -rf /var/www/html/* 
             sudo cp -r * /var/www/html
 
-  deploy-to-lg-t3:
+  deploy-to-md-t3:
     if: github.ref == 'refs/heads/release'
     runs-on: ubuntu-latest
 
