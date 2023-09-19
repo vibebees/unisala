@@ -981,7 +981,11 @@ export const AddComment = gql`
           tags {
             _id
             name
-          }`,
+          }
+        }
+      }
+    }
+  `,
   GetUserRoadMapSummary = gql`
     query getUserRoadMapSummary($userId: String!) {
       getUserRoadMapSummary(userId: $userId) {
