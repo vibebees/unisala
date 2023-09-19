@@ -32,21 +32,23 @@ import "react-quill/dist/quill.snow.css"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
-  console.log(thread, "thread")
+
+  // Default values added here:
   const {
-    _id,
+    _id = "",
     date = new Date(),
-    postText,
-    upVoteCount,
-    comments,
+    postText = "",
+    upVoteCount = 0,
+    comments = [],
     postCommentsCount = 0,
     upVoted = false,
-    postImage,
+    postImage = "",
     saved = false,
-    user = null
+    user = {}
   } = thread
 
-  const { firstName, lastName, username, picture } = thread.user || {}
+  // Null check added here:
+  const { firstName = "", lastName = "", username = "", picture = "" } = user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
   const [image, setImage] = useState(postImage)
