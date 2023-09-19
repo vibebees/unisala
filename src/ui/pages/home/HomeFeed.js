@@ -17,7 +17,10 @@ const HomeFeed = ({userInfo}) => {
     <>
       <div style={{margin: "10px 0px 0px 0px"}}>
         {Array.isArray(data?.fetchMyNewsFeed) &&
-          data?.fetchMyNewsFeed.map((post, index) => {
+          data?.fetchMyNewsFeed?.map((post, index) => {
+            if (!post) {
+              return ""
+            }
             return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
                 <CourseCard

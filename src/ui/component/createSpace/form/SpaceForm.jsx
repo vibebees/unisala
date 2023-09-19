@@ -13,8 +13,8 @@ import { useMutation } from "@apollo/client"
 import { AddSpaceCategory } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { useHistory } from "react-router"
-import { imageOutline } from "ionicons/icons"
-import { spaceServer } from "../../../../servers/endpoints"
+import { closeOutline, imageOutline } from "ionicons/icons"
+import { userServer } from "../../../../servers/endpoints"
 import axios from "axios"
 const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
@@ -57,8 +57,8 @@ const SpaceForm = ({ setIsOpen }) => {
           console.log("file founddd", file)
           formData.append("image", file[0])
           const res = await axios.post(
-            spaceServer +
-              `/addSpaceCategoryImage/${data?.addSpaceCategory?.spaceCategory?._id}`,
+            userServer +
+              `/space/addSpaceCategoryImage/${data?.addSpaceCategory?.spaceCategory?._id}`,
             formData,
             {
               headers: {
@@ -146,11 +146,20 @@ const SpaceForm = ({ setIsOpen }) => {
       </IonRow>
 
       {file ? (
-        <img
-          src={URL.createObjectURL(file[0])}
-          alt=""
-          className="aspect-video mt-4"
-        />
+        <div className="relative">
+          <img
+            src={URL.createObjectURL(file[0])}
+            alt=""
+            className="post-image-preview aspect-video mt-4"
+          />
+          <button onClick={() => setFile(null)}>
+            <IonIcon
+              className="absolute -top-3 text-2xl right-1"
+              color="dark"
+              icon={closeOutline}
+            />
+          </button>
+        </div>
       ) : (
         <IonRow>
           <label

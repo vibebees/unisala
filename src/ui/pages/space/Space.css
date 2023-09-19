@@ -108,3 +108,11 @@
     background: #e8f1fa;
     overflow: hidden;
 }
+
+.background-cover {
+    width: 100%;
+    height: 250px;
+    /* Adjust based on your desired height */
+    background-size: cover;
+    background-position: center;
+}

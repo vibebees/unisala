@@ -775,6 +775,7 @@ export const AddComment = gql`
         saved
         date
         _id
+        images
         user {
           firstName
           lastName
