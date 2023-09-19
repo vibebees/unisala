@@ -17,7 +17,7 @@ const ThreadExpand = ({ htmlText, maxLines, _id }) => {
 
   return (
     <div>
-      <Link to={`thread/${_id}`}>
+      <Link to={`/thread/${_id}`}>
         <div dangerouslySetInnerHTML={{ __html: truncatedText }} />
       </Link>
       {isLongText && (

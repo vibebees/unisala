@@ -92,7 +92,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
   console.log(singlePost, "singlePost")
 
   return (
-    <div className=" relative   mt-2 ">
+    <div className=" relative  mt-2 ">
       <div className=" mx-14 pt-3 pl-4 rounded-xl pb-2 relative bg-neutral-200 bg-opacity-60 commentShadow ">
         <Link to={`/@/${username}`}>
           <div className="thread-header !gap-2">
@@ -149,7 +149,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
                 </IonButton>
               </div>
             ) : (
-              <p className="text-sm">{commentText}</p>
+              <p dangerouslySetInnerHTML={{ __html: commentText }} />
             )}
           </div>
 

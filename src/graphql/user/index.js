@@ -977,6 +977,13 @@ export const AddComment = gql`
           upVoteCount
           postCommentsCount
           upVoted
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+          }
           saved
           tags {
             _id

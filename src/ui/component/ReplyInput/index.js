@@ -87,11 +87,14 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
   }
 
   return (
-    <form className="reply-input_form pl-10 pr-8" onSubmit={submitReply}>
-      <div className="thread_profile-pic">
+    <form
+      className="reply-input_form  h-40  block   pl-10 pr-8"
+      onSubmit={submitReply}
+    >
+      <div className="thread_profile-pic  ">
         <Avatar username={user.username} profilePic={user.profilePic} />
       </div>
-      <div className="review-text_div">
+      <div className="review-text_div h-full ">
         {/* <IonTextarea
           onIonChange={(e) => {
             setCommentText(e.target.value)
@@ -103,7 +106,7 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
         /> */}
         <ReactQuill
           theme="snow"
-          className="h-32 text-black w-full"
+          className=" text-black h-full border-b-2 overflow-hidden w-full"
           onChange={(e) => {
             setCommentText(e)
           }}
