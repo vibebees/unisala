@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   IonGrid,
   IonRow,
   IonCol,
   IonContent,
   IonCard,
-  IonPage
+  IonPage,
+  IonIcon
 } from "@ionic/react"
 import "./Space.css"
-import { personCircle } from "ionicons/icons"
+import { personCircle, arrowUpOutline } from "ionicons/icons"
 import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
+import clsx from "clsx"
 import {
   GetProfileCard,
   GetSpaceCategory,
@@ -44,7 +46,7 @@ export const Spaces = () => {
   })
 
   const { getTopActiveSpaces } = topSpaceData || {}
-
+  const [showTopScrollbtn, setShowTopScrollbtn] = useState(false)
   const { user, loggedIn } = useSelector((store) => store?.userProfile),
     profileData =
       loggedIn &&
@@ -149,6 +151,7 @@ export const Spaces = () => {
               margin: "auto",
               minHeight: "calc(90vh)"
             }}
+            className="ThreadContainer"
           >
             <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
             {loggedIn && width >= 768 && (
@@ -175,6 +178,20 @@ export const Spaces = () => {
           </IonCol>
         </IonRow>
       </IonGrid>
+      <button
+        className={clsx(
+          "w-10 h-10 rounded-full hover:shadow-lg hover:bg-neutral-300 duration-200 transition-all ease-linear bg-neutral-200 grid place-content-center fixed right-10 bottom-6"
+        )}
+        onClick={() => {
+          let ThreadContainer = document.querySelector(".ThreadContainer")
+          ThreadContainer.scrollIntoView({ behavior: "smooth" })
+        }}
+      >
+        <IonIcon
+          icon={arrowUpOutline}
+          class="text-neutral-700 text-lg"
+        ></IonIcon>
+      </button>
     </IonContent>
   )
 }

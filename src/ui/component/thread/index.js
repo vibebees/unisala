@@ -9,12 +9,15 @@ import "./index.css"
 import ShowMore from "./ShowMore"
 import { Avatar } from "../Avatar"
 import { getImage } from "../../../servers/s3.configs"
+import ThreadExpand from "./ThreadExpand"
 import {
   create,
-  createOutline,
   ellipsisHorizontalOutline,
-  trash
+  trash,
+  chatbubbleOutline
 } from "ionicons/icons"
+import moment from "moment"
+
 import { useMutation } from "@apollo/client"
 import {
   DeletePost,
@@ -132,34 +135,23 @@ const Thread = ({ thread, refetch }) => {
   })
 
   return (
-    <IonCard className="thread relative ">
-      <div className="flex justify-start space-x-6">
-        <Link to={`/@/${username}`}>
-          <div className="thread-header">
-            <div className="thread_profile-pic">
-              <Avatar profilePic={profilePic} username={firstName + lastName} />
-            </div>
-            <div className="thread_userdetails">
-              <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
-              <div className="threads_username">
-                <p>@{username}</p>
-                <p className="threads_date">{date.toString().slice(0, 10)}</p>
-              </div>
+    <IonCard className=" relative pt-4 pb-6">
+      <Link to={`/@/${username}`} className="px-4">
+        <div className="thread-header">
+          <div className="thread_profile-pic">
+            <Avatar profilePic={profilePic} username={firstName + lastName} />
+          </div>
+          <div className="thread_userdetails">
+            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
+            <div className="threads_username">
+              <p>@{username}</p>
+
+              <p className="threads_date">{moment(date).fromNow()}</p>
             </div>
           </div>
-        </Link>
-
-        {tags?.length > 0 && (
-          <Link to={`/space/${tags[0].name}`}>
-            <button className="outline outline-2 px-1 text-xs">{`${tags[0]?.name?.substring(
-              0,
-              25
-            )} ${tags[0]?.name?.length > 25 ? "..." : ""}`}</button>
-          </Link>
-        )}
-      </div>
-
-      <div className="thread_content">
+        </div>
+      </Link>
+      <div className="thread_content !pl-16 pr-8">
         <div className="thread_comment">
           {editable ? (
             <div>
@@ -168,7 +160,7 @@ const Thread = ({ thread, refetch }) => {
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-48 mb-10"
+                className="h-48 mb-8  text-black"
               />
               <br />
 
@@ -196,7 +188,9 @@ const Thread = ({ thread, refetch }) => {
               </IonButton>
             </div>
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: postText }}></div>
+            <>
+              <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
+            </>
           )}
         </div>
         <div className="thread_image">{postImage && <img src={image} />}</div>

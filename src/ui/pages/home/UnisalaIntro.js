@@ -1,8 +1,26 @@
-import { IonCard, IonCardContent } from "@ionic/react"
+import { IonCard, IonCardContent, IonButton, IonText } from "@ionic/react"
+import roadmap from "./../../../assets/roadmap.png"
 
 function UnisalaIntro() {
   return (
     <div style={{ margin: "27px 0px 0px 0px" }}>
+      <IonCard className="mb-1 !">
+        <IonCardContent className="p-0 relative flex-column text-center">
+          <img src={roadmap} alt="roadmap" />
+          <div className="absolute w-full top-6  -right-7">
+            <h1 className="pt-1  !font-bold !text-neutral-700 !text-3xl  pb-05 black-text ">
+              Your roadmap to study abroad
+            </h1>
+            <br />
+            <div className="flex gap-4 w-full pr-28 justify-end ">
+              <button className="capitalize  wobble-hor-bottom  text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl">
+                starts here
+                <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
+              </button>
+            </div>
+          </div>
+        </IonCardContent>
+      </IonCard>
       <IonCard className="mb-1">
         <IonCardContent className="flex-column text-center">
           <h1 className="pt-1 pb-05 black-text">

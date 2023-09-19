@@ -14,17 +14,18 @@ import { useMutation } from "@apollo/client"
 import { AddPost, GetUserPost } from "../../../../graphql/user"
 import "react-quill/dist/quill.snow.css"
 import "./style.css"
-import ReactQuill from "react-quill"
+import TextEditor from "../../../../utils/components/TextEditor"
 
 export default function Discussion({ uniId }) {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const input = React.useRef()
   const [reply, setReply] = React.useState("")
+  const [tag, setTag] = React.useState("")
 
   const [submitUniReview] = useMutation(AddPost, {
     context: { server: "USER_SERVICE_GQL" },
-    variables: { unitId: uniId, postText: reply },
+    variables: { unitId: uniId, postText: reply, postTag: tag },
     onCompleted: (data) => {
       if (data?.addPost.status.success) {
         present({
@@ -131,39 +132,14 @@ export default function Discussion({ uniId }) {
               }}
               id="ReviewText_div"
             >
-              {/* <IonTextarea
-                ref={input}
-                onIonChange={(e) => {
-                  setReply(e.target.value)
-                }}
-                value={reply}
-                id="ReviewText"
-                style={{
-                  border: "1px solid #c4c4c4",
-                  borderRadius: "5px",
-                  margin: "0px"
-                }}
-                type="text"
-                className="border border-gray-400"
-                placeholder="Ask or Start a discussion."
-              /> */}
+              <div className="border w-10/12">
+                <TextEditor
+                  postText={reply}
+                  setPostText={setReply}
+                  setTag={setTag}
+                />
+              </div>
 
-            <ReactQuill
-              value={reply}
-              onChange={(value) => setReply(value)}
-              placeholder="Ask or Start a discussion."
-              theme="snow"
-              className="editor-school-review"
-              modules={{
-                toolbar: [
-                  [{ "header": "1" }, { "header": "2" }],
-                  ["bold", "italic", "underline", "strike"],
-                  [{ "list": "ordered"}, { "list": "bullet" }],
-                  ["link", "image"],
-                  ["clean"]
-                ]
-              }}
-            />
               <button
                 type="submit"
                 style={{

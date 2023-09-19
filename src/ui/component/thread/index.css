@@ -41,7 +41,8 @@
 
 .thread_content {
   margin-top: 0.2rem;
-  margin-left: 3.5rem;
+  padding-left: 3.5rem;
+
 }
 
 @media (max-width: 768px) {
