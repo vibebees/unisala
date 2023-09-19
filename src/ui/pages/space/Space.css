@@ -1,4 +1,4 @@
-.searchInput{
+.searchInput {
     background: #e8f1fa;
     height: 45px;
     border-radius: 10px;
@@ -10,27 +10,27 @@
     padding-left: 10px;
 }
 
-.searchInput::placeholder{
+.searchInput::placeholder {
     color: #7e7d7d !important;
 }
 
-.searchInput:focus{
+.searchInput:focus {
     outline: none;
 }
 
-.post-button{
+.post-button {
     cursor: pointer;
     border-radius: 5px;
     height: 30px;
     transition: 500ms;
 }
 
-.post-button:hover{
+.post-button:hover {
     background-color: #e8f1fa;
 }
 
 
-.notification-drop{
+.notification-drop {
     position: absolute;
     top: 100%;
     right: 0px;
@@ -40,13 +40,13 @@
     overflow: hidden;
 }
 
-.feed-sort{
+.feed-sort {
     display: flex;
-    gap:15px;
+    gap: 15px;
     overflow: auto;
 }
 
-.feed-sort div{
+.feed-sort div {
     padding: 5px 15px;
     border-radius: 5px;
     background: #e8f1fa;
@@ -54,17 +54,17 @@
     cursor: pointer;
 }
 
-.aside-profile{
-    width:250px;
+.aside-profile {
+    width: 250px;
     height: 70px;
     margin-bottom: 30px;
     position: relative;
-    background-image: linear-gradient( 135deg, #516472 50%, #97b0c7 50%);
+    background-image: linear-gradient(135deg, #516472 50%, #97b0c7 50%);
     display: flex;
     justify-content: center;
 }
 
-.aside-profile div{
+.aside-profile div {
     position: absolute;
     border-radius: 50%;
     border: 2px solid #fff;
@@ -73,7 +73,7 @@
     background: #e8f1fa;
 }
 
-.aside-profile-details{
+.aside-profile-details {
     margin-top: 40px;
     text-align: center;
     line-height: 25px;
@@ -81,25 +81,25 @@
     border-bottom: 1px solid #ddd;
 }
 
-.aside-profile-details h6{
+.aside-profile-details h6 {
     font-weight: 500;
 }
 
-.aside-profile-details p{
+.aside-profile-details p {
     font-size: 14px;
 }
 
-.post-button{
+.post-button {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.badges-card{
+.badges-card {
     max-width: 250px;
 }
 
-.user-profile-circle{
+.user-profile-circle {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -111,7 +111,8 @@
 
 .background-cover {
     width: 100%;
-    height: 250px;  /* Adjust based on your desired height */
+    height: 250px;
+    /* Adjust based on your desired height */
     background-size: cover;
     background-position: center;
 }

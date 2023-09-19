@@ -21,6 +21,7 @@ import { useMutation } from "@apollo/client"
 import { useHistory } from "react-router"
 import { useState } from "react"
 import UpdateSpaceForm from "../../component/updateSpace/UpdateSpaceForm"
+import SpaceHeaderImg from "../../../assets/space-header.jpg"
 const linearGradientStyle = {
   background: "linear-gradient(90deg, rgba(0,0,0) 20%, rgba(99,96,96,1) 62%)"
 }
@@ -74,10 +75,11 @@ const SpaceHeader = ({ spaceDetails }) => {
   return (
     <IonCard className="profile-header">
       <IonCardHeader className="ion-no-padding">
-      <div className="background-cover">
-      <img src={spaceDetails?.image} alt="" />
-      </div>
-
+        <img
+          className="w-full aspect-video"
+          src={spaceDetails?.image || SpaceHeaderImg}
+          alt=""
+        />
       </IonCardHeader>
 
       <div
