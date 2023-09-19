@@ -14,6 +14,7 @@ const Search = lazy(() => import("../pages/search"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 const SpacePage = lazy(() => import("../pages/space"))
+const SingleThread = lazy(() => import("../pages/thread"))
 
 const messagingRoutes = () => (
   <>
@@ -50,6 +51,10 @@ export const PageRoute = () => (
 
       <Route exact path="/university/:id">
         <UniversityPage />
+      </Route>
+
+      <Route exact path="/thread/:id">
+        <SingleThread />
       </Route>
 
       <Route path="/@/:username" exact>

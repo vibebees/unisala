@@ -1,14 +1,41 @@
-import { IonAvatar, IonCard, IonCardContent } from "@ionic/react"
+import { useState } from "react"
+import { IonAvatar, IonCard, IonCardContent, IonButton } from "@ionic/react"
 import { Avatar } from "../../../../component/Avatar"
 import { useQuery } from "@apollo/client"
 import { GetInterviewExperience } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import { on } from "events"
 
 export default function index({ unitId }) {
-  const { data } = useQuery(GetInterviewExperience, {
-    variables: { unitId, page: 1, pageSize: 10 },
+  const [interviewdata, setInterviewdata] = useState([])
+  const [page, setPage] = useState(1)
+  const { data, loading, fetchMore } = useQuery(GetInterviewExperience, {
+    variables: { unitId, page: 1, pageSize: 1 },
     context: { server: USER_SERVICE_GQL }
   })
+
+  const fetchMoreHandler = () => {
+    setPage(page + 1)
+    fetchMore({
+      variables: {
+        unitId: unitId,
+        page: page + 1,
+        pageSize: 1
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev
+        return Object.assign({}, prev, {
+          getInterviewExperience: {
+            ...prev.getInterviewExperience,
+            interviewExperience: [
+              ...prev.getInterviewExperience.interviewExperience,
+              ...fetchMoreResult.getInterviewExperience.interviewExperience
+            ]
+          }
+        })
+      }
+    })
+  }
 
   return (
     <IonCard
@@ -125,6 +152,12 @@ export default function index({ unitId }) {
               )
             }
           )}
+
+        <div className="flex justify-center pb-4">
+          <IonButton size="small" onClick={fetchMoreHandler}>
+            {loading ? "Loading" : "See More"}
+          </IonButton>
+        </div>
       </div>
     </IonCard>
   )

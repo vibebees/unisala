@@ -86,7 +86,7 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
   }
 
   return (
-    <form className="reply-input_form" onSubmit={submitReply}>
+    <form className="reply-input_form pl-10 pr-8" onSubmit={submitReply}>
       <div className="thread_profile-pic">
         <Avatar username={user.username} profilePic={user.profilePic} />
       </div>

@@ -77,6 +77,45 @@ export const AddComment = gql`
       }
     }
   `,
+  GetPostById = gql`
+    query getPostById($id: String!) {
+      getPostById(id: $id) {
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postText
+          postCommentsCount
+          postImage
+          date
+          upVoted
+          upVoteCount
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          comments {
+            _id
+            commentText
+            upVoted
+            upVoteCount
+            user {
+              _id
+              firstName
+              lastName
+              picture
+              username
+            }
+          }
+        }
+      }
+    }
+  `,
   EditPost = gql`
     mutation editPost($postId: String!, $postText: String, $postImage: String) {
       editPost(postId: $postId, postText: $postText, postImage: $postImage) {

@@ -12,10 +12,12 @@ import { getImage } from "../../../servers/s3.configs"
 import ThreadExpand from "./ThreadExpand"
 import {
   create,
-  createOutline,
   ellipsisHorizontalOutline,
-  trash
+  trash,
+  chatbubbleOutline
 } from "ionicons/icons"
+import moment from "moment"
+
 import { useMutation } from "@apollo/client"
 import {
   DeletePost,
@@ -130,8 +132,8 @@ const Thread = ({ thread, refetch }) => {
   })
 
   return (
-    <IonCard className="thread relative">
-      <Link to={`/@/${username}`}>
+    <IonCard className=" relative pt-4 pb-6">
+      <Link to={`/@/${username}`} className="px-4">
         <div className="thread-header">
           <div className="thread_profile-pic">
             <Avatar profilePic={profilePic} username={firstName + lastName} />
@@ -140,12 +142,13 @@ const Thread = ({ thread, refetch }) => {
             <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
             <div className="threads_username">
               <p>@{username}</p>
-              <p className="threads_date">{date.toString().slice(0, 10)}</p>
+
+              <p className="threads_date">{moment(date).fromNow()}</p>
             </div>
           </div>
         </div>
       </Link>
-      <div className="thread_content">
+      <div className="thread_content !pl-16 pr-8">
         <div className="thread_comment">
           {editable ? (
             <div>
@@ -161,7 +164,7 @@ const Thread = ({ thread, refetch }) => {
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-48 mb-8 text-black"
+                className="h-48 mb-8  text-black"
               />
               <br />
 
@@ -190,7 +193,7 @@ const Thread = ({ thread, refetch }) => {
             </div>
           ) : (
             <>
-              <ThreadExpand htmlText={postText} maxLines={8} />
+              <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
             </>
           )}
         </div>
