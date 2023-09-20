@@ -62,7 +62,7 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
       if (data?.editProfile?.status?.success) {
         present({
           duration: 3000,
-          message: "Thank you for the survey",
+          message: "Customizing your feed based on your profile!",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
