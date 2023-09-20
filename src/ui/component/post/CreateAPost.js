@@ -33,13 +33,14 @@ import "react-quill/dist/quill.snow.css"
 import TextEditor from "../../../utils/components/TextEditor"
 import axios from "axios"
 import { userServer } from "../../../servers/endpoints"
+import clsx from "clsx"
 export const CreateAPost = ({ setPopup, popup, tags }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
-  const [file, setFile] = useState(null)
-  const [fileData, setFileData] = useState("")
+  const [files, setFiles] = useState(null)
+
   const profilePic = user?.picture
   const formData = new FormData()
   const [addPost] = useMutation(AddPost, {
@@ -100,8 +101,8 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     },
 
     onCompleted: async (data) => {
-      if (file) {
-        formData.append("image", file)
+      if (files) {
+        formData.append("image", files[0])
         const res = await axios.post(
           userServer + `/post/addPostImage/${data.addPost.post._id}`,
           formData,
@@ -219,15 +220,32 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addPost({
-      variables: {
-        postText: TextChecker(postText),
-        tags
-      }
-    })
-    setPopup(false)
+
+    if (postText.length > 0 || files?.length > 0) {
+      addPost({
+        variables: {
+          postText: TextChecker(postText),
+          tags
+        }
+      })
+      setPopup(false)
+    } else {
+      present({
+        duration: 3000,
+        message: "Please include something to post",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
   }
 
+  const handleRemoveFile = (index) => {
+    const newFiles = Array.from(files)
+
+    newFiles.splice(index, 1)
+    setFiles(newFiles)
+  }
   // text editor
   return (
     <IonModal onDidDismiss={() => setPopup(false)} isOpen={popup}>
@@ -252,20 +270,29 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
 
           <TextEditor postText={postText} setPostText={setPostText} />
 
-          {file ? (
-            <div className="relative">
-              <img
-                src={URL.createObjectURL(file)}
-                className="post-image-preview mt-16"
-              />
-
-              <button onClick={() => setFile(null)}>
-                <IonIcon
-                  icon={closeOutline}
-                  color="dark"
-                  className="absolute right-1  text-2xl -top-3 "
-                />
-              </button>
+          {files?.length > 0 ? (
+            <div
+              className={clsx(
+                "grid gap-x-4 items-center justify-center",
+                files.length === 1 ? "grid-cols-1" : "grid-cols-2"
+              )}
+            >
+              {files.length > 0 &&
+                Array.from(files).map((file, i) => (
+                  <div className="relative mt-16" key={i}>
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="post-image-preview"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile(i)}
+                      className="absolute right-0 top-2 w-6 h-6 rounded-full bg-[#585C5F] flex items-center justify-center hover:bg-opacity-80"
+                    >
+                      <IonIcon icon={closeOutline} color="light" className="" />
+                    </button>
+                  </div>
+                ))}
             </div>
           ) : (
             <div className="mt-20 flex justify-center items-center">
@@ -286,8 +313,10 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
               <input
                 type="file"
                 ref={imgfile}
+                accept="image/*"
+                multiple
                 hidden
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={(e) => setFiles(e.target.files)}
                 id="post-image"
               />
             </div>
