@@ -40,7 +40,7 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }} className="ThreadContainer">
-        {allPosts?.posts.length === 0 && (
+        {allPosts?.posts?.length === 0 && (
           <StateMessage title="Be the first one to post in this space">
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>
