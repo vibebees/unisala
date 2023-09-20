@@ -196,6 +196,7 @@ li {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
   }
+
   .grid-3 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -207,6 +208,7 @@ li {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
   .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -221,21 +223,19 @@ li {
   overflow: auto;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
+
+.threadScroll::-webkit-scrollbar {
+  width: 5px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
+.threadScroll::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
+.threadScroll::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.threadScroll::-webkit-scrollbar-thumb:hover {
   background: #555;
 }

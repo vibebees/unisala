@@ -24,6 +24,7 @@ import {
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
+
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
 import "./index.css"
 import ReactQuill from "react-quill"
@@ -256,7 +257,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form onSubmit={handleSubmit} className="overflow-y-auto">
+      <form onSubmit={handleSubmit} className="overflow-y-scroll threadScroll">
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
@@ -323,7 +324,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
         </div>
 
         <IonButton
-          className="post-pop-button"
+          className="post-pop-button mt-5"
           type="submit"
           expand="full"
           slot=""

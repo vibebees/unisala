@@ -55,12 +55,14 @@ export const AddComment = gql`
       $postImage: String
       $unitId: Float
       $tags: [ID]
+      $postTag: String
     ) {
       addPost(
         postText: $postText
         postImage: $postImage
         unitId: $unitId
         tags: $tags
+        postTag: $postTag
       ) {
         status {
           success
@@ -71,6 +73,46 @@ export const AddComment = gql`
           postText
           postImage
           date
+        }
+      }
+    }
+  `,
+  GetPostById = gql`
+    query getPostById($id: String!) {
+      getPostById(id: $id) {
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postText
+          postCommentsCount
+          postImage
+          date
+          upVoted
+          images
+          upVoteCount
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          comments {
+            _id
+            commentText
+            upVoted
+            upVoteCount
+            user {
+              _id
+              firstName
+              lastName
+              picture
+              username
+            }
+          }
         }
       }
     }
@@ -368,7 +410,7 @@ export const AddComment = gql`
   `,
   GetUserPost = gql`
     query getUserPost($userId: String, $page: Float!, $unitId: Float) {
-      getUserPost(userId: $userId, page: $page, pageSize: 5, unitId: $unitId) {
+      getUserPost(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
         totalPosts
         Posts {
           _id
@@ -734,6 +776,7 @@ export const AddComment = gql`
         saved
         date
         _id
+        images
         user {
           firstName
           lastName
@@ -745,8 +788,12 @@ export const AddComment = gql`
     }
   `,
   GetInterviewExperience = gql`
-    query getInterviewExperience($unitId: Float!) {
-      getInterviewExperience(unitId: $unitId) {
+    query getInterviewExperience($unitId: Float!, $page: Int, $pageSize: Int) {
+      getInterviewExperience(
+        unitId: $unitId
+        page: $page
+        pageSize: $pageSize
+      ) {
         status {
           success
           message
@@ -931,17 +978,37 @@ export const AddComment = gql`
           upVoteCount
           postCommentsCount
           upVoted
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+          }
           saved
           tags {
             _id
             name
           }
+        }
+      }
+    }
+  `,
+  GetUserRoadMapSummary = gql`
+    query getUserRoadMapSummary($userId: String!) {
+      getUserRoadMapSummary(userId: $userId) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          summary
+          date
           user {
             _id
             firstName
             lastName
-            picture
-            username
           }
         }
       }

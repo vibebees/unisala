@@ -41,7 +41,7 @@ const FourthStep = () => {
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/${searcTerm}/5`,
+        `${universityServer}/keyword/schoolname/${searcTerm}/5`,
         {
           headers: {
             Authorization: `Bearer ${token}`
