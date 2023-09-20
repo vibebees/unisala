@@ -6,27 +6,42 @@ on:
 
 jobs:
 
-  deploy-to-lg-server:
-    if: github.ref == 'refs/heads/release'
+  build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
       - name: install & build
         run: |
           npm i --force
-          CI=false NODE_ENV=PRODUCTION npm run build
+          CI=false NODE_ENV=production npm run build
         env:
-          NODE_ENV: PRODUCTION
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build/
+
+  deploy-to-lg-server:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build/
 
       - name: copy file via ssh key to first server
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@specific-version  # replace "specific-version" with a known version
         with:
           host: "43.204.142.210"
           username: "ec2-user"
@@ -36,7 +51,7 @@ jobs:
           target: "~/unisala-web"
 
       - name: ssh and setup on first server
-        uses: appleboy/ssh-action@v0.1.8
+        uses: appleboy/ssh-action@specific-version  # replace "specific-version" with a known version
         with:
           host: "43.204.142.210"
           username: "ec2-user"
@@ -48,26 +63,17 @@ jobs:
             sudo cp -r * /var/www/html
 
   deploy-to-md-t3:
-    if: github.ref == 'refs/heads/release'
+    needs: build
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: install & build
-        run: |
-          npm i --force
-          CI=false NODE_ENV=PRODUCTION npm run build
-        env:
-          NODE_ENV: PRODUCTION
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build/
 
       - name: copy file via ssh key to second server
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@specific-version  # replace "specific-version" with a known version
         with:
           host: "35.154.130.113"
           username: "ec2-user"
@@ -77,7 +83,7 @@ jobs:
           target: "~/unisala-web"
 
       - name: ssh and setup on second server
-        uses: appleboy/ssh-action@v0.1.8
+        uses: appleboy/ssh-action@specific-version  # replace "specific-version" with a known version
         with:
           host: "35.154.130.113"
           username: "ec2-user"
