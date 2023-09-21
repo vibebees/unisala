@@ -102,7 +102,9 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
 
     onCompleted: async (data) => {
       if (files) {
-        formData.append("image", files[0])
+        for (let i = 0; i < files.length; i++) {
+          formData.append("image", files[i])
+        }
         const res = await axios.post(
           userServer + `/post/addPostImage/${data.addPost.post._id}`,
           formData,
@@ -112,7 +114,6 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
             }
           }
         )
-
         console.log(res)
       }
       present({
@@ -126,7 +127,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     },
     onError: (error) => {
       present({
-        duration: 3000,
+        duration: 5000,
         message: error.message,
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
@@ -220,6 +221,17 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    if (files?.length > 4) {
+      present({
+        duration: 3000,
+        message: "Maximum allowed files is 4.",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+      return
+    }
 
     if (postText.length > 0 || files?.length > 0) {
       addPost({

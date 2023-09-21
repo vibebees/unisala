@@ -52,14 +52,14 @@ export const AddComment = gql`
   AddPost = gql`
     mutation addPost(
       $postText: String
-      $postImage: String
+      # $postImage: String
       $unitId: Float
       $tags: [ID]
       $postTag: String
     ) {
       addPost(
         postText: $postText
-        postImage: $postImage
+        # postImage: $postImage
         unitId: $unitId
         tags: $tags
         postTag: $postTag
@@ -71,7 +71,7 @@ export const AddComment = gql`
         post {
           _id
           postText
-          postImage
+          # postImage
           date
         }
       }
@@ -414,7 +414,7 @@ export const AddComment = gql`
         totalPosts
         Posts {
           _id
-          postImage
+          images
           postText
           date
           upVoteCount
