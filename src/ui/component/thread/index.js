@@ -39,7 +39,7 @@ const Thread = ({ thread, refetch }) => {
     upVoteCount,
     postCommentsCount,
     upVoted,
-    postImage,
+    images,
     saved,
     user,
     tags
@@ -48,14 +48,13 @@ const Thread = ({ thread, refetch }) => {
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
-  const [image, setImage] = useState(postImage)
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
   const [numberOfComments, setNumberOfComments] = useState(1)
 
   const [updatedData, setUpdatedData] = useState({
     postText,
-    postImage,
+    // images,
     postId: _id
   })
 
@@ -141,7 +140,9 @@ const Thread = ({ thread, refetch }) => {
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails">
-            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
+            <h3 className="" style={{ color: "#222428" }}>
+              {firstName + " " + lastName}
+            </h3>
             <div className="threads_username">
               <p>@{username}</p>
 
@@ -192,8 +193,12 @@ const Thread = ({ thread, refetch }) => {
             </>
           )}
         </div>
-        <div className="thread_image">
-          {postImage && <img src={postImage} />}
+        <div className="thread_image  w-max relative block before:absolute before:top-0 before:left-0 before:z-10 before:content-[''] before:w-full before:h-full before:bg-[#00000013]">
+          {images?.length > 0 && <img src={images[0]} alt="" className="" />}
+
+          <h1 className="absolute  top-[50%] left-[50%] origin-top-left text-2xl text-gray-800">
+            {images?.length - 1 > 0 && `+${images?.length - 1}`}
+          </h1>
         </div>
         <div className="thread_footer">
           <Upvote
