@@ -45,6 +45,8 @@ const Thread = ({ thread, refetch }) => {
     tags
   } = thread
 
+  console.log(thread.images)
+
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
@@ -193,7 +195,7 @@ const Thread = ({ thread, refetch }) => {
           )}
         </div>
         <div className="thread_image  w-max relative block before:absolute before:top-0 before:left-0 before:z-10 before:content-[''] before:w-full before:h-full before:bg-[#00000013]">
-          {images?.length > 0 && <img src={images[0]} alt="" className="" />}
+          {images?.length > 0 && <img src={images[0]} alt="" />}
 
           <h1 className="absolute  top-[50%] left-[50%] origin-top-left text-2xl text-gray-800">
             {images?.length - 1 > 0 && `+${images?.length - 1}`}
