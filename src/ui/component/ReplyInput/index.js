@@ -9,16 +9,25 @@ import { Avatar } from "../Avatar"
 import "./index.css"
 import ReactQuill from "react-quill"
 
-function ReplyInput({ setReply, postId, isReply, parentId }) {
+function ReplyInput({
+  setReply,
+  postId,
+  isReply,
+  parentId,
+  singlePost,
+  setNumberOfComments
+  // replyTo
+}) {
   const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
+
   const [present, dismiss] = useIonToast()
   const [addComment] = useMutation(AddComment, {
     context: { server: USER_SERVICE_GQL },
     update: (cache, { data: { addComment } }) => {
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : "Post",
+          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
           id: postId
         }),
         fields: {
@@ -27,7 +36,7 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
       })
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : "Post",
+          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
           id: parentId
         }),
         fields: {
@@ -62,6 +71,9 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
         mode: "ios"
       })
       setCommentText("")
+      if (!singlePost && setNumberOfComments) {
+        setNumberOfComments((prev) => prev + 1)
+      }
       setReply((state) => !state)
     },
     onError: (error) => {
@@ -77,13 +89,14 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
 
   const submitReply = (e) => {
     e.preventDefault()
-    addComment({
-      variables: {
-        postId: postId,
-        commentText: commentText,
-        parentId: isReply ? parentId : null
-      }
-    })
+    const variables = {
+      postId: postId,
+      commentText: commentText,
+      parentId: isReply ? parentId : null
+      // replyTo: isReply ? replyTo : null
+    }
+
+    addComment({ variables })
   }
 
   return (
@@ -95,15 +108,6 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
         <Avatar username={user.username} profilePic={user.profilePic} />
       </div>
       <div className="review-text_div h-full ">
-        {/* <IonTextarea
-          onIonChange={(e) => {
-            setCommentText(e.target.value)
-          }}
-          value={commentText}
-          type="text"
-          className="review-text"
-          placeholder="Give your opinion"
-        /> */}
         <ReactQuill
           theme="snow"
           className=" text-black h-full border-b-2 overflow-hidden w-full"

@@ -52,6 +52,7 @@ const Thread = ({ thread, refetch }) => {
   const [profilePic, setProfilePic] = useState(picture)
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
+  const [numberOfComments, setNumberOfComments] = useState(1)
 
   const [updatedData, setUpdatedData] = useState({
     postText,
@@ -212,7 +213,14 @@ const Thread = ({ thread, refetch }) => {
           <Save postId={_id} saved={saved} thread={thread} />
         </div>
       </div>
-      {reply && <ReplyInput setReply={setReply} postId={_id} isReply={false} />}
+      {reply && (
+        <ReplyInput
+          setReply={setReply}
+          postId={_id}
+          isReply={false}
+          setNumberOfComments={setNumberOfComments}
+        />
+      )}
 
       {/* check if the post is that of the logged in user, then only show options to
       delete and update */}
@@ -248,7 +256,13 @@ const Thread = ({ thread, refetch }) => {
         </div>
       )}
       {postCommentsCount > 0 && (
-        <ShowMore postId={_id} user={user} isReply={false} />
+        <ShowMore
+          postId={_id}
+          user={user}
+          isReply={false}
+          postCommentsCount={postCommentsCount}
+          numberOfComments={numberOfComments}
+        />
       )}
     </IonCard>
   )

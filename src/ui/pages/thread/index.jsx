@@ -1,5 +1,5 @@
 import React from "react"
-import { useParams } from "react-router"
+import { useParams, useLocation } from "react-router"
 import { GetPostById } from "../../../graphql/user"
 import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "../../../servers/types"
@@ -8,16 +8,22 @@ import SingleThread from "../../component/thread/singleThread"
 
 const index = () => {
   const { id } = useParams()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const paramValue = queryParams.get("user")
+
+  let payload = {
+    id
+  }
+
+  if (paramValue) payload.user = paramValue
 
   const { data, loading } = useQuery(GetPostById, {
     context: { server: USER_SERVICE_GQL },
-    variables: {
-      id
-    }
+    variables: payload
   })
 
   if (loading) return <IonSpinner />
-  console.log(data, "data")
 
   return (
     <IonContent className=" ">

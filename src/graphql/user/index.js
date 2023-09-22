@@ -10,6 +10,7 @@ export const AddComment = gql`
         postId: $postId
         commentText: $commentText
         parentId: $parentId
+        replyTo: $replyTo
       ) {
         success
         message
@@ -76,8 +77,8 @@ export const AddComment = gql`
     }
   `,
   GetPostById = gql`
-    query getPostById($id: String!) {
-      getPostById(id: $id) {
+    query getPostById($id: String!, $user: String) {
+      getPostById(id: $id, user: $user) {
         status {
           success
           message
@@ -203,7 +204,7 @@ export const AddComment = gql`
       $interestedSubjects: [ID]
       $userStatus: String
       $studyLevel: String
-      $interestedUni: [interestedUniversity]
+      $interestedUni: [Int]
     ) {
       editProfile(
         picture: $picture

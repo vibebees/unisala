@@ -60,6 +60,7 @@ const Thread = ({ thread, refetch }) => {
   const [image, setImage] = useState(postImage)
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
+  const [singlePost, setSinglePost] = useState(true)
 
   const [updatedData, setUpdatedData] = useState({
     postText,
@@ -141,10 +142,10 @@ const Thread = ({ thread, refetch }) => {
     }
   })
 
-return (
-    thread === null
-    ? <PageNotFound/>
-    : <div className="max-w-2xl w-full mx-auto mb-10">
+  if (!thread) return null
+
+  return (
+    <div className="max-w-2xl w-full mx-auto mb-10">
       <IonCard className=" relative mb-0 pt-4 pb-6 ">
         <Link to={`/@/${username}`} className="px-4">
           <div className="thread-header">
@@ -216,7 +217,12 @@ return (
           </div>
         </div>
         {reply && (
-          <ReplyInput setReply={setReply} postId={_id} isReply={false} />
+          <ReplyInput
+            setReply={setReply}
+            postId={_id}
+            isReply={false}
+            singlePost={singlePost}
+          />
         )}
         {loggedinUser && loggedinUser?.username === username && (
           <div className="absolute top-4 right-8">
@@ -255,7 +261,7 @@ return (
       </IonCard>
       {postCommentsCount > 0 && (
         <div className=" bg-neutral-50 mx-2 pt-4  pb-6">
-          <ShowMore postId={_id} user={user} singlePost={true} />
+          <ShowMore postId={_id} user={user} singlePost={singlePost} />
         </div>
       )}
     </div>

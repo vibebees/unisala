@@ -21,7 +21,7 @@ import { getImage } from "../../../../servers/s3.configs"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
   const [coverImage, setCoverImage] = useState("")
-  const [percentage, setPercentage] = useState(50)
+  const [percentage, setPercentage] = useState(0)
   const {
     firstName,
     lastName,
