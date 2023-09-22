@@ -767,7 +767,6 @@ export const AddComment = gql`
     query fetchMyNewsFeed($userId: ID!) {
       fetchMyNewsFeed(userId: $userId) {
         postText
-        postImage
         upVoted
         upVoteCount
         postCommentsCount
@@ -838,7 +837,7 @@ export const AddComment = gql`
         }
         posts {
           _id
-          postImage
+          images
           postText
           date
           upVoteCount
