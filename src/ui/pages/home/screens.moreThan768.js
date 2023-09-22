@@ -25,7 +25,7 @@ export const screensMoreThan768 = ({
   topSpaces
 }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const [percentage, setPercentage] = useState(30)
+  const [percentage, setPercentage] = useState(0)
 
   const radius = 45
   const dashArray = radius * Math.PI * 2

@@ -16,11 +16,18 @@ import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import moment from "moment"
 
-function Comment({ comment, postId, parentId, singlePost }) {
+function Comment({
+  comment,
+  postId,
+  parentId,
+  singlePost,
+  setRefetchComments
+}) {
   const {
     _id,
     firstName,
     lastName,
+    userId,
     username,
     date,
     commentText,
@@ -46,7 +53,11 @@ function Comment({ comment, postId, parentId, singlePost }) {
     update: (cache) => {
       cache.modify({
         id: cache.identify({
-          __typename: parentId ? "Comment" : "Post",
+          __typename: parentId
+            ? "Comment"
+            : singlePost
+            ? "PostComment"
+            : "Post",
           _id: postId
         }),
         fields: {
@@ -68,8 +79,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
       const { deleteComment } = data
 
       if (deleteComment?.success) {
-        // setRefetchComments(true)
-        // setRefetchPosts(true)
+        setRefetchComments((prev) => !prev)
         present({
           duration: 3000,
           message: "Comment Deleted",
@@ -122,7 +132,6 @@ function Comment({ comment, postId, parentId, singlePost }) {
                 />
 
                 <br />
-
                 <IonButton
                   fill="clear"
                   className="ion-no-padding  capitalize  px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
@@ -153,7 +162,6 @@ function Comment({ comment, postId, parentId, singlePost }) {
               ></p>
             )}
           </div>
-
           <div className="thread_footer pl-0 -translate-x-4 scale-75">
             <Upvote
               upVoteCount={upVoteCount}
@@ -172,6 +180,10 @@ function Comment({ comment, postId, parentId, singlePost }) {
             parentId={parentId ?? _id}
             postId={postId}
             isReply={true}
+            replyTo={{
+              username,
+              _id
+            }}
           />
         )}
 
@@ -210,14 +222,6 @@ function Comment({ comment, postId, parentId, singlePost }) {
           </div>
         )}
       </div>
-      {!singlePost && (
-        <Link
-          to={`thread/${postId}`}
-          className="px-16 block  mt-4 text-base hover:text-neutral-800"
-        >
-          View all comments
-        </Link>
-      )}
       <div className="ml-20 max-md:ml-8 max-sm:ml-4 border-l-2 max-md:pl-12 max-sm:pl-0 border-opacity-30 border-neutral-400">
         {repliesCount > 0 && singlePost && (
           <ShowMore postId={postId} parentId={_id} singlePost={singlePost} />
