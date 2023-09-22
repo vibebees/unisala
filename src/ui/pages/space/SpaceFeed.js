@@ -8,7 +8,7 @@ import {
 import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { Link } from "react-router-dom"
-import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import {ThreadSkeleton} from "../../component/skeleton/threadSkeleton"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { GetAllPostBySpaceCategoryID, GetUserPost } from "../../../graphql/user"
 import { userServer } from "../../../servers/endpoints"

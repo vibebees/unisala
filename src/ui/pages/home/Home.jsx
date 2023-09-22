@@ -9,15 +9,15 @@ import { GetProfileCard, GetTopActiveSpaces } from "../../../graphql/user"
 import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
 import UnisalaIntro from "./UnisalaIntro"
-import { screenLessThan768 } from "./screens.lessThan768"
-import { screensMoreThan768 } from "./screens.moreThan768"
-import { screenGreaterThan1000 } from "./screens.greater.1000"
+
 import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { CreateAPost } from "../../component/post/CreateAPost"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
+import {InfinteFeed} from "./InfiniteScrollFeed"
+import {screenGreaterThan1000, screenLessThan768, screensMoreThan768} from "./helper.func"
 
 export const Home = () => {
   useDocTitle("Unisala")
@@ -99,7 +99,7 @@ export const Home = () => {
                 <Post />
               </IonCard>
             )}
-            {loggedIn ? <HomeFeed userInfo={user} /> : <UnisalaIntro />}
+            {loggedIn ? <InfinteFeed userInfo={user} /> : <UnisalaIntro />}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
           {loggedIn && newUser && <WelcomeSteps setNewUser={setNewUser} />}
