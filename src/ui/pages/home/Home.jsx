@@ -1,12 +1,10 @@
 import { useState } from "react"
 import { IonGrid, IonRow, IonCol, IonContent, IonCard } from "@ionic/react"
-import { personCircle } from "ionicons/icons"
 import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
 import { GetProfileCard, GetTopActiveSpaces } from "../../../graphql/user"
-import unisalaImg from "../../../assets/unisala-intro.png"
 import HomeFeed from "./HomeFeed"
 import UnisalaIntro from "./UnisalaIntro"
 
@@ -19,47 +17,41 @@ import WelcomeSteps from "../../component/authentication/Welcome"
 import {InfinteFeed} from "./InfiniteScrollFeed"
 import {screenGreaterThan1000, screenLessThan768, screensMoreThan768} from "./helper.func"
 
-export const Home = () => {
+export const Home = ({allProps}) => {
   useDocTitle("Unisala")
-  const { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
-    variables: { limit: 4 },
-    context: { server: USER_SERVICE_GQL }
-  })
 
-  const { getTopActiveSpaces } = topSpaceData || {},
-    { user, loggedIn } = useSelector((store) => store?.userProfile || {}),
+  console.log({allProps})
+  const {
+    unisalaImg,
+    activeTab,
+    setActiveTab,
+    createAPostPopUp,
+    setCreateAPostPopUp,
+    verfiyAPostPopUp,
+    setVerifyAPostPopUp,
+    width,
+    newUser,
+    setNewUser,
+    activeProfile,
+    setActiveProfile,
+    user,
+    loggedIn,
+    GetTopActiveSpaces,
+    views
+  } = allProps || {},
+    {data: topSpaceData} = useQuery(GetTopActiveSpaces, {
+      variables: {limit: 4},
+      context: {server: USER_SERVICE_GQL}
+    }),
+    {getTopActiveSpaces} = topSpaceData || {},
     profileDataResult = useQuery(GetProfileCard, {
-      context: { server: USER_SERVICE_GQL },
+      context: {server: USER_SERVICE_GQL},
       variables: {
         username: user?.username
       },
       skip: !loggedIn || !user?.username
     }),
-    profileData = profileDataResult?.data || null,
-    [activeProfile, setActiveProfile] = useState(false),
-    [activeTab, setActiveTab] = useState(0),
-    [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
-    views = {
-      greaterThan1000: screenGreaterThan1000(),
-      greaterThan768: screensMoreThan768({
-        activeTab,
-        setActiveTab,
-        unisalaImg,
-        profileData,
-        loggedIn,
-        topSpaces: getTopActiveSpaces?.spaceCategory
-      }),
-      lessThan768: screenLessThan768({
-        setActiveProfile,
-        personCircle,
-        activeProfile,
-        loggedIn,
-        username: user.username
-      })
-    },
-    [createAPostPopUp, setCreateAPostPopUp] = useState(false),
-    [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
-    width = useWindowWidth()
+    profileData = profileDataResult?.data || null
 
   return (
     <IonContent color="light">
@@ -99,7 +91,7 @@ export const Home = () => {
                 <Post />
               </IonCard>
             )}
-            {loggedIn ? <InfinteFeed userInfo={user} /> : <UnisalaIntro />}
+            {loggedIn ? <InfinteFeed userInfo={user} allProps={allProps} /> : <UnisalaIntro />}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
           {loggedIn && newUser && <WelcomeSteps setNewUser={setNewUser} />}

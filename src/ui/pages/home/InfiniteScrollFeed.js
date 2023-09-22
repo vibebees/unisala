@@ -9,10 +9,10 @@ import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { FeedSkeleton } from "../../component/skeleton/feedSkeleton"
 
-export const InfinteFeed = ({ userInfo }) => {
+export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const [page, setPage] = useState(0)
 
+  const {page, setPage} = allProps
   const { data, loading, fetchMore } = useQuery(getNewsFeed, {
     variables: { userId: user._id, page: 0 },
     context: { server: USER_SERVICE_GQL }
@@ -53,7 +53,7 @@ return (
             style={{ width: "100%", marginTop: "10px", borderTop: "1px solid #e0e0e0" }}
             key={item._id}
           >
-            <Thread thread={item} id={item._id} />
+              <Thread thread={item} id={item._id} allProps={allProps} />
           </div>
         )
       ))}

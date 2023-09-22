@@ -1,9 +1,13 @@
 import {useEffect, useRef} from "react"
 import {callSocket} from "../../../servers/endpoints"
 import {Home} from "./Home"
-
+import {getAllPropsHome} from "./getAllProps"
+import {useSelector} from "react-redux"
 export default function HomePage({setPopup}) {
   const socket = useRef(null)
+  const {user, loggedIn} = useSelector((store) => store?.userProfile || {})
+
+  const allProps = getAllPropsHome({user, loggedIn})
   useEffect(() => {
     socket.current = callSocket()
 
@@ -17,5 +21,5 @@ export default function HomePage({setPopup}) {
     }
 
   }, [])
-  return <Home setPopup={setPopup} />
+  return <Home setPopup={setPopup} allProps={allProps} />
 }
