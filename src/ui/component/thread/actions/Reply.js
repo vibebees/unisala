@@ -1,5 +1,5 @@
 import { IonIcon, IonButtons, IonText } from "@ionic/react"
-import { arrowRedoCircle } from "ionicons/icons"
+import { chatbubble } from "ionicons/icons"
 
 function Reply({ repliesCount, setReply }) {
   return (
@@ -13,7 +13,7 @@ function Reply({ repliesCount, setReply }) {
           margin: "0px",
           fontSize: "23px"
         }}
-        icon={arrowRedoCircle}
+        icon={chatbubble}
       />
       <IonText style={{ marginLeft: "5px" }}>
         <p

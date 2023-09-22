@@ -62,7 +62,7 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
       if (data?.editProfile?.status?.success) {
         present({
           duration: 3000,
-          message: "Thank you for the survey",
+          message: "Customizing your feed based on your profile!",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
@@ -101,7 +101,7 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
         mode: "ios"
       })
     }
-    console.log(welcomeFormdata)
+
     try {
       dispatch(
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
@@ -114,6 +114,7 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
   }
 
   const handleNext = () => {
+    console.log(welcomeFormdata)
     if (currentStep === 2 && welcomeFormdata.interestedSubjects.length === 0) {
       return present({
         duration: 3000,

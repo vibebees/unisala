@@ -9,16 +9,25 @@ import { Avatar } from "../Avatar"
 import "./index.css"
 import ReactQuill from "react-quill"
 
-function ReplyInput({ setReply, postId, isReply, parentId }) {
+function ReplyInput({
+  setReply,
+  postId,
+  isReply,
+  parentId,
+  singlePost,
+  setNumberOfComments
+  // replyTo
+}) {
   const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
+
   const [present, dismiss] = useIonToast()
   const [addComment] = useMutation(AddComment, {
     context: { server: USER_SERVICE_GQL },
     update: (cache, { data: { addComment } }) => {
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : "Post",
+          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
           id: postId
         }),
         fields: {
@@ -27,7 +36,7 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
       })
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : "Post",
+          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
           id: parentId
         }),
         fields: {
@@ -62,6 +71,9 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
         mode: "ios"
       })
       setCommentText("")
+      if (!singlePost && setNumberOfComments) {
+        setNumberOfComments((prev) => prev + 1)
+      }
       setReply((state) => !state)
     },
     onError: (error) => {
@@ -77,33 +89,28 @@ function ReplyInput({ setReply, postId, isReply, parentId }) {
 
   const submitReply = (e) => {
     e.preventDefault()
-    addComment({
-      variables: {
-        postId: postId,
-        commentText: commentText,
-        parentId: isReply ? parentId : null
-      }
-    })
+    const variables = {
+      postId: postId,
+      commentText: commentText,
+      parentId: isReply ? parentId : null
+      // replyTo: isReply ? replyTo : null
+    }
+
+    addComment({ variables })
   }
 
   return (
-    <form className="reply-input_form" onSubmit={submitReply}>
-      <div className="thread_profile-pic">
+    <form
+      className="reply-input_form  h-40  block   pl-10 pr-8"
+      onSubmit={submitReply}
+    >
+      <div className="thread_profile-pic  ">
         <Avatar username={user.username} profilePic={user.profilePic} />
       </div>
-      <div className="review-text_div">
-        {/* <IonTextarea
-          onIonChange={(e) => {
-            setCommentText(e.target.value)
-          }}
-          value={commentText}
-          type="text"
-          className="review-text"
-          placeholder="Give your opinion"
-        /> */}
+      <div className="review-text_div h-full ">
         <ReactQuill
           theme="snow"
-          className="h-32 text-black w-full"
+          className=" text-black h-full border-b-2 overflow-hidden w-full"
           onChange={(e) => {
             setCommentText(e)
           }}

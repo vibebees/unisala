@@ -53,7 +53,7 @@ function Sidebar() {
                 {topUni.map((University, i) => {
                     const { location, name, img } = University
                     return (
-                        <Link to={"/spaces/" + name} key={i}>
+                        <Link to={"/university/" + name} key={i}>
                         <IonItem key={i}>
                             <IonAvatar slot="start">
                                 <img src={img} />

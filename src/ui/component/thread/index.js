@@ -9,12 +9,15 @@ import "./index.css"
 import ShowMore from "./ShowMore"
 import { Avatar } from "../Avatar"
 import { getImage } from "../../../servers/s3.configs"
+import ThreadExpand from "./ThreadExpand"
 import {
   create,
-  createOutline,
   ellipsisHorizontalOutline,
-  trash
+  trash,
+  chatbubbleOutline
 } from "ionicons/icons"
+import moment from "moment"
+
 import { useMutation } from "@apollo/client"
 import {
   DeletePost,
@@ -36,24 +39,24 @@ const Thread = ({ thread, refetch }) => {
     upVoteCount,
     postCommentsCount,
     upVoted,
-    postImage,
+    images,
     saved,
     user,
     tags
   } = thread
 
-  console.log(thread)
+  console.log(thread.images)
 
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
   const [profilePic, setProfilePic] = useState(picture)
-  const [image, setImage] = useState(postImage)
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
+  const [numberOfComments, setNumberOfComments] = useState(1)
 
   const [updatedData, setUpdatedData] = useState({
     postText,
-    postImage,
+    // images,
     postId: _id
   })
 
@@ -132,34 +135,25 @@ const Thread = ({ thread, refetch }) => {
   })
 
   return (
-    <IonCard className="thread relative ">
-      <div className="flex justify-start space-x-6">
-        <Link to={`/@/${username}`}>
-          <div className="thread-header">
-            <div className="thread_profile-pic">
-              <Avatar profilePic={profilePic} username={firstName + lastName} />
-            </div>
-            <div className="thread_userdetails">
-              <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
-              <div className="threads_username">
-                <p>@{username}</p>
-                <p className="threads_date">{date.toString().slice(0, 10)}</p>
-              </div>
+    <IonCard className=" relative pt-4 pb-6">
+      <Link to={`/@/${username}`} className="px-4">
+        <div className="thread-header">
+          <div className="thread_profile-pic">
+            <Avatar profilePic={profilePic} username={firstName + lastName} />
+          </div>
+          <div className="thread_userdetails">
+            <h3 className="" style={{ color: "#222428" }}>
+              {firstName + " " + lastName}
+            </h3>
+            <div className="threads_username">
+              <p>@{username}</p>
+
+              <p className="threads_date">{moment(date).fromNow()}</p>
             </div>
           </div>
-        </Link>
-
-        {tags?.length > 0 && (
-          <Link to={`/space/${tags[0].name}`}>
-            <button className="outline outline-2 px-1 text-xs">{`${tags[0]?.name?.substring(
-              0,
-              25
-            )} ${tags[0]?.name?.length > 25 ? "..." : ""}`}</button>
-          </Link>
-        )}
-      </div>
-
-      <div className="thread_content">
+        </div>
+      </Link>
+      <div className="thread_content !pl-16 pr-8">
         <div className="thread_comment">
           {editable ? (
             <div>
@@ -168,7 +162,7 @@ const Thread = ({ thread, refetch }) => {
                 onChange={handleChange}
                 // value={postText}
                 defaultValue={postText}
-                className="h-48 mb-10"
+                className="h-48 mb-8  text-black"
               />
               <br />
 
@@ -196,11 +190,17 @@ const Thread = ({ thread, refetch }) => {
               </IonButton>
             </div>
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: postText }}></div>
+            <>
+              <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
+            </>
           )}
         </div>
-        <div className="thread_image">
-          {postImage && <img src={postImage} />}
+        <div className="thread_image  w-max relative block before:absolute before:top-0 before:left-0 before:z-10 before:content-[''] before:w-full before:h-full before:bg-[#00000013]">
+          {images?.length > 0 && <img src={images[0]} alt="" />}
+
+          <h1 className="absolute  top-[50%] left-[50%] origin-top-left text-2xl text-gray-800">
+            {images?.length - 1 > 0 && `+${images?.length - 1}`}
+          </h1>
         </div>
         <div className="thread_footer">
           <Upvote
@@ -213,7 +213,14 @@ const Thread = ({ thread, refetch }) => {
           <Save postId={_id} saved={saved} thread={thread} />
         </div>
       </div>
-      {reply && <ReplyInput setReply={setReply} postId={_id} isReply={false} />}
+      {reply && (
+        <ReplyInput
+          setReply={setReply}
+          postId={_id}
+          isReply={false}
+          setNumberOfComments={setNumberOfComments}
+        />
+      )}
 
       {/* check if the post is that of the logged in user, then only show options to
       delete and update */}
@@ -248,7 +255,15 @@ const Thread = ({ thread, refetch }) => {
           </div>
         </div>
       )}
-      {postCommentsCount > 0 && <ShowMore postId={_id} user={user} />}
+      {postCommentsCount > 0 && (
+        <ShowMore
+          postId={_id}
+          user={user}
+          isReply={false}
+          postCommentsCount={postCommentsCount}
+          numberOfComments={numberOfComments}
+        />
+      )}
     </IonCard>
   )
 }

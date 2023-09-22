@@ -15,7 +15,7 @@ import {
   IonButtons,
   useIonToast
 } from "@ionic/react"
-import { imageOutline } from "ionicons/icons"
+import { closeOutline, imageOutline } from "ionicons/icons"
 import {
   AddPost,
   GetAllPostBySpaceCategoryID,
@@ -24,6 +24,7 @@ import {
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { Avatar } from "../Avatar"
+
 import { awsBucket, bucketName } from "../../../servers/s3.configs"
 import "./index.css"
 import ReactQuill from "react-quill"
@@ -32,13 +33,14 @@ import "react-quill/dist/quill.snow.css"
 import TextEditor from "../../../utils/components/TextEditor"
 import axios from "axios"
 import { userServer } from "../../../servers/endpoints"
+import clsx from "clsx"
 export const CreateAPost = ({ setPopup, popup, tags }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
-  const [file, setFile] = useState(null)
-  const [fileData, setFileData] = useState("")
+  const [files, setFiles] = useState(null)
+
   const profilePic = user?.picture
   const formData = new FormData()
   const [addPost] = useMutation(AddPost, {
@@ -99,9 +101,10 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     },
 
     onCompleted: async (data) => {
-      console.log(data)
-      if (file) {
-        formData.append("image", file)
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("image", files[i])
+        }
         const res = await axios.post(
           userServer + `/post/addPostImage/${data.addPost.post._id}`,
           formData,
@@ -111,7 +114,6 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
             }
           }
         )
-
         console.log(res)
       }
       present({
@@ -125,7 +127,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     },
     onError: (error) => {
       present({
-        duration: 3000,
+        duration: 5000,
         message: error.message,
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
@@ -219,16 +221,43 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addPost({
-      variables: {
-        postText: TextChecker(postText),
-        tags
-      }
-    })
-    setPopup(false)
+
+    if (files?.length > 4) {
+      present({
+        duration: 3000,
+        message: "Maximum allowed files is 4.",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+      return
+    }
+
+    if (postText.length > 0 || files?.length > 0) {
+      addPost({
+        variables: {
+          postText: TextChecker(postText),
+          tags
+        }
+      })
+      setPopup(false)
+    } else {
+      present({
+        duration: 3000,
+        message: "Please include something to post",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
   }
 
-  console.log(file)
+  const handleRemoveFile = (index) => {
+    const newFiles = Array.from(files)
+
+    newFiles.splice(index, 1)
+    setFiles(newFiles)
+  }
   // text editor
   return (
     <IonModal onDidDismiss={() => setPopup(false)} isOpen={popup}>
@@ -240,7 +269,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form onSubmit={handleSubmit} className="overflow-y-auto">
+      <form onSubmit={handleSubmit} className="overflow-y-scroll threadScroll">
         <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
@@ -253,11 +282,30 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
 
           <TextEditor postText={postText} setPostText={setPostText} />
 
-          {file ? (
-            <img
-              src={URL.createObjectURL(file)}
-              className="post-image-preview mt-16"
-            />
+          {files?.length > 0 ? (
+            <div
+              className={clsx(
+                "grid gap-x-4 items-center justify-center",
+                files.length === 1 ? "grid-cols-1" : "grid-cols-2"
+              )}
+            >
+              {files.length > 0 &&
+                Array.from(files).map((file, i) => (
+                  <div className="relative mt-16" key={i}>
+                    <img
+                      src={URL.createObjectURL(file)}
+                      className="post-image-preview"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile(i)}
+                      className="absolute right-0 top-2 w-6 h-6 rounded-full bg-[#585C5F] flex items-center justify-center hover:bg-opacity-80"
+                    >
+                      <IonIcon icon={closeOutline} color="light" className="" />
+                    </button>
+                  </div>
+                ))}
+            </div>
           ) : (
             <div className="mt-20 flex justify-center items-center">
               <label
@@ -277,8 +325,10 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
               <input
                 type="file"
                 ref={imgfile}
+                accept="image/*"
+                multiple
                 hidden
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={(e) => setFiles(e.target.files)}
                 id="post-image"
               />
             </div>
@@ -286,7 +336,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
         </div>
 
         <IonButton
-          className="post-pop-button"
+          className="post-pop-button mt-5"
           type="submit"
           expand="full"
           slot=""

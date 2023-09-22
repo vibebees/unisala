@@ -14,12 +14,14 @@ import {
 } from "ionicons/icons"
 import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
 import { Avatar } from "../../../component/Avatar"
+import useWindowWidth from "../../../../hooks/useWindowWidth"
 import "./index.css"
 import { useEffect, useState } from "react"
 import { getImage } from "../../../../servers/s3.configs"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
   const [coverImage, setCoverImage] = useState("")
+  const [percentage, setPercentage] = useState(0)
   const {
     firstName,
     lastName,
@@ -31,6 +33,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     doj,
     socialLinks
   } = data
+  const width = useWindowWidth()
 
   const icons = {
     twitter: logoTwitter,
@@ -46,7 +49,8 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     { id: 0, menu: username },
     { id: 1, menu: "Threads" },
     { id: 2, menu: "Guestbook" },
-    { id: 4, menu: "Saved" }
+    { id: 4, menu: "Saved" },
+    { id: 5, menu: "Roadmap" }
   ]
 
   const changeTab = (tabs) => {
@@ -57,9 +61,13 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     getImage("user", coverPicture, setCoverImage)
   }, [coverPicture])
 
+  const radius = width >= 768 ? 66.6 : 47
+  const dashArray = radius * Math.PI * 2
+  const dataOffset = dashArray - (dashArray * percentage) / 100
   return (
     <IonCard className="profile-header mb-2">
       <div className="user-banner">
+        <div></div>
         <div className="user-banner__cover">
           <img
             src={
@@ -73,7 +81,36 @@ const ProfileHeader = ({ tab, setTab, data }) => {
 
         <div className="user-profile">
           <Avatar profilePic={profilePic} username={username} />
+          <div className="border-[7px] border-neutral-300  absolute left-0 top-0 bottom-0  right-0 rounded-full z-10" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            width="160px"
+            height="160px"
+            className="progress_container"
+          >
+            <defs>
+              <linearGradient id="GradientColor">
+                <stop offset="0%" stopColor="#e91e63" />
+                <stop offset="100%" stopColor="#673ab7" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="80"
+              cy="80"
+              r={radius}
+              strokeLinecap="round"
+              style={{
+                fill: "none",
+                stroke: "url(#GradientColor)",
+                strokeWidth: "7px",
+                strokeDasharray: dashArray,
+                strokeDashoffset: dataOffset
+              }}
+            />
+          </svg>
         </div>
+
         <UserCtaBtns profileHeader={data} myProfile={data.myProfile} />
       </div>
 

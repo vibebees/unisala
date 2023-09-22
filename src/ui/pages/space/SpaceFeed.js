@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   IonText,
   IonCard,
@@ -13,6 +13,7 @@ import { useLazyQuery, useQuery } from "@apollo/client"
 import { GetAllPostBySpaceCategoryID, GetUserPost } from "../../../graphql/user"
 import { userServer } from "../../../servers/endpoints"
 import emptyState from "../../../assets/emptyState.png"
+import clsx from "clsx"
 
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import StateMessage from "../../component/stateMessage/index"
@@ -35,10 +36,11 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   //     setPostList(res?.data?.feed)
   //   })
   // }, [])
+
   return (
     <>
-      <div style={{ margin: "10px 0px 0px 0px" }}>
-        {allPosts?.posts.length === 0 && (
+      <div style={{ margin: "10px 0px 0px 0px" }} className="ThreadContainer">
+        {allPosts?.posts?.length === 0 && (
           <StateMessage title="Be the first one to post in this space">
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>

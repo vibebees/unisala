@@ -4,6 +4,7 @@ import { arrowUpCircle } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
 import { UpVote } from "../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
+import clsx from "clsx"
 
 function Upvote({ upVoteCount, postId, upVoted, isReply }) {
   const [present, dismiss] = useIonToast()
@@ -63,7 +64,7 @@ function Upvote({ upVoteCount, postId, upVoted, isReply }) {
       style={{ cursor: "pointer" }}
     >
       <IonIcon
-        color={voted.upVoted ? "danger" : "medium"}
+        color={voted.upVoted ? "primary" : "medium"}
         style={{
           margin: "0px",
           fontSize: "23px"
@@ -76,6 +77,10 @@ function Upvote({ upVoteCount, postId, upVoted, isReply }) {
             margin: "0px",
             padding: "0px"
           }}
+          className={clsx(
+            "block ",
+            voted.upVoted ? "!text-blue-600 !font-medium" : "text-gray-600"
+          )}
         >
           {voted.upVoteCount}
         </p>
