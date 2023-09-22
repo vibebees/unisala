@@ -67,7 +67,10 @@ const FourthStep = () => {
     } else {
       setWelcomeFormdata({
         ...welcomeFormdata,
-        interestedUni: [...welcomeFormdata.interestedUni, e.target.value]
+        interestedUni: [
+          ...welcomeFormdata.interestedUni,
+          Number(e.target.value)
+        ]
       })
     }
   }
