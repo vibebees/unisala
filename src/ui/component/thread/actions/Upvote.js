@@ -12,6 +12,7 @@ function Upvote({ upVoteCount, postId, upVoted, isReply }) {
     upVoted: upVoted,
     upVoteCount: upVoteCount
   })
+  console.log("upvote rendereddddd")
   const [upVote] = useMutation(UpVote, {
     variables: { postId },
     context: { server: USER_SERVICE_GQL },
@@ -22,9 +23,12 @@ function Upvote({ upVoteCount, postId, upVoted, isReply }) {
           id: postId
         }),
         fields: {
-          upVoteCount: () => upVote.upVotesCount,
-          upVoted: () => !upVoted
-        }
+          upVoteCount: (upVoteCount) => {
+            return upVoted ? upVoteCount - 1 : upVoteCount + 1
+          },
+          upVoted: (upVoted) => !upVoted
+        },
+        broadcast: false
       })
     },
     onError: (error) => {
