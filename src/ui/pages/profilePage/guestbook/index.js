@@ -21,7 +21,7 @@ import "./index.css"
 import { receivedGuestbookList } from "../../../../graphql/user"
 import AddGuestBookPop from "./AddGuestBookPop"
 import MorePop from "./MorePop"
-import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import {ThreadSkeleton} from "../../../component/skeleton/threadSkeleton"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { Avatar } from "../../../component/Avatar"
 
@@ -47,7 +47,7 @@ function index({ userId, firstName }) {
 
   if (loading) {
     return ["0", "1", "2"].map((item) => {
-      return <ThreadScaletion key={item} />
+      return <ThreadSkeleton key={item} />
     })
   }
 
