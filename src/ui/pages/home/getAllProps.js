@@ -1,14 +1,25 @@
-import {useState} from "react"
+import { useState } from "react"
 import unisalaImg from "../../../assets/unisala-intro.png"
-import {screenGreaterThan1000, screenLessThan768, screensMoreThan768} from "./helper.func"
+import {
+  screenGreaterThan1000,
+  screenLessThan768,
+  screensMoreThan768
+} from "./helper.func"
 import useWindowWidth from "../../../hooks/useWindowWidth"
-import {GetTopActiveSpaces} from "../../../graphql/user"
+import { GetTopActiveSpaces } from "../../../graphql/user"
 import { personCircle } from "ionicons/icons"
+import { useQuery } from "@apollo/client"
+import { USER_SERVICE_GQL } from "../../../servers/types"
 
-export const getAllPropsHome = ({user, loggedIn}) => {
+export const getAllPropsHome = ({ user, loggedIn }) => {
   const [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
+    { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
+      variables: { limit: 4 },
+      context: { server: USER_SERVICE_GQL }
+    }),
+    { getTopActiveSpaces } = topSpaceData || {},
     views = {
       greaterThan1000: screenGreaterThan1000(),
       greaterThan768: screensMoreThan768({
@@ -16,7 +27,7 @@ export const getAllPropsHome = ({user, loggedIn}) => {
         setActiveTab,
         unisalaImg,
         loggedIn,
-        topSpaces: GetTopActiveSpaces?.spaceCategory
+        topSpaces: getTopActiveSpaces?.spaceCategory
       }),
       lessThan768: screenLessThan768({
         setActiveProfile,
