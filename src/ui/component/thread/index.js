@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
 import Upvote from "./actions/Upvote"
@@ -10,21 +10,11 @@ import ShowMore from "./ShowMore"
 import { Avatar } from "../Avatar"
 import { getImage } from "../../../servers/s3.configs"
 import ThreadExpand from "./ThreadExpand"
-import {
-  create,
-  ellipsisHorizontalOutline,
-  trash,
-  chatbubbleOutline
-} from "ionicons/icons"
+import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
 
 import { useMutation } from "@apollo/client"
-import {
-  DeletePost,
-  EditPost,
-  GetUserPost,
-  getUserGql
-} from "../../../graphql/user"
+import { DeletePost, EditPost } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
@@ -44,8 +34,6 @@ const Thread = ({ thread, refetch }) => {
     user,
     tags
   } = thread
-
-  console.log(thread.images)
 
   const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
@@ -73,14 +61,13 @@ const Thread = ({ thread, refetch }) => {
     variables: {
       postId: _id
     },
-    update: (cache) => {},
+
     onCompleted: (data) => {
       const { deletePost } = data
       if (deletePost.success) {
         // refetch posts
         setShowOptions(false)
         refetch()
-
         present({
           duration: 3000,
           message: "Post Deleted",
@@ -107,12 +94,27 @@ const Thread = ({ thread, refetch }) => {
   const [editPost] = useMutation(EditPost, {
     context: { server: USER_SERVICE_GQL },
     variables: { ...updatedData },
+
+    update: (cache, { data }) => {
+      cache.modify({
+        id: cache.identify({
+          __typename: "Post",
+          id: _id
+        }),
+        fields: {
+          postText() {
+            return updatedData.postText
+          }
+        },
+        broadcast: false
+      })
+    },
     onCompleted: (data) => {
       const { editPost } = data
 
       if (editPost?.status?.success) {
         // refetch posts
-        refetch()
+        // refetch()
         // change editable back to false
         setEditable(false)
         present({
