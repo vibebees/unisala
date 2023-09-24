@@ -159,7 +159,7 @@ const ProfilePage = () => {
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
-            {tab === 4 && <Saved userId={_id} firstName={firstName} />}
+            {tab === 3 && <Saved userId={_id} firstName={firstName} />}
           </IonCol>
           {windowWidth >= 1080 && (
             <IonCol className="sidebar">
