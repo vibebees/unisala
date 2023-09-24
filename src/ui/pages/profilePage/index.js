@@ -123,10 +123,7 @@ const ProfilePage = () => {
   // this effect handles tab selections
 
   useEffect(() => {
-    const query = new URLSearchParams(locate.search).get("tab")
-    if (!query) {
-      history.push(`?tab=${tabMap[tab]}`)
-    }
+    history.push(`?tab=${tabMap[tab]}`)
   }, [tab])
 
   if (!getUser?.user) {
