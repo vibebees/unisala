@@ -13,7 +13,7 @@ import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { GetUserPost } from "../../../../graphql/user/"
 import Thread from "../../../component/thread"
 import CourseCard from "../../../component/courseCard"
-import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import {ThreadSkeleton} from "../../../component/skeleton/threadSkeleton"
 
 function index({ userId, firstName }) {
   return (
@@ -80,7 +80,7 @@ function index({ userId, firstName }) {
 
             {loading &&
               ["0", "1", "2"].map((item) => {
-                return <ThreadScaletion key={item} />
+                return <ThreadSkeleton key={item} />
               })}
 
             {totalPosts > Posts.length && (

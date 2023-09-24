@@ -766,8 +766,8 @@ export const AddComment = gql`
     }
   `,
   getNewsFeed = gql`
-    query fetchMyNewsFeed($userId: ID!) {
-      fetchMyNewsFeed(userId: $userId) {
+    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
+      fetchMyNewsFeed(userId: $userId, page: $page) {
         postText
         upVoted
         upVoteCount

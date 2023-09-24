@@ -27,7 +27,7 @@ const ProfilePage = () => {
             <IonCard>
               <IonCardContent>
                 <div className="notificatons-tabs-content">
-                  Hi 👋, Chaman Bravo. <br /> <br />
+                  Hi 👋,  <br /> <br />
                   Welcome to Unisala -- The perfect place truly helps in finding
                   the perfect university for you.
                   <br />
