@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
-import {UniversityTemplate} from "./src/templates/univesity"
+import {UniversityPage} from "./src/university.page"
 
-export default function UniversityPage() {
-  return <UniversityTemplate />
+export default function page() {
+  return <UniversityPage/>
 }
