@@ -270,6 +270,14 @@ export const AddComment = gql`
       }
     }
   `,
+  EditComment = gql`
+    mutation editComment($commentId: String!, $commentText: String) {
+      editComment(commentId: $commentId, commentText: $commentText) {
+        success
+        message
+      }
+    }
+  `,
   GetProfileCard = gql`
     query getUser($username: String!) {
       getUser(username: $username) {
