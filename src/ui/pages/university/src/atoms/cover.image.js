@@ -3,9 +3,11 @@ import React, {useEffect, useState} from "react"
 import {awsBucket, bucketName, getImage, getImageUrl, universityDefaultImage} from "../../../../../servers/s3.configs"
 import "./CoverImg.css"
 
-export const CoverImg = (props) => {
-    const [width, setWidth] = React.useState(window.innerWidth)
-    const [images, setImages] = useState(props?.images || [])
+export const CoverImg = ({allProps}) => {
+
+    const {uniData, width, setWidth} = allProps
+
+    const [images, setImages] = useState(uniData?.images || [])
 
     const [coverImage, setCoverImage] = useState(images[0] || universityDefaultImage)
     const [profileImage, setProfileImage] = useState(images[1] || universityDefaultImage)

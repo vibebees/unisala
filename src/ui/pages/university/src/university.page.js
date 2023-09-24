@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react"
  import {getAllProps} from "./getAllProps"
-import {UniversityTemplate} from "./templates/univesity"
+import {UniversityTemplate} from "./templates/university"
 import {useParams} from "react-router"
 import {useDispatch, useSelector} from "react-redux"
 import {useQuery} from "@apollo/client"

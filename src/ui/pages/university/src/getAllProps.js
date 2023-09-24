@@ -1,4 +1,5 @@
 
+import {useHistory, useLocation} from "react-router"
 import useIsEmpty from "../../../../hooks/useIsEmpty"
 import {createRef, useState} from "react"
 
@@ -16,6 +17,7 @@ export const getAllProps = ({id, loading, data, uniData}) => {
         testScoreEmpty = useIsEmpty(uniData?.testScore || {}, "TestScore"),
         visitWebsiteEmpty = useIsEmpty(uniData?.elevatorInfo?.urls || {}, "Urls"),
         professorsEmpty = useIsEmpty(uniData || {}, "Report"),
+        interviewExperienceEmpty = useIsEmpty(uniData?.interviewExperience || {}, "InterviewExperience"),
         app = createRef(),
         profile = createRef(),
         statistics = createRef(),
@@ -28,6 +30,9 @@ export const getAllProps = ({id, loading, data, uniData}) => {
         campusLife = createRef(),
         website = createRef(),
         Professors = createRef(),
+        interviewExperience = createRef(),
+        review = createRef(),
+
         [AdmisionAnimate, setAdmissionAnimate] = useState(false),
         [GrantAnimate, setGrantAnimate] = useState(false),
         [LibrariesAnimate, setLibrariesAnimate] = useState(false),
@@ -35,7 +40,11 @@ export const getAllProps = ({id, loading, data, uniData}) => {
             scrollTop: 0,
             clientHeight: 0
         }),
-        [activeTab, setActiveTab] = useState(0),
+        history = useHistory(),
+        location = useLocation(),
+        queryParams = new URLSearchParams(location.search),
+        tabFromURL = queryParams.get("tab"),
+        [activeTab, setActiveTab] = useState(tabFromURL ? parseInt(tabFromURL) : 0),
         {scrollTop, clientHeight} = appState,
         UniScroll = () => {
             setAppState({
@@ -48,6 +57,89 @@ export const getAllProps = ({id, loading, data, uniData}) => {
             let {innerWidth} = window
             if (width !== innerWidth) {
                 setWidth(innerWidth)
+            }
+        },
+        handleScrolling = () => {
+            if (
+                scrollTop - profile?.current?.clientHeight <
+                statistics?.current?.offsetTop
+            ) {
+                setActiveTab(0)
+                setAdmissionAnimate(true)
+            }
+            if (
+                statistics?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(0)
+            }
+            if (
+                fees?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(1)
+            }
+            if (
+                libraries?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(2)
+            }
+            if (
+                libraries?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight + clientHeight &&
+                libraries?.current?.clientHeight !== 0
+            ) {
+                setLibrariesAnimate(true)
+            }
+            if (
+                grant?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(3)
+            }
+            if (
+                grant?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight + clientHeight &&
+                grant?.current?.clientHeight !== 0
+            ) {
+                setGrantAnimate(true)
+            }
+            if (
+                testScore?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(4)
+            }
+            if (
+                similarCollages?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(5)
+            }
+            if (
+                report?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(6)
+            }
+            if (
+                campusLife?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(7)
+            }
+            if (
+                website?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(8)
+            }
+            if (
+                Professors?.current?.offsetTop <=
+                scrollTop - profile?.current?.clientHeight
+            ) {
+                setActiveTab(9)
             }
         }
 
@@ -93,7 +185,13 @@ export const getAllProps = ({id, loading, data, uniData}) => {
         reportEmpty,
         similarCollagesEmpty,
         applicantsEmpty,
-        uniData
+        uniData,
+        history,
+        queryParams,
+        interviewExperience,
+        review,
+        interviewExperienceEmpty,
+        handleScrolling
     }
 
 }
