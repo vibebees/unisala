@@ -180,10 +180,7 @@ function Comment({
             parentId={parentId ?? _id}
             postId={postId}
             isReply={true}
-            // replyTo={{
-            //   username,
-            //   _id
-            // }}
+            replyTo={username}
           />
         )}
 

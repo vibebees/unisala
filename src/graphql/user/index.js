@@ -5,6 +5,7 @@ export const AddComment = gql`
       $postId: String!
       $commentText: String
       $parentId: String
+      $replyTo: String
     ) {
       addComment(
         postId: $postId
@@ -262,6 +263,7 @@ export const AddComment = gql`
           date
           repliesCount
           upVoteCount
+          replyTo
           upVoted
           picture
         }

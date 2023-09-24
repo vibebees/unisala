@@ -15,8 +15,8 @@ function ReplyInput({
   isReply,
   parentId,
   singlePost,
-  setNumberOfComments
-  // replyTo
+  setNumberOfComments,
+  replyTo
 }) {
   const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
@@ -92,8 +92,8 @@ function ReplyInput({
     const variables = {
       postId: postId,
       commentText: commentText,
-      parentId: isReply ? parentId : null
-      // replyTo: isReply ? replyTo : null
+      parentId: isReply ? parentId : null,
+      replyTo: isReply ? replyTo : null
     }
 
     addComment({ variables })
