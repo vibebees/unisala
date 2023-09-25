@@ -52,7 +52,7 @@ export const PageRoute = () => (
       </Route>
 
       <Route exact path="/">
-        <Redirect to="/home" />
+         <HomePage />
       </Route>
 
       <Route exact path="/university/:id">

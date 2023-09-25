@@ -10,13 +10,19 @@ import "./index.css"
 import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
 import { useMutation, useQuery } from "@apollo/client"
-import { DeleteComment, GetUserPost } from "../../../graphql/user"
+import { DeleteComment, EditComment, GetUserPost } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import moment from "moment"
 
-function Comment({ comment, postId, parentId, singlePost }) {
+function Comment({
+  comment,
+  postId,
+  parentId,
+  singlePost,
+  setRefetchComments
+}) {
   const {
     _id,
     firstName,
@@ -27,7 +33,8 @@ function Comment({ comment, postId, parentId, singlePost }) {
     repliesCount,
     upVoteCount,
     upVoted,
-    picture
+    picture,
+    replyTo
   } = comment
 
   const [present, dismiss] = useIonToast()
@@ -35,6 +42,10 @@ function Comment({ comment, postId, parentId, singlePost }) {
   const [reply, setReply] = useState(false)
   const profilePic = picture
   const [editable, setEditable] = useState(false)
+  const [updatedData, setUpdatedData] = useState({
+    commentText,
+    commentId: _id
+  })
   // username of current visited profile
   const profileUsername = useParams().username
 
@@ -46,7 +57,11 @@ function Comment({ comment, postId, parentId, singlePost }) {
     update: (cache) => {
       cache.modify({
         id: cache.identify({
-          __typename: parentId ? "Comment" : "Post",
+          __typename: parentId
+            ? "Comment"
+            : singlePost
+            ? "PostComment"
+            : "Post",
           _id: postId
         }),
         fields: {
@@ -68,8 +83,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
       const { deleteComment } = data
 
       if (deleteComment?.success) {
-        // setRefetchComments(true)
-        // setRefetchPosts(true)
+        setRefetchComments((prev) => !prev)
         present({
           duration: 3000,
           message: "Comment Deleted",
@@ -88,6 +102,42 @@ function Comment({ comment, postId, parentId, singlePost }) {
       }
     }
   })
+
+  const [editComment] = useMutation(EditComment, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { ...updatedData },
+    onCompleted: (data) => {
+      const { editComment } = data
+      setEditable(false)
+      setRefetchComments((prev) => !prev)
+      if (editComment?.status?.success) {
+        // refetch posts
+        // refetch()
+        // change editable back to false
+        setEditable(false)
+        present({
+          duration: 3000,
+          message: "Post Updated",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      } else {
+        present({
+          duration: 3000,
+          message: editComment.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
+    }
+  })
+
+  const handleChange = (e) => {
+    // for now handling change of text only
+    setUpdatedData((prev) => ({ ...prev, commentText: e }))
+  }
 
   return (
     <div className=" relative  mt-2 ">
@@ -117,12 +167,12 @@ function Comment({ comment, postId, parentId, singlePost }) {
               <div className="px-5">
                 <ReactQuill
                   theme="snow"
+                  onChange={handleChange}
                   defaultValue={commentText}
                   className="h-48 mb-8 text-black"
                 />
 
                 <br />
-
                 <IonButton
                   fill="clear"
                   className="ion-no-padding  capitalize  px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
@@ -138,7 +188,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
                   className=" ion-no-padding capitalize font-bold px-4 text-white bg-blue-500 rounded-2xl transition ease delay-200 hover:bg-blue-600"
                   fill="clear"
                   size="small"
-                  // onClick={editPost}
+                  onClick={editComment}
                   style={{
                     "--ripple-color": "transparent"
                   }}
@@ -147,13 +197,17 @@ function Comment({ comment, postId, parentId, singlePost }) {
                 </IonButton>
               </div>
             ) : (
-              <p
-                className="text-sm"
-                dangerouslySetInnerHTML={{ __html: commentText }}
-              ></p>
+              <div className="">
+                <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
+                  {replyTo && `@${replyTo}`}
+                </span>
+                <p
+                  className="text-sm inline-flex flex-wrap pr-4"
+                  dangerouslySetInnerHTML={{ __html: commentText }}
+                />
+              </div>
             )}
           </div>
-
           <div className="thread_footer pl-0 -translate-x-4 scale-75">
             <Upvote
               upVoteCount={upVoteCount}
@@ -172,6 +226,7 @@ function Comment({ comment, postId, parentId, singlePost }) {
             parentId={parentId ?? _id}
             postId={postId}
             isReply={true}
+            replyTo={username}
           />
         )}
 
@@ -210,14 +265,6 @@ function Comment({ comment, postId, parentId, singlePost }) {
           </div>
         )}
       </div>
-      {!singlePost && (
-        <Link
-          to={`thread/${postId}`}
-          className="px-16 block  mt-4 text-base hover:text-neutral-800"
-        >
-          View all comments
-        </Link>
-      )}
       <div className="ml-20 max-md:ml-8 max-sm:ml-4 border-l-2 max-md:pl-12 max-sm:pl-0 border-opacity-30 border-neutral-400">
         {repliesCount > 0 && singlePost && (
           <ShowMore postId={postId} parentId={_id} singlePost={singlePost} />

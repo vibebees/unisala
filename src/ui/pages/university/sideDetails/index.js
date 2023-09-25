@@ -31,6 +31,7 @@ import VisitWebsite from "./visitWebsite"
 import Professors from "./professors"
 import Interview from "./Interview"
 import { useSelector } from "react-redux"
+import Discussion from "../Discussion"
 
 const SideDetails = ({
   activeTab,
@@ -93,6 +94,11 @@ const SideDetails = ({
       title: "Professors",
       icon: peopleOutline,
       ref: "Professors"
+    },
+    !isSideBar?.interviewExperienceEmpty && {
+      title: "Interview Experience",
+      icon: receiptOutline,
+      ref: "interviewExperience"
     }
   ]
   const [width, setWidth] = React.useState(window.innerWidth)
@@ -199,9 +205,12 @@ const SideDetails = ({
           <section ref={forwardedRef.Professors}>
             <Professors />
           </section>
-          <section ref={forwardedRef.Professors}>
+          <section ref={forwardedRef.Interview}>
             <Interview unitId={unitId} />
           </section>
+          {/* <section ref={forwardedRef.Interview}>
+            <Discussion unitId={unitId} />
+          </section> */}
         </IonCol>
       </IonRow>
     </IonGrid>

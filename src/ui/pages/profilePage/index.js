@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useParams } from "react-router"
+import { useEffect, useState } from "react"
+import { useHistory, useLocation, useParams } from "react-router"
 import {
   IonContent,
   IonGrid,
@@ -29,7 +29,7 @@ const ProfilePage = () => {
   let windowWidth = useWindowWidth()
   const [tab, setTab] = useState(0)
   const { username } = useParams()
-
+  const history = useHistory()
   const { user: loggedInUser } = useSelector((state) => state.userProfile)
 
   const { data } = useQuery(getUserGql, {
@@ -39,8 +39,6 @@ const ProfilePage = () => {
   useDocTitle(username)
 
   const { getUser } = data || {}
-  const accessToken = localStorage.getItem("accessToken")
-  const decode = accessToken ? jwtDecode(accessToken) : {}
 
   const myProfile = username === loggedInUser?.username
 
@@ -86,6 +84,48 @@ const ProfilePage = () => {
     myProfile
   }
 
+  const locate = useLocation()
+
+  const tabMap = {
+    0: "profile",
+    1: "threads",
+    2: "guestbook",
+    3: "saved",
+    4: "roadmap"
+  }
+
+  // this effect is responsible to show the component(target users who probably came by following a link)
+  useEffect(() => {
+    const query = new URLSearchParams(locate.search).get("tab")
+    if (!query) {
+      history.push("?tab=profile")
+    } else {
+      switch (query) {
+        case "threads":
+          setTab(1)
+          break
+        case "guestbook":
+          setTab(2)
+          break
+        case "saved":
+          setTab(3)
+          break
+
+        case "roadmap":
+          setTab(4)
+          break
+        default:
+          setTab(0)
+      }
+    }
+  }, [])
+
+  // this effect handles tab selections
+
+  useEffect(() => {
+    history.push(`?tab=${tabMap[tab]}`)
+  }, [tab])
+
   if (!getUser?.user) {
     return (
       <IonContent>
@@ -119,7 +159,7 @@ const ProfilePage = () => {
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
-            {tab === 4 && <Saved userId={_id} firstName={firstName} />}
+            {tab === 3 && <Saved userId={_id} firstName={firstName} />}
           </IonCol>
           {windowWidth >= 1080 && (
             <IonCol className="sidebar">

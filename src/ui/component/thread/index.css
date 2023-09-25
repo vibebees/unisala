@@ -80,3 +80,20 @@
   border: 1px solid #cccccc84 !important;
   border-radius: 8px !important;
 }
+
+.imageModal::-webkit-scrollbar {
+  display: none;
+}
+
+.imageModal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.imageModal::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0.5rem;
+}
+
+.imageModal::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

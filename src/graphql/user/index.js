@@ -5,11 +5,13 @@ export const AddComment = gql`
       $postId: String!
       $commentText: String
       $parentId: String
+      $replyTo: String
     ) {
       addComment(
         postId: $postId
         commentText: $commentText
         parentId: $parentId
+        replyTo: $replyTo
       ) {
         success
         message
@@ -69,15 +71,15 @@ export const AddComment = gql`
         post {
           _id
           postText
-          postImage
+          # postImage
           date
         }
       }
     }
   `,
   GetPostById = gql`
-    query getPostById($id: String!) {
-      getPostById(id: $id) {
+    query getPostById($id: String!, $user: String) {
+      getPostById(id: $id, user: $user) {
         status {
           success
           message
@@ -203,7 +205,7 @@ export const AddComment = gql`
       $interestedSubjects: [ID]
       $userStatus: String
       $studyLevel: String
-      $interestedUni: [interestedUniversity]
+      $interestedUni: [Int]
     ) {
       editProfile(
         picture: $picture
@@ -261,9 +263,18 @@ export const AddComment = gql`
           date
           repliesCount
           upVoteCount
+          replyTo
           upVoted
           picture
         }
+      }
+    }
+  `,
+  EditComment = gql`
+    mutation editComment($commentId: String!, $commentText: String) {
+      editComment(commentId: $commentId, commentText: $commentText) {
+        success
+        message
       }
     }
   `,
@@ -412,7 +423,7 @@ export const AddComment = gql`
         totalPosts
         Posts {
           _id
-          postImage
+          images
           postText
           date
           upVoteCount
@@ -763,10 +774,9 @@ export const AddComment = gql`
     }
   `,
   getNewsFeed = gql`
-    query fetchMyNewsFeed($userId: ID!) {
-      fetchMyNewsFeed(userId: $userId) {
+    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
+      fetchMyNewsFeed(userId: $userId, page: $page) {
         postText
-        postImage
         upVoted
         upVoteCount
         postCommentsCount
@@ -837,7 +847,7 @@ export const AddComment = gql`
         }
         posts {
           _id
-          postImage
+          images
           postText
           date
           upVoteCount
