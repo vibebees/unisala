@@ -19,7 +19,7 @@ import { closeOutline, imageOutline } from "ionicons/icons"
 import {
   AddPost,
   GetAllPostBySpaceCategoryID,
-  GetUserPost
+  getNewsFeed
 } from "../../../graphql/user"
 import TextChecker from "../../../utils/components/TextChecker"
 import { USER_SERVICE_GQL } from "../../../servers/types"
@@ -47,7 +47,9 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     context: { server: USER_SERVICE_GQL },
     update: (cache, { data: { addPost } }) => {
       const post = {
-        ...addPost.post,
+        postText: addPost.post.postText,
+        date: addPost.post.date,
+        _id: addPost.post._id,
         user: {
           _id: user._id,
           username: user.username,
@@ -58,24 +60,24 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
         upVoteCount: 0,
         postCommentsCount: 0,
         upVoted: false,
-        saved: false
+        type: "post",
+        saved: false,
+        images: addPost.post.images || [],
+        __typename: "Post"
       }
       if (!tags) {
         const data = cache.readQuery({
-          query: GetUserPost,
+          query: getNewsFeed,
           variables: { userId: user._id, page: 0 },
           context: { server: USER_SERVICE_GQL }
         })
         data &&
           cache.writeQuery({
-            query: GetUserPost,
+            query: getNewsFeed,
             variables: { userId: user._id, page: 0 },
             context: { server: USER_SERVICE_GQL },
             data: {
-              getUserPost: {
-                ...data.getUserPost,
-                Posts: [post, ...data.getUserPost.Posts]
-              }
+              fetchMyNewsFeed: [post, ...data.fetchMyNewsFeed]
             }
           })
       } else {
@@ -114,7 +116,6 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
             }
           }
         )
-        console.log(res)
       }
       present({
         duration: 3000,
