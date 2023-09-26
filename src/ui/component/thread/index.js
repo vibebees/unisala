@@ -32,7 +32,8 @@ const Thread = ({ thread, refetch }) => {
     images,
     saved,
     user,
-    tags
+    tags,
+    postImage
   } = thread
 
   const { firstName, lastName, username, picture } = thread.user || {}
@@ -201,7 +202,8 @@ const Thread = ({ thread, refetch }) => {
           to={`/thread/${_id}`}
           className="thread_image  w-max relative block before:absolute before:top-0 before:left-0 before:z-10 before:content-[''] before:w-full before:h-full before:bg-[#00000013]"
         >
-          {images?.length > 0 && <img src={images[0]} alt="" />}
+          {images?.length > 0 && images.map((img, index) => <img src={img} key= {index} alt="" />)}
+          {postImage && <img src={postImage} alt="unisala-post" />}
 
           <h1 className="absolute  top-[50%] left-[50%] origin-top-left text-2xl text-gray-800">
             {images?.length - 1 > 0 && `+${images?.length - 1}`}

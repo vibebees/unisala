@@ -849,6 +849,7 @@ export const AddComment = gql`
           _id
           images
           postText
+          postImage
           date
           upVoteCount
           postCommentsCount
