@@ -13,7 +13,7 @@ module.exports = (() => {
     return {
       messagingServiceAddress: "http://test.unisala.com/msg",
       universityServiceAddress: "http://test.unisala.com/uni",
-      messageSocketAddress: "'ws://unisala.com/msg/socket.io'",
+      messageSocketAddress: "ws://test.unisala.com/msg/socket.io",
       userServiceAddress: "http://test.unisala.com/user",
       callSocketAddress: "ws://localhost:4445"
     }
