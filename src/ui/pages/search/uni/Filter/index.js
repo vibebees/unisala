@@ -8,8 +8,41 @@ import {
   IonSelectOption
 } from "@ionic/react"
 import "./index.css"
+import { useEffect, useState } from "react"
+import { useLazyQuery, useQuery } from "@apollo/client"
+import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import { UniFilterResults } from "../../../../../graphql/uni"
+import { searchGetSuccess } from "../../../../../store/action"
+import { useDispatch } from "react-redux"
 
 function index() {
+  const [sat, setSat] = useState(400)
+  const [act, setAct] = useState(1)
+  const [gpa, setGpa] = useState(3)
+  const { data, loading, refetch } = useQuery(UniFilterResults, {
+    context: { server: USER_SERVICE_GQL },
+    fetchPolicy: "network-only"
+  })
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      if (gpa > 3 || sat > 400 || act > 1) {
+        refetch({ page: 1, pagesize: 10, gpa: gpa, act: act })
+        console.log(data?.searchScholarship?.scholarships)
+      }
+    }, 1000)
+
+    return () => clearTimeout(interval)
+  }, [sat, act, gpa])
+
+  useEffect(() => {
+    console.log("updating storee.................")
+    if (data?.searchScholarship?.scholarships?.length > 0) {
+      dispatch(searchGetSuccess(data?.searchScholarship?.scholarships))
+    }
+  }, [data])
+
+  console.log({ data: data?.searchScholarship?.scholarships })
   return (
     <IonCard className="filter-card-wrapper">
       <IonCardContent>
@@ -66,7 +99,7 @@ function index() {
           </div>
         </div>
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Online friendliness</h2>
           <div className="field search-field">
             <IonCheckbox slot="start" />
@@ -80,7 +113,7 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Some online degrees</IonLabel>
           </div>
-        </div>
+        </div> */}
 
         <div className="search-control">
           <h2 className="search-control__label">Cost (net price)</h2>
@@ -88,7 +121,7 @@ function index() {
           <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
         </div>
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Student body size</h2>
           <div className="field search-field">
             <IonCheckbox slot="start" />
@@ -102,9 +135,9 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Large</IonLabel>
           </div>
-        </div>
+        </div> */}
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Specialty</h2>
           <div className="field search-field">
             <IonCheckbox slot="start" />
@@ -126,14 +159,30 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Hispanic-serving institutions</IonLabel>
           </div>
-        </div>
+        </div> */}
 
         <div className="search-control">
           <h2 className="search-control__label">Test scores</h2>
           <IonLabel>SAT:</IonLabel>
-          <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
+          <IonRange
+            pin={true}
+            min={400}
+            max={1600}
+            pinFormatter={(value) => {
+              setSat(value)
+              return value
+            }}
+          ></IonRange>
           <IonLabel>ACT:</IonLabel>
-          <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
+          <IonRange
+            pin={true}
+            min={1}
+            max={36}
+            pinFormatter={(value) => {
+              setAct(value)
+              return value
+            }}
+          ></IonRange>
         </div>
 
         <div className="search-control">
@@ -191,7 +240,7 @@ function index() {
           </div>
         </div>
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Religious affiliation</h2>
           <div className="field search-field">
             <IonSelect
@@ -205,9 +254,9 @@ function index() {
               <IonSelectOption value="jewish">Jewish</IonSelectOption>
             </IonSelect>
           </div>
-        </div>
+        </div> */}
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Good for</h2>
           <div className="field search-field">
             <IonCheckbox slot="start" />
@@ -229,9 +278,9 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Middle-class students</IonLabel>
           </div>
-        </div>
+        </div> */}
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">
             Starting salary after graduation
           </h2>
@@ -249,7 +298,7 @@ function index() {
               <IonSelectOption value="$25,000+">$25,000+</IonSelectOption>
             </IonSelect>
           </div>
-        </div>
+        </div> */}
       </IonCardContent>
     </IonCard>
   )

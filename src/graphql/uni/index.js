@@ -280,4 +280,69 @@ export const GetProfessor = gql`
                     votes
                 }
             }
-        }`
+        }`,
+  GetAllQuestions = gql`
+    query {
+      getAllQuestions {
+        status {
+          success
+          message
+        }
+        questions {
+          text
+          type
+          options {
+            key
+            value
+          }
+          qnsNumber
+          nextQuestion
+        }
+      }
+    }
+  `,
+  UniFilterResults = gql`
+    query UniFilterResults($page: Int, $pagesize: Int, $gpa: Float, $act: Int) {
+      searchScholarship(
+        page: $page
+        pageSize: $pagesize
+        gpa: $gpa
+        act: $act
+      ) {
+        status {
+          success
+          message
+        }
+        scholarships {
+          _id
+          university_name
+          uni_id
+          scholarship_name
+          international_specific
+          level
+          scholarship_url
+          transfer_specific
+          non_score_eligibility_requirements
+          gpa {
+            max
+            min
+          }
+          act {
+            max
+            min
+          }
+          sat {
+            max
+            min
+          }
+          awards {
+            award_name
+            scholarship_amount {
+              amount
+              disbursement_schedule
+            }
+          }
+        }
+      }
+    }
+  `
