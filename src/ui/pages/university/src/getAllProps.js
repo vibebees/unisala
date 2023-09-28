@@ -194,7 +194,8 @@ export const getAllProps = ({id, loading, data, uniData, isSideBar}) => {
         handleScrolling,
         reportDataSource: uniData?.report,
         campusPollDataSource: uniData?.students?.campusLife?.poll,
-        isSideBar
+        isSideBar,
+        testScoreDataSource: uniData?.testScore
     }
 
 }

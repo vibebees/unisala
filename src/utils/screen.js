@@ -1,7 +1,7 @@
 export const handleResize = ({width, setWidth}) => {
-    const { innerWidth } = window
+    const { innerWidth = 0 } = window || {}
 
-    if (width !== innerWidth) {
+    if (width !== innerWidth && innerWidth) {
         setWidth(innerWidth)
     }
 }

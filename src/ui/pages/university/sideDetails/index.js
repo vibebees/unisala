@@ -23,8 +23,6 @@ import {
 import Admission from "./admission"
 import Grant from "./grant"
 import Libraries from "./libraries"
-import CampusLife from "./campusLife"
-import TestScore from "./testScore"
 import SimilarCollage from "./similarCollage"
 import VisitWebsite from "./visitWebsite"
 import Professors from "./professors"
@@ -33,6 +31,7 @@ import { useSelector } from "react-redux"
 import Discussion from "../Discussion"
 import {ReportCard} from "../../../component/reportCard"
 import {PollCard} from "../../../component/pollCard"
+import {CardWithCircularGrid} from "../../../component/cardWithCircularGrid"
 
 const SideDetails = ({
   activeTab,
@@ -47,7 +46,7 @@ const SideDetails = ({
 
 }) => {
 
-  const {reportDataSource, campusPollDataSource, isSideBar} = allProps
+  const {reportDataSource, campusPollDataSource, testScoreDataSource, isSideBar} = allProps
 
    const sideMenu = [
     !isSideBar?.applicantsEmpty && {
@@ -193,7 +192,7 @@ const SideDetails = ({
           </section>
 
           <section ref={forwardedRef.testScore}>
-            <TestScore />
+            <CardWithCircularGrid dataSource={testScoreDataSource} parentProps={allProps} />
           </section>
           <section ref={forwardedRef.similarCollages}>
             <SimilarCollage />
