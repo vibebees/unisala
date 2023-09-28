@@ -3,7 +3,7 @@ import {useHistory, useLocation} from "react-router"
 import useIsEmpty from "../../../../hooks/useIsEmpty"
 import {createRef, useState} from "react"
 
-export const getAllProps = ({id, loading, data, uniData}) => {
+export const getAllProps = ({id, loading, data, uniData, isSideBar}) => {
 
     const
 
@@ -192,7 +192,9 @@ export const getAllProps = ({id, loading, data, uniData}) => {
         review,
         interviewExperienceEmpty,
         handleScrolling,
-        reportDataSource: uniData?.report
+        reportDataSource: uniData?.report,
+        campusPollDataSource: uniData?.students?.campusLife?.poll,
+        isSideBar
     }
 
 }

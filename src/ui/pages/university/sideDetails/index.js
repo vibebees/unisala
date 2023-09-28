@@ -24,7 +24,6 @@ import Admission from "./admission"
 import Grant from "./grant"
 import Libraries from "./libraries"
 import CampusLife from "./campusLife"
-import Report from "./report"
 import TestScore from "./testScore"
 import SimilarCollage from "./similarCollage"
 import VisitWebsite from "./visitWebsite"
@@ -33,6 +32,7 @@ import Interview from "./Interview"
 import { useSelector } from "react-redux"
 import Discussion from "../Discussion"
 import {ReportCard} from "../../../component/reportCard"
+import {PollCard} from "../../../component/pollCard"
 
 const SideDetails = ({
   activeTab,
@@ -47,9 +47,9 @@ const SideDetails = ({
 
 }) => {
 
-  const {reportDataSource} = allProps
-  const { isSideBar } = useSelector((store) => store?.university)
-  const sideMenu = [
+  const {reportDataSource, campusPollDataSource, isSideBar} = allProps
+
+   const sideMenu = [
     !isSideBar?.applicantsEmpty && {
       title: "Statistics",
       icon: barChartOutline,
@@ -199,11 +199,10 @@ const SideDetails = ({
             <SimilarCollage />
           </section>
           <section ref={forwardedRef.report}>
-            <ReportCard dataSource={reportDataSource} />
-            {/* <Report /> */}
+            <ReportCard dataSource={reportDataSource} parentProps={allProps} />
           </section>
           <section ref={forwardedRef.campusLife}>
-            <CampusLife />
+            <PollCard dataSource={campusPollDataSource} parentProps={allProps}/>
           </section>
           <section ref={forwardedRef.website}>
             <VisitWebsite />

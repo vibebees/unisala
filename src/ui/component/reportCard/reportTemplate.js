@@ -18,23 +18,11 @@ import {ReportBody} from "./organisms/reportBody"
 export const ReportTemplate = ({allProps}) => {
     const {
         width,
-        setWidth,
         more,
-        setMore,
-        reportCard,
-        setReportCard,
-        useGradeColor,
-        useGrade,
         report,
-        setReport,
-        records,
         setRecords,
-        uniData
+        isSideBar
     } = allProps
-
-    useEffect(() => {
-        setReport(uniData?.report)
-    }, [])
 
     useEffect(() => {
         setRecords([
@@ -60,7 +48,7 @@ export const ReportTemplate = ({allProps}) => {
         }
     })
 
-    return uniData?.reportEmpty ? null : (
+    return isSideBar?.reportEmpty ? null : (
         <IonCard
             style={{
                 margin: "15px 0px 0px 0px"

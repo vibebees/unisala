@@ -14,8 +14,8 @@ export const UniversityPage = () => {
     {loading, data} = useQuery(getSchoolInfo(id), {
         context: {server: UNIVERSITY_SERVICE_GQL}
     }),
-    {uniData} = useSelector((store) => store?.university),
-    allProps = getAllProps({id, loading, data, uniData})
+    {uniData, isSideBar} = useSelector((store) => store?.university),
+    allProps = getAllProps({id, loading, data, uniData, isSideBar})
 
     return <UniversityTemplate allProps={allProps} />
 }

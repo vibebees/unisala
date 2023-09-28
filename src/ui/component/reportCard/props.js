@@ -3,15 +3,15 @@ import {handleResize} from "../../../utils/screen"
 import useGrade from "../../../hooks/useGrade"
 import useGradeColor from "../../../hooks/useGradeColor"
 
-export const getAllProps = (dataSource) => {
+export const getAllProps = ({dataSource, parentProps}) => {
 
-    const
+      const
+        {isSideBar, uniData} = parentProps,
         [width, setWidth] = useState(window.innerWidth),
-        [reportCard, setReportCard] = useState([])
-
-    const [more, setMore] = useState(false)
-    const [report, setReport] = useState({})
-    const [records, setRecords] = useState([
+        [reportCard, setReportCard] = useState([]),
+         [more, setMore] = useState(false),
+         [report, setReport] = useState(dataSource),
+         [records, setRecords] = useState([
         {
             title: "Academicccss",
             report: report?.academics
@@ -60,10 +60,8 @@ export const getAllProps = (dataSource) => {
             title: "Professors",
             report: report?.professors
         }
-    ]),
-    [uniData, setUniData] = useState({report: dataSource})
-
-    handleResize({width, setWidth})
+    ])
+     handleResize({width, setWidth})
     return {
         width,
         setWidth,
@@ -78,7 +76,7 @@ export const getAllProps = (dataSource) => {
         records,
         setRecords,
         uniData,
-        setUniData
+        isSideBar
     }
 
 }
