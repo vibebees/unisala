@@ -33,22 +33,6 @@ const Report = () => {
     const { uniData } = useSelector((store) => store?.university)
     const { isSideBar } = useSelector((store) => store?.university)
 
-    // const {
-    //     academics,
-    //     atheltics,
-    //     average,
-    //     campus,
-    //     campusFood,
-    //     diversity,
-    //     dorms,
-    //     location,
-    //     partyScene,
-    //     Professors,
-    //     safety,
-    //     studentLife,
-    //     value
-    // } = uniData?.report
-
     return isSideBar?.reportEmpty ? null : (
         <IonCard
             style={{

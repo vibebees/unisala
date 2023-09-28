@@ -9,7 +9,6 @@ import {
     IonToolbar
 } from "@ionic/react"
 import {UniProfile} from "../../uniProfile"
-import SideDetails from "../../sideDetails"
 import Discussion from "../../Discussion"
 
 import {useDispatch, useSelector} from "react-redux"

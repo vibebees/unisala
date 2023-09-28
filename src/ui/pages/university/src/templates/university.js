@@ -8,9 +8,6 @@ import {
     IonTitle,
     IonToolbar
 } from "@ionic/react"
-import {UniProfile} from "../../uniProfile"
-import SideDetails from "../../sideDetails"
-import Discussion from "../../Discussion"
 
 import {useDispatch, useSelector} from "react-redux"
 import {getUniData} from "../../../../../store/action"
@@ -18,10 +15,7 @@ import PreLoader from "../../../../component/preloader"
 import {isSideBar} from "../../../../../store/action/University"
 
 import useDocTitle from "../../../../../hooks/useDocTitile"
-import Review from "../../Discussion/Post"
-import {useHistory, useLocation} from "react-router"
 import {NoDataDefaultCard} from "../organisms/noDataCard"
-import {UniversityHeader} from "../molecules/headerNavigator"
 import {UniversityBuild} from "../organisms/university"
 
 export const UniversityTemplate = ({allProps}) => {

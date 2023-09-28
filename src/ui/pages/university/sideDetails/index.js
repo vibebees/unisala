@@ -32,6 +32,7 @@ import Professors from "./professors"
 import Interview from "./Interview"
 import { useSelector } from "react-redux"
 import Discussion from "../Discussion"
+import {ReportCard} from "../../../component/reportCard"
 
 const SideDetails = ({
   activeTab,
@@ -41,8 +42,12 @@ const SideDetails = ({
   admissionAnimate,
   grantAnimate,
   librariesAnimate,
-  unitId
+  unitId,
+  allProps
+
 }) => {
+
+  const {reportDataSource} = allProps
   const { isSideBar } = useSelector((store) => store?.university)
   const sideMenu = [
     !isSideBar?.applicantsEmpty && {
@@ -194,7 +199,8 @@ const SideDetails = ({
             <SimilarCollage />
           </section>
           <section ref={forwardedRef.report}>
-            <Report />
+            <ReportCard dataSource={reportDataSource} />
+            {/* <Report /> */}
           </section>
           <section ref={forwardedRef.campusLife}>
             <CampusLife />

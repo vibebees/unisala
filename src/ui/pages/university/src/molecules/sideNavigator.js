@@ -24,7 +24,8 @@ export const SideNavigator = ({allProps}) => {
         UniScroll,
         interviewExperience
     } = allProps
-    return (
+
+      return (
         <SideDetails
                         forwardedRef={{
                             app,
@@ -48,6 +49,7 @@ export const SideNavigator = ({allProps}) => {
                         UniScroll={UniScroll}
                         appState={appState}
                         unitId={data?.getSchoolInfo?.unitId}
+                        allProps = {allProps}
                     />
     )
 }

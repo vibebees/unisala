@@ -191,7 +191,8 @@ export const getAllProps = ({id, loading, data, uniData}) => {
         interviewExperience,
         review,
         interviewExperienceEmpty,
-        handleScrolling
+        handleScrolling,
+        reportDataSource: uniData?.report
     }
 
 }
