@@ -19,11 +19,10 @@ export const GoogleAuth = ({ setauth }) => {
           localStorage.setItem("refreshToken", res?.data.refreshToken)
           if (res?.data.isFirstLogin) {
             localStorage.setItem("newUser", "true")
-          } else {
-            window.innerWidth < 768
+          }
+          window.innerWidth < 768
               ? window.location.replace("/home")
               : window.location.reload()
-          }
         }
         if (!res.data.success) {
           present({
