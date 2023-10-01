@@ -53,6 +53,7 @@ const FourthStep = () => {
   }
 
   const ThirdQuestion = QuestionData.getAllQuestions.questions[2].text
+  const ThirdQuestionDes = QuestionData.getAllQuestions.questions[2].desc
 
   const handleclick = (e) => {
     const alreadyExists = welcomeFormdata.interestedUni.includes(e.target.value)
@@ -75,7 +76,7 @@ const FourthStep = () => {
     }
   }
 
-  useDebouncedEffect(handleInput, [searcTerm], 1500)
+  useDebouncedEffect(handleInput, [searcTerm], 0)
 
   return (
     <div className=" w-full ">
@@ -86,6 +87,7 @@ const FourthStep = () => {
               <h1 className="font-semibold text-xl  text-neutral-600">
                 {ThirdQuestion}
               </h1>
+              {ThirdQuestionDes}
             </IonText>
           </IonGrid>
           <div
@@ -96,7 +98,7 @@ const FourthStep = () => {
           >
             <div className=" mt-2 max-md:block max-md:w-full   bg-neutral-200  w-4/5 ">
               <IonSearchbar
-                placeholder={`Search universities...`}
+                placeholder={`🏛️ Search universities...`}
                 className=" font-medium text-neutral-600"
                 onIonInput={(e) => setSearchTerm(e.target.value)}
               ></IonSearchbar>
@@ -152,8 +154,8 @@ const FourthStep = () => {
       <div className="max-md:hidden    w-full  bg-blue-500 " key={5198187718}>
         <div className="absolute z-50  right-0  bottom-20  h-60   -top-14 bg-neutral-200   w-1/2  ">
           <IonSearchbar
-            placeholder={`Search universities...`}
-            className=" font-medium text-neutral-600"
+                placeholder={`Georgia State University 🏛️ `}
+                className=" font-medium text-neutral-600"
             onIonInput={(e) => setSearchTerm(e.target.value)}
           ></IonSearchbar>
           <IonList className="overflow-y-scroll searchlist border rounded-md h-full">

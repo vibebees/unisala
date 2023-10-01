@@ -14,7 +14,7 @@ import { WelcomeData } from ".."
 import { universityServer } from "../../../../../servers/endpoints"
 import axios from "axios"
 import { useDebouncedEffect } from "../../../../../hooks/useDebouncedEffect"
-
+import "./index.css"
 const SecondStep = () => {
   const [searchInput, setSearchInput] = useState(false),
     [searcTerm, setSearchTerm] = useState(""),
@@ -72,7 +72,7 @@ const SecondStep = () => {
     }
   }
 
-  useDebouncedEffect(handleInput, [searcTerm], 1500)
+  useDebouncedEffect(handleInput, [searcTerm], 0)
 
   return (
     <div>
@@ -119,12 +119,13 @@ const SecondStep = () => {
                 {searchInput && (
                   <>
                     <div className="absolute z-50 bottom-10 max-md:-top-10   -top-14 bg-neutral-200 right-0 max-md:w-full max-md:bottom-36  max-md:shadow-md  w-1/2 ">
-                      <IonSearchbar
-                        placeholder="Search for a major"
-                        className=" font-medium text-neutral-600"
+                    <IonSearchbar
+                        className="fadeIn font-medium text-neutral-600"
+                        placeholder="Criminal Justice ⚖️"
                         value={searcTerm}
                         onIonInput={(e) => setSearchTerm(e.target.value)}
-                      ></IonSearchbar>
+                    />
+
                       <IonList className="overflow-y-scroll searchlist h-full border rounded-md">
                         <>
                           {isLoading && (
