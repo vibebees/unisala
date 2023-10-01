@@ -12,7 +12,8 @@ import Indicators from "./Steps/Indicators"
 import StepsButtons from "./Steps/StepsButtons"
 import clsx from "clsx"
 import PreLoader from "../../preloader"
-
+import { IonCard } from "@ionic/react"
+import "./Steps/index.css"
 export const WelcomeData = createContext()
 const index = ({ setNewUser }) => {
   const [currentStep, setCurrentStep] = useState(1)
@@ -61,18 +62,18 @@ const index = ({ setNewUser }) => {
             }}
           >
             <Indicators currentStep={currentStep} />
-            <div className="flex relative w-full">
+            <div className="flex w-full">
               {stepComponents.map((step, index) => (
                 <div
                   key={index}
-                  className={clsx("absolute  right-0 left-0 ", {
-                    "z-10": currentStep === index + 1,
-                    "z-0 opacity-0": currentStep !== index + 1,
+                  className={clsx("absolute full-size", {
+                    "z-1000": currentStep === index + 1,
+                    "z-0 opacity-0 pointer-events-none": currentStep !== index + 1,
                     "fade-enter": currentStep === index + 1,
                     "fade-exit": currentStep !== index + 1
                   })}
                 >
-                  {step}
+                  <IonCard className="no-shadow">{step}</IonCard>
                 </div>
               ))}
             </div>

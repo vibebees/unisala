@@ -53,7 +53,7 @@ const FourthStep = () => {
   }
 
   const ThirdQuestion = QuestionData.getAllQuestions.questions[2].text
-  const ThirdQuestionDes = QuestionData.getAllQuestions.questions[2].desc
+  const ThirdQuestionDes = QuestionData.getAllQuestions.questions[2].desc || ""
 
   const handleclick = (e) => {
     const alreadyExists = welcomeFormdata.interestedUni.includes(e.target.value)
@@ -79,139 +79,46 @@ const FourthStep = () => {
   useDebouncedEffect(handleInput, [searcTerm], 0)
 
   return (
-    <div className=" w-full ">
-      <div>
-        <IonGrid className="mx-12 max-md:mx-3 mt-6 ">
-          <IonGrid>
-            <IonText color="primary">
-              <h1 className="font-semibold text-xl  text-neutral-600">
-                {ThirdQuestion}
-              </h1>
-              {ThirdQuestionDes}
-            </IonText>
-          </IonGrid>
-          <div
-            key={11112222}
-            className={clsx(
-              "hidden overflow-hidden  duration-300 ease-linear w-full transition-all  max-md:block h-80 "
-            )}
-          >
-            <div className=" mt-2 max-md:block max-md:w-full   bg-neutral-200  w-4/5 ">
-              <IonSearchbar
-                placeholder={`🏛️ Search universities...`}
-                className=" font-medium text-neutral-600"
-                onIonInput={(e) => setSearchTerm(e.target.value)}
-              ></IonSearchbar>
-              <IonList className="overflow-y-scroll searchlist border rounded-md  h-60">
-                <>
-                  {isLoading && (
-                    <>
-                      <div className="  h-12 w-full">
-                        <IonThumbnail slot="start" className="w-full">
-                          <IonSkeletonText animated={true}></IonSkeletonText>
-                        </IonThumbnail>
-                      </div>
+    <div className="w-full">
 
-                      <div className="border  h-12 w-full">
-                        <IonThumbnail slot="start" className="w-full">
-                          <IonSkeletonText animated={true}></IonSkeletonText>
-                        </IonThumbnail>
-                      </div>
-                    </>
-                  )}
-                </>
-                {!isLoading &&
-                  results.length > 0 &&
-                  results.map((item, index) => {
-                    return (
-                      <>
-                        <IonItem key={index}>
-                          <ion-checkbox
-                            value={item.unitId}
-                            onClick={handleclick}
-                          >
-                            {item.name}
-                          </ion-checkbox>
+        <IonText color="primary">
+          <h1 className="font-semibold text-xl  text-neutral-600">
+            {ThirdQuestion}
+          </h1>
+          {ThirdQuestionDes}
+        </IonText>
 
-                          <img
-                            src={item.picture ? item.picture : Noimagefound}
-                            alt={item.name}
-                            className="w-10 h-11 mx-2 ml-4 rounded-sm"
-                          />
-
-                          <span className="px-2 text-sm font-medium text-neutral-600">
-                            {item.name}
-                          </span>
-                        </IonItem>
-                      </>
-                    )
-                  })}
-              </IonList>
-            </div>
-          </div>
-        </IonGrid>
-      </div>
-      <div className="max-md:hidden    w-full  bg-blue-500 " key={5198187718}>
-        <div className="absolute z-50  right-0  bottom-20  h-60   -top-14 bg-neutral-200   w-1/2  ">
-          <IonSearchbar
-                placeholder={`Georgia State University 🏛️ `}
-                className=" font-medium text-neutral-600"
-            onIonInput={(e) => setSearchTerm(e.target.value)}
-          ></IonSearchbar>
-          <IonList className="overflow-y-scroll searchlist border rounded-md h-full">
-            <>
-              {isLoading && (
-                <>
-                  <div className="border  h-12 w-full">
-                    <IonThumbnail slot="start" className="w-full">
-                      <IonSkeletonText animated={true}></IonSkeletonText>
-                    </IonThumbnail>
-                  </div>
-                  <div className="border  h-12 w-full">
-                    <IonThumbnail slot="start" className="w-full">
-                      <IonSkeletonText animated={true}></IonSkeletonText>
-                    </IonThumbnail>
-                  </div>
-                  <div className="border  h-12 w-full">
-                    <IonThumbnail slot="start" className="w-full">
-                      <IonSkeletonText animated={true}></IonSkeletonText>
-                    </IonThumbnail>
-                  </div>
-                  <div className="border  h-12 w-full">
-                    <IonThumbnail slot="start" className="w-full">
-                      <IonSkeletonText animated={true}></IonSkeletonText>
-                    </IonThumbnail>
-                  </div>
-                </>
+          <div className="mt-2 w-full bg-neutral-200">
+            <IonSearchbar
+              placeholder={`Georgia State University 🏛️` }
+              className="font-medium text-neutral-600 w-full"
+              onIonInput={(e) => setSearchTerm(e.target.value)}
+            />
+            <IonList className="w-full border rounded-md h-60">
+              {isLoading ? (
+                <IonSkeletonText animated={true} />
+              ) : (
+                results.map((item, index) => (
+                  <IonItem key={index} className="w-full">
+                    <ion-checkbox value={item.unitId} onClick={handleclick}>
+                      {item.name}
+                    </ion-checkbox>
+                    <img
+                      src={item.picture ? item.picture : Noimagefound}
+                      alt={item.name}
+                      className="w-10 h-11 mx-2 ml-4 rounded-sm"
+                    />
+                    <span className="px-2 text-sm font-medium text-neutral-600">
+                      {item.name}
+                    </span>
+                  </IonItem>
+                ))
               )}
-            </>
-            {!isLoading &&
-              results.length > 0 &&
-              results.map((item, index) => {
-                return (
-                  <>
-                    <IonItem key={index}>
-                      <ion-checkbox value={item.unitId} onClick={handleclick}>
-                        {item.name}
-                      </ion-checkbox>
+            </IonList>
+          </div>
 
-                      <img
-                        src={item.picture ? item.picture : Noimagefound}
-                        alt={item.name}
-                        className="w-10 h-11 mx-2 ml-4 rounded-sm"
-                      />
+  </div>
 
-                      <span className="px-2 text-sm font-medium text-neutral-600">
-                        {item.name}
-                      </span>
-                    </IonItem>
-                  </>
-                )
-              })}
-          </IonList>
-        </div>
-      </div>
-    </div>
   )
 }
 

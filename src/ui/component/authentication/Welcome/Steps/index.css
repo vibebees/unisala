@@ -65,3 +65,14 @@
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
   }
+
+
+  .full-size {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .no-shadow {
+    box-shadow: none !important;
+}
