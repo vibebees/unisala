@@ -240,28 +240,8 @@ export const GetProfessor = gql`
     gql`
         query {
             searchSchool(name: "${name}") {
-                elevatorInfo {
-                    name
-                    city
-                }
-                reviews {
-                    rating
-                    type
-                    votes
-                }
-                applicants {
-                    actRange {
-                        min
-                        max
-                    }
-                    acceptanceRate
-                }
-                report {
-                    academics
-                    average
-                    value
-                    diversity
-                }
+                unitId
+                name
                 pictures
             }
         }`,
@@ -270,14 +250,8 @@ export const GetProfessor = gql`
         query {
             searchSchool(name: "${name}") {
               pictures
-                elevatorInfo {
-                    name
-                    city
-                }
-                reviews {
-                    rating
-                    type
-                    votes
-                }
+              name
+              unitId
+
             }
         }`

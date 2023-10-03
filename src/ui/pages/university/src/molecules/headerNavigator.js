@@ -21,7 +21,7 @@ export const HeaderNavigator = ({allProps}) => {
                         fontSize: "1rem"
                     }}
                 >
-                    {data?.getSchoolInfo?.elevatorInfo?.name}
+                    {data?.getSchoolInfo?.name}
                 </IonTitle>
             </IonToolbar>
         </IonHeader>

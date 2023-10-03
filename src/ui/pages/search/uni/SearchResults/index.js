@@ -18,10 +18,10 @@ function index() {
       {Array.isArray(searchData) &&
         searchData.map((data, index) => {
           return (
-            <Link to={`/university/${data?.elevatorInfo?.name}`} key={index}>
+            <Link to={`/university/${data?.name}`} key={index}>
               <CourseCard
-                name={data?.elevatorInfo?.name}
-                city={data?.elevatorInfo?.city}
+                name={data?.name}
+                city={data?.city}
                 average={data?.report?.average}
                 act={data?.applicants?.actRange}
                 acceptanceRate={data?.applicants?.acceptanceRate}
