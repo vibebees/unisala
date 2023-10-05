@@ -90,10 +90,10 @@ const SecondStep = () => {
               return (
                 <>
                   <IonRow class="gap-2" key={index}>
-                    <IonCheckbox value={item.value} onClick={handleclick}>
+                    <IonCheckbox value={item.value} onClick={handleclick} key={index}>
                       {item.key}
                     </IonCheckbox>
-                    <label className="text-sm font-medium text-neutral-600">
+                    <label className="text-sm font-medium text-neutral-600" key={index}>
                       {item.key}
                     </label>
                   </IonRow>
@@ -169,10 +169,11 @@ const SecondStep = () => {
                                   <ion-checkbox
                                     value={item.id}
                                     onClick={handleclick}
+                                    key={index}
                                   >
                                     {item.name}
                                   </ion-checkbox>
-                                  <span className="px-2 text-sm font-medium text-neutral-600">
+                                  <span className="px-2 text-sm font-medium text-neutral-600" key={index}>
                                     {item.name}
                                   </span>
                                 </IonItem>

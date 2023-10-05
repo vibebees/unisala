@@ -43,7 +43,7 @@ export const InfinteFeed = ({ allProps }) => {
   }
 return (
     <div>
-      {Posts?.map((item) => (
+      {Posts?.map((item, index) => (
         item.type === "university" ? (
           <Link key={item._id} to={`/university/${item._id}`}>
             <CourseCard {...item} />
@@ -53,7 +53,7 @@ return (
             style={{ width: "100%", marginTop: "10px", borderTop: "1px solid #e0e0e0" }}
             key={item._id}
           >
-              <Thread thread={item} id={item._id} allProps={allProps} />
+              <Thread thread={item} id={item._id} allProps={allProps} key={item._id}/>
           </div>
         )
       ))}
