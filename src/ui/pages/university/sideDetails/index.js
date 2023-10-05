@@ -18,7 +18,8 @@ import {
   libraryOutline,
   peopleOutline,
   receiptOutline,
-  thumbsUpOutline
+  thumbsUpOutline,
+  schoolOutline
 } from "ionicons/icons"
 import Admission from "./admission"
 import Grant from "./grant"
@@ -29,9 +30,12 @@ import Professors from "./professors"
 import Interview from "./Interview"
 import { useSelector } from "react-redux"
 import Discussion from "../Discussion"
-import {ReportCard} from "../../../component/reportCard"
-import {PollCard} from "../../../component/pollCard"
-import {CardWithCircularGrid} from "../../../component/cardWithCircularGrid"
+import Scholarship from "./scholarship"
+import { ReportCard } from "../../../component/reportCard"
+import { PollCard } from "../../../component/pollCard"
+import { CardWithCircularGrid } from "../../../component/cardWithCircularGrid"
+import StudentCharges from "./studentCharges"
+import FinancialAid from "./financialAid"
 
 const SideDetails = ({
   activeTab,
@@ -43,12 +47,31 @@ const SideDetails = ({
   librariesAnimate,
   unitId,
   allProps
-
 }) => {
+  const {
+    reportDataSource,
+    campusPollDataSource,
+    testScoreDataSource,
+    isSideBar
+  } = allProps
 
-  const {reportDataSource, campusPollDataSource, testScoreDataSource, isSideBar} = allProps
+  const sideMenu = [
+    !isSideBar?.scholarshipsEmpty && {
+      title: "Scholarships",
+      icon: schoolOutline,
+      ref: "scholarships"
+    },
+    !isSideBar?.StudentChargesEmpty && {
+      title: "Student Charges",
+      icon: cashOutline,
+      ref: "studentCharges"
+    },
+    !isSideBar?.financialAidEmpty && {
+      title: "Aid",
+      icon: thumbsUpOutline,
+      ref: "financialAid"
+    },
 
-   const sideMenu = [
     !isSideBar?.applicantsEmpty && {
       title: "Statistics",
       icon: barChartOutline,
@@ -173,6 +196,16 @@ const SideDetails = ({
           </IonCol>
         )}
         <IonCol style={{ flex: 1, margin: 0 }}>
+          <section ref={forwardedRef.scholarship}>
+            <Scholarship />
+          </section>
+          <section ref={forwardedRef.studentCharges}>
+            <StudentCharges />
+          </section>
+          <section ref={forwardedRef.financialAid}>
+            <FinancialAid />
+          </section>
+
           <section ref={forwardedRef.statistics}>
             <Admission
               appState={appState}
@@ -192,7 +225,10 @@ const SideDetails = ({
           </section>
 
           <section ref={forwardedRef.testScore}>
-            <CardWithCircularGrid dataSource={testScoreDataSource} parentProps={allProps} />
+            <CardWithCircularGrid
+              dataSource={testScoreDataSource}
+              parentProps={allProps}
+            />
           </section>
           <section ref={forwardedRef.similarCollages}>
             <SimilarCollage />
@@ -201,7 +237,10 @@ const SideDetails = ({
             <ReportCard dataSource={reportDataSource} parentProps={allProps} />
           </section>
           <section ref={forwardedRef.campusLife}>
-            <PollCard dataSource={campusPollDataSource} parentProps={allProps}/>
+            <PollCard
+              dataSource={campusPollDataSource}
+              parentProps={allProps}
+            />
           </section>
           <section ref={forwardedRef.website}>
             <VisitWebsite />

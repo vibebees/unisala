@@ -1,82 +1,94 @@
 // eslint-disable-next-line no-use-before-define
-import React, {useEffect} from "react"
+import React, { useEffect } from "react"
 import {
-    IonCardContent,
-    IonCardHeader, IonCol, IonGrid,
-    IonIcon, IonRow
+  IonCardContent,
+  IonCardHeader,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonRow
 } from "@ionic/react"
-import { heart, location } from "ionicons/icons"
+import { heart, location, ellipsisVerticalCircleOutline } from "ionicons/icons"
 import { useSelector } from "react-redux"
 import useRating from "../../../../../hooks/useRating"
+import SeeMoreModal from "../molecules/SeeMoreModal"
 
-export const BioDetails = ({allProps}) => {
-   const {width, setWidth, uniData, handleResize } = allProps
+export const BioDetails = ({ allProps }) => {
+  const { width, setWidth, uniData, handleResize } = allProps
 
-    useEffect(() => {
-        window.addEventListener("resize", handleResize)
-        return () => {
-            window.removeEventListener("resize", handleResize)
-        }
-    })
-     return (
-        <IonGrid className={width > 720 ? "ion-padding" : ""}>
-            <IonRow>
-                <IonCol>
-                    <IonCardHeader className="UniProfile-Header">
-                        <h1>{uniData?.elevatorInfo?.name}</h1>
-                    </IonCardHeader>
-                    <div className="inline-flex" >
-                        <IonCardContent style={{ display: "flex", padding: "0 12px" }} >
-                            <IonIcon
-                                style={{
-                                    fontSize: "20px",
-                                    alignSelf: "center"
-                                }}
-                                className="ion-icon"
-                                icon={location}
-                            />
-                            <p style={{ alignSelf: "center" }}>
-                                {uniData?.elevatorInfo?.address?.city}
-                            </p>
-                        </IonCardContent>
-                        <IonCardContent style={{ display: "flex", padding: "0 12px" }} >
-                            <IonIcon
-                                style={{
-                                    fontSize: "20px",
-                                    alignSelf: "center"
-                                }}
-                                color="danger"
-                                className="ion-icon"
-                                icon={heart}
-                            />
-                            <p style={{ alignSelf: "center" }}>
-                                {useRating(uniData?.reviews || []) || "N/A"} Review
-                            </p>
-                        </IonCardContent>
-                    </div>
-                    {/* <IonCardContent>
-                        <p
-                            style={{
-                                maxWidth: "500px",
-                                minWidth: "250px"
-                            }}
-                        >
-                            Southeastern Louisiana is a public university
-                            located in Hammond, Louisiana. It is a mid-size
-                            institution with an enrollment of 9,248
-                            undergraduate students{" "}
-                            <span
-                                style={{
-                                    fontWeight: 600,
-                                    cursor: "pointer"
-                                }}
-                            >
-                                ....Read More
-                            </span>
-                        </p>
-                    </IonCardContent> */}
-                </IonCol>
-                {/* <IonCol
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  })
+
+  const ModalButton = (
+    <IonIcon
+      style={{
+        fontSize: "22px",
+        alignSelf: "center"
+      }}
+      className="ion-icon"
+      icon={ellipsisVerticalCircleOutline}
+    />
+  )
+
+  return (
+    <IonGrid className={width > 720 ? "ion-padding" : ""}>
+      <IonRow>
+        <IonCol>
+          <IonCardHeader className="UniProfile-Header">
+            <h1 className="font-medium text-lg">
+              {uniData?.elevatorInfo?.name}
+            </h1>
+          </IonCardHeader>
+
+          <IonCardContent>
+            <p
+              style={{
+                maxWidth: "800px",
+                minWidth: "250px"
+              }}
+            >
+              {uniData?.elevatorInfo?.bio}
+            </p>
+          </IonCardContent>
+          <div className="inline-flex">
+            <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
+              <IonIcon
+                style={{
+                  fontSize: "20px",
+                  alignSelf: "center"
+                }}
+                className="ion-icon"
+                icon={location}
+              />
+              <p style={{ alignSelf: "center" }}>
+                {uniData?.elevatorInfo?.address?.city}
+              </p>
+            </IonCardContent>
+            <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
+              <IonIcon
+                style={{
+                  fontSize: "20px",
+                  alignSelf: "center"
+                }}
+                color="danger"
+                className="ion-icon"
+                icon={heart}
+              />
+              <p style={{ alignSelf: "center" }}>
+                {useRating(uniData?.reviews || []) || "N/A"} Review
+              </p>
+            </IonCardContent>
+            <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
+              {/* <p style={{ alignSelf: "center" }}>See more </p> */}
+              <SeeMoreModal ModalButton={ModalButton} />
+            </IonCardContent>
+          </div>
+        </IonCol>
+        {/* <IonCol
                     size="auto"
                     style={{
                         display: "flex",
@@ -129,7 +141,7 @@ export const BioDetails = ({allProps}) => {
                         </IonButton>
                     </section>
                 </IonCol> */}
-            </IonRow>
-        </IonGrid>
-    )
+      </IonRow>
+    </IonGrid>
+  )
 }

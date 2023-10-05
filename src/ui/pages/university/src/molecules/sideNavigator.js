@@ -1,9 +1,38 @@
 import SideDetails from "../../sideDetails"
 
-export const SideNavigator = ({allProps}) => {
+export const SideNavigator = ({ allProps }) => {
+  const {
+    data,
+    app,
+    profile,
+    statistics,
+    fees,
+    libraries,
+    grant,
+    testScore,
+    similarCollages,
+    report,
+    campusLife,
+    website,
+    Professors,
+    studentCharges,
+    scholarship,
+    AdmisionAnimate,
+    GrantAnimate,
+    LibrariesAnimate,
+    appState,
+    activeTab,
+    UniScroll,
+    interviewExperience,
+    scholarshipsEmpty,
+    StudentChargesEmpty,
+    financialAidEmpty,
+    financialAid
+  } = allProps
 
-    const {
-        data,
+  return (
+    <SideDetails
+      forwardedRef={{
         app,
         profile,
         statistics,
@@ -16,40 +45,22 @@ export const SideNavigator = ({allProps}) => {
         campusLife,
         website,
         Professors,
-        AdmisionAnimate,
-        GrantAnimate,
-        LibrariesAnimate,
-        appState,
-        activeTab,
-        UniScroll,
-        interviewExperience
-    } = allProps
-
-      return (
-        <SideDetails
-                        forwardedRef={{
-                            app,
-                            profile,
-                            statistics,
-                            fees,
-                            libraries,
-                            grant,
-                            testScore,
-                            similarCollages,
-                            report,
-                            campusLife,
-                            website,
-                            Professors,
-                            interviewExperience
-                        }}
-                        admissionAnimate={AdmisionAnimate}
-                        grantAnimate={GrantAnimate}
-                        activeTab={activeTab}
-                        librariesAnimate={LibrariesAnimate}
-                        UniScroll={UniScroll}
-                        appState={appState}
-                        unitId={data?.getSchoolInfo?.unitId}
-                        allProps = {allProps}
-                    />
-    )
+        scholarship,
+        studentCharges,
+        interviewExperience,
+        scholarshipsEmpty,
+        StudentChargesEmpty,
+        financialAidEmpty,
+        financialAid
+      }}
+      admissionAnimate={AdmisionAnimate}
+      grantAnimate={GrantAnimate}
+      activeTab={activeTab}
+      librariesAnimate={LibrariesAnimate}
+      UniScroll={UniScroll}
+      appState={appState}
+      unitId={data?.getSchoolInfo?.unitId}
+      allProps={allProps}
+    />
+  )
 }
