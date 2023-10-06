@@ -919,6 +919,8 @@ export const AddComment = gql`
             key
             value
           }
+          category
+          description
           qnsNumber
           nextQuestion
         }

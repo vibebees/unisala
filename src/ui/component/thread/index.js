@@ -253,7 +253,7 @@ const Thread = ({ thread, refetch }) => {
 
       {/* check if the post is that of the logged in user, then only show options to
       delete and update */}
-      {loggedinUser?.username === thread.user.username && (
+      {loggedinUser?.username === thread?.user?.username && (
         <div className="absolute top-4 right-8">
           <div className="relative">
             <button onClick={() => setShowOptions((prev) => !prev)}>

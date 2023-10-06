@@ -26,9 +26,9 @@ export function Avatar({profilePic, username}) {
   }, [])
   return (
     <img
-      src={profileImage || avatar}
+      src={profileImage || avatar || ""}
       className="user-profile__img"
-      alt={username}
+      alt={"unisala"}
       style={{
         width: "100%",
         height: "100%",

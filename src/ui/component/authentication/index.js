@@ -8,7 +8,6 @@ import SignUpVerification from "./Verification/SignUpVerification"
 import ForgotPasswordVerification from "./Verification/ForgotPassword/ForgotPasswordVerification"
 import UserNotVerified from "./Verification/UserNotVerified"
 import useWindowWidth from "../../../hooks/useWindowWidth"
-import WelcomSteps from "./Welcome"
 import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 
 export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {

@@ -9,7 +9,7 @@ import { getUserProfile } from "../../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
+const StepsButtons = ({allProps}) => {
   const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
       useContext(WelcomeData),
     dispatch = useDispatch(),
@@ -21,7 +21,8 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
       firstName: decode.firstName,
       lastName: decode.lastName,
       username: decode.username
-    })
+    }),
+    { currentStep, setCurrentStep, setNewUser, modalRef } = allProps
   // eslint-disable-next-line require-await
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
@@ -60,6 +61,8 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
     onCompleted: (data) => {
       // update uesr details in redux
       if (data?.editProfile?.status?.success) {
+        modalRef.current.dismiss()
+
         present({
           duration: 3000,
           message: "Customizing your feed based on your profile!",
@@ -80,7 +83,6 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
       setNewUser(false)
     },
     onError: (error) => {
-      console.log(error)
       present({
         duration: 30000,
         message: error.message,
@@ -113,44 +115,48 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
     }
   }
 
+  const validationFunctions = [
+    () => true, // Step 1 validation function
+    () => {
+      // Step 2 validation function
+      return welcomeFormdata.userStatus.length > 0
+    },
+    () => {
+      // Step 3 validation function
+      return welcomeFormdata.interestedSubjects !== ""
+    },
+    () => {
+      // Step 3 validation function
+      return welcomeFormdata.studyLevel !== ""
+    },
+    () => {
+      // Step 4 validation function
+      return welcomeFormdata.interestedUni.length > 0
+    },
+    () => true // Step 5 validation function
+  ]
   const handleNext = () => {
-    console.log(welcomeFormdata)
-    if (currentStep === 2 && welcomeFormdata.interestedSubjects.length === 0) {
+  console.log({currentStep})
+    const isValid = validationFunctions[currentStep - 1]()
+
+    if (!isValid) {
       return present({
         duration: 3000,
-        message: "Please select atleast one subject",
+        message: "Please fill out the required fields",
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
         mode: "ios"
       })
     }
-    if (currentStep === 3 && welcomeFormdata.userStatus === "") {
-      return present({
-        duration: 3000,
-        message: "Please select atleast one status",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-    }
-    if (currentStep === 4 && welcomeFormdata.interestedUni.length === 0) {
-      return present({
-        duration: 3000,
-        message: "Please select atleast one university",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-    }
+
     setCurrentStep(currentStep + 1)
   }
-
-  return (
-    <div className="w-full left-0  flex bottom-0 mb-6 px-6 absolute">
+return (
+    <div className="w-full left-0 flex bottom-0 mb-16 px-6 absolute z-50 pad tp-16">
       <IonButton
         fill="clear"
         className={clsx(
-          "bg-opacity-80",
+          "bg-opacity-80 flex-shrink-0",
           currentStep === 1
             ? "opacity-0 pointer-events-none"
             : "opacity-100 pointer-events-auto"
@@ -159,13 +165,15 @@ const StepsButtons = ({ currentStep, setCurrentStep, setNewUser }) => {
       >
         Back
       </IonButton>
-      {currentStep === 5 ? (
-        <IonButton onClick={handleSubmit}>Submit</IonButton>
-      ) : (
-        <IonButton onClick={handleNext}>Next</IonButton>
-      )}
+      <IonButton
+        className="flex-shrink-0"
+        onClick={currentStep === 5 ? handleSubmit : handleNext}
+      >
+        {currentStep === 5 ? "Submit" : "Next"}
+      </IonButton>
     </div>
-  )
+)
+
 }
 
 export default StepsButtons

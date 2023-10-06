@@ -8,7 +8,7 @@ const ThreadExpand = ({ htmlText, maxLines, _id }) => {
     setIsExpanded(!isExpanded)
   }
 
-  const isLongText = htmlText.split(".").length > maxLines
+  const isLongText = htmlText?.split(".").length > maxLines
 
   const truncatedText =
     isExpanded || !isLongText
