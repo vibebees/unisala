@@ -33,9 +33,9 @@ import axios from "axios"
 import { userServer } from "../../../../servers/endpoints"
 import clsx from "clsx"
 
-export const PostModalOnClick = ({tags, allProps}) => {
+export const PostModalOnClick = ({allProps}) => {
 
-  const { setCreateAPostPopUp, createAPostPopUp} = allProps
+  const { setCreateAPostPopUp, createAPostPopUp, tags} = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const imgfile = useRef()

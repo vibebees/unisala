@@ -29,7 +29,7 @@ const SpaceIndex = () => {
   const { getTopActiveSpaces } = topSpaceData || {}
 
   const { data: yourSpaceData } = useQuery(GetOwnSpace, {
-    variables: { limit: 100, page: 0 },
+    variables: { limit: 100, page: 0, isActive: true},
     context: { server: USER_SERVICE_GQL }
   })
   const { getOwnSpaceCategory } = yourSpaceData || {}

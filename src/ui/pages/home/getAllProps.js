@@ -10,6 +10,7 @@ import { GetTopActiveSpaces } from "../../../graphql/user"
 import { personCircle } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import {useHistory, useLocation} from "react-router"
 
 export const getAllPropsHome = ({ user, loggedIn }) => {
   const [activeProfile, setActiveProfile] = useState(false),
@@ -40,7 +41,9 @@ export const getAllPropsHome = ({ user, loggedIn }) => {
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
     [page, setPage] = useState(0),
-    width = useWindowWidth()
+    width = useWindowWidth(),
+    history = useHistory(),
+    location = useLocation()
 
   return {
     unisalaImg,
@@ -60,6 +63,8 @@ export const getAllPropsHome = ({ user, loggedIn }) => {
     GetTopActiveSpaces,
     views,
     page,
-    setPage
+    setPage,
+    history,
+    location
   }
 }

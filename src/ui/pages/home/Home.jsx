@@ -6,7 +6,7 @@ import {
   IonContent,
   IonCard
 } from "@ionic/react"
-import {Post} from "../../component/post/index"
+import {CreateAPostCard} from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { GetProfileCard } from "../../../graphql/user"
 import UnisalaIntro from "./UnisalaIntro"
@@ -63,7 +63,7 @@ export const Home = ({ allProps }) => {
           >
             {loggedIn ? (
               <>
-                <Post allProps={allProps} />
+                <CreateAPostCard allProps={allProps} />
                 <InfinteFeed userInfo={user} allProps={allProps} />
               </>
             ) : (

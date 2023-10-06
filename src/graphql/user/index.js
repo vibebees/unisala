@@ -958,8 +958,8 @@ export const AddComment = gql`
     }
   `,
   GetOwnSpace = gql`
-    query GetOwnSpace($limit: Int, $page: Int) {
-      getOwnSpaceCategory(limit: $limit, page: $page) {
+    query GetOwnSpace($limit: Int, $page: Int, $isActive: Boolean) {
+      getOwnSpaceCategory(limit: $limit, page: $page, isActive: $isActive) {
         status {
           message
           success

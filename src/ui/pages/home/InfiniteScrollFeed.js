@@ -51,9 +51,9 @@ return (
         ) : (
           <div
             style={{ width: "100%", marginTop: "10px", borderTop: "1px solid #e0e0e0" }}
-            key={item._id || index}
+            key={item._id + index}
           >
-              <Thread thread={item} id={item._id} allProps={allProps} key={item._id || index}/>
+              <Thread thread={item} id={item._id} allProps={allProps} key={item._id + index}/>
           </div>
         )
       ))}

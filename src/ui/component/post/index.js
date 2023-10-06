@@ -3,11 +3,12 @@ import {useSelector} from "react-redux"
 import {PostModalOnClick} from "./molecules/PostModalOnClick"
 import {PostCardForClick} from "./molecules/PostCardForClick"
 import {IonCard} from "@ionic/react"
-export const Post = ({allProps}) => {
+import {useHistory, useLocation} from "react-router"
+export const CreateAPostCard = ({allProps}) => {
   const {user} = useSelector((state) => state.userProfile)
   const {setCreateAPostPopUp} = allProps
 
-  return (
+return (
     <>
 
       <PostModalOnClick allProps={allProps} />
