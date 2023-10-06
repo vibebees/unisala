@@ -54,7 +54,7 @@ const LevelOfStudy = ({question}) => {
         <IonGrid className="mx-12 max-md:mx-3 mt-14 ">
           <QuestionHeader text={text} />
           <IonCardSubtitle className="text-center">
-            {description}
+             <strong>{welcomeFormdata?.userStatus} </strong> which level of higher education?
           </IonCardSubtitle>
 
           <IonGrid className="mt-8 grid grid-cols-2 max-md:grid-cols-1 gap-8 ">

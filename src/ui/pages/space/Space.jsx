@@ -10,7 +10,7 @@ import {
 } from "@ionic/react"
 import "./Space.css"
 import { personCircle, arrowUpOutline } from "ionicons/icons"
-import Post from "../../component/post/index"
+// import Post from "../../component/post/index"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import VerifyPostPop from "../../component/verifyPostPop/verifyPostPop"
@@ -28,7 +28,7 @@ import { screensMoreThan768 } from "./screens.moreThan768"
 import { screenGreaterThan1000 } from "./screens.greater.1000"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import { CreateAPost } from "../../component/post/CreateAPost"
+// import { CreateAPost } from "../../component/post/CreateAPost"
 import { useParams } from "react-router-dom"
 import SpaceHeader from "./SpaceHeader"
 import PreLoader from "../../component/preloader"
@@ -122,12 +122,12 @@ export const Spaces = () => {
 
   return (
     <IonContent color="light">
-      <VerifyPostPop setPopup={setVerifyAPostPopUp} popup={verfiyAPostPopUp} />
+      {/* <VerifyPostPop setPopup={setVerifyAPostPopUp} popup={verfiyAPostPopUp} />
       <CreateAPost
         setPopup={setCreateAPostPopUp}
         popup={createAPostPopUp}
         tags={tags}
-      />
+      /> */}
 
       {width < 768 && views.lessThan768}
       <IonGrid
@@ -162,7 +162,7 @@ export const Spaces = () => {
                     setCreateAPostPopUp(true)
                   }}
                 >
-                  <Post />
+                  {/* <Post /> */}
                 </IonCard>
               </>
             )}
