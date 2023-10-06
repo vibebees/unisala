@@ -85,7 +85,7 @@ export const Home = ({ allProps }) => {
             )}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
-          {loggedIn && newUser && <WelcomeSteps setNewUser={setNewUser} />}
+          {loggedIn && newUser && <WelcomeSteps allProps= {allProps} />}
         </IonRow>
       </IonGrid>
     </IonContent>
