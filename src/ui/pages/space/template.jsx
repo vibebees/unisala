@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useEffect } from "react"
 import {
   IonGrid,
   IonRow,
@@ -10,9 +10,6 @@ import {
 } from "@ionic/react"
 import "./Space.css"
 import { arrowUpOutline } from "ionicons/icons"
-// import Post from "../../component/post/index"
-import { useQuery } from "@apollo/client"
-import { useSelector } from "react-redux"
 import clsx from "clsx"
 import {
   GetProfileCard,
@@ -20,9 +17,6 @@ import {
 } from "../../../graphql/user"
 import { SpaceFeed } from "./SpaceFeed"
 import UnisalaIntro from "./UnisalaIntro"
-
-import { USER_SERVICE_GQL } from "../../../servers/types"
-
 import SpaceHeader from "./SpaceHeader"
 import PreLoader from "../../component/preloader"
 import { SpaceNotFound } from "../../component/PageNotFound"

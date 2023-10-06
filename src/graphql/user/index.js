@@ -293,6 +293,10 @@ export const AddComment = gql`
               date
             }
           }
+          interestedSubjects
+          interestedUni
+          studyLevel
+          userStatus
         }
       }
     }
@@ -1024,5 +1028,12 @@ export const AddComment = gql`
           }
         }
       }
-    }
-  `
+    }`,
+    fetchFamousUniversities = gql`
+    query getFamousUniversity{
+      getFamousUniversity{
+        unitId
+        name
+        pictures
+      }
+    }`

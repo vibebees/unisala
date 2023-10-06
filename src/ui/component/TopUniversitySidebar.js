@@ -47,7 +47,7 @@ function Sidebar() {
         <IonCard>
             <IonList lines="none">
                 <IonListHeader>
-                    <h3>Top Universities</h3>
+                    <h3>Famous Universities</h3>
                 </IonListHeader>
 
                 {topUni.map((University, i) => {

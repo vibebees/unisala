@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { IonButton, useIonToast } from "@ionic/react"
 import clsx from "clsx"
 import { WelcomeData } from ".."
 import { useDispatch, Provider } from "react-redux"
-import { useMutation } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../../store/action/userProfile"
-import { EditProfile, getUserGql } from "../../../../../graphql/user"
+import { EditProfile, GetProfileCard, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const StepsButtons = ({allProps}) => {
-  const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
-      useContext(WelcomeData),
+  const { welcomeFormdata } = useContext(WelcomeData),
     dispatch = useDispatch(),
     [present, dismiss] = useIonToast(),
     accessToken = localStorage.getItem("accessToken"),
@@ -22,7 +21,7 @@ const StepsButtons = ({allProps}) => {
       lastName: decode.lastName,
       username: decode.username
     }),
-    { currentStep, setCurrentStep, setNewUser, modalRef } = allProps
+    { currentStep, setCurrentStep, setNewUser, modalRef, refetch } = allProps
   // eslint-disable-next-line require-await
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
@@ -81,6 +80,9 @@ const StepsButtons = ({allProps}) => {
       }
       localStorage.removeItem("newUser")
       setNewUser(false)
+      refetch({
+        username: users?.username
+      })
     },
     onError: (error) => {
       present({
@@ -108,7 +110,6 @@ const StepsButtons = ({allProps}) => {
       dispatch(
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
       )
-
       editProfile()
     } catch (error) {
       console.log(error)

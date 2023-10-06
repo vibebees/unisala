@@ -27,14 +27,13 @@ export const Home = ({ allProps }) => {
     views
   } = allProps || {}
 
-  const profileDataResult = useQuery(GetProfileCard, {
+  const { loading, error, data, refetch } = useQuery(GetProfileCard, {
     context: { server: USER_SERVICE_GQL },
     variables: {
       username: user?.username
     },
     skip: !loggedIn || !user?.username
   })
-
   return (
     <IonContent color="light">
       {width < 768 && views.lessThan768}
@@ -72,7 +71,7 @@ export const Home = ({ allProps }) => {
           </IonCol>
           {/* view on the left famous school */}
           {width > 1000 && views.greaterThan1000}
-          {loggedIn && newUser && <WelcomeSteps allProps={allProps} />}
+          {loggedIn && newUser && <WelcomeSteps allProps={{...allProps, refetch}} />}
         </IonRow>
       </IonGrid>
     </IonContent>
