@@ -46,7 +46,7 @@ return (
       {Posts?.map((item, index) => (
         item.type === "university" ? (
           <Link key={item._id} to={`/university/${item._id}`}>
-            <CourseCard {...item} />
+            <CourseCard allProps={item} />
           </Link>
         ) : (
           <div

@@ -6,13 +6,13 @@ import { useDispatch } from "react-redux"
 import useWindowWidth from "../../../../hooks/useWindowWidth"
 import { searchGetSuccess } from "../../../../store/action/index"
 import { useQuery } from "@apollo/client"
-import { UniSearch } from "../../../../graphql/uni/"
+import { UniSearchDataList } from "../../../../graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "../../../../servers/types"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
-  const { data } = useQuery(UniSearch(query), {
+  const { data } = useQuery(UniSearchDataList(query), {
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
   useEffect(() => {

@@ -152,19 +152,7 @@ const SimilarCollage = () => {
                     </IonRow> */}
           {uniData?.similarSchools?.map((item, index) => (
             <IonRow size="12" key={index}>
-              <CourseCard
-                image={item.image}
-                name={useIsData(item?.name)}
-                city={useIsData(item?.school?.elevatorInfo?.address?.city)}
-                rating={useIsData(item?.rating)}
-                review={useIsData(item?.reviews)}
-                average={useIsData(item?.school?.report?.average)}
-                acceptanceRate={useIsData(
-                  item?.school?.applicants?.acceptanceRate
-                )}
-                act={useIsData(item?.school?.applicants?.act)}
-                type={item.type}
-              />
+              <CourseCard allProps={item} />
             </IonRow>
           ))}
         </IonGrid>

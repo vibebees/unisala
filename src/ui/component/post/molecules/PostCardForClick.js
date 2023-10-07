@@ -4,6 +4,7 @@ import {imageOutline} from "ionicons/icons"
 
 export const PostCardForClick = ({allProps}) => {
 
+  const placeholder = "What's on your mind?"
     const {user} = allProps
     return (<div
         style={{
@@ -22,7 +23,7 @@ export const PostCardForClick = ({allProps}) => {
           </IonAvatar>
           <input
             type="text"
-            placeholder="Start a thread"
+            placeholder={placeholder}
             className="searchInput"
           />
 

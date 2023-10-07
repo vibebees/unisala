@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react"
 import {callSocket} from "../../../servers/endpoints"
-import {Home} from "./Home"
+import {Home} from "./template"
 import {getAllPropsHome} from "./getAllProps"
 import {useSelector} from "react-redux"
 export default function HomePage({setPopup}) {

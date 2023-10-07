@@ -154,14 +154,7 @@ function index() {
                             to={`/university/${data?.name}`}
                             key={index}
                           >
-                            <CourseCard
-                              name={data?.name}
-                              city={data?.name}
-                              average={data?.report?.average}
-                              act={data?.applicants?.actRange}
-                              acceptanceRate={data?.applicants?.acceptanceRate}
-                              pictures={data?.pictures}
-                            />
+                            <CourseCard allProps={data} />
                           </Link>
                         )
                       })

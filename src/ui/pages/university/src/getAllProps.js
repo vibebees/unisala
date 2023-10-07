@@ -21,7 +21,7 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
       "InterviewExperience"
     ),
     scholarshipsEmpty = useIsEmpty(
-      uniData?.scholarshipInfo.scholarships || {},
+      uniData?.scholarshipInfo?.scholarships || {},
       "Scholarships"
     ),
     studentChargesEmpty = useIsEmpty(

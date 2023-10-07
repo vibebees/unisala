@@ -15,6 +15,8 @@ import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { InfinteFeed } from "./InfiniteScrollFeed"
+import AffliatedUniCard from "../../component/courseCard"
+import {Link} from "react-router-dom"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -25,9 +27,20 @@ export const Home = ({ allProps }) => {
     user,
     loggedIn,
     views
-  } = allProps || {}
-
-  const { loading, error, data, refetch } = useQuery(GetProfileCard, {
+  } = allProps || {},
+  userAssociatedSchool = {
+    image: "item",
+    name: "rprashnat",
+    description: "item",
+    locations: "item",
+    review: "item",
+    average: "item",
+    acceptance: "item",
+    act: "item",
+    type: "item",
+    loading: true
+  }
+const { loading, error, data, refetch } = useQuery(GetProfileCard, {
     context: { server: USER_SERVICE_GQL },
     variables: {
       username: user?.username
@@ -63,7 +76,10 @@ export const Home = ({ allProps }) => {
             {loggedIn ? (
               <>
                 <CreateAPostCard allProps={allProps} />
-                <InfinteFeed userInfo={user} allProps={allProps} />
+                <Link to="/university/1">
+                  <AffliatedUniCard allProps={userAssociatedSchool} />
+                </Link>
+                 <InfinteFeed userInfo={user} allProps={allProps} />
               </>
             ) : (
               <UnisalaIntro />

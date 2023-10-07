@@ -1,309 +1,203 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import {
+  IonCard,
   IonGrid,
   IonRow,
   IonCol,
   IonIcon,
-  IonCard,
   IonText,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonThumbnail,
+  IonSkeletonText
 } from "@ionic/react"
-import {heart, saveOutline, location, shareOutline} from "ionicons/icons"
-import useIsData from "../../../hooks/useIsData"
-import useGrade from "../../../hooks/useGrade"
+import {heart, saveOutline, location, shareOutline, schoolOutline} from "ionicons/icons"
 import useGradeColor from "../../../hooks/useGradeColor"
-import "./index.css"
-import {getImage, universityDefaultImage} from "../../../servers/s3.configs"
+import useGrade from "../../../hooks/useGrade"
+import {universityDefaultImage} from "../../../servers/s3.configs"
 
-const CourseCard = ({
-  pictures,
-  name,
-  city,
-  rating,
-  review,
-  average,
-  acceptanceRate,
-  act,
-  data
-}) => {
-  const
-    [width, setWidth] = useState(window.innerWidth),
-    [images, setImages] = useState(pictures)
+function CardImage({allProps}) {
+  const {images, pictures, recommended = true} = allProps
 
-  const handleResize = () => {
-    const {innerWidth} = window
+  return (
+    <div className="card-image">
+      <img
+        src={pictures?.[0] || images?.[0] || universityDefaultImage}
+        alt="University"
+        style={{
+          width: "250px",
+          height: "200px",
+          objectFit: "cover",
+          margin: "auto"
+        }}
+      />
+    </div>
+  )
+}
 
-    if (width !== innerWidth) {
-      setWidth(innerWidth)
-    }
+function CardActions({allProps}) {
+  const {showSave = false, showShare = false} = allProps
+
+  return (
+    <div style={{display: "flex", gap: "10px"}}>
+      {showShare && <IonIcon style={{fontSize: "25px"}} icon={shareOutline} />}
+      {showSave && <IonIcon style={{fontSize: "25px"}} icon={saveOutline} />}
+    </div>
+  )
+}
+
+function Location({allProps}) {
+  const {address = {}} = allProps
+  const {city, stateAbbreviation, streetAddressOrPOBox} = address
+  const formattedAddress = `${city}, ${stateAbbreviation}, ${streetAddressOrPOBox}`
+
+  return (
+    <IonItem className="ion-no-padding" >
+      <IonIcon
+        className="ion-icon text-primary"
+        icon={location}
+      />
+      <IonLabel className="ion-padding-start">
+        <IonText className="text-sm font-semibold text-gray-600">
+          {formattedAddress}
+        </IonText>
+      </IonLabel>
+    </IonItem>
+  )
+}
+
+function LikeATag({colorTitle = "blue", colorValue = "yellow", title, value, skipBg = false}) {
+  const titleColorClass = `text-${colorTitle}-500 font-bold`
+  const valueColorClass = `bg-${colorValue}-400 text-white rounded-full px-2 py-1`
+
+  return (
+    <IonRow style={{marginTop: "20px"}}>
+      <IonCardSubtitle className={titleColorClass}>
+        <span className="mr-2">{title}</span>
+        <span className={skipBg ? "" : valueColorClass}>
+          {value}
+        </span>
+      </IonCardSubtitle>
+    </IonRow>
+  )
+
+}
+
+function Offerings({allProps}) {
+
+  const {graduateOffering, undergraduateOffering} = allProps
+  return (
+    <IonItem>
+
+      <IonRow>
+        <IonIcon
+          className="ion-icon"
+          icon={schoolOutline}
+          style={{color: "var(--ion-color-primary)", fontSize: "24px"}}
+        />
+        {graduateOffering && (
+          <IonCol className="ion-no-padding ">
+            <IonLabel className="ion-padding-start font-semibold  text-red-500">
+              {graduateOffering.substring(0, 30)}
+            </IonLabel>
+          </IonCol>
+        )}
+
+        {undergraduateOffering && (
+          <IonCol className="ion-no-padding ">
+            <IonLabel className="ion-padding-start font-semibold  font-bold text-blue-500">
+              {undergraduateOffering.substring(0, 35)} 📚
+            </IonLabel>
+          </IonCol>
+        )}
+      </IonRow>
+    </IonItem>
+  )
+}
+
+function Grade({allProps}) {
+  const {average, width, showGrade} = allProps
+
+  return (
+    <div
+      style={{
+        background: useGradeColor(average),
+        margin: "auto"
+      }}
+      className="card-report"
+    >
+      <h6 style={{fontSize: width > 800 ? "14px" : "12px", margin: "0"}}>
+        {useGrade(average)}
+      </h6>
+    </div>
+  )
+}
+
+function loadingScreen() {
+  return (
+    <IonItem>
+      <IonThumbnail slot="start">
+        <IonSkeletonText animated={true}></IonSkeletonText>
+      </IonThumbnail>
+      <IonLabel>
+        <h3>
+          <IonSkeletonText animated={true} style={{width: "80%"}}></IonSkeletonText>
+        </h3>
+        <p>
+          <IonSkeletonText animated={true} style={{width: "60%"}}></IonSkeletonText>
+        </p>
+        <p>
+          <IonSkeletonText animated={true} style={{width: "30%"}}></IonSkeletonText>
+        </p>
+      </IonLabel>
+    </IonItem>
+  )
+}
+
+function CourseCard({allProps}) {
+  const {
+    name,
+    ownType,
+    tags,
+    loading = false
+  } = allProps
+
+  if (loading) {
+    return loadingScreen()
   }
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  })
+
   return (
     <IonCard>
       <IonGrid>
         <IonRow>
-          <IonCol
-            style={{
-              margin: "auto"
-            }}
-            size={"auto"}
-          >
-            <div className="card-image">
-              <img
-                src={
-                  images?.[0] || universityDefaultImage
-                }
-                alt="University"
-                style={{
-                  width: "250px",
-                  height: "200px",
-                  objectFit: "cover",
-                  margin: "auto"
-                }}
-              />
-              <div className="card-recommend sort-tag">
-                <p
-                  style={{
-                    margin: 0
-                  }}
-                >
-                  Recommended
-                </p>
-              </div>
-            </div>
+          <IonCol style={{margin: "auto"}} size={"auto"}>
+            <CardImage allProps={allProps} />
           </IonCol>
-          <IonCol
-            style={{
-              minWidth: width > 400 && "320px"
-            }}
-          >
+          <IonCol>
             <IonRow>
               <IonCol>
-                <div
-                  style={{
-                    display: "flex",
-                    float: "right"
-                    // justifyContent: "flex-end"
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "10px"
-                    }}
-                  >
-                    <IonIcon
-                      style={{
-                        fontSize: "25px"
-                      }}
-                      icon={shareOutline}
-                    />
-                    <IonIcon
-                      style={{
-                        fontSize: "25px"
-                      }}
-                      icon={saveOutline}
-                    />
-                  </div>
+                <div style={{display: "flex", float: "right"}}>
+                  <CardActions allProps={allProps} />
                 </div>
                 <IonText color="dark">
-                  <h1
-                    style={{
-                      fontSize: "1.5rem",
-                      margin: "0"
-                    }}
-                  >
-                    {useIsData(name)}
-                  </h1>
+                  <IonCardTitle>{name}</IonCardTitle>
                 </IonText>
+                <Location allProps={allProps} />
+                <Offerings allProps={allProps} />
 
-                <IonRow
-                  style={{
-                    margin: "0",
-                    padding: "0"
-                  }}
-                >
-                  <IonCol
-                    style={{
-                      margin: 0,
-                      padding: 0
-                    }}
-                    size="auto"
-                  >
-                    <IonItem
-                      className="ion-no-padding"
-                      style={{
-                        margin: "0",
-                        padding: "0"
-                      }}
-                      lines="none"
-                    >
-                      <IonIcon
-                        style={{
-                          fontSize: "20px",
-                          alignSelf: "center"
-                        }}
-                        className="ion-icon"
-                        icon={location}
-                      />
-                      <IonLabel className="ion-padding-start">
-                        <p
-                          style={{
-                            alignSelf: "center",
-                            margin: 0
-                          }}
-                        >
-                          {useIsData(city)}
-                        </p>
-                      </IonLabel>
-                    </IonItem>
-                  </IonCol>
-                  <IonCol
-                    style={{
-                      margin: 0,
-                      padding: 0
-                    }}
-                    className=""
-                    size="auto"
-                  >
-                    <IonItem className="ion-no-padding" lines="none">
-                      <IonIcon
-                        style={{
-                          fontSize: "20px",
-                          alignSelf: "center"
-                        }}
-                        className="ion-icon"
-                        icon={heart}
-                        color="danger"
-                      />
-                      <IonLabel className="ion-padding-start">
-                        <p
-                          style={{
-                            alignSelf: "center",
-                            margin: 0
-                          }}
-                        >
-                          {`${useIsData(rating)} . ${useIsData(review)} `}
-                          <u>reviews</u>
-                        </p>
-                      </IonLabel>
-                    </IonItem>
-                  </IonCol>
-                </IonRow>
+                {ownType?.length > 0 && <LikeATag colorTitle="green" colorValue="yellow" title="Own Type:" value={ownType} />}
+                {/* {tags?.map((tag, index) => <LikeATag colorTitle="blue" colorValue="yellow" title="Tags:" value={tag} key={index} />)} */}
+                {tags?.length > 0 && <LikeATag colorTitle="blue" colorValue="blue" title="tags: " value={tags.join("#")} skipBg={true} />}
 
-                <IonRow
-                  style={{
-                    gap: "10px",
-                    marginTop: "20px"
-                  }}
-                >
-                  <IonCol
-                    size="auto"
-                    style={{
-                      margin: "auto",
-                      textAlign: "center"
-                    }}
-                  >
-                    <div
-                      style={{
-                        background: useGradeColor(average),
-                        margin: "auto"
-                        // marginBottom: "10px"
-                      }}
-                      className="card-report"
-                    >
-                      <h6
-                        style={{
-                          fontSize: width > 800 ? "14px" : "12px",
-                          margin: "0"
-                        }}
-                      // style={{ fontSize: "16px" }}
-                      >
-                        {useGrade(average)}
-                      </h6>
-                    </div>
-                    <IonText color="dark">
-                      <h6
-                        style={{
-                          fontSize: width > 800 ? "14px" : "12px"
-                        }}
-                      >
-                        Average Rating
-                      </h6>
-                    </IonText>
+                {/* <IonRow>
+                  <IonCol>
+                    <h4>Mission Statement:</h4>
+                    <p>{missionStatement}</p>
                   </IonCol>
-
-                  <IonCol
-                    size="auto"
-                    style={{
-                      margin: "auto",
-                      textAlign: "center"
-                    }}
-                  >
-                    <div
-                      style={{
-                        margin: "auto",
-                        marginBottom: "10px"
-                      }}
-                    >
-                      <h6
-                        style={{
-                          fontSize: width > 800 ? "18px" : "12px"
-                        }}
-                      // style={{ fontSize: "16px" }}
-                      >
-                        {useIsData(acceptanceRate)}
-                      </h6>
-                    </div>
-                    <IonText color="dark">
-                      <h6
-                        style={{
-                          fontSize: width > 800 ? "14px" : "12px"
-                        }}
-                      >
-                        Acceptance Rate
-                      </h6>
-                    </IonText>
-                  </IonCol>
-                  <IonCol
-                    size="auto"
-                    style={{
-                      margin: "auto",
-                      textAlign: "center"
-                    }}
-                  >
-                    <div
-                      style={{
-                        margin: "auto",
-                        marginBottom: "10px"
-                      }}
-                    >
-                      <h6
-                        style={{
-                          fontSize: width > 800 ? "18px" : "12px"
-                        }}
-                      // style={{ fontSize: "16px" }}
-                      >
-                        {useIsData(act?.min) + "-" + useIsData(act?.max)}
-                      </h6>
-                    </div>
-                    <IonText color="dark">
-                      <h6
-                        style={{
-                          fontSize: width > 800 ? "14px" : "12px"
-                        }}
-                      >
-                        ACT Range
-                      </h6>
-                    </IonText>
-                  </IonCol>
-                </IonRow>
+                </IonRow> */}
+                {/* Other columns go here */}
               </IonCol>
             </IonRow>
           </IonCol>
@@ -312,4 +206,5 @@ const CourseCard = ({
     </IonCard>
   )
 }
+
 export default CourseCard

@@ -2,8 +2,7 @@
 import {useSelector} from "react-redux"
 import {PostModalOnClick} from "./molecules/PostModalOnClick"
 import {PostCardForClick} from "./molecules/PostCardForClick"
-import {IonCard} from "@ionic/react"
-import {useHistory, useLocation} from "react-router"
+import {IonCard, IonTitle} from "@ionic/react"
 export const CreateAPostCard = ({allProps}) => {
   const {user} = useSelector((state) => state.userProfile)
   const {setCreateAPostPopUp} = allProps
@@ -20,7 +19,7 @@ return (
       >
 
         <PostCardForClick allProps={{ ...allProps, user}} />
-      </IonCard>
+    </IonCard>
     </>
 
   )

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
 import { IonInput, IonIcon } from "@ionic/react"
 import { searchCircle } from "ionicons/icons"
@@ -7,67 +7,46 @@ import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { userSearch } from "../../../graphql/user"
 
-import {
-  UNIVERSITY_SERVICE_GQL,
-  USER_SERVICE_GQL
-} from "../../../servers/types"
-// import { searchUniFromBar } from "../../../store/action/userActivity"
-// import { useDispatch } from "react-redux"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
 
-function index() {
-  const [searchValue, setSearchValue] = useState(""),
-    [dropDownOptions, setDropDownOptions] = useState(false),
-    history = useHistory(),
-    [options, setOptions] = useState([]),
-    [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
-      context: { server: UNIVERSITY_SERVICE_GQL }
-    }),
-    [GetUser, searchUser] = useLazyQuery(userSearch(searchValue), {
-      context: { server: USER_SERVICE_GQL }
-    }),
-    // dispatch = useDispatch(),
-    dropdownRef = useRef(null)
+function Index() {
+  const [searchValue, setSearchValue] = useState("")
+  const [dropDownOptions, setDropDownOptions] = useState(false)
+  const history = useHistory()
+  const [options, setOptions] = useState([])
+  const [GetUni, unidata] = useLazyQuery(UniSearchDataList(), {
+    context: { server: UNIVERSITY_SERVICE_GQL },
+    skip: true
+  })
+  const [GetUser, searchUser] = useLazyQuery(userSearch(), {
+    context: { server: USER_SERVICE_GQL },
+    skip: true
+  })
+  const dropdownRef = useRef(null)
 
-  useEffect(() => {
+  const handleSearch = () => {
     if (searchValue) {
-      setDropDownOptions(true)
-    } else {
+      GetUni({ variables: { searchValue } })
+      GetUser({ variables: { searchValue } })
+    }
+  }
+
+  useDebouncedEffect(handleSearch, [searchValue], 1000)
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropDownOptions(false)
     }
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropDownOptions(false)
-      }
-    }
+  }
+
+  useState(() => {
     window.addEventListener("mousedown", handleClickOutside)
     return () => {
       window.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [searchValue])
-
-  const HandleSearch = () => {
-    GetUni()
-    GetUser()
-    // dispatch(searchUniFromBar(searchValue, 5, setOptions))
-  }
-  // const debouncer = useCallback(debounce(GetUni, 1000), [])
-
-  useEffect(() => {
-    if (unidata?.data?.searchSchool && searchUser?.data?.searchUser?.user) {
-      setOptions([
-        ...unidata?.data?.searchSchool,
-        ...searchUser?.data?.searchUser?.user
-      ])
-    } else if (Array.isArray(unidata?.data?.searchSchool)) {
-      setOptions([...unidata?.data?.searchSchool])
-    } else if (Array.isArray(searchUser?.data?.searchUser?.user)) {
-      setOptions([...searchUser?.data?.searchUser?.user])
-    }
-  }, [unidata.data, searchUser.data])
-
-  useDebouncedEffect(HandleSearch, [searchValue], 1000)
+  }, [])
 
   return (
     <>
@@ -87,7 +66,7 @@ function index() {
             setSearchValue(e.detail.value)
             setDropDownOptions(true)
           }}
-          onkeydown={(e) => {
+          onKeyDown={(e) => {
             if (searchValue && e.keyCode === 27) {
               setDropDownOptions(false)
             }
@@ -104,9 +83,9 @@ function index() {
           />
         </Link>
       </div>
-      {dropDownOptions && Array?.isArray(options) && options.length > 0 && (
+      {dropDownOptions && Array.isArray(options) && options.length > 0 && (
         <div className="recommend-search" ref={dropdownRef}>
-          {Array?.isArray(options) &&
+          {Array.isArray(options) &&
             options.map((item, i) => (
               <SearchBarResultList
                 item={item}
@@ -120,4 +99,4 @@ function index() {
   )
 }
 
-export default index
+export default Index

@@ -392,22 +392,26 @@ export const GetProfessor = gql`
         }
       }
     `,
-  UniSearch = (name) =>
-    gql`
-        query {
-            searchSchool(name: "${name}") {
-                unitId
-                name
-                pictures
-            }
-        }`,
+
   UniSearchDataList = (name) =>
     gql`
-        query {
-            searchSchool(name: "${name}") {
-              pictures
-              name
-              unitId
+    query {
+      searchSchool(name: "${name}") {
+        name
+        unitId
+        address {
+          streetAddressOrPOBox
+          city
+          stateAbbreviation
+        }
+        alias
+        ownType
+        tags
+        missionStatement
+        graduateOffering
+        undergraduateOffering
+        pictures
+        tags
 
-            }
-        }`
+      }
+    }`
