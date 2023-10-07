@@ -781,6 +781,7 @@ export const AddComment = gql`
   getNewsFeed = gql`
     query fetchMyNewsFeed($userId: ID!, $page: Float!) {
       fetchMyNewsFeed(userId: $userId, page: $page) {
+        section
         postText
         upVoted
         upVoteCount
@@ -796,6 +797,156 @@ export const AddComment = gql`
           picture
           username
           _id
+        }
+        elevatorInfo {
+          unitId
+          name
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+            zipCode
+          }
+          name
+          alias
+          highestLevelOfOffering
+          undergraduateOffering
+          graduateOffering
+          grantsMedicalDegree
+          hasHospital
+          missionStatement
+          majors {
+            title
+            pollTotalGraduates
+          }
+          ownType
+          pictures
+          tags
+        }
+        studentCharges {
+          combinedChargeForRoomAndBoard
+          undergraduateApplicationFee
+          graduateApplicationFee
+          unitId
+          undergraduate {
+            inState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            outOfState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            inDistrict {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            onCampus {
+              costOfAttendance {
+                inDistrict
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            offCampusWithFamily {
+              costOfAttendance {
+                inDistrict
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            offCampusNotWithFamily {
+              costOfAttendance {
+                inDistrict
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            booksAndSupplies
+          }
+
+          graduate {
+            inState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            outOfState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            inDistrict {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+          }
+        }
+        scholarships {
+          university_name
+          uni_id
+          scholarship_name
+          international_specific
+          level
+          scholarship_url
+          transfer_specific
+          gpa {
+            min
+            max
+          }
+          act {
+            min
+            max
+          }
+          sat {
+            min
+            max
+          }
+          awards {
+            award_name
+            scholarship_amount {
+              amount
+              disbursement_schedule
+            }
+          }
+        }
+        userEvaluation {
+          unitId
+          rankings {
+            rank
+            title
+            totalPlayers
+          }
+          report {
+            academics
+            average
+            value
+            diversity
+            campus
+            atheltics
+            partyScene
+            professors
+            location
+            dorms
+            campusFood
+            studentLife
+            safety
+          }
+          reviews {
+            rating
+            type
+            votes
+          }
         }
       }
     }

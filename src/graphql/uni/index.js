@@ -411,7 +411,6 @@ export const GetProfessor = gql`
         graduateOffering
         undergraduateOffering
         pictures
-        tags
 
       }
     }`

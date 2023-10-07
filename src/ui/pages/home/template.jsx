@@ -79,7 +79,7 @@ export const Home = ({ allProps }) => {
                     I can Review
                   </IonItem> */}
                   <LikeATag colorTitle="green" colorValue="red" value={"I can review!"} />
-                  <AffliatedUniCard allProps={{...allProps.schoolData, ...allProps}} />
+                  <AffliatedUniCard allProps={{...allProps.schoolData, onSearch: false}} />
 
                 </Link>
                  <InfinteFeed userInfo={user} allProps={allProps} />

@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import {
   IonCard,
   IonGrid,
@@ -11,7 +11,13 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonThumbnail,
-  IonSkeletonText
+  IonSkeletonText,
+  IonSlides,
+  IonSlide,
+  IonModal,
+  IonButton,
+  IonContent,
+  IonImg
 } from "@ionic/react"
 import {heart, saveOutline, location, shareOutline, schoolOutline} from "ionicons/icons"
 import useGradeColor from "../../../hooks/useGradeColor"
@@ -19,26 +25,77 @@ import useGrade from "../../../hooks/useGrade"
 import {universityDefaultImage} from "../../../servers/s3.configs"
 import {LikeATag} from "../tags"
 
-function CardImage({allProps}) {
-  const {images, pictures, recommended = true, onSearch = true} = allProps
-  console.log(onSearch)
- const onSearchStyle = {
-  width: "250px",
-  height: "200px",
-  objectFit: "cover",
-  margin: "auto"
- },
-   singleCardStyle = {
-     width: "100%",
-     objectFit: "cover",
-     margin: "auto"
- }
+function ImageModal({isOpen, imageSrc, onClose}) {
   return (
+    <IonModal isOpen={isOpen}>
+      <IonContent>
+        <IonButton onClick={onClose}>Close</IonButton>
+        <IonImg src={imageSrc} alt="Selected Image" />
+      </IonContent>
+    </IonModal>
+  )
+}
+
+function CardImage({ allProps }) {
+  const { images, pictures = [], recommended = true, onSearch = true } = allProps
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedImage, setSelectedImage] = useState("")
+
+  const imageContainerStyle = {
+    display: "flex",
+    flexWrap: "wrap"
+  }
+const imageStyle = {
+    width: "150px",
+    height: "120px",
+    objectFit: "cover",
+    margin: "4px",
+    cursor: "pointer" // Add a pointer cursor to indicate clickable images
+  }
+const handleImageClick = (imageSrc) => {
+    setSelectedImage(imageSrc)
+    setModalOpen(true)
+  }
+return (
     <div className="card-image">
-      <img
-        src={pictures?.[0] || images?.[0] || universityDefaultImage}
-        alt="University"
-        style={onSearch ? onSearchStyle : singleCardStyle}
+      {onSearch ? (
+        <IonSlides
+          options={{
+            autoplay: true,
+            loop: true,
+            speed: 3000
+          }}
+        >
+          {pictures?.map((picture, index) => (
+            <IonSlide key={index}>
+              <IonImg
+                src={picture || images?.[0] || universityDefaultImage}
+                alt={`University Image ${index + 1}`}
+                style={imageStyle}
+              />
+            </IonSlide>
+          ))}
+        </IonSlides>
+      ) : (
+        <div style={imageContainerStyle}>
+          {pictures.map((picture, index) => (
+            <IonImg
+              key={index}
+              src={picture || images?.[0] || universityDefaultImage}
+              alt={`University Image ${index + 1}`}
+              style={imageStyle}
+              onClick={() => handleImageClick(picture)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Render the ImageModal component */}
+      <ImageModal
+        isOpen={modalOpen}
+        imageSrc={selectedImage}
+        onClose={() => setModalOpen(false)}
       />
     </div>
   )
