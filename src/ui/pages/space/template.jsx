@@ -11,10 +11,6 @@ import {
 import "./Space.css"
 import { arrowUpOutline } from "ionicons/icons"
 import clsx from "clsx"
-import {
-  GetProfileCard,
-  GetTopActiveSpaces
-} from "../../../graphql/user"
 import { SpaceFeed } from "./SpaceFeed"
 import UnisalaIntro from "./UnisalaIntro"
 import SpaceHeader from "./SpaceHeader"

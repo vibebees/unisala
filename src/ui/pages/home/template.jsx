@@ -1,22 +1,25 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {
   IonGrid,
   IonRow,
   IonCol,
   IonContent,
-  IonCard
+  IonCard,
+  IonItem
 } from "@ionic/react"
 import {CreateAPostCard} from "../../component/post/index"
-import { useQuery } from "@apollo/client"
-import { GetProfileCard } from "../../../graphql/user"
+ import { getUserProfile } from "../../../graphql/user"
 import UnisalaIntro from "./UnisalaIntro"
-import { USER_SERVICE_GQL } from "../../../servers/types"
-import "./Home.css"
+ import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { InfinteFeed } from "./InfiniteScrollFeed"
 import AffliatedUniCard from "../../component/courseCard"
 import {Link} from "react-router-dom"
+import {useQuery} from "@apollo/client"
+import {getUpdatedSchoolInfo} from "../../../graphql/uni"
+import {UNIVERSITY_SERVICE_GQL} from "../../../servers/types"
+import {LikeATag} from "../../component/tags"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -26,27 +29,22 @@ export const Home = ({ allProps }) => {
     newUser,
     user,
     loggedIn,
-    views
+    views,
+    refetch,
+    userInfo = {}
   } = allProps || {},
-  userAssociatedSchool = {
-    image: "item",
-    name: "rprashnat",
-    description: "item",
-    locations: "item",
-    review: "item",
-    average: "item",
-    acceptance: "item",
-    act: "item",
-    type: "item",
-    loading: true
+    {interestedUni} = userInfo,
+    [unitId] = interestedUni || []
+
+  if (userInfo) {
+    const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
+      context: { server: UNIVERSITY_SERVICE_GQL }
+    })
+    allProps.schoolData = schoolData?.getUpdatedSchoolInfo.elevatorInfo
+    allProps.schoolDataLoading = schoolLoading
+    allProps.onSearch = false
   }
-const { loading, error, data, refetch } = useQuery(GetProfileCard, {
-    context: { server: USER_SERVICE_GQL },
-    variables: {
-      username: user?.username
-    },
-    skip: !loggedIn || !user?.username
-  })
+
   return (
     <IonContent color="light">
       {width < 768 && views.lessThan768}
@@ -76,8 +74,13 @@ const { loading, error, data, refetch } = useQuery(GetProfileCard, {
             {loggedIn ? (
               <>
                 <CreateAPostCard allProps={allProps} />
-                <Link to="/university/1">
-                  <AffliatedUniCard allProps={userAssociatedSchool} />
+                <Link to={`/university/${allProps.schoolData?.name}`}>
+                  {/* <IonItem >
+                    I can Review
+                  </IonItem> */}
+                  <LikeATag colorTitle="green" colorValue="red" value={"I can review!"} />
+                  <AffliatedUniCard allProps={{...allProps.schoolData, ...allProps}} />
+
                 </Link>
                  <InfinteFeed userInfo={user} allProps={allProps} />
               </>

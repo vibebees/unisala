@@ -278,7 +278,7 @@ export const AddComment = gql`
       }
     }
   `,
-  GetProfileCard = gql`
+  getUserProfile = gql`
     query getUser($username: String!) {
       getUser(username: $username) {
         user {

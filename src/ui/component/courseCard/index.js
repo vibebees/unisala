@@ -17,21 +17,28 @@ import {heart, saveOutline, location, shareOutline, schoolOutline} from "ionicon
 import useGradeColor from "../../../hooks/useGradeColor"
 import useGrade from "../../../hooks/useGrade"
 import {universityDefaultImage} from "../../../servers/s3.configs"
+import {LikeATag} from "../tags"
 
 function CardImage({allProps}) {
-  const {images, pictures, recommended = true} = allProps
-
+  const {images, pictures, recommended = true, onSearch = true} = allProps
+  console.log(onSearch)
+ const onSearchStyle = {
+  width: "250px",
+  height: "200px",
+  objectFit: "cover",
+  margin: "auto"
+ },
+   singleCardStyle = {
+     width: "100%",
+     objectFit: "cover",
+     margin: "auto"
+ }
   return (
     <div className="card-image">
       <img
         src={pictures?.[0] || images?.[0] || universityDefaultImage}
         alt="University"
-        style={{
-          width: "250px",
-          height: "200px",
-          objectFit: "cover",
-          margin: "auto"
-        }}
+        style={onSearch ? onSearchStyle : singleCardStyle}
       />
     </div>
   )
@@ -66,23 +73,6 @@ function Location({allProps}) {
       </IonLabel>
     </IonItem>
   )
-}
-
-function LikeATag({colorTitle = "blue", colorValue = "yellow", title, value, skipBg = false}) {
-  const titleColorClass = `text-${colorTitle}-500 font-bold`
-  const valueColorClass = `bg-${colorValue}-400 text-white rounded-full px-2 py-1`
-
-  return (
-    <IonRow style={{marginTop: "20px"}}>
-      <IonCardSubtitle className={titleColorClass}>
-        <span className="mr-2">{title}</span>
-        <span className={skipBg ? "" : valueColorClass}>
-          {value}
-        </span>
-      </IonCardSubtitle>
-    </IonRow>
-  )
-
 }
 
 function Offerings({allProps}) {
@@ -161,10 +151,11 @@ function CourseCard({allProps}) {
     name,
     ownType,
     tags,
-    loading = false
+    loading = false,
+    schoolDataLoading
   } = allProps
 
-  if (loading) {
+  if (loading || schoolDataLoading) {
     return loadingScreen()
   }
 

@@ -12,7 +12,7 @@ import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import {useHistory, useLocation} from "react-router"
 
-export const getAllPropsHome = ({ user, loggedIn }) => {
+export const getAllPropsHome = ({ user, loggedIn, userInfo}) => {
   const [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
@@ -45,7 +45,7 @@ export const getAllPropsHome = ({ user, loggedIn }) => {
     history = useHistory(),
     location = useLocation()
 
-  return {
+   return {
     unisalaImg,
     activeTab,
     setActiveTab,
@@ -65,6 +65,7 @@ export const getAllPropsHome = ({ user, loggedIn }) => {
     page,
     setPage,
     history,
-    location
+    location,
+    userInfo
   }
 }

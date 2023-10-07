@@ -79,6 +79,7 @@ const App = () => {
         data?.accessToken &&
           localStorage.setItem("accessToken", data?.accessToken || "")
         const decode = jwtDecode(data?.accessToken)
+
         dispatch(
           getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
         )
@@ -88,8 +89,6 @@ const App = () => {
     }
     getNewToken()
 
-    dispatch(getPresingedUrl("USER"))
-    dispatch(getPresingedUrl("UNI"))
   }, [])
 
   return (

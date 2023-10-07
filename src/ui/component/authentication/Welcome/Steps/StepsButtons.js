@@ -6,7 +6,7 @@ import { useDispatch, Provider } from "react-redux"
 import { useMutation, useQuery } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../../store/action/userProfile"
-import { EditProfile, GetProfileCard, getUserGql } from "../../../../../graphql/user"
+import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const StepsButtons = ({allProps}) => {

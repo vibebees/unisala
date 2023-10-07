@@ -4,7 +4,7 @@ import {USER_SERVICE_GQL} from "../../../servers/types"
 import { getAllProps } from "./getAllProps"
 import {useSelector} from "react-redux"
 
-import { GetProfileCard,
+import { getUserProfile,
   GetSpaceCategory,
   GetTopActiveSpaces
 } from "../../../graphql/user"
@@ -21,7 +21,7 @@ export default function SpacePage({allPropssetPopup}) {
     {user, loggedIn} = useSelector((store) => store?.userProfile),
     profileData =
       loggedIn &&
-      useQuery(GetProfileCard, {
+      useQuery(getUserProfile, {
         context: {server: USER_SERVICE_GQL},
         variables: {
           username: user?.username
