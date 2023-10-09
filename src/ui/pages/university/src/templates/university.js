@@ -9,7 +9,7 @@ import {
   IonToolbar
 } from "@ionic/react"
 
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { getUniData } from "../../../../../store/action"
 import PreLoader from "../../../../component/preloader"
 import { isSideBar } from "../../../../../store/action/University"
@@ -44,6 +44,7 @@ export const UniversityTemplate = ({ allProps }) => {
       interviewExperienceEmpty,
       scholarshipsEmpty,
       studentChargesEmpty,
+      statisticsEmpty,
       handleScrolling
     } = allProps,
     dispatch = useDispatch()
@@ -81,7 +82,8 @@ export const UniversityTemplate = ({ allProps }) => {
         professorsEmpty,
         interviewExperienceEmpty,
         scholarshipsEmpty,
-        studentChargesEmpty
+        studentChargesEmpty,
+        statisticsEmpty
       })
     )
   }, [
@@ -94,7 +96,8 @@ export const UniversityTemplate = ({ allProps }) => {
     visitWebsiteEmpty,
     professorsEmpty,
     interviewExperienceEmpty,
-    scholarshipsEmpty
+    scholarshipsEmpty,
+    statisticsEmpty
   ])
 
   useEffect(() => {

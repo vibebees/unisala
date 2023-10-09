@@ -6,11 +6,15 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
-  IonRow
+  IonRow,
+  IonList,
+  IonItem,
+  IonLabel
 } from "@ionic/react"
 import { heart, location, ellipsisVerticalCircleOutline } from "ionicons/icons"
 import { useSelector } from "react-redux"
 import useRating from "../../../../../hooks/useRating"
+import ModalListcard from "../../sideDetails/atoms/ModalListcard"
 import SeeMoreModal from "../molecules/SeeMoreModal"
 
 export const BioDetails = ({ allProps }) => {
@@ -32,6 +36,47 @@ export const BioDetails = ({ allProps }) => {
       className="ion-icon"
       icon={ellipsisVerticalCircleOutline}
     />
+  )
+
+  const ModalData = (
+    <div>
+      <IonList>
+        <ModalListcard title={"Name"} value={uniData?.elevatorInfo?.name} />
+        <ModalListcard title={"Bio"} value={uniData?.elevatorInfo?.bio} />
+        <ModalListcard
+          title={"Address"}
+          value={uniData?.elevatorInfo?.briefAddress}
+        />
+        <ModalListcard
+          title={"Calender System"}
+          value={uniData?.elevatorInfo?.calendar}
+        />
+        <ModalListcard
+          title={"Graduate offered"}
+          value={uniData?.elevatorInfo?.graduateOffering}
+        />
+        <ModalListcard
+          title={"Grants Medical Degree"}
+          value={uniData?.elevatorInfo?.grantsMedicalDegree}
+        />
+        <ModalListcard
+          title={"Has Hospital"}
+          value={uniData?.elevatorInfo?.hasHospital}
+        />
+        <ModalListcard
+          title={"Highest Degree Offered"}
+          value={uniData?.elevatorInfo?.highestLevelOfOffering}
+        />
+        <ModalListcard
+          title={"University Type"}
+          value={uniData?.elevatorInfo?.ownType}
+        />
+        <ModalListcard
+          title={"Undergraduate offered"}
+          value={uniData?.elevatorInfo?.undergraduateOffering}
+        />
+      </IonList>
+    </div>
   )
 
   return (
@@ -84,7 +129,7 @@ export const BioDetails = ({ allProps }) => {
             </IonCardContent>
             <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
               {/* <p style={{ alignSelf: "center" }}>See more </p> */}
-              <SeeMoreModal ModalButton={ModalButton} />
+              <SeeMoreModal ModalButton={ModalButton} ModalData={ModalData} />
             </IonCardContent>
           </div>
         </IonCol>

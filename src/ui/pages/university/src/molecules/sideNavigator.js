@@ -24,10 +24,14 @@ export const SideNavigator = ({ allProps }) => {
     activeTab,
     UniScroll,
     interviewExperience,
+    similarCollagesEmpty,
     scholarshipsEmpty,
     StudentChargesEmpty,
     financialAidEmpty,
-    financialAid
+    financialAid,
+    statisticsEmpty,
+    adminssionEmpty,
+    adminssion
   } = allProps
 
   return (
@@ -48,10 +52,14 @@ export const SideNavigator = ({ allProps }) => {
         scholarship,
         studentCharges,
         interviewExperience,
+        similarCollagesEmpty,
         scholarshipsEmpty,
         StudentChargesEmpty,
         financialAidEmpty,
-        financialAid
+        financialAid,
+        statisticsEmpty,
+        adminssionEmpty,
+        adminssion
       }}
       admissionAnimate={AdmisionAnimate}
       grantAnimate={GrantAnimate}

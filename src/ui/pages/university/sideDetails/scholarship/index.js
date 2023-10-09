@@ -30,13 +30,7 @@ const index = () => {
       <h2 className="font-normal border-b border-neutral-300 text-neutral-700 px-2 text-lg py-2">
         Scholarship
       </h2>
-      <IonCardContent
-        key={index}
-        style={{
-          borderBottom: "1px solid #C4C4C4"
-        }}
-        class="w-full"
-      >
+      <IonCardContent key={index} class="w-full">
         <IonGrid className="w-full gap-3  flex flex-wrap">
           {scholarships.map((item, index) => {
             return (
