@@ -79,7 +79,7 @@ export const screenGreaterThan1000 = () => {
                     <h6 style={{ padding: "10px" }}>Famous Universities</h6>
                 </IonText>
 
-                {getFamousUniversity.map((item, index) => {
+                {getFamousUniversity?.map((item, index) => {
                     return (
                         <Link to={"/university/" + item?.name} key={index}>
                             <IonItem

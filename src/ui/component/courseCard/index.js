@@ -37,7 +37,7 @@ function ImageModal({isOpen, imageSrc, onClose}) {
 }
 
 function CardImage({ allProps }) {
-  const { images, pictures = [], recommended = true, onSearch = true } = allProps
+  const { images, pictures = [], recommended = true, onSearch = false } = allProps
 
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedImage, setSelectedImage] = useState("")
@@ -212,7 +212,7 @@ function CourseCard({allProps}) {
     schoolDataLoading
   } = allProps
 
-  if (loading || schoolDataLoading) {
+  if (loading || schoolDataLoading || name === undefined) {
     return loadingScreen()
   }
 

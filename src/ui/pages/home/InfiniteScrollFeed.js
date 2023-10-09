@@ -45,7 +45,6 @@ export const InfinteFeed = ({ allProps }) => {
   function transformAndStylePostData(originalData) {
     const { elevatorInfo } = originalData
 
-    console.log({ originalData })
     // Define the styling using HTML tags and inline styles
     const style = `
       <div style="font-weight: bold; font-size: 18px;">${elevatorInfo?.name}</div>
@@ -90,16 +89,16 @@ return (
 
           <>
 
-            {/* <div
+            <div
             style={{width: "100%", marginTop: "10px", borderTop: "1px solid #e0e0e0"}}
             key={item._id + index}
           >
             <Thread thread={transformAndStylePostData(item)} id={item._id} allProps={allProps} key={item._id + index} />
-          </div> */}
-          <Link key={item._id} to={`/university/${item?.elevatorInfo?.name}`}>
+          </div>
+          {/* <Link key={item._id} to={`/university/${item?.elevatorInfo?.name}`}>
                   <UniFeed key={index} data={item} />
 
-          </Link>
+          </Link> */}
           </>
         )
       }

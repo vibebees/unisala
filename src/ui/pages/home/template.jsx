@@ -20,6 +20,7 @@ import {useQuery} from "@apollo/client"
 import {getUpdatedSchoolInfo} from "../../../graphql/uni"
 import {UNIVERSITY_SERVICE_GQL} from "../../../servers/types"
 import {LikeATag} from "../../component/tags"
+import {UserGuide} from "../../component/userGuide"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -33,7 +34,7 @@ export const Home = ({ allProps }) => {
     refetch,
     userInfo = {}
   } = allProps || {},
-    {interestedUni} = userInfo,
+    {interestedUni} = userInfo || {},
     [unitId] = interestedUni || []
 
   if (userInfo) {
@@ -78,9 +79,10 @@ export const Home = ({ allProps }) => {
                   {/* <IonItem >
                     I can Review
                   </IonItem> */}
-                  <LikeATag colorTitle="green" colorValue="red" value={"I can review!"} />
-                  <AffliatedUniCard allProps={{...allProps.schoolData, onSearch: false}} />
+                  {/* <LikeATag colorTitle="green" colorValue="red" value={"I can review!"} /> */}
+                  {/* <AffliatedUniCard allProps={{...allProps.schoolData, onSearch: false}} /> */}
 
+                  <UserGuide/>
                 </Link>
                  <InfinteFeed userInfo={user} allProps={allProps} />
               </>

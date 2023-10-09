@@ -7,8 +7,8 @@ import {
   IonCardContent
 } from "@ionic/react"
 import useWindowWidth from "../../../hooks/useWindowWidth"
-import TopUniversitySidebar from "../../component/TopUniversitySidebar"
 import "./index.css"
+import {screensMoreThan768} from "../home/helper.func"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -52,7 +52,7 @@ const ProfilePage = () => {
           </IonCol>
           {windowWidth >= 1080 && (
             <IonCol className="sidebar">
-              <TopUniversitySidebar />
+              {screensMoreThan768()}
             </IonCol>
           )}
         </IonRow>
