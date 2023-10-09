@@ -4,18 +4,18 @@ import { createRef, useState } from "react"
 
 export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
   const UniEmpty = useIsEmpty(uniData || {}, "School"),
-    reportEmpty = useIsEmpty(uniData?.report || {}, "Report"),
-    similarCollagesEmpty = useIsEmpty(uniData?.similarCollages || {}, "Report"),
+    reportEmpty = useIsEmpty(uniData?.userEvaluation?.report || {}, "Report"),
+    similarCollagesEmpty = useIsEmpty(uniData?.similarSchools || {}, "Report"),
     applicantsEmpty = useIsEmpty(uniData?.applicants || {}, "Applicants"),
     campusLifeEmpty = useIsEmpty(
-      uniData?.students?.campusLife?.poll?.wordBestDescribe || {},
+      uniData?.userEvaluation?.reviews || {},
       "WordBestDescribe"
     ),
-    libraryEmpty = useIsEmpty(uniData?.library || {}, "Library"),
+    libraryEmpty = useIsEmpty(uniData?.elevatorInfo.library || {}, "Library"),
     grantsEmpty = useIsEmpty(uniData?.grants || {}, "Grants"),
     testScoreEmpty = useIsEmpty(uniData?.testScore || {}, "TestScore"),
     visitWebsiteEmpty = useIsEmpty(uniData?.elevatorInfo?.urls || {}, "Urls"),
-    professorsEmpty = useIsEmpty(uniData || {}, "Report"),
+    professorsEmpty = useIsEmpty(uniData?.professors || {}, "Report"),
     interviewExperienceEmpty = useIsEmpty(
       uniData?.interviewExperience || {},
       "InterviewExperience"
@@ -29,10 +29,13 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
       "StudentCharges"
     ),
     financialAidEmpty = useIsEmpty(uniData?.financialAid || {}, "FinancialAid"),
+    statisticsEmpty = useIsEmpty(uniData?.studentsStats || {}, "Statistics"),
+    adminssionEmpty = useIsEmpty(uniData?.admissionInfo || {}, "Admission"),
     app = createRef(),
     profile = createRef(),
     statistics = createRef(),
     fees = createRef(),
+    adminssion = createRef(),
     libraries = createRef(),
     grant = createRef(),
     testScore = createRef(),
@@ -73,13 +76,13 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
       }
     },
     handleScrolling = () => {
-      if (
-        scrollTop - profile?.current?.clientHeight <
-        statistics?.current?.offsetTop
-      ) {
-        setActiveTab(0)
-        setAdmissionAnimate(true)
-      }
+      // if (
+      //   scrollTop - profile?.current?.clientHeight <
+      //   statistics?.current?.offsetTop
+      // ) {
+      //   setActiveTab(0)
+      //   // setAdmissionAnimate(true)
+      // }
       if (
         scholarship?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
@@ -93,31 +96,37 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
         setActiveTab(1)
       }
       if (
+        adminssion?.current?.offsetTop <=
+        scrollTop - profile?.current?.clientHeight
+      ) {
+        setActiveTab(2)
+      }
+      if (
         financialAid?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(2)
+        setActiveTab(3)
+      }
+      if (
+        statistics?.current?.offsetTop <=
+        scrollTop - profile?.current?.clientHeight
+      ) {
+        setActiveTab(3)
       }
 
       if (
-        fees?.current?.offsetTop <=
-        scrollTop - profile?.current?.clientHeight
-      ) {
-        setActiveTab(1)
-      }
-      if (
         libraries?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(2)
+        setActiveTab(4)
       }
-      if (
-        libraries?.current?.offsetTop <=
-          scrollTop - profile?.current?.clientHeight + clientHeight &&
-        libraries?.current?.clientHeight !== 0
-      ) {
-        setLibrariesAnimate(true)
-      }
+      // if (
+      //   libraries?.current?.offsetTop <=
+      //     scrollTop - profile?.current?.clientHeight + clientHeight &&
+      //   libraries?.current?.clientHeight !== 0
+      // ) {
+      //   setLibrariesAnimate(true)
+      // }
       if (
         grant?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
@@ -133,12 +142,6 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
       }
       if (
         testScore?.current?.offsetTop <=
-        scrollTop - profile?.current?.clientHeight
-      ) {
-        setActiveTab(4)
-      }
-      if (
-        similarCollages?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
         setActiveTab(5)
@@ -159,13 +162,19 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
         website?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(8)
+        setActiveTab(6)
       }
       if (
         Professors?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(9)
+        setActiveTab(7)
+      }
+      if (
+        similarCollages?.current?.offsetTop <=
+        scrollTop - profile?.current?.clientHeight
+      ) {
+        setActiveTab(8)
       }
     }
 
@@ -181,6 +190,7 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     visitWebsiteEmpty,
     professorsEmpty,
     studentChargesEmpty,
+    statisticsEmpty,
     app,
     profile,
     statistics,
@@ -227,6 +237,8 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     reportDataSource: uniData?.report,
     campusPollDataSource: uniData?.students?.campusLife?.poll,
     isSideBar,
-    testScoreDataSource: uniData?.testScore
+    testScoreDataSource: uniData?.testScore,
+    adminssionEmpty,
+    adminssion
   }
 }

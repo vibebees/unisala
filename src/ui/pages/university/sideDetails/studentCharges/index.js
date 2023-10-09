@@ -13,7 +13,7 @@ const index = () => {
     <>
       <IonCard
         style={{
-          margin: "10px 0px 0px 0px"
+          margin: "10px 0px 0px 0px "
         }}
         className="flex flex-col"
       >
