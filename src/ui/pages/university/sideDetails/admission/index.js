@@ -16,7 +16,7 @@ import TotalAdmissions from "../molecules/TotalAdmissions"
 import { useSelector } from "react-redux"
 import { ellipsisVerticalCircleOutline } from "ionicons/icons"
 import AdmissionEmployees from "../molecules/AdminssionEmployees"
-import SeeMoreModal from "../../src/molecules/SeeMoreModal"
+import SeeMoreModal from "../../main/molecules/SeeMoreModal"
 
 const index = () => {
   const { uniData } = useSelector((store) => store?.university)

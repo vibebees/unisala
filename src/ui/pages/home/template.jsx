@@ -21,6 +21,8 @@ import {getUpdatedSchoolInfo} from "../../../graphql/uni"
 import {UNIVERSITY_SERVICE_GQL} from "../../../servers/types"
 import {LikeATag} from "../../component/tags"
 import {UserGuide} from "../../component/userGuide"
+import {FolderStructure} from "../../component/folderStructure"
+import {book, schoolOutline, schoolSharp} from "ionicons/icons"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -35,7 +37,27 @@ export const Home = ({ allProps }) => {
     userInfo = {}
   } = allProps || {},
     {interestedUni} = userInfo || {},
-    [unitId] = interestedUni || []
+    [unitId] = interestedUni || [],
+    {schoolData} = allProps || {},
+    userGuide = [
+      {
+        "name": schoolData?.name || "University",
+        "level": "Review Your School",
+        iconSize: 5,
+        icon: schoolSharp,
+        routing: true,
+        link: `/university/${schoolData?.name}`
+      },
+      {
+        "name": "Computer Science",
+        "level": "Intrested Space",
+        icon: book,
+        iconSize: 5,
+        routing: true,
+        link: `/space`
+
+      }
+  ]
 
   if (userInfo) {
     const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
@@ -75,15 +97,8 @@ export const Home = ({ allProps }) => {
             {loggedIn ? (
               <>
                 <CreateAPostCard allProps={allProps} />
-                <Link to={`/university/${allProps.schoolData?.name}`}>
-                  {/* <IonItem >
-                    I can Review
-                  </IonItem> */}
-                  {/* <LikeATag colorTitle="green" colorValue="red" value={"I can review!"} /> */}
-                  {/* <AffliatedUniCard allProps={{...allProps.schoolData, onSearch: false}} /> */}
+                <FolderStructure allProps={{...allProps, folderName: "", data: userGuide}} />
 
-                  <UserGuide/>
-                </Link>
                  <InfinteFeed userInfo={user} allProps={allProps} />
               </>
             ) : (
