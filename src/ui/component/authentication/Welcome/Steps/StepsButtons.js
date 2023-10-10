@@ -116,28 +116,38 @@ const StepsButtons = ({allProps}) => {
     }
   }
 
+  const handleSkip = () => {
+    // If you want to save some default value or an indication that the user chose to skip, you can do it here.
+
+    // Move to the next step or directly submit if it's the last step.
+    if (currentStep === 5) {
+      handleSubmit()
+    } else {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
   const validationFunctions = [
     () => true, // Step 1 validation function
     () => {
       // Step 2 validation function
-      return welcomeFormdata.userStatus.length > 0
+      return welcomeFormdata?.userStatus?.length > 0
     },
     () => {
       // Step 3 validation function
-      return welcomeFormdata.interestedSubjects !== ""
+      return welcomeFormdata?.interestedSubjects !== ""
     },
     () => {
       // Step 3 validation function
-      return welcomeFormdata.studyLevel !== ""
+      return welcomeFormdata?.studyLevel !== ""
     },
     () => {
       // Step 4 validation function
-      return welcomeFormdata.interestedUni.length > 0
+      return welcomeFormdata?.interestedUni?.length > 0
     },
     () => true // Step 5 validation function
   ]
   const handleNext = () => {
-  console.log({currentStep})
     const isValid = validationFunctions[currentStep - 1]()
 
     if (!isValid) {
@@ -152,7 +162,7 @@ const StepsButtons = ({allProps}) => {
 
     setCurrentStep(currentStep + 1)
   }
-return (
+  return (
     <div className="w-full left-0 flex bottom-0 mb-16 px-6 absolute z-50 pad tp-16">
       <IonButton
         fill="clear"
@@ -173,7 +183,7 @@ return (
         {currentStep === 5 ? "Submit" : "Next"}
       </IonButton>
     </div>
-)
+  )
 
 }
 
