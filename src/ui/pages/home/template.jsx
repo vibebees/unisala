@@ -34,29 +34,13 @@ export const Home = ({ allProps }) => {
     loggedIn,
     views,
     refetch,
-    userInfo = {}
+    userInfo = {},
+    generateUserGuide
   } = allProps || {},
     {interestedUni} = userInfo || {},
     [unitId] = interestedUni || [],
     {schoolData} = allProps || {},
-    userGuide = [
-      {
-        "name": schoolData?.name || "University",
-        "level": "Review Your School",
-        iconSize: 5,
-        icon: schoolSharp,
-        routing: true,
-        link: `/university/${schoolData?.name}`
-      },
-      {
-        "name": "Computer Science",
-        "level": "Intrested Space",
-        icon: book,
-        iconSize: 5,
-        routing: true,
-        link: `/space`
-      }
-  ]
+    userGuide = generateUserGuide(userInfo)
 
   if (userInfo) {
     const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
