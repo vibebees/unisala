@@ -30,7 +30,6 @@ import Professors from "./professors"
 import Interview from "./Interview"
 import { useSelector } from "react-redux"
 import Discussion from "../Discussion"
-import Scholarship from "./scholarship"
 import { ReportCard } from "../../../component/reportCard"
 import { PollCard } from "../../../component/pollCard"
 import { CardWithCircularGrid } from "../../../component/cardWithCircularGrid"
@@ -39,14 +38,11 @@ import FinancialAid from "./financialAid"
 import Statstics from "./statistics"
 import Admission from "./admission"
 import Ranking from "./Ranking"
+import {FolderStructure} from "../../../component/folderStructure"
 
 const SideDetails = ({
   activeTab,
-  appState,
-  UniScroll,
   forwardedRef,
-  admissionAnimate,
-  grantAnimate,
   librariesAnimate,
   unitId,
   allProps
@@ -206,7 +202,7 @@ const SideDetails = ({
         )}
         <IonCol className="w-[calc(100%-270px)]" style={{ flex: 1, margin: 0 }}>
           <section ref={forwardedRef.scholarship}>
-            <Scholarship />
+            <FolderStructure allProps={{...allProps, folderName: "Scholarships", data: uniData?.scholarshipInfo?.scholarships}} />
           </section>
           <section ref={forwardedRef.studentCharges}>
             <StudentCharges />

@@ -29,7 +29,7 @@ import AuthModal from "./ui/component/authentication"
 import { getUserProfile } from "./store/action/userProfile"
 import useWindowWidth from "./hooks/useWindowWidth"
 import MobileNav from "./ui/component/MobileNav"
-import { CreateAPost } from "./ui/component/post/CreateAPost"
+import { CreateAPost, CreateAPostModal } from "./ui/component/post/molecules/PostModalOnClick"
 import { userServer } from "./servers/endpoints"
 import { getPresingedUrl } from "./store/action/authenticationAction"
 
@@ -52,6 +52,10 @@ const App = () => {
     message: false,
     notification: false
   })
+  const allProps = {
+    setCreateAPostPopUp,
+    createAPostPopUp
+  }
 
   const dispatch = useDispatch()
 
@@ -75,6 +79,7 @@ const App = () => {
         data?.accessToken &&
           localStorage.setItem("accessToken", data?.accessToken || "")
         const decode = jwtDecode(data?.accessToken)
+
         dispatch(
           getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
         )
@@ -84,8 +89,6 @@ const App = () => {
     }
     getNewToken()
 
-    dispatch(getPresingedUrl("USER"))
-    dispatch(getPresingedUrl("UNI"))
   }, [])
 
   return (
@@ -116,10 +119,6 @@ const App = () => {
                   activeNavDrop={activeNavDrop}
                 />
               )}
-              <CreateAPost
-                setPopup={setCreateAPostPopUp}
-                popup={createAPostPopUp}
-              />
               {width < 768 && (
                 <MobileNav setCreateAPostPopUp={setCreateAPostPopUp} />
               )}

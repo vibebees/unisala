@@ -1,7 +1,7 @@
 import React from "react"
 import { IonLabel, IonIcon, IonItem, IonCol, IonList } from "@ionic/react"
 import { shieldOutline, chevronDownOutline } from "ionicons/icons"
-import SeeMoreModal from "../../main/molecules/SeeMoreModal"
+import Modal from "./modal"
 
 // Atoms
 
@@ -42,12 +42,16 @@ function SeeMoreButton() {
 
 // Organism
 
-const ScholarshipCard = ({allProps}) => {
+export const Folder = ({allProps}) => {
   const {
     level = "",
     act = { min: "", max: "" },
     awards = [],
-    sat = { min: "", max: "" }
+      sat = {min: "", max: ""},
+      icon = shieldOutline,
+      iconSize = 9,
+      routing,
+    folderSize = `text-${iconSize}xl text-blue-400`
     // eslint-disable-next-line camelcase
     // eslint-disable-next-line camelcase
 } = allProps,
@@ -104,19 +108,17 @@ const ScholarshipCard = ({allProps}) => {
     return (
         <>
             <IonCol className="h-48 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center w-40 shrink-0">
-                <IconAtom icon={shieldOutline} className="text-9xl text-blue-400" />
+                <IconAtom icon={icon} className={folderSize} />
                 <div>
                     <h3 className="text-center px-2 leading-5 text-lg !font-semibold text-neutral-700">
                         {name}
                     </h3>
                     <p className="text-center !text-xs capitalize">{level}</p>
                 </div>
-                <div className="border-t mt-3 cursor-pointer w-full group hover:bg-neutral-100 border-neutral-200">
-                    <SeeMoreModal ModalButton={SeeMoreButton()} ModalData={ModalData} />
-                </div>
+              { !routing && <div className="border-t mt-3 cursor-pointer w-full group hover:bg-neutral-100 border-neutral-200">
+                    <Modal ModalButton={SeeMoreButton()} ModalData={ModalData} scholarshipName={name} />
+                </div>}
             </IonCol>
         </>
     )
 }
-
-export default ScholarshipCard

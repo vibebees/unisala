@@ -20,21 +20,22 @@ import {
   AddPost,
   GetAllPostBySpaceCategoryID,
   getNewsFeed
-} from "../../../graphql/user"
-import TextChecker from "../../../utils/components/TextChecker"
-import { USER_SERVICE_GQL } from "../../../servers/types"
-import { Avatar } from "../Avatar"
+} from "../../../../graphql/user"
+import TextChecker from "../../../../utils/components/TextChecker"
+import { USER_SERVICE_GQL } from "../../../../servers/types"
+import { Avatar } from "../../Avatar"
 
-import { awsBucket, bucketName } from "../../../servers/s3.configs"
-import "./index.css"
-import ReactQuill from "react-quill"
-import JoditEditor from "jodit-react"
+import "../index.css"
+
 import "react-quill/dist/quill.snow.css"
-import TextEditor from "../../../utils/components/TextEditor"
+import TextEditor from "../../../../utils/components/TextEditor"
 import axios from "axios"
-import { userServer } from "../../../servers/endpoints"
+import { userServer } from "../../../../servers/endpoints"
 import clsx from "clsx"
-export const CreateAPost = ({ setPopup, popup, tags }) => {
+
+export const PostModalOnClick = ({allProps}) => {
+
+  const { setCreateAPostPopUp, createAPostPopUp, tags} = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
   const imgfile = useRef()
@@ -137,89 +138,6 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
     }
   })
 
-  // const handleChangeImage = (e) => {
-  //   e.preventDefault()
-  //   const file = imgfile?.current?.files[0]
-  //   setFileData(file)
-  //   const reader = new FileReader()
-
-  //   reader.onloadend = () => {
-  //     setfile(reader.result)
-  //   }
-  //   if (file) {
-  //     reader.readAsDataURL(file)
-  //     setfile(reader.result)
-  //   } else {
-  //     setfile("")
-  //   }
-  // }
-
-  // const handleImageDrop = (e) => {
-  //   e.preventDefault()
-  //   const file = e?.dataTransfer?.files[0]
-  //   setFileData(file)
-  //   const reader = new FileReader()
-
-  //   reader.onloadend = () => {
-  //     setfile(reader.result)
-  //   }
-  //   if (file) {
-  //     reader.readAsDataURL(file)
-  //     setfile(reader.result)
-  //   } else {
-  //     setfile("")
-  //   }
-  // }
-
-  // const fileUpdate = async () => {
-  //   const fName = fileData?.name?.split(".") || ""
-  //   const uploadFilename = fName[0] + Date.now() + "." + fName[1] || ""
-
-  //   if (fileData && file) {
-  //     const params = {
-  //       Bucket: bucketName("user"),
-  //       Key: uploadFilename,
-  //       ContentType: fileData.type,
-  //       ACL: "public-read"
-  //     }
-
-  //     // Generate a pre-signed URL
-  //     await awsBucket("user").getSignedUrl(
-  //       "putObject",
-  //       params,
-  //       async (err, url) => {
-  //         if (err) {
-  //           console.error(err)
-  //           return
-  //         }
-
-  //         // Upload the file to S3 using the pre-signed URL
-  //         const result = await fetch(url, {
-  //           method: "PUT",
-  //           body: fileData,
-  //           headers: {
-  //             "Content-Type": fileData.type
-  //           }
-  //         })
-
-  //         if (result.ok) {
-  //           // If the upload is successful, add the post with the S3 image URL
-  //           addPost({
-  //             variables: {
-  //               postText: TextChecker(postText),
-  //               postImage: uploadFilename,
-  //               tags
-  //             }
-  //           })
-  //           setfile("")
-  //         } else {
-  //           console.error("Failed to upload image to S3")
-  //         }
-  //       }
-  //     )
-  //   }
-  // }
-
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -241,7 +159,7 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
           tags
         }
       })
-      setPopup(false)
+      setCreateAPostPopUp(false)
     } else {
       present({
         duration: 3000,
@@ -261,12 +179,12 @@ export const CreateAPost = ({ setPopup, popup, tags }) => {
   }
   // text editor
   return (
-    <IonModal onDidDismiss={() => setPopup(false)} isOpen={popup}>
+    <IonModal onDidDismiss={() => setCreateAPostPopUp(false)} isOpen={createAPostPopUp}>
       <IonHeader className="">
         <IonToolbar>
-          <IonTitle>Start a thread</IonTitle>
+          <IonTitle>Start a Discussion</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={() => setPopup(false)}>Close</IonButton>
+            <IonButton onClick={() => setCreateAPostPopUp(false)}>Close</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
