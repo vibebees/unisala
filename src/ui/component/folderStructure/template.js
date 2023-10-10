@@ -107,7 +107,7 @@ export const Folder = ({allProps}) => {
 
     return (
         <>
-            <IonCol className="h-48 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center w-40 shrink-0">
+            <IonCol className="h-48 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center w-40 shrink-0 m-0">
                 <IconAtom icon={icon} className={folderSize} />
                 <div>
                     <h3 className="text-center px-2 leading-5 text-lg !font-semibold text-neutral-700">

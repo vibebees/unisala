@@ -55,7 +55,6 @@ export const Home = ({ allProps }) => {
         iconSize: 5,
         routing: true,
         link: `/space`
-
       }
   ]
 

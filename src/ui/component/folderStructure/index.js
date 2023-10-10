@@ -2,8 +2,10 @@ import React from "react"
 import {
   IonCard,
   IonCardContent,
+  IonCol,
   IonGrid,
-  IonRouterLink
+  IonRouterLink,
+  IonRow
 } from "@ionic/react"
 import {Folder} from "./template"
 import {Link} from "react-router-dom"
@@ -25,6 +27,8 @@ export const FolderStructure = ({
       </h2>
       <IonCardContent key={"index"} class="w-full">
         <IonGrid className="w-full gap-3  flex flex-wrap">
+          <IonRow>
+
           {data?.map((item, index) => {
             // If routing is enabled in the config, wrap the Folder with IonRouterLink
             const renderedFolder = (
@@ -39,15 +43,19 @@ export const FolderStructure = ({
               />
             )
 
-            return item?.routing && item.link ? ( // If routing is true and item has a link
-
-              <Link to={item.link}>
-                {renderedFolder}
-              </Link>
-            ) : (
-              renderedFolder
+            return (
+              <IonCol key={index}>
+                  {item?.routing && item.link ? (
+                    <Link to={item.link}>{renderedFolder}</Link>
+                  ) : (
+                    renderedFolder
+                  )}
+                </IonCol>
             )
+
           })}
+          </IonRow>
+
         </IonGrid>
       </IonCardContent>
     </IonCard>
