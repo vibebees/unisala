@@ -5,6 +5,8 @@ import GrantCard from "../grant/GrantCard"
 import StudentChargeUnderGraduateTable from "../template/StudentChargeUnderGraduateTable"
 import StudentChargeGraduateTable from "../template/StudentChargeGraduateTable"
 import StudentChargeUnderGraduateTable2 from "../template/StudentChargeUnderGraduateTable2"
+import Table from "../../../../component/TableCard/template/Table"
+import UnderGraduateTableOne from "./undrGraduate/TableOne"
 
 const index = () => {
   const { uniData, sidebar } = useSelector((store) => store?.university)
@@ -26,9 +28,7 @@ const index = () => {
         <section className="w-full max-md:flex-col gap-3 flex px-5 py-4">
           <div className="w-full">
             <h2 className="!text-neutral-800 font-semibold">UnderGraduate</h2>
-            <StudentChargeUnderGraduateTable
-              data={studentCharges.undergraduate}
-            />
+            <UnderGraduateTableOne data={studentCharges.undergraduate} />
           </div>
           <div className="w-full">
             <h2 className="!text-neutral-800 font-semibold">Graduate</h2>
