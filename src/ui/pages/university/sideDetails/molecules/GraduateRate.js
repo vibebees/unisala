@@ -1,5 +1,6 @@
 import React from "react"
 import { Bar } from "react-chartjs-2"
+import ObjectFilter from "utils/components/ObjectFilter"
 
 const labelMapping = {
   americanIndianOrAlaskaNative: "Native American",
@@ -7,7 +8,7 @@ const labelMapping = {
   blackOrAfricanAmerican: "Black",
   hispanic: "Hispanic",
   men: "Men",
-  nonresidentAlien: "International",
+  nonResidentAlien: "International",
   raceEthnicityUnknown: "Unknown",
   totalCohort: "Total Cohort",
   twoOrMoreRaces: "Multi-Racial",
@@ -17,6 +18,7 @@ const labelMapping = {
 
 const GraduationRatesChart = ({ data }) => {
   const newData = { ...data }
+  ObjectFilter(newData, -1)
   delete newData.__typename
 
   const values = Object.values(newData)

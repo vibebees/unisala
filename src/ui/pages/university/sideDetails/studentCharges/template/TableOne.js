@@ -1,10 +1,8 @@
-import React from "react"
-import Table from "../../../../../component/TableCard/template/Table"
+import ChargeTable from "../atoms/ChargeTable"
 
-const TableOne = ({ data }) => {
-  const tableHeadersLabel = ["Category", "In-State", "Out-of-State"]
+const TableOne = ({ data, level }) => {
   const allProps = {
-    tableHeadersLabel,
+    tableHeadersLabel: ["Category", "In-State", "Out-of-State"],
     TableRowData: [
       {
         label: "Tuition",
@@ -21,15 +19,12 @@ const TableOne = ({ data }) => {
         inState: data?.inState.perCreditHourCharge,
         outOfState: data?.outOfState.perCreditHourCharge
       }
-    ]
+    ],
+
+    level
   }
 
-  return (
-    <div>
-      {" "}
-      <Table allProps={allProps} />
-    </div>
-  )
+  return <ChargeTable allProps={allProps} />
 }
 
 export default TableOne

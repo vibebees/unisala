@@ -1,9 +1,9 @@
 import React from "react"
-import { IonText } from "@ionic/react"
-import useIsData from "../../../../../hooks/useIsData"
-import useCountConverter from "../../../../../hooks/useCountConverter"
+import useIsData from "../../../../hooks/useIsData"
+import useCountConverter from "../../../../hooks/useCountConverter"
+import { IonCard, IonLabel, IonText } from "@ionic/react"
 
-const AdmissionCard = ({ title, value, image }) => {
+const Card = ({ image, value, title }) => {
   return (
     <div
       style={{
@@ -52,4 +52,4 @@ const AdmissionCard = ({ title, value, image }) => {
   )
 }
 
-export default AdmissionCard
+export default Card

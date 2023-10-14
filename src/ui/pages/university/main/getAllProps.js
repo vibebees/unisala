@@ -11,7 +11,7 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
       uniData?.userEvaluation?.reviews || {},
       "WordBestDescribe"
     ),
-    libraryEmpty = useIsEmpty(uniData?.elevatorInfo.library || {}, "Library"),
+    libraryEmpty = useIsEmpty(uniData?.elevatorInfo?.library || {}, "Library"),
     grantsEmpty = useIsEmpty(uniData?.grants || {}, "Grants"),
     testScoreEmpty = useIsEmpty(uniData?.testScore || {}, "TestScore"),
     visitWebsiteEmpty = useIsEmpty(uniData?.elevatorInfo?.urls || {}, "Urls"),

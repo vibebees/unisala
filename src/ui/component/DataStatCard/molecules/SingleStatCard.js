@@ -1,10 +1,9 @@
 import React from "react"
 import { IonGrid, IonRow, IonCol } from "@ionic/react"
-import LibrariesCard from "../atoms/LibrariesCard"
-import AdmissionCard from "../atoms/AdmissionCard"
+import Card from "../atoms/Card"
 import clsx from "clsx"
 
-const TotalAdmissions = ({ data }) => {
+const SingleStatCard = ({ data }) => {
   return (
     <IonGrid className="py-0">
       <IonRow className=" grid grid-cols-2">
@@ -39,7 +38,7 @@ const TotalAdmissions = ({ data }) => {
                 index === 2 && "col-span-2"
               )}
             >
-              <AdmissionCard {...item} />
+              <Card {...item} />
             </IonCol>
           )
         })}
@@ -48,4 +47,4 @@ const TotalAdmissions = ({ data }) => {
   )
 }
 
-export default TotalAdmissions
+export default SingleStatCard
