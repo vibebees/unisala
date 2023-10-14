@@ -392,7 +392,6 @@ export const GetProfessor = gql`
         }
       }
     `,
-
   UniSearchDataList = (name) =>
     gql`
     query {

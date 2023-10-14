@@ -15,5 +15,6 @@ export const UniversityPage = () => {
     { uniData, isSideBar } = useSelector((store) => store?.university),
     allProps = getAllProps({ id, loading, data, uniData, isSideBar })
 
+  console.log(id)
   return <UniversityTemplate allProps={allProps} />
 }
