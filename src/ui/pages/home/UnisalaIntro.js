@@ -74,13 +74,7 @@ function UnisalaIntro() {
       <IonCard className="mb-1">
         <IonCardContent className="flex-column text-center">
           <p>
-            Founded by
-            <a
-              href="https://unisala.com/university/Southeastern%20Louisiana%20University"
-              style={{color: "#0077b6"}}
-            >
-              <span> <strong> Southeastern Louisiana University Alumni:</strong> </span>
-            </a>
+
             <br/>
              Our team`s genuine expertise and insights, rooted in first-hand experiences, ensure that you`re guided by the best. Benefit from resources crafted by fellow graduates and current students to streamline your journey to the US.</p>
 

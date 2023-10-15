@@ -10,7 +10,7 @@ import "./index.css"
 import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
 import { useMutation, useQuery } from "@apollo/client"
-import { DeleteComment, GetUserPost } from "../../../graphql/user"
+import { DeleteComment, EditComment, GetUserPost } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
@@ -27,14 +27,14 @@ function Comment({
     _id,
     firstName,
     lastName,
-    userId,
     username,
     date,
     commentText,
     repliesCount,
     upVoteCount,
     upVoted,
-    picture
+    picture,
+    replyTo
   } = comment
 
   const [present, dismiss] = useIonToast()
@@ -42,6 +42,10 @@ function Comment({
   const [reply, setReply] = useState(false)
   const profilePic = picture
   const [editable, setEditable] = useState(false)
+  const [updatedData, setUpdatedData] = useState({
+    commentText,
+    commentId: _id
+  })
   // username of current visited profile
   const profileUsername = useParams().username
 
@@ -99,6 +103,42 @@ function Comment({
     }
   })
 
+  const [editComment] = useMutation(EditComment, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { ...updatedData },
+    onCompleted: (data) => {
+      const { editComment } = data
+      setEditable(false)
+      setRefetchComments((prev) => !prev)
+      if (editComment?.status?.success) {
+        // refetch posts
+        // refetch()
+        // change editable back to false
+        setEditable(false)
+        present({
+          duration: 3000,
+          message: "Post Updated",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      } else {
+        present({
+          duration: 3000,
+          message: editComment.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
+    }
+  })
+
+  const handleChange = (e) => {
+    // for now handling change of text only
+    setUpdatedData((prev) => ({ ...prev, commentText: e }))
+  }
+
   return (
     <div className=" relative  mt-2 ">
       <div className=" mx-14 max-md:mx-1 pt-3 pl-4 rounded-xl pb-2 relative bg-neutral-200 bg-opacity-60 commentShadow ">
@@ -127,6 +167,7 @@ function Comment({
               <div className="px-5">
                 <ReactQuill
                   theme="snow"
+                  onChange={handleChange}
                   defaultValue={commentText}
                   className="h-48 mb-8 text-black"
                 />
@@ -147,7 +188,7 @@ function Comment({
                   className=" ion-no-padding capitalize font-bold px-4 text-white bg-blue-500 rounded-2xl transition ease delay-200 hover:bg-blue-600"
                   fill="clear"
                   size="small"
-                  // onClick={editPost}
+                  onClick={editComment}
                   style={{
                     "--ripple-color": "transparent"
                   }}
@@ -156,10 +197,15 @@ function Comment({
                 </IonButton>
               </div>
             ) : (
-              <p
-                className="text-sm"
-                dangerouslySetInnerHTML={{ __html: commentText }}
-              ></p>
+              <div className="">
+                <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
+                  {replyTo && `@${replyTo}`}
+                </span>
+                <p
+                  className="text-sm inline-flex flex-wrap pr-4"
+                  dangerouslySetInnerHTML={{ __html: commentText }}
+                />
+              </div>
             )}
           </div>
           <div className="thread_footer pl-0 -translate-x-4 scale-75">
@@ -180,10 +226,7 @@ function Comment({
             parentId={parentId ?? _id}
             postId={postId}
             isReply={true}
-            // replyTo={{
-            //   username,
-            //   _id
-            // }}
+            replyTo={username}
           />
         )}
 

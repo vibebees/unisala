@@ -12,7 +12,7 @@ export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
       to={
         item?.username
           ? `/@/${item?.username}`
-          : `/university/${item?.elevatorInfo?.name}`
+          : `/university/${item?.name}`
       }
       key={key}
       onClick={() => setDropDownOptions(false)}
@@ -39,14 +39,14 @@ export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
               margin: 0
             }}
           >
-            {item?.elevatorInfo?.name || `${item?.firstName} ${item?.lastName}`}
+            {item?.name || `${item?.firstName} ${item?.lastName}`}
           </h2>
           <p
             style={{
               margin: 0
             }}
           >
-            {item?.elevatorInfo?.city || item?.location}
+            {item?.city || item?.location}
           </p>
         </IonLabel>
       </IonItem>

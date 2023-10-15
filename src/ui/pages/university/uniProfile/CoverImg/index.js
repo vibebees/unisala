@@ -19,11 +19,6 @@ export const CoverImg = (props) => {
     }
 
     useEffect(() => {
-        // getImage("uni", images?.[0] || coverImage, setCoverImage)
-        // getImage("uni", images?.[1] || profileImage, setProfileImage)
-    }, [])
-
-    useEffect(() => {
         window.addEventListener("resize", handleResize)
         return () => {
             window.removeEventListener("resize", handleResize)

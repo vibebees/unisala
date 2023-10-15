@@ -22,15 +22,8 @@ function index() {
       {Array.isArray(searchData) &&
         searchData.map((data, index) => {
           return (
-            <Link to={`/university/${data?.elevatorInfo?.name}`} key={index}>
-              <CourseCard
-                name={data?.elevatorInfo?.name}
-                city={data?.elevatorInfo?.city}
-                average={data?.report?.average}
-                act={data?.applicants?.actRange}
-                acceptanceRate={data?.applicants?.acceptanceRate}
-                picture={data?.pictures}
-              />
+            <Link to={`/university/${data?.name}`} key={index}>
+              <CourseCard allProps={data} />
             </Link>
           )
         })}
@@ -39,7 +32,7 @@ function index() {
     <IonCard style={{ textAlign: "center" }}>
       <img alt="unisala: no results found" src={noResultsFound} />
       <IonCardHeader>
-        <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>
+        <IonCardTitle>Sorrsy! No result found &#9785;</IonCardTitle>
         <IonCardSubtitle>
           There were not any saved views, recent queries, or source matching
           your search.

@@ -4,14 +4,14 @@ import Tabs from "./Tab"
 import "./VisitWebsite.css"
 import { useSelector } from "react-redux"
 
-const IonWebPop = ({ setPopup, popup }) => {
+const IonWebPop = ({ setPopup, popup, followThis = [] }) => {
   const { uniData } = useSelector((store) => store?.university)
 
   const [activeTab, setActiveTab] = React.useState(0)
   const HandleTabClick = (index) => {
     setActiveTab(index)
   }
-  const urls = uniData?.elevatorInfo?.urls
+  const urls = followThis || uniData?.elevatorInfo?.urls
   const isUrl = (url) => {
     return url?.includes("http") ? url : `https:\\${url}`
   }

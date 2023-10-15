@@ -17,6 +17,7 @@ import {
   chatbubbleOutline
 } from "ionicons/icons"
 import moment from "moment"
+import ImageCollage from "../ImageCollages"
 
 import { useMutation } from "@apollo/client"
 import {
@@ -44,6 +45,7 @@ const Thread = ({ thread, refetch }) => {
     postCommentsCount = 0,
     upVoted,
     postImage = "",
+    images = [],
     saved,
     user = {}
   } = thread || {}
@@ -201,10 +203,11 @@ const Thread = ({ thread, refetch }) => {
             ) : (
               <>
                 <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
+                {images.length > 0 && <ImageCollage images={images} />}
               </>
             )}
           </div>
-          <div className="thread_image">{postImage && <img src={image} />}</div>
+
           <div className="thread_footer">
             <Upvote
               upVoteCount={upVoteCount}

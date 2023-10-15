@@ -1,342 +1,165 @@
-// eslint-disable-next-line no-use-before-define
 import React from "react"
 import {
+  IonContent,
+  IonIcon,
   IonCard,
   IonCardContent,
   IonGrid,
-  IonCol,
   IonRow,
+  IonCol,
+  IonItem,
+  IonLabel,
+  IonList,
   IonText
 } from "@ionic/react"
-import "./Admission.css"
-import TotalCard from "./TotalCard"
+import TotalAdmissions from "../molecules/TotalAdmissions"
 import { useSelector } from "react-redux"
-import useIsData from "../../../../../hooks/useIsData"
+import { ellipsisVerticalCircleOutline } from "ionicons/icons"
+import AdmissionEmployees from "../molecules/AdminssionEmployees"
+import SeeMoreModal from "../../main/molecules/SeeMoreModal"
 
-const Admission = ({ admissionAnimate }) => {
-  const { uniData, isSideBar } = useSelector((store) => store.university)
+const index = () => {
+  const { uniData } = useSelector((store) => store?.university)
+  const data = uniData?.admissionInfo
 
-  const options = {
-    responsive: true,
+  const ModalButton = (
+    <IonIcon
+      style={{
+        fontSize: "22px",
+        alignSelf: "center"
+      }}
+      className="ion-icon text-neutral-500"
+      icon={ellipsisVerticalCircleOutline}
+    />
+  )
 
-    plugins: {
-      legend: {
-        position: "top"
-      },
-      title: {
-        display: true,
-        text: "Admision Bar Chart"
-      }
-    }
-  }
-  const labels = ["Applied", "Accepted", "Enrolled"]
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Male",
-        data: [
-          useIsData(uniData?.applicants?.fallEnrollment?.men?.totalApplicants),
-          useIsData(uniData?.applicants?.fallEnrollment?.men?.totalAccepted),
-
-          useIsData(
-            uniData?.applicants?.fallEnrollment?.men?.totalEnrolled?.fullTime +
-              uniData?.applicants?.fallEnrollment?.men?.totalEnrolled?.partTime
-          )
-        ],
-        backgroundColor: "rgba(255, 99, 132, 0.5)"
-      },
-      {
-        label: "Female",
-        data: [
-          useIsData(
-            uniData?.applicants?.fallEnrollment?.women?.totalApplicants
-          ),
-
-          useIsData(uniData?.applicants?.fallEnrollment?.women?.totalAccepted),
-
-          useIsData(
-            uniData?.applicants?.fallEnrollment?.women?.totalEnrolled
-              ?.fullTime +
-              uniData?.applicants?.fallEnrollment?.women?.totalEnrolled
-                ?.partTime
-          )
-        ],
-        backgroundColor: "rgba(53, 162, 235, 0.5)"
-      }
-    ]
-  }
+  const ModalData = (
+    <div>
+      <IonList>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Admission Test Score</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.admissionTestScores}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem className="flex flex-col">
+          <div className="flex flex-col py-2">
+            <IonLabel>college pre program</IonLabel>
+            <span className="!text-sm mt-1 tracking-wide text-neutral-500">
+              {data.collegePrepProgram}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Competencies</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.competencies}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Open Admission policy</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.openAdmissionPolicy}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Recommendations</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.recommendations}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>School Record</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.schoolRecord}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Secondary School GPA</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.secondarySchoolGPA}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Secondary School Rank</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.secondarySchoolRank}
+            </span>
+          </div>
+        </IonItem>
+        <IonItem>
+          <div className="flex flex-col py-2">
+            <IonLabel>Tofel</IonLabel>
+            <span className="!text-sm tracking-wide mt-1 text-neutral-500">
+              {data.toefl}
+            </span>
+          </div>
+        </IonItem>
+      </IonList>
+    </div>
+  )
 
   return (
-    !isSideBar?.applicantsEmpty && (
+    <>
       <IonCard
         style={{
           margin: "10px 0px 0px 0px"
         }}
+        className="flex flex-col"
       >
-        <IonCardContent
-          style={{
-            borderBottom: "1px solid #C4C4C4"
-          }}
-        >
-          <h1>Admission</h1>
-        </IonCardContent>
-        <IonCardContent
-        // style={{
-        //     borderBottom: "1px solid #C4C4C4"
-        // }}
-        >
+        <div className="font-normal flex items-center bg-neutral-100  border-b border-neutral-300 text-neutral-700 px-2 text-lg py-3">
           <IonText color="dark">
-            <h2>Acceptance Rate</h2>
+            <h1 className="px-2">Admission</h1>
           </IonText>
-          <IonGrid>
-            <IonRow>
-              {[
-                {
-                  title: "Applied",
-                  value: `${useIsData(
-                    uniData?.applicants?.fallEnrollment?.total?.totalApplicants
-                  )}`,
-                  image:
-                    "https://cdn-icons-png.flaticon.com/512/7389/7389814.png"
-                },
-                {
-                  title: "Total Accepted",
-                  value: `${useIsData(
-                    uniData?.applicants?.fallEnrollment?.total?.totalAccepted
-                  )}`,
-                  image:
-                    "https://cdn-icons-png.flaticon.com/512/2534/2534204.png"
-                },
-                {
-                  title: "Total Enrolled",
-                  value: `${useIsData(
-                    (uniData?.applicants?.fallEnrollment?.total?.totalEnrolled
-                      ?.fullTime === -1
-                      ? null
-                      : uniData?.applicants?.fallEnrollment?.total
-                          ?.totalEnrolled?.fullTime +
-                        uniData?.applicants?.fallEnrollment?.total
-                          ?.totalEnrolled?.partTime) === -1
-                      ? null
-                      : uniData?.applicants?.fallEnrollment?.total
-                          ?.totalEnrolled?.fullTime
-                  )}`,
-                  image:
-                    "https://cdn-icons-png.flaticon.com/512/7156/7156208.png"
-                }
-              ].map((item, index) => {
-                return (
-                  <IonCol
-                    // size="auto"
-                    key={index}
-                    style={{
-                      alignSelf: "center",
-                      margin: "5px",
-                      padding: 0
-                    }}
-                    className="ion-padding"
-                  >
-                    {/* <IonTitle
-                                        style={{ textAlign: "center" }}
-                                        color="dark"
-                                    >
-                                        <IonTitle className="">
-                                            {item.value}
-                                        </IonTitle>
-                                    </IonTitle>
-                                    <IonText
-                                        style={{ textAlign: "center" }}
-                                        color="medium"
-                                    >
-                                        <p>{item.title}</p>
-                                    </IonText> */}
-                    {admissionAnimate && <TotalCard {...item} />}
-                  </IonCol>
-                )
-              })}
-              {/* <IonCol>
-                            <CircularBar value={40} />
-                            <IonText
-                                style={{
-                                    textAlign: "center"
-                                }}
-                                color="medium"
-                            >
-                                <p>Applide</p>
-                            </IonText>
-                        </IonCol> */}
-            </IonRow>
-          </IonGrid>
+
+          <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
+            <SeeMoreModal ModalButton={ModalButton} ModalData={ModalData} />
+          </IonCardContent>
+        </div>
+
+        <section className="grid grid-cols-2 gap-4">
+          <IonCardContent key={index} class="w-full">
+            <h2 className="!text-xl pl-6">Total Admission </h2>
+            <TotalAdmissions data={data.admissions} />
+          </IonCardContent>
+          <IonCardContent key={index} class="w-full">
+            <h2 className="!text-xl pl-6">Applicants </h2>
+            <TotalAdmissions data={data.applicants} />
+          </IonCardContent>
+        </section>
+        <hr />
+        <br />
+        <IonCardContent key={index} class="w-full">
+          {/* <h2 className="!text-xl pl-6 border">Enrolles </h2> */}
+          <section className="grid grid-cols-2 gap-4 ">
+            <section>
+              <h2 className="!text-xl pl-6">Full Time Enrolles </h2>
+              <AdmissionEmployees data={data.enrollees.fullTime} />
+            </section>
+
+            <section>
+              <h2 className="!text-xl pl-6">Part Time Enrolles </h2>
+              <AdmissionEmployees data={data.enrollees.partTime} />
+            </section>
+          </section>
         </IonCardContent>
-        {/* <IonGrid style={{ padding: 0 }}>
-                <IonRow>
-                    <IonCol
-                        style={{
-                            borderBottom: "1px solid #C4C4C4",
-                            borderRight: "1px solid #C4C4C4"
-                        }}
-                    >
-                        <IonCardContent>
-                            <IonItem lines="none">
-                                <IonIcon icon={female} />
-                                <IonLabel className="ion-padding-start">
-                                    <h2>Female Admissions</h2>
-                                </IonLabel>
-                            </IonItem>
-                            <IonGrid>
-                                <IonRow>
-                                    {[
-                                        {
-                                            title: "Applide",
-                                            value: "6036"
-                                        },
-                                        {
-                                            title: "Total Accepted",
-                                            value: "5877"
-                                        },
-                                        {
-                                            title: "Total Enrolled",
-                                            value: "2580"
-                                        }
-                                    ].map((item, index) => {
-                                        return (
-                                            <IonCol
-                                                key={index}
-                                                className="ion-padding"
-                                            >
-                                                <IonTitle
-                                                    style={{
-                                                        textAlign: "center"
-                                                    }}
-                                                    color="dark"
-                                                >
-                                                    <h1 className="">
-                                                        {item.value}
-                                                    </h1>
-                                                </IonTitle>
-                                                <IonText
-                                                    style={{
-                                                        textAlign: "center"
-                                                    }}
-                                                    color="medium"
-                                                >
-                                                    <p>{item.title}</p>
-                                                </IonText>
-                                            </IonCol>
-                                        )
-                                    })}
-                                </IonRow>
-                            </IonGrid>
-                        </IonCardContent>
-                    </IonCol>
-                    <IonCol
-                        style={{
-                            borderBottom: "1px solid #C4C4C4"
-                        }}
-                    >
-                        <IonCardContent>
-                            <IonItem lines="none">
-                                <IonIcon icon={male} />
-                                <IonLabel className="ion-padding-start">
-                                    <h2>Male Admissions</h2>
-                                </IonLabel>
-                            </IonItem>
-                            <IonGrid>
-                                <IonRow>
-                                    {[
-                                        {
-                                            title: "Applide",
-                                            value: "6036"
-                                        },
-                                        {
-                                            title: "Total Accepted",
-                                            value: "5877"
-                                        },
-                                        {
-                                            title: "Total Enrolled",
-                                            value: "2580"
-                                        }
-                                    ].map((item, index) => {
-                                        return (
-                                            <IonCol
-                                                key={index}
-                                                className="ion-padding"
-                                            >
-                                                <IonTitle
-                                                    style={{
-                                                        textAlign: "center"
-                                                    }}
-                                                    color="dark"
-                                                >
-                                                    <h1 className="">
-                                                        {item.value}
-                                                    </h1>
-                                                </IonTitle>
-                                                <IonText
-                                                    style={{
-                                                        textAlign: "center"
-                                                    }}
-                                                    color="medium"
-                                                >
-                                                    <p>{item.title}</p>
-                                                </IonText>
-                                            </IonCol>
-                                        )
-                                    })}
-                                </IonRow>
-                            </IonGrid>
-                        </IonCardContent>
-                    </IonCol>
-                </IonRow>
-            </IonGrid> */}
-        {admissionAnimate &&
-          uniData?.applicants?.fallEnrollment?.men?.totalApplicants !== -1 && (
-            <div className="admission-chart">
-              {/* { console.log({ options, data, message: "problem here" })} */}
-              {/* <Bar options={options} data={data} /> */}
-            </div>
-          )}
-        <IonCardContent>
-          <IonText color="dark">
-            <h2>Applying</h2>
-          </IonText>
-          <IonGrid>
-            <IonRow>
-              {[
-                {
-                  title: "Application Fee",
-                  value: `$${useIsData(uniData?.applicants?.applicationFee)}`
-                },
-                {
-                  title: "Act Range",
-                  value: `${useIsData(
-                    uniData?.applicants?.actRange?.min
-                  )} - ${useIsData(uniData?.applicants?.actRange?.max)}`
-                },
-                {
-                  title: "Sat Range",
-                  value: `${useIsData(
-                    uniData?.applicants?.satRange?.min
-                  )} - ${useIsData(uniData?.applicants?.satRange?.max)}`
-                }
-              ].map((item, index) => {
-                return (
-                  <IonCol key={index} className="ion-padding">
-                    <IonText style={{ textAlign: "center" }} color="dark">
-                      <h1 className="">{useIsData(item.value)}</h1>
-                    </IonText>
-                    <IonText style={{ textAlign: "center" }} color="medium">
-                      <p>{useIsData(item.title)}</p>
-                    </IonText>
-                  </IonCol>
-                )
-              })}
-            </IonRow>
-          </IonGrid>
-        </IonCardContent>
+        <hr />
       </IonCard>
-    )
+    </>
   )
 }
-export default Admission
+
+export default index

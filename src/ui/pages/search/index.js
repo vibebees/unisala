@@ -174,17 +174,10 @@ function index() {
                       unidata?.searchSchool.map((data, index) => {
                         return (
                           <Link
-                            to={`/university/${data?.elevatorInfo?.name}`}
+                            to={`/university/${data?.name}`}
                             key={index}
                           >
-                            <CourseCard
-                              name={data?.elevatorInfo?.name}
-                              city={data?.elevatorInfo?.city}
-                              average={data?.report?.average}
-                              act={data?.applicants?.actRange}
-                              acceptanceRate={data?.applicants?.acceptanceRate}
-                              pictures={data?.pictures}
-                            />
+                            <CourseCard allProps={data} />
                           </Link>
                         )
                       })
