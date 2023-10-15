@@ -7,11 +7,12 @@ import {
 } from "./helper.func"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import { GetTopActiveSpaces } from "../../../graphql/user"
-import { personCircle } from "ionicons/icons"
+import { book, helpCircleSharp, personCircle, schoolSharp, starSharp } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import {useHistory, useLocation} from "react-router"
 
-export const getAllPropsHome = ({ user, loggedIn }) => {
+export const getAllPropsHome = ({ user, loggedIn, userInfo}) => {
   const [activeProfile, setActiveProfile] = useState(false),
     [activeTab, setActiveTab] = useState(0),
     [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
@@ -40,9 +41,69 @@ export const getAllPropsHome = ({ user, loggedIn }) => {
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
     [page, setPage] = useState(0),
-    width = useWindowWidth()
+    width = useWindowWidth(),
+    history = useHistory(),
+    location = useLocation(),
+    generateUserGuide = (userProfile) => {
+      const interestedSubjects = userProfile?.interestedSubjects || []
+      const interestedUni = userProfile?.interestedUni || []
+      const userStatus = userProfile?.userStatus || ""
 
-  return {
+      let userGuide = []
+
+      // If user has subjects of interest.
+      if (interestedSubjects.length > 0) {
+          userGuide.push({
+              name: "Explore Topics",
+              level: "Interested Subjects",
+              icon: book, // Make sure to have the appropriate icons imported
+              iconSize: 5,
+              routing: true,
+              link: `/space`
+          })
+      }
+
+      // If user is applying but hasn't shown interest in any particular university.
+      if (userStatus === "applying" && interestedUni.length === 0) {
+          userGuide.push({
+              name: "Explore Universities",
+              level: "Find Your Fit",
+              icon: schoolSharp,
+              iconSize: 5,
+              routing: true,
+              link: `/search?q=Howard`
+          })
+      }
+
+      // Suggesting interview prep session for users either "applying" or "actively looking".
+      if (userStatus === "applying" || userStatus === "actively looking") {
+          userGuide.push({
+              name: "Interview Prep",
+              level: "Prepare for your Interviews",
+              icon: helpCircleSharp,
+              iconSize: 5,
+            routing: true,
+              key: "interviewPrep",
+              link: `https://docs.google.com/forms/d/e/1FAIpQLSee_bp9nUOb3fymt0qZSUUseIgdYnoh5php-mUb_iqmS-Rwqw/viewform`
+          })
+      }
+
+      // Suggesting review/rating for users either "graduated" or "studying".
+      if (userStatus === "graduated" || userStatus === "studying") {
+          userGuide.push({
+              name: "Share Your Experience",
+              level: "Review and Rate your University",
+              icon: starSharp, // Use an appropriate icon for reviews/ratings
+              iconSize: 5,
+              routing: true,
+              link: `/review-university` // Point to the appropriate review page in your application
+          })
+      }
+
+      return userGuide
+  }
+
+   return {
     unisalaImg,
     activeTab,
     setActiveTab,
@@ -60,6 +121,10 @@ export const getAllPropsHome = ({ user, loggedIn }) => {
     GetTopActiveSpaces,
     views,
     page,
-    setPage
+    setPage,
+    history,
+    location,
+     userInfo,
+     generateUserGuide
   }
 }

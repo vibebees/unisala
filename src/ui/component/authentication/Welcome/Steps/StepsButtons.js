@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { IonButton, useIonToast } from "@ionic/react"
 import clsx from "clsx"
 import { WelcomeData } from ".."
 import { useDispatch, Provider } from "react-redux"
-import { useMutation } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 const StepsButtons = ({allProps}) => {
-  const { mockWelcomedata, setWelcomeFormdata, welcomeFormdata } =
-      useContext(WelcomeData),
+  const { welcomeFormdata } = useContext(WelcomeData),
     dispatch = useDispatch(),
     [present, dismiss] = useIonToast(),
     accessToken = localStorage.getItem("accessToken"),
@@ -22,7 +21,7 @@ const StepsButtons = ({allProps}) => {
       lastName: decode.lastName,
       username: decode.username
     }),
-    { currentStep, setCurrentStep, setNewUser, modalRef } = allProps
+    { currentStep, setCurrentStep, setNewUser, modalRef, refetch } = allProps
   // eslint-disable-next-line require-await
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
@@ -81,6 +80,9 @@ const StepsButtons = ({allProps}) => {
       }
       localStorage.removeItem("newUser")
       setNewUser(false)
+      refetch({
+        username: users?.username
+      })
     },
     onError: (error) => {
       present({
@@ -108,10 +110,20 @@ const StepsButtons = ({allProps}) => {
       dispatch(
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
       )
-
       editProfile()
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleSkip = () => {
+    // If you want to save some default value or an indication that the user chose to skip, you can do it here.
+
+    // Move to the next step or directly submit if it's the last step.
+    if (currentStep === 5) {
+      handleSubmit()
+    } else {
+      setCurrentStep(currentStep + 1)
     }
   }
 
@@ -119,24 +131,23 @@ const StepsButtons = ({allProps}) => {
     () => true, // Step 1 validation function
     () => {
       // Step 2 validation function
-      return welcomeFormdata.userStatus.length > 0
+      return welcomeFormdata?.userStatus?.length > 0
     },
     () => {
       // Step 3 validation function
-      return welcomeFormdata.interestedSubjects !== ""
+      return welcomeFormdata?.interestedSubjects !== ""
     },
     () => {
       // Step 3 validation function
-      return welcomeFormdata.studyLevel !== ""
+      return welcomeFormdata?.studyLevel !== ""
     },
     () => {
       // Step 4 validation function
-      return welcomeFormdata.interestedUni.length > 0
+      return welcomeFormdata?.interestedUni?.length > 0
     },
     () => true // Step 5 validation function
   ]
   const handleNext = () => {
-  console.log({currentStep})
     const isValid = validationFunctions[currentStep - 1]()
 
     if (!isValid) {
@@ -151,7 +162,7 @@ const StepsButtons = ({allProps}) => {
 
     setCurrentStep(currentStep + 1)
   }
-return (
+  return (
     <div className="w-full left-0 flex bottom-0 mb-16 px-6 absolute z-50 pad tp-16">
       <IonButton
         fill="clear"
@@ -172,7 +183,7 @@ return (
         {currentStep === 5 ? "Submit" : "Next"}
       </IonButton>
     </div>
-)
+  )
 
 }
 

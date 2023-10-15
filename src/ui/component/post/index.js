@@ -1,43 +1,26 @@
-import { IonCol, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
-import { imageOutline } from "ionicons/icons"
-import { useSelector } from "react-redux"
-import { Avatar } from "../Avatar"
 
-export const Post = () => {
-  const { user } = useSelector((state) => state.userProfile)
+import {useSelector} from "react-redux"
+import {PostModalOnClick} from "./molecules/PostModalOnClick"
+import {PostCardForClick} from "./molecules/PostCardForClick"
+import {IonCard, IonTitle} from "@ionic/react"
+export const CreateAPostCard = ({allProps}) => {
+  const {user} = useSelector((state) => state.userProfile)
+  const {setCreateAPostPopUp} = allProps
 
-  return (
-    <div
-      style={{
-        padding: "2px",
-        cursor: "pointer"
-      }}
-    >
-      <IonItem lines="none">
-        <IonAvatar
-          slot="start"
-          style={{
-            alignSelf: "center"
-          }}
-        >
-          <Avatar username={user.username} profilePic={user?.picture} />
-        </IonAvatar>
-        <input
-          type="text"
-          placeholder="Start a thread"
-          className="searchInput"
-        />
+return (
+    <>
 
-        <IonCol size="auto">
-          <IonItem lines="none">
-            <IonIcon icon={imageOutline} />
-            <IonLabel className="ion-padding-start">
-              <p>Image</p>
-            </IonLabel>
-          </IonItem>
-        </IonCol>
-      </IonItem>
-    </div>
+      <PostModalOnClick allProps={allProps} />
+      <IonCard
+        style={{marginBottom: "20px"}}
+        onClick={() => {
+          setCreateAPostPopUp(true)
+        }}
+      >
+
+        <PostCardForClick allProps={{ ...allProps, user}} />
+    </IonCard>
+    </>
+
   )
 }
-export default Post

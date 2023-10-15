@@ -11,7 +11,6 @@ import {
   IonCardSubtitle
 } from "@ionic/react"
 import useWindowWidth from "../../../hooks/useWindowWidth"
-import TopUniversitySidebar from "../../component/TopUniversitySidebar"
 import ProfileHeader from "./profileHeader"
 import ProfileBody from "./profileBody"
 import Threads from "./threads"
@@ -24,6 +23,7 @@ import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
+import {screenGreaterThan1000} from "../home/helper.func"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -163,7 +163,7 @@ const ProfilePage = () => {
           </IonCol>
           {windowWidth >= 1080 && (
             <IonCol className="sidebar">
-              <TopUniversitySidebar />
+             {screenGreaterThan1000()}
             </IonCol>
           )}
         </IonRow>
