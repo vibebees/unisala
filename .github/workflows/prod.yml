@@ -86,4 +86,3 @@ jobs:
             cd unisala-web/build
             sudo rm -rf /var/www/html/* 
             sudo cp -r * /var/www/html
-
