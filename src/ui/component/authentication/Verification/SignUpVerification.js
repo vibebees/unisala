@@ -1,18 +1,19 @@
 import { useState } from "react"
 import { useIonToast } from "@ionic/react"
 import axios from "axios"
-import urls from "../../../../servers"
-import VerificationCode from "./VerificationCode"
+
 import "../auth.css"
+import VerificationCode from "./VerificationCode"
 import { userServer } from "../../../../servers/endpoints"
 
-const SignUpVerification = ({ setauth }) => {
+const SignUpVerification = ({ auth, setauth }) => {
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
 
   const [input, setInput] = useState({
     verificationCode: ""
   })
+
   const HandleChange = (e) => {
     const { name, value } = e.target
     setInput((pre) => {
@@ -30,21 +31,29 @@ const SignUpVerification = ({ setauth }) => {
         mode: "ios"
       })
     }
+
     setLoading(true)
+    const emailInput = localStorage.getItem("email") || ""
+    localStorage.removeItem("email")
+
     axios
       .post(userServer + `/verifyEmail`, {
         ...input,
-        email: localStorage.getItem("email")
+        email: emailInput
       })
       .then((res) => {
         setLoading(false)
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data.accessToken)
           localStorage.setItem("refreshToken", res?.data.refreshToken)
-          window.location.reload()
+          localStorage.setItem("newUser", "true")
+          window.innerWidth < 768
+            ? window.location.replace("/home")
+            : window.location.reload()
         }
       })
       .catch((err) => {
+        console.log(err)
         setLoading(false)
         present({
           duration: 3000,
@@ -62,6 +71,7 @@ const SignUpVerification = ({ setauth }) => {
       input={input}
       verify={verify}
       loading={loading}
+      email={auth?.email}
     />
   )
 }

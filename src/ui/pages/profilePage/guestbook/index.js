@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import {
   IonCard,
   IonCardContent,
@@ -21,8 +21,9 @@ import "./index.css"
 import { receivedGuestbookList } from "../../../../graphql/user"
 import AddGuestBookPop from "./AddGuestBookPop"
 import MorePop from "./MorePop"
-import ThreadScaletion from "../../../component/scaleton/ThreadScaletion/ThreadScaletion"
+import {ThreadSkeleton} from "../../../component/skeleton/threadSkeleton"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
+import { Avatar } from "../../../component/Avatar"
 
 function index({ userId, firstName }) {
   const [page, setPage] = useState(0)
@@ -46,7 +47,7 @@ function index({ userId, firstName }) {
 
   if (loading) {
     return ["0", "1", "2"].map((item) => {
-      return <ThreadScaletion key={item} />
+      return <ThreadSkeleton key={item} />
     })
   }
 
@@ -56,14 +57,14 @@ function index({ userId, firstName }) {
         <IonList lines="full">
           {Array.isArray(guestbookList) &&
             guestbookList.map((guestbookItem, i) => {
-              const { img, firstName, lastName, username } =
+              const { firstName, lastName, username, picture } =
                 guestbookItem?.user || {}
 
               const { message, date } = guestbookItem || {}
               return (
                 <IonItem key={i} className="guestbook-li">
                   <IonAvatar slot="start">
-                    <img src={img} />
+                    <Avatar username={username} profilePic={picture} />
                   </IonAvatar>
                   <IonLabel>
                     <Link to={`/@/${username}`}>
@@ -133,7 +134,7 @@ function index({ userId, firstName }) {
             }
             subtitle="All the guestbook messages will be visible here"
           >
-            <img src={emptyState} alt="empty state" className="state-img" />
+            <img src={emptyState} alt="empty state" className="" />
           </StateMessage>
         </IonCard>
       )}

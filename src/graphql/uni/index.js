@@ -1,23 +1,34 @@
 import { gql } from "@apollo/client"
 
-export
-    const
-    GetProfessor = (unitId) => gql`
+export const GetProfessor = gql`
+    query GetProfessor(
+      $unitId: Float!
+      $page: Float!
+      $major: String
+      $overallRating: Float
+    ) {
+      getProfessors(
+        unitId: $unitId
+        page: $page
+        major: $major
+        overallRating: $overallRating
+      ) {
+        unitId
+        overallRating
+        ratings
+        professorName
+        subject
+        levelOfDifficulty
+        wouldTakeAgain
+      }
+    }
+  `,
+  getSchoolInfo = (name) =>
+    gql`
         query {
-            getProfessors(unitId: ${unitId}) {
+            getSchoolInfo(name: "${name.trim()}") {
                 unitId
-                overallRating
-                ratings
-                professorName
-                subject
-                levelOfDifficulty
-                wouldTakeAgain
-            }
-        }`,
-    getSchoolInfo = (name) => gql`
-        query {
-            getSchoolInfo(name: "${name}") {
-                unitId
+                pictures
                 elevatorInfo {
                     name
                     address {
@@ -171,6 +182,15 @@ export
                     studentLife
                     safety
                 }
+                professors {
+                  unitId
+                  overallRating
+                  ratings
+                  professorName
+                  subject
+                  levelOfDifficulty
+                  wouldTakeAgain
+                }
                 reviews {
                     rating
                     type
@@ -216,44 +236,22 @@ export
                 }
             }
         }`,
-    UniSearch = (name) => gql`
+  UniSearch = (name) =>
+    gql`
         query {
             searchSchool(name: "${name}") {
-                elevatorInfo {
-                    name
-                    city
-                }
-                reviews {
-                    rating
-                    type
-                    votes
-                }
-                applicants {
-                    actRange {
-                        min
-                        max
-                    }
-                    acceptanceRate
-                }
-                report {
-                    academics
-                    average
-                    value
-                    diversity
-                }
+                unitId
+                name
+                pictures
             }
         }`,
-    UniSearchDataList = (name) => gql`
+  UniSearchDataList = (name) =>
+    gql`
         query {
             searchSchool(name: "${name}") {
-                elevatorInfo {
-                    name
-                    city
-                }
-                reviews {
-                    rating
-                    type
-                    votes
-                }
+              pictures
+              name
+              unitId
+
             }
         }`

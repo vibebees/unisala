@@ -5,11 +5,13 @@ export const AddComment = gql`
       $postId: String!
       $commentText: String
       $parentId: String
+      $replyTo: String
     ) {
       addComment(
         postId: $postId
         commentText: $commentText
         parentId: $parentId
+        replyTo: $replyTo
       ) {
         success
         message
@@ -50,8 +52,92 @@ export const AddComment = gql`
     }
   `,
   AddPost = gql`
-    mutation addPost($postText: String!, $postImage: String!) {
-      addPost(postText: $postText, postImage: $postImage) {
+    mutation addPost(
+      $postText: String
+      $unitId: Float
+      $tags: [ID]
+      $postTag: String
+    ) {
+      addPost(
+        postText: $postText
+        unitId: $unitId
+        tags: $tags
+        postTag: $postTag
+      ) {
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postText
+          # postImage
+          date
+        }
+      }
+    }
+  `,
+  GetPostById = gql`
+    query getPostById($id: String!, $user: String) {
+      getPostById(id: $id, user: $user) {
+        status {
+          success
+          message
+        }
+        post {
+          _id
+          postText
+          postCommentsCount
+          postImage
+          date
+          upVoted
+          images
+          upVoteCount
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          comments {
+            _id
+            commentText
+            upVoted
+            upVoteCount
+            user {
+              _id
+              firstName
+              lastName
+              picture
+              username
+            }
+          }
+        }
+      }
+    }
+  `,
+  EditPost = gql`
+    mutation editPost($postId: String!, $postText: String, $postImage: String) {
+      editPost(postId: $postId, postText: $postText, postImage: $postImage) {
+        status {
+          success
+          message
+        }
+      }
+    }
+  `,
+  DeletePost = gql`
+    mutation deletePost($postId: String!) {
+      deletePost(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
+  DeleteComment = gql`
+    mutation deleteComment($id: String!) {
+      deleteComment(id: $id) {
         success
         message
       }
@@ -108,7 +194,7 @@ export const AddComment = gql`
   `,
   EditProfile = gql`
     mutation editProfile(
-      $profilePicture: String
+      $picture: String
       $coverPicture: String
       $username: String!
       $firstName: String!
@@ -116,9 +202,13 @@ export const AddComment = gql`
       $location: String
       $oneLinerBio: String
       $birthday: String
+      $interestedSubjects: [ID]
+      $userStatus: String
+      $studyLevel: String
+      $interestedUni: [Int]
     ) {
       editProfile(
-        profilePicture: $profilePicture
+        picture: $picture
         coverPicture: $coverPicture
         username: $username
         firstName: $firstName
@@ -126,6 +216,10 @@ export const AddComment = gql`
         location: $location
         oneLinerBio: $oneLinerBio
         birthday: $birthday
+        interestedSubjects: $interestedSubjects
+        userStatus: $userStatus
+        studyLevel: $studyLevel
+        interestedUni: $interestedUni
       ) {
         status {
           success
@@ -169,8 +263,18 @@ export const AddComment = gql`
           date
           repliesCount
           upVoteCount
+          replyTo
           upVoted
+          picture
         }
+      }
+    }
+  `,
+  EditComment = gql`
+    mutation editComment($commentId: String!, $commentText: String) {
+      editComment(commentId: $commentId, commentText: $commentText) {
+        success
+        message
       }
     }
   `,
@@ -193,7 +297,8 @@ export const AddComment = gql`
       }
     }
   `,
-  GetReplyList = (id, pid) => gql`
+  GetReplyList = (id, pid) =>
+    gql`
             query {
                 replyList (postId:"${id}", parentId:"${pid}") {
                 success
@@ -208,12 +313,12 @@ export const AddComment = gql`
                             lastName
                             username
                             date
-                            } 
+                            }
                 }
             }`,
   GetSavedList = gql`
     query savedList($userId: String!, $page: Float) {
-      savedList(userId: $userId, page: $page) {
+      savedList(userId: $userId, page: $page, pageSize: 5) {
         status {
           success
           message
@@ -221,6 +326,7 @@ export const AddComment = gql`
         Posts {
           _id
           postText
+          images
           postImage
           date
           postCommentsCount
@@ -264,6 +370,7 @@ export const AddComment = gql`
           banned
           active
           picture
+          coverPicture
           _id
           about {
             text
@@ -311,29 +418,31 @@ export const AddComment = gql`
       }
     }
   `,
-  GetUserPost = (id, page) => gql`
-    query {
-        getUserPost(userId: "${id}", page:${page},pageSize:5) {
-            totalPosts
-            Posts {
-              _id
-              postImage
-              postText
-              date
-              upVoteCount
-              postCommentsCount
-              user {
-                _id
-                firstName
-                lastName
-                picture
-                username
-              }
-              saved
-              upVoted
-            } 
+  GetUserPost = gql`
+    query getUserPost($userId: String, $page: Float!, $unitId: Float) {
+      getUserPost(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
+        totalPosts
+        Posts {
+          _id
+          images
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          userId # Use userId instead of user
+          user {
+            _id
+            firstName
+            lastName
+            picture
+            username
+          }
+          saved
+          upVoted
         }
-    }`,
+      }
+    }
+  `,
   GetVoterList = gql`
     query upVoteList($postId: String!, $page: Float) {
       upVoteList(postId: $postId, page: $page) {
@@ -344,34 +453,6 @@ export const AddComment = gql`
           firstName
           lastName
           picture
-        }
-      }
-    }
-  `,
-  GetUserPost2 = (id, page) => gql`
-    query {
-      receivedConnectionList {
-        status {
-          success
-          message
-        }
-        connectionList {
-          _id
-          status
-          date
-          user {
-            firstName
-            lastName
-            username
-            oneLinerBio
-            birthday
-            name
-            role
-            verified
-            active
-            picture
-            location
-          }
         }
       }
     }
@@ -410,6 +491,14 @@ export const AddComment = gql`
       }
     }
   `,
+  UnSavePost = gql`
+    mutation unSave($postId: String!) {
+      unSave(postId: $postId) {
+        success
+        message
+      }
+    }
+  `,
   sendGuestbookMessage = gql`
     mutation sendGuestbookMessage($receiverId: String!, $message: String!) {
       sendGuestbookMessage(receiverId: $receiverId, message: $message) {
@@ -440,7 +529,8 @@ export const AddComment = gql`
       }
     }
   `,
-  userSearch = (searchString) => gql`
+  userSearch = (searchString) =>
+    gql`
     query {
         searchUser(searchString: "${searchString}") {
             status {
@@ -455,71 +545,74 @@ export const AddComment = gql`
                 picture
                 coverPicture
                 location
-                
+
             }
         }
     }`,
-    getFriends = gql`
-        query getUsers{
-            getUsers{
-                email
-                picture
-                username
-            }
-        }`,
-    getMessagesGql = gql`
-        query getMessages($_id: String!) {
-            getMessages(_id: $_id){
-                pairs
-                messages{
-                  _id
-                  seen
-                  senderId
-                  receiverId
-                  message{
-                    text
-                  }
-                 
-                }
-            }
-        }`,
-      getMessagesByIdGql = gql`
-        query getMessageById($senderId: ID! $receiverId: ID!) {
-          getMessageById(senderId: $senderId receiverId: $receiverId){
-                pairs
-                messages{
-                  _id
-                  seen
-                  senderId
-                  receiverId
-                  message{
-                    text
-                  }
-                 
-                }
-            }
-        }`,
-    DeleteEducation = gql`
-        mutation deleteEducation($id: String!) {
-            deleteEducation(id: $id) {
-            status {
-                success
-                message
-            }
-            education {
-                private
-                schools {
-                _id
-                school
-                degree
-                major
-                startDate
-                graduationDate
-                }
-            }
-            }
-        }`,
-    AddTestScore = (testScores) => gql`
+  getFriends = gql`
+    query getUsers {
+      getUsers {
+        email
+        picture
+        username
+      }
+    }
+  `,
+  getMessagesGql = gql`
+    query getMessages($_id: String!) {
+      getMessages(_id: $_id) {
+        pairs
+        messages {
+          _id
+          seen
+          senderId
+          receiverId
+          message {
+            text
+          }
+        }
+      }
+    }
+  `,
+  getMessagesByIdGql = gql`
+    query getMessagesByIdGql($senderId: ID!, $receiverId: ID!) {
+      getMessagesByIdGql(senderId: $senderId, receiverId: $receiverId) {
+        pairs
+        messages {
+          _id
+          seen
+          senderId
+          receiverId
+          message {
+            text
+          }
+        }
+      }
+    }
+  `,
+  DeleteEducation = gql`
+    mutation deleteEducation($id: String!) {
+      deleteEducation(id: $id) {
+        status {
+          success
+          message
+        }
+        education {
+          private
+          schools {
+            _id
+            school
+            degree
+            major
+            startDate
+            graduationDate
+          }
+        }
+      }
+    }
+  `,
+  AddTestScore = (testScores) =>
+    gql`
             mutation addTestScore($testScores: ${testScores}) {
                 addTestScore(testScore: $testScores) {
                 status {
@@ -640,22 +733,296 @@ export const AddComment = gql`
           }
         }
       }
-    }`,
+    }
+  `,
   AcceptConnectRequest = gql`
     mutation acceptConnectRequest($requestorId: String!) {
       acceptConnectRequest(requestorId: $requestorId) {
         success
         message
       }
-    }`,
-    addMessageGql = gql`
+    }
+  `,
+  RecommendedConnectionList = gql`
+    query {
+      recommendedConnectionList {
+        status {
+          message
+          success
+        }
+        user {
+          _id
+          firstName
+          lastName
+          username
+          picture
+          coverPicture
+          location
+        }
+      }
+    }
+  `,
+  addMessageGql = gql`
     mutation AddMessage($text: String!, $senderId: ID!, $recipientId: ID!) {
       addMessage(text: $text, senderId: $senderId, recipientId: $recipientId) {
         seen
-        message{
+        message {
           text
         }
         senderId
         recipientId
       }
-    }`
+    }
+  `,
+  getNewsFeed = gql`
+    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
+      fetchMyNewsFeed(userId: $userId, page: $page) {
+        postText
+        upVoted
+        upVoteCount
+        postCommentsCount
+        type
+        saved
+        date
+        _id
+        images
+        user {
+          firstName
+          lastName
+          picture
+          username
+          _id
+        }
+      }
+    }
+  `,
+  GetInterviewExperience = gql`
+    query getInterviewExperience($unitId: Float!, $page: Int, $pageSize: Int) {
+      getInterviewExperience(
+        unitId: $unitId
+        page: $page
+        pageSize: $pageSize
+      ) {
+        status {
+          success
+          message
+        }
+        interviewExperience {
+          uni_id
+          applied_level
+          status
+          attempt
+          university
+          conversation
+          major
+        }
+      }
+    }
+  `,
+  GetSpaceCategory = gql`
+    query searchSpaceCategory($q: String!, $count: Int) {
+      searchSpaceCategory(q: $q, count: $count) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+          description
+          image
+          user {
+            username
+          }
+        }
+      }
+    }
+  `,
+  GetAllPostBySpaceCategoryID = gql`
+    query getAllPostBySpaceCategoryID($id: ID, $limit: Int, $page: Int) {
+      getAllPostBySpaceCategoryID(id: $id, limit: $limit, page: $page) {
+        status {
+          success
+          message
+        }
+        posts {
+          _id
+          images
+          postText
+          postImage
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
+        }
+      }
+    }
+  `,
+  GetTopActiveSpaces = gql`
+    query getTopActiveSpaces($limit: Int) {
+      getTopActiveSpaces(limit: $limit) {
+        status {
+          success
+          message
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+        }
+      }
+    }
+  `,
+  AddSpaceCategory = gql`
+    mutation addSpaceCategory($name: String!, $description: String) {
+      addSpaceCategory(name: $name, description: $description) {
+        status {
+          success
+          message
+        }
+        spaceCategory {
+          _id
+          name
+        }
+      }
+    }
+  `,
+  DeleteSpace = gql`
+    mutation deleteSpaceCategoryById($id: ID!) {
+      deleteSpaceCategoryById(id: $id) {
+        success
+        message
+      }
+    }
+  `,
+  GetAllQuestions = gql`
+    query {
+      getAllQuestions {
+        status {
+          success
+          message
+        }
+        questions {
+          text
+          type
+          options {
+            key
+            value
+          }
+          category
+          description
+          qnsNumber
+          nextQuestion
+        }
+      }
+    }
+  `,
+  EditSpace = gql`
+    mutation editSpaceCategoryById(
+      $id: ID!
+      $name: String
+      $image: String
+      $description: String
+    ) {
+      editSpaceCategoryById(
+        id: $id
+        name: $name
+        image: $image
+        description: $description
+      ) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          parentId
+          image
+          description
+          user {
+            _id
+          }
+        }
+      }
+    }
+  `,
+  GetOwnSpace = gql`
+    query GetOwnSpace($limit: Int, $page: Int) {
+      getOwnSpaceCategory(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        spaceCategory {
+          _id
+          name
+          user {
+            username
+            _id
+          }
+        }
+      }
+    }
+  `,
+  GenerateSpaceNewsFeed = gql`
+    query GenerateSpaceNewsFeed($limit: Int, $page: Int) {
+      generateSpaceNewsFeedSystem(limit: $limit, page: $page) {
+        status {
+          message
+          success
+        }
+        posts {
+          _id
+          postImage
+          postText
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+          }
+          saved
+          tags {
+            _id
+            name
+          }
+        }
+      }
+    }
+  `,
+  GetUserRoadMapSummary = gql`
+    query getUserRoadMapSummary($userId: String!) {
+      getUserRoadMapSummary(userId: $userId) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          summary
+          date
+          user {
+            _id
+            firstName
+            lastName
+          }
+        }
+      }
+    }
+  `

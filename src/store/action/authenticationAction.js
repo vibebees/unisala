@@ -1,16 +1,33 @@
 import axios from "axios"
 import {
-    BEFORE_AUTH_TRACK_PATH, CLEAR_AUTH_ERROR, EMAIL_VERIFICATION_RESENT,
-    LOGOUT,
-    OAUTH, PASSWORD_RESET_ASK_EMAIL, PASSWORD_RESET_ASK_PASSWORD,
-    SHOW_ALERT,
-    USER_LOGIN, USER_LOGIN_ERROR,
-    USER_REGISTRATION
+  BEFORE_AUTH_TRACK_PATH,
+  CLEAR_AUTH_ERROR,
+  EMAIL_VERIFICATION_RESENT,
+  LOGOUT,
+  OAUTH,
+  PASSWORD_RESET_ASK_EMAIL,
+  PASSWORD_RESET_ASK_PASSWORD,
+  SHOW_ALERT,
+  USER_LOGIN,
+  USER_LOGIN_ERROR,
+  USER_REGISTRATION
 } from "./types"
+import { universityServer, userServer } from "../../servers/endpoints"
+import {
+  UNI_SERV_SIGNED_URL,
+  USER_SERV_SIGNED_URL
+} from "../types/userActivity"
 
-export const loginUser = ({ userServer, input, setLoading, present, dismiss, setauth }) => {
-
-  return (dispatch) => axios
+export const loginUser = ({
+  userServer,
+  input,
+  setLoading,
+  present,
+  dismiss,
+  setauth
+}) => {
+  return (dispatch) => {
+    axios
       .post(userServer + `/login`, input)
       .then((res) => {
         setLoading(false)
@@ -18,11 +35,12 @@ export const loginUser = ({ userServer, input, setLoading, present, dismiss, set
           dispatch({
             type: USER_LOGIN,
             payload: res?.data || {}
-        })
+          })
           window.innerWidth < 768
             ? window.location.replace("/home")
             : window.location.reload()
         }
+
         if (!res.data.success) {
           present({
             duration: 3000,
@@ -36,55 +54,66 @@ export const loginUser = ({ userServer, input, setLoading, present, dismiss, set
           }
         }
       })
-      .catch((err) => {
+      .catch((error) => {
         setLoading(false)
-        console.log(err)
         present({
           duration: 3000,
-          message: "Something went wrong!",
+          message: error.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
+        if (error.status === 302) {
+          setauth({ state: "userNotVerified", email: input.email })
+        }
       })
+  }
 }
 
-export const registerUser = ({ userServer, input, setdatacheck, setauth, setsave, present, dismiss }) => {
-
-    return (dispatch) => axios
-        .post(userServer + `/register`, input)
-        .then((res) => {
-          setsave(false)
-          if (res.data.success === true) {
-            localStorage.setItem("email", input.email)
-            setdatacheck(false)
-            setauth({ state: "SignUpVerification" })
-            dispatch({
-                type: USER_REGISTRATION,
-                payload: res
-            })
-          }
-          if (res.data.success === false) {
-            present({
-              duration: 3000,
-              message: res.data.message,
-              buttons: [{ text: "X", handler: () => dismiss() }],
-              color: "primary",
-              mode: "ios"
-            })
-          }
-        })
-        .catch((err) => {
-          setsave(false)
+export const registerUser = ({
+  userServer,
+  input,
+  setdatacheck,
+  setauth,
+  setsave,
+  present,
+  dismiss
+}) => {
+  return (dispatch) =>
+    axios
+      .post(userServer + `/register`, input)
+      .then((res) => {
+        setsave(false)
+        if (res.data.success === true) {
+          setdatacheck(false)
+          console.log(input)
+          setauth({ state: "SignUpVerification", email: input.email })
+          dispatch({
+            type: USER_REGISTRATION,
+            payload: res
+          })
+        }
+        if (res.data.success === false) {
           present({
             duration: 3000,
-            message: err.response.data.message,
+            message: res.data.message,
             buttons: [{ text: "X", handler: () => dismiss() }],
             color: "primary",
             mode: "ios"
           })
-          setdatacheck(false)
+        }
+      })
+      .catch(() => {
+        setsave(false)
+        present({
+          duration: 3000,
+          message: "Something went wrong: 500",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
         })
+        setdatacheck(false)
+      })
 }
 
 // export const isLoggedIn = (user) => {
@@ -258,3 +287,29 @@ export const registerUser = ({ userServer, input, setdatacheck, setauth, setsave
 //         })
 //     }
 // }
+
+export const getPresingedUrl = (type) => {
+  let serviceToCall = null,
+    serviceThatSigned
+  if (type === "UNI") {
+    serviceToCall = universityServer
+    serviceThatSigned = UNI_SERV_SIGNED_URL
+  } else {
+    serviceToCall = userServer
+    serviceThatSigned = USER_SERV_SIGNED_URL
+  }
+  return async (dispatch) => {
+    await axios
+      .get(serviceToCall + `/presignedurl`)
+      .then((res) => {
+        dispatch({
+          type: serviceThatSigned,
+          payload: res.data
+        })
+        // setUsers(() => res?.data?.data?.users || []);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}

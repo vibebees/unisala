@@ -8,6 +8,7 @@ import {
     IonItem,
     IonCard
 } from "@ionic/react"
+import { Link } from "react-router-dom"
 
 function Sidebar() {
     const topUni = [
@@ -52,6 +53,7 @@ function Sidebar() {
                 {topUni.map((University, i) => {
                     const { location, name, img } = University
                     return (
+                        <Link to={"/university/" + name} key={i}>
                         <IonItem key={i}>
                             <IonAvatar slot="start">
                                 <img src={img} />
@@ -61,6 +63,8 @@ function Sidebar() {
                                 <p>{location}</p>
                             </IonLabel>
                         </IonItem>
+                      </Link>
+
                     )
                 })}
             </IonList>

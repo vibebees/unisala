@@ -21,12 +21,11 @@ import { sendMessageTo } from "../../../../store/action/userActivity"
 import { last } from "ramda"
 import { messageSeen } from "../../../../utils"
 
-export const Communicators = ({ socket = {}, messages = [], connectionList = [], connectionListWithMessage = [], messagingTo = {} }) => {
+export const Communicators = ({ recentMessages = [], messagingTo = {}, socket = {} }) => {
     const
         [isOpen, setIsOpen] = useState(false),
         { user } = useSelector((store) => store?.userProfile),
         { username } = useParams(),
-        { recentMessages } = useSelector((store) => store?.userProfile),
         //  { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
         dispatch = useDispatch(),
         // { loading, error, data } = useQuery(getFriends, { context: { server: MESSAGE_SERVICE_GQL } }),
@@ -34,12 +33,11 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [],
             dispatch(sendMessageTo((friend?.user)))
         },
         // connectionListWithMessage is merged list of connectionList and it's recent message
-        handleMessagesList = (communicators = recentMessages || (connectionListWithMessage || connectionList)) => {
-
-            if (!communicators) {
+        handleMessagesList = () => {
+            if (!recentMessages) {
                 return <div>No messages</div>
             }
-            return communicators?.map((item, index) => {
+            return recentMessages?.map((item, index) => {
                 // const { id, avatar, name, username, message, time } = c
                 // console.log("item", item)
                 return <Link to={`/messages/${item?.user?.username}`} key={index} onClick={() => setUpChat(item)}>
@@ -47,12 +45,6 @@ export const Communicators = ({ socket = {}, messages = [], connectionList = [],
                 </Link>
             })
         }
-
-    useEffect(() => {
-        if (username) {
-            messageSeen({ messagingTo, username, recentMessages })
-        }
-    }, [username])
     return (
         <>
             <IonCard className="chat-list">

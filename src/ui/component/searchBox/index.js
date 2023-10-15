@@ -1,39 +1,56 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
-import { IonInput, IonIcon, IonItem, IonAvatar, IonLabel } from "@ionic/react"
+import { IonInput, IonIcon } from "@ionic/react"
 import { searchCircle } from "ionicons/icons"
-import "./index.css"
 import { useDebouncedEffect } from "../../../hooks/useDebouncedEffect"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { userSearch } from "../../../graphql/user"
+
 import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
 } from "../../../servers/types"
+// import { searchUniFromBar } from "../../../store/action/userActivity"
+// import { useDispatch } from "react-redux"
+import { SearchBarResultList } from "./searchResultList"
+import "./index.css"
 
 function index() {
-  const history = useHistory(),
-    [searchValue, setSearchValue] = useState(""),
+  const [searchValue, setSearchValue] = useState(""),
     [dropDownOptions, setDropDownOptions] = useState(false),
+    history = useHistory(),
     [options, setOptions] = useState([]),
     [GetUni, unidata] = useLazyQuery(UniSearchDataList(searchValue), {
       context: { server: UNIVERSITY_SERVICE_GQL }
     }),
     [GetUser, searchUser] = useLazyQuery(userSearch(searchValue), {
       context: { server: USER_SERVICE_GQL }
-    })
+    }),
+    // dispatch = useDispatch(),
+    dropdownRef = useRef(null)
 
   useEffect(() => {
-    if (searchValue.length > 2) {
+    if (searchValue) {
       setDropDownOptions(true)
     } else {
       setDropDownOptions(false)
     }
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropDownOptions(false)
+      }
+    }
+    window.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside)
+    }
   }, [searchValue])
-  const HandleSearch = async () => {
-    await GetUni()
-    await GetUser()
+
+  const HandleSearch = () => {
+    GetUni()
+    GetUser()
+    // dispatch(searchUniFromBar(searchValue, 5, setOptions))
   }
   // const debouncer = useCallback(debounce(GetUni, 1000), [])
 
@@ -59,20 +76,25 @@ function index() {
           type="text"
           placeholder="Search"
           className="search-input-box"
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              setDropDownOptions(false)
+              history.push(searchValue ? `/search?q=${searchValue}` : "#")
+            }
+          }}
           value={searchValue}
           onIonChange={(e) => {
             setSearchValue(e.detail.value)
             setDropDownOptions(true)
           }}
           onkeydown={(e) => {
-            if (searchValue && e.keyCode === 13) {
+            if (searchValue && e.keyCode === 27) {
               setDropDownOptions(false)
-              return history.push(`/search/uni/${searchValue}`)
             }
           }}
         />
         <Link
-          to={searchValue ? `/search/uni/${searchValue}` : "#"}
+          to={searchValue ? `/search?q=${searchValue}` : "#"}
           className="search-box__search-icon"
         >
           <IonIcon
@@ -82,69 +104,16 @@ function index() {
           />
         </Link>
       </div>
-      {dropDownOptions && (
-        <div className="recommend-search">
-          <div>
-            <Link to={`/search/users/${searchValue}`}>
-              <p
-                className="recommend-search__user"
-                onClick={() => setDropDownOptions(false)}
-              >
-                Search for users contaning &quot;{searchValue}
-                &quot;
-              </p>
-            </Link>
-          </div>
+      {dropDownOptions && Array?.isArray(options) && options.length > 0 && (
+        <div className="recommend-search" ref={dropdownRef}>
           {Array?.isArray(options) &&
-            options.map((item, i) => {
-              return (
-                <Link
-                  to={
-                    item?.elevatorInfo?.name
-                      ? `/university/${item?.elevatorInfo?.name}`
-                      : `/@/${item?.username}`
-                  }
-                  key={i}
-                  onClick={() => setDropDownOptions(false)}
-                >
-                  <IonItem
-                    style={{
-                      margin: "0px",
-                      padding: "0px"
-                    }}
-                    lines="none"
-                    key={index}
-                  >
-                    <IonAvatar slot="start">
-                      <img
-                        src={
-                          item?.elevatorInfo?.logo ||
-                          item?.picture ||
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
-                        }
-                      />
-                    </IonAvatar>
-                    <IonLabel>
-                      <h2
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        {item?.elevatorInfo?.name ||
-                          `${item?.firstName} ${item?.lastName}`}
-                      </h2>
-                      <p
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        {item?.elevatorInfo?.city || item?.location}
-                      </p>
-                    </IonLabel>
-                  </IonItem>
-                </Link>
-              )
-            })}
+            options.map((item, i) => (
+              <SearchBarResultList
+                item={item}
+                key={i}
+                setDropDownOptions={setDropDownOptions}
+              />
+            ))}
         </div>
       )}
     </>

@@ -1,37 +1,27 @@
-import { useState, useEffect } from "react"
-import {
-  IonText,
-  IonCard,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent
-} from "@ionic/react"
 import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
-import { Link } from "react-router-dom"
-import ThreadScaletion from "../../component/scaleton/ThreadScaletion/ThreadScaletion"
-import { useLazyQuery } from "@apollo/client"
-import { GetUserPost } from "../../../graphql/user"
-import { userServer } from "../../../servers/endpoints"
-import axios from "axios"
-const HomeFeed = ({ userInfo }) => {
-  const [postList, setPostList] = useState([])
-  const [page, setPage] = useState(0)
+import {Link} from "react-router-dom"
+import {useQuery} from "@apollo/client"
+import {getNewsFeed} from "../../../graphql/user"
+import {useSelector} from "react-redux"
+import {USER_SERVICE_GQL} from "../../../servers/types"
 
-  const [getNextPage, { loading, data }] = useLazyQuery(
-    GetUserPost(userInfo?._id, page)
-  )
-  useEffect(() => {
-    axios.get(userServer + "/homepagefeed").then((res) => {
-      setPostList(res?.data?.feed)
-    })
-  }, [])
+const HomeFeed = ({userInfo}) => {
+  const {user} = useSelector((store) => store?.userProfile)
+  const {data, loading, error} = useQuery(getNewsFeed, {
+    context: {server: USER_SERVICE_GQL},
+    variables: {userId: user._id}
+  })
+
   return (
     <>
-      <div style={{ margin: "10px 0px 0px 0px" }}>
-        {Array.isArray(postList) &&
-          postList.map((item, index) => {
-            const { post } = item
-            return item.type === "uni" ? (
+      <div style={{margin: "10px 0px 0px 0px"}}>
+        {Array.isArray(data?.fetchMyNewsFeed) &&
+          data?.fetchMyNewsFeed?.map((post, index) => {
+            if (!post) {
+              return ""
+            }
+            return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
                 <CourseCard
                   image={post?.image}
@@ -49,60 +39,15 @@ const HomeFeed = ({ userInfo }) => {
               <div
                 style={{
                   width: "100%",
-                  marginTop: "10px",
-                  borderTop: "1px solid #e0e0e0"
+                  marginTop: "10px"
                 }}
-                className="thread-card"
                 key={index}
               >
-                {/* <Thread commentlist={item?.post?.post} id={item?._id} /> */}
+                <Thread thread={post} id={post?._id} />
               </div>
             )
           })}
       </div>
-
-      {loading &&
-        ["0", "1", "2"].map((item) => {
-          return <ThreadScaletion key={item} />
-        })}
-
-      {data?.getUserPost?.Posts && (
-        <IonCard>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-              padding: "50px"
-            }}
-          >
-            <img
-              style={{ filter: "grayscale(80%)" }}
-              src="https://cdn-icons-png.flaticon.com/128/7486/7486744.png"
-              alt=""
-            />
-            <IonText color="dark">
-              <h1 style={{ fontSize: "2.5rem" }}>Oops!</h1>
-            </IonText>
-            <br />
-            <IonText color="medium">
-              <h2>No data found.</h2>
-            </IonText>
-          </div>
-        </IonCard>
-      )}
-
-      <IonInfiniteScroll
-        onIonInfinite={(e) => {
-          setPage(page + 1)
-          getNextPage()
-          setTimeout(() => e.target.complete(), 500)
-        }}
-      >
-        <IonInfiniteScrollContent loadingText=""></IonInfiniteScrollContent>
-      </IonInfiniteScroll>
     </>
   )
 }

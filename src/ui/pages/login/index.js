@@ -7,6 +7,7 @@ import SignUpVerification from "../../component/authentication/Verification/Sign
 import ForgotPasswordVerification from "../../component/authentication/Verification/ForgotPassword/ForgotPasswordVerification"
 import ResetPassword from "../../component/authentication/Verification/ForgotPassword/ResetPassword"
 import UserNotVerified from "../../component/authentication/Verification/UserNotVerified"
+import WelcomSteps from "../../component/authentication/Welcome"
 
 export const Login = () => {
   const [auth, setauth] = useState({
@@ -21,11 +22,11 @@ export const Login = () => {
         <IonRow style={{ overflow: "hidden" }}>
           <IonCol>
             {auth.state === "signin" ? (
-              <SignIn setauth={setauth} />
+              <SignIn auth={auth} setauth={setauth} />
             ) : auth.state === "signup" ? (
-              <SignUp setauth={setauth} />
+              <SignUp setauth={setauth} auth={auth} />
             ) : auth.state === "SignUpVerification" ? (
-              <SignUpVerification setauth={setauth} />
+              <SignUpVerification setauth={setauth} auth={auth} />
             ) : auth.state === "emailVerify" ? (
               <EmailVerify setauth={setauth} />
             ) : auth.state === "ForgotPasswordVerification" ? (
@@ -34,6 +35,8 @@ export const Login = () => {
               <ResetPassword setauth={setauth} auth={auth} />
             ) : auth.state === "userNotVerified" ? (
               <UserNotVerified setauth={setauth} auth={auth} />
+            ) : auth.state === "welcomeForm" ? (
+              <WelcomSteps />
             ) : null}
           </IonCol>
         </IonRow>

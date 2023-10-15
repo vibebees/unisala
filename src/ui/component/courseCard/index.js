@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {
   IonGrid,
   IonRow,
@@ -9,14 +9,15 @@ import {
   IonItem,
   IonLabel
 } from "@ionic/react"
-import { heart, saveOutline, location, shareOutline } from "ionicons/icons"
+import {heart, saveOutline, location, shareOutline} from "ionicons/icons"
 import useIsData from "../../../hooks/useIsData"
 import useGrade from "../../../hooks/useGrade"
 import useGradeColor from "../../../hooks/useGradeColor"
 import "./index.css"
+import {getImage, universityDefaultImage} from "../../../servers/s3.configs"
 
 const CourseCard = ({
-  image,
+  pictures,
   name,
   city,
   rating,
@@ -26,28 +27,25 @@ const CourseCard = ({
   act,
   data
 }) => {
-  const [width, setWidth] = React.useState(window.innerWidth)
+  const
+    [width, setWidth] = useState(window.innerWidth),
+    [images, setImages] = useState(pictures)
+
   const handleResize = () => {
-    const { innerWidth } = window
+    const {innerWidth} = window
 
     if (width !== innerWidth) {
       setWidth(innerWidth)
     }
   }
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {
       window.removeEventListener("resize", handleResize)
     }
   })
   return (
-    <IonCard
-      style={{
-        border: "1px solid #e0e0e0",
-        width: "100%",
-        margin: "10px auto"
-      }}
-    >
+    <IonCard>
       <IonGrid>
         <IonRow>
           <IonCol
@@ -59,7 +57,7 @@ const CourseCard = ({
             <div className="card-image">
               <img
                 src={
-                  "https://cdn.vox-cdn.com/thumbor/l5-CNuyDLr8IR8dWTW_7wqnT_bc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084622/5f1b1bd4b8800.image.jpg"
+                  images?.[0] || universityDefaultImage
                 }
                 alt="University"
                 style={{
@@ -225,7 +223,7 @@ const CourseCard = ({
                           fontSize: width > 800 ? "14px" : "12px",
                           margin: "0"
                         }}
-                        // style={{ fontSize: "16px" }}
+                      // style={{ fontSize: "16px" }}
                       >
                         {useGrade(average)}
                       </h6>
@@ -258,7 +256,7 @@ const CourseCard = ({
                         style={{
                           fontSize: width > 800 ? "18px" : "12px"
                         }}
-                        // style={{ fontSize: "16px" }}
+                      // style={{ fontSize: "16px" }}
                       >
                         {useIsData(acceptanceRate)}
                       </h6>
@@ -290,7 +288,7 @@ const CourseCard = ({
                         style={{
                           fontSize: width > 800 ? "18px" : "12px"
                         }}
-                        // style={{ fontSize: "16px" }}
+                      // style={{ fontSize: "16px" }}
                       >
                         {useIsData(act?.min) + "-" + useIsData(act?.max)}
                       </h6>

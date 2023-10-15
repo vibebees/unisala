@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react"
-import "../auth.css"
 import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
-import { Link } from "react-router-dom"
+
 import AuthInput from "../AuthInput"
-import axios from "axios"
-import validate from "../../../../utils/components/validate"
+import { validateSignup } from "../../../../utils/components/validate"
 import { userServer } from "../../../../servers/endpoints"
 import { useDispatch } from "react-redux"
 import { registerUser } from "../../../../store/action/authenticationAction"
-let url = require("../../../../servers")
+import "../auth.css"
 
 export const SignUpForm = ({ setauth }) => {
   const [errors, seterrors] = useState({})
@@ -33,46 +31,27 @@ export const SignUpForm = ({ setauth }) => {
     })
   }
   const submitHandler = (e) => {
-    e.preventDefault()
-    seterrors(validate(input))
-    setdatacheck(true)
-  },
-  dispatch = useDispatch()
+      e.preventDefault()
+      seterrors(validateSignup(input))
+      setdatacheck(true)
+    },
+    dispatch = useDispatch()
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && datacheck) {
       setsave(true)
-      // dispatch(registerUser({ userServer, input, setdatacheck, setauth, setsave, present, dismiss }))
-      axios
-        .post(userServer + `/register`, input)
-        .then((res) => {
-          setsave(false)
-          if (res.data.success === true) {
-            localStorage.setItem("email", input.email)
-            setdatacheck(false)
-            setauth({ state: "SignUpVerification" })
-          }
-          if (res.data.success === false) {
-            present({
-              duration: 3000,
-              message: res.data.message,
-              buttons: [{ text: "X", handler: () => dismiss() }],
-              color: "primary",
-              mode: "ios"
-            })
-          }
+      localStorage.setItem("email", input.email)
+      dispatch(
+        registerUser({
+          userServer,
+          input,
+          setdatacheck,
+          setauth,
+          setsave,
+          present,
+          dismiss
         })
-        .catch((err) => {
-          setsave(false)
-          present({
-            duration: 3000,
-            message: err.response.data.message,
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-          setdatacheck(false)
-        })
+      )
     }
   }, [errors])
 
@@ -132,9 +111,13 @@ export const SignUpForm = ({ setauth }) => {
           Forgot Password?
         </p>
       </div>
-      <IonButton disabled={save} type="submit" expand="full" shape="round">
+      <button
+        type="submit"
+        onSubmit={submitHandler}
+        className="block text-center bg-blue-600 w-full outline-none text-sm text-white uppercase rounded-2xl tracking-wide py-2 text-opacity-90 hover:opacity-90"
+      >
         {save ? <IonSpinner></IonSpinner> : "Register"}
-      </IonButton>
+      </button>
       <IonRow className="auth-change inline-flex">
         <p>Already a member?</p>
         <a

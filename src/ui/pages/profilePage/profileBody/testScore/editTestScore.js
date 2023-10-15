@@ -112,7 +112,7 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
       if (data.addTestScore.status.success) {
         present({
           duration: 3000,
-          message: "About Updated",
+          message: "Score Updated",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
@@ -138,10 +138,10 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
   const handleTestScoreContent = () => {
     if (testScoreContent === "SAT") {
       return (
-        <>
+        <div className="mt-4">
           <h5 className="mb-1">SAT Score</h5>
-          <div className="mb-1">
-            <h5>English</h5>
+          <div className="my-4">
+            <h5 className="mb-2">English</h5>
             <IonInput
               mode="md"
               className="input-box"
@@ -153,7 +153,7 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
             ></IonInput>
           </div>
           <div className="mb-1">
-            <h5>Maths</h5>
+            <h5 className="mb-2">Maths</h5>
             <IonInput
               mode="md"
               className="input-box"
@@ -164,15 +164,15 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
               onIonChange={handleChange}
             ></IonInput>
           </div>
-        </>
+        </div>
       )
     }
     if (testScoreContent === "ACT") {
       return (
-        <>
+        <div className="mt-4">
           <h5 className="mb-1">ACT Score</h5>
-          <div className="mb-1">
-            <h5>English</h5>
+          <div className="my-4">
+            <h5 className="mb-2">English</h5>
             <IonInput
               mode="md"
               className="input-box"
@@ -184,7 +184,7 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
             ></IonInput>
           </div>
           <div className="mb-1">
-            <h5>Maths</h5>
+            <h5 className="mb-2">Maths</h5>
             <IonInput
               mode="md"
               className="input-box"
@@ -195,14 +195,14 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
               type="number"
             ></IonInput>
           </div>
-        </>
+        </div>
       )
     }
     if (testScoreContent === "IELTS") {
       return (
-        <>
-          <div className="mb-1">
-            <h5>IELTS Score</h5>
+        <div className="mt-4">
+          <div className="">
+            <h5 className="mb-2">IELTS Score</h5>
             <IonInput
               mode="md"
               className="input-box"
@@ -213,14 +213,14 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
               onIonChange={handleChange}
             ></IonInput>
           </div>
-        </>
+        </div>
       )
     }
     if (testScoreContent === "TOEFL") {
       return (
-        <>
-          <div className="mb-1">
-            <h5>TOEFL Score</h5>
+        <div className="mt-4">
+          <div className="">
+            <h5 className="mb-2">TOEFL Score</h5>
             <IonInput
               mode="md"
               className="input-box"
@@ -231,7 +231,7 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
               onIonChange={handleChange}
             ></IonInput>
           </div>
-        </>
+        </div>
       )
     }
   }
@@ -266,7 +266,12 @@ function EditTestScore({ scores, setIsOpen, isOpen, username }) {
           </IonSelect>
         </IonItem>
         {handleTestScoreContent()}
-        <IonButton mode="ios" expand="block" onClick={submitTest}>
+        <IonButton
+          mode="ios"
+          expand="block"
+          className="mt-4"
+          onClick={submitTest}
+        >
           {loading ? <IonSpinner /> : "Save Changes"}
         </IonButton>
       </IonContent>

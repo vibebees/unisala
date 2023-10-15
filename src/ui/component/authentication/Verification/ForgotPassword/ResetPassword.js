@@ -2,8 +2,8 @@ import { useState } from "react"
 import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
 import AuthInput from "../../AuthInput"
-import urls from "../../../../../servers"
-import validate from "../../../../../utils/components/validate"
+
+import { validateSignup } from "../../../../../utils/components/validate"
 import "../../auth.css"
 import { userServer } from "../../../../../servers/endpoints"
 
@@ -46,7 +46,7 @@ export const ResetPassword = ({ setauth, auth }) => {
       })
     }
 
-    const passwordErrors = validate({ password: password })?.password
+    const passwordErrors = validateSignup({ password: password })?.password
     if (passwordErrors) {
       return present({
         duration: 3000,

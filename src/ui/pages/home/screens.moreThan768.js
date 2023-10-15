@@ -4,16 +4,35 @@ import {
   IonText,
   IonAvatar,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonButton
 } from "@ionic/react"
+import { useSelector } from "react-redux"
+import { Avatar } from "../../component/Avatar"
 import BadgesTab from "./BadgeTab"
+import { imageAccess } from "../../../servers/endpoints"
+import { useEffect, useState } from "react"
+import { getImage } from "../../../servers/s3.configs"
+import { useLocation } from "react-router"
+import TopSpaces from "../../component/TopSpaces/TopSpaces"
+import { Link } from "react-router-dom"
+import CreateSpace from "../../component/createSpace/CreateSpace"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
   unisalaImg,
   profileData,
-  loggedIn
+  loggedIn,
+  topSpaces
 }) => {
+  const { user } = useSelector((state) => state.userProfile)
+  const [percentage, setPercentage] = useState(0)
+
+  const radius = 45
+  const dashArray = radius * Math.PI * 2
+  const dataOffset = dashArray - (dashArray * percentage) / 100
+  const location = useLocation()
+
   return (
     <IonCol
       size="auto"
@@ -26,88 +45,75 @@ export const screensMoreThan768 = ({
     >
       {loggedIn ? (
         <>
-          <IonCard>
+          <IonCard className="">
             <div className="aside-profile">
-              <div>
-                <IonAvatar
-                  style={{
-                    width: "60px",
-                    height: "60px"
-                  }}
-                >
-                  <img
-                    src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1670164432~exp=1670165032~hmac=36b9b40ac0ed5b3a668c8bd6a3773cb706f13b46413881b4a4f1079241cb9eb5"
-                    alt=""
-                  />
-                </IonAvatar>
+              <div className="w-24 h-24 rounded-full overflow-hidden   !border-[7px] !border-neutral-200">
+                <Avatar
+                  username={user.username}
+                  profilePic={user?.picture}
+                  size="medium"
+                />
               </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                width="160px"
+                height="160px"
+                className="progress-ring"
+              >
+                <defs>
+                  <linearGradient id="GradientColor">
+                    <stop offset="0%" stopColor="#e91e63" />
+                    <stop offset="100%" stopColor="#673ab7" />
+                  </linearGradient>
+                </defs>
+                <circle
+                  cx="80"
+                  cy="80"
+                  r={radius}
+                  strokeLinecap="round"
+                  style={{
+                    fill: "none",
+                    stroke: "url(#GradientColor)",
+                    strokeWidth: "7px",
+                    strokeDasharray: dashArray,
+                    strokeDashoffset: dataOffset
+                  }}
+                />
+              </svg>
             </div>
             <div className="aside-profile-details">
               <IonText className="flex justify-content-center" color="dark">
-                <h6>
-                  {profileData?.data?.getUser?.user?.firstName +
-                    " " +
-                    profileData?.data?.getUser?.user?.lastName}
-                </h6>
-                <img
-                  src="https://www.svgrepo.com/show/178831/badges-money.svg"
-                  alt=""
-                  width={20}
-                />
+                <h6>{user?.firstName + " " + user?.lastName}</h6>
               </IonText>
               <IonText color="medium">
-                <p>@{profileData?.data?.getUser?.user?.username}</p>
+                <p>@{user.username}</p>
               </IonText>
             </div>
           </IonCard>
-          <IonCard className="badges-card">
-            <IonText color="dark">
-              <h6
-                style={{
-                  padding: "10px"
-                }}
-              >
-                Badges
-              </h6>
-            </IonText>
-            <BadgesTab activeTab={activeTab} setActiveTab={setActiveTab} />
-            {profileData?.user?.badges?.earnedBadges?.map((item, index) => {
-              return (
-                <IonItem
+
+          <IonCol>
+            <CreateSpace />
+
+            <IonCard className="overflow-y-auto max-h-[348px]">
+              <IonText color="dark">
+                <h6 className="text-center my-2 font-semibold">Top Spaces</h6>
+              </IonText>{" "}
+              <TopSpaces topSpaces={topSpaces} />
+              <Link to="/space" style={{ marginTop: "120px" }}>
+                <IonText
+                  className="max-w-[250px] text-[#3880FF] text-center  font-semibold"
+                  fill="solid"
                   style={{
-                    margin: "0px",
-                    padding: "0px"
+                    "--background": "white",
+                    "--background-hover": "#eee"
                   }}
-                  lines="none"
-                  key={index}
                 >
-                  <IonAvatar slot="start">
-                    <img
-                      src={
-                        "https://www.svgrepo.com/show/178831/badges-money.svg"
-                      }
-                    />
-                  </IonAvatar>
-                  <IonLabel>
-                    <h2
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      {item?.title}
-                    </h2>
-                    <p
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      {item?.description}
-                    </p>
-                  </IonLabel>
-                </IonItem>
-              )
-            })}
-          </IonCard>
+                  <h1 className="py-4">Browse More Spaces</h1>
+                </IonText>
+              </Link>
+            </IonCard>
+          </IonCol>
         </>
       ) : (
         <IonCard

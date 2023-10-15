@@ -1,8 +1,8 @@
-import { combineReducers } from "redux"
+import {combineReducers} from "redux"
 import introductionReducer from "./intro"
 import auth from "./auth"
 import storage from "redux-persist/lib/storage"
-import { persistReducer } from "redux-persist"
+import {persistReducer} from "redux-persist"
 import University from "./university"
 import UserProfile from "./userProfile"
 import userActivity from "./userActivity"
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
     userActivity
 })
 const persistConfig = {
-    key: "development2",
+    key: "developmentF4",
     storage
 }
 

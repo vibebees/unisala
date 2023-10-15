@@ -13,20 +13,27 @@ import {
   logoLinkedin
 } from "ionicons/icons"
 import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
+import { Avatar } from "../../../component/Avatar"
+import useWindowWidth from "../../../../hooks/useWindowWidth"
 import "./index.css"
+import { useEffect, useState } from "react"
+import { getImage } from "../../../../servers/s3.configs"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
+  const [coverImage, setCoverImage] = useState("")
+  const [percentage, setPercentage] = useState(0)
   const {
     firstName,
     lastName,
     username,
     profilePic,
-    profileBanner,
+    coverPicture,
     oneLinerBio,
     location: userLocation,
     doj,
     socialLinks
   } = data
+  const width = useWindowWidth()
 
   const icons = {
     twitter: logoTwitter,
@@ -42,20 +49,29 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     { id: 0, menu: username },
     { id: 1, menu: "Threads" },
     { id: 2, menu: "Guestbook" },
-    { id: 4, menu: "Saved" }
+    { id: 3, menu: "Saved" },
+    { id: 4, menu: "Roadmap" }
   ]
 
   const changeTab = (tabs) => {
     setTab(tabs)
   }
 
+  useEffect(() => {
+    getImage("user", coverPicture, setCoverImage)
+  }, [coverPicture])
+
+  const radius = width >= 768 ? 66.6 : 47
+  const dashArray = radius * Math.PI * 2
+  const dataOffset = dashArray - (dashArray * percentage) / 100
   return (
     <IonCard className="profile-header mb-2">
       <div className="user-banner">
+        <div></div>
         <div className="user-banner__cover">
           <img
             src={
-              profileBanner ??
+              coverImage ||
               "https://img.freepik.com/premium-photo/back-school-education-banner-background_8087-1192.jpg?w=1380"
             }
             className="user-banner__cover--img"
@@ -64,22 +80,46 @@ const ProfileHeader = ({ tab, setTab, data }) => {
         </div>
 
         <div className="user-profile">
-          <img
-            src={
-              profilePic ??
-              "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1670164432~exp=1670165032~hmac=36b9b40ac0ed5b3a668c8bd6a3773cb706f13b46413881b4a4f1079241cb9eb5"
-            }
-            className="user-profile__img"
-            alt="userName"
-          />
+          <Avatar profilePic={profilePic} username={username} />
+          <div className="border-[7px] border-neutral-300  absolute left-0 top-0 bottom-0  right-0 rounded-full z-10" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            width="160px"
+            height="160px"
+            className="progress_container"
+          >
+            <defs>
+              <linearGradient id="GradientColor">
+                <stop offset="0%" stopColor="#e91e63" />
+                <stop offset="100%" stopColor="#673ab7" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="80"
+              cy="80"
+              r={radius}
+              strokeLinecap="round"
+              style={{
+                fill: "none",
+                stroke: "url(#GradientColor)",
+                strokeWidth: "7px",
+                strokeDasharray: dashArray,
+                strokeDashoffset: dataOffset
+              }}
+            />
+          </svg>
         </div>
+
         <UserCtaBtns profileHeader={data} myProfile={data.myProfile} />
       </div>
 
       <div className="short-info-wrapper">
         <IonText color="dark">
-          <h1>{firstName + " " + lastName}</h1>
-          <IonCardSubtitle>@{username}</IonCardSubtitle>
+          <h1 className="text-xl capitalize font-bold">
+            {firstName + " " + lastName}
+          </h1>
+          <IonCardSubtitle className="font-bold">@{username}</IonCardSubtitle>
         </IonText>
 
         <div className="inline-2 flex-wrap">
@@ -89,7 +129,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
               {userLocation}
             </IonCardSubtitle>
           )}
-          <IonCardSubtitle className="icon-text">
+          <IonCardSubtitle className="icon-text font-semibold">
             <IonIcon className="icon-16" icon={calendar} />
             joined {doj.split("T")[0].split("-").join("/")}
           </IonCardSubtitle>

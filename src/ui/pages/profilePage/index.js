@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useParams } from "react-router"
+import { useEffect, useState } from "react"
+import { useHistory, useLocation, useParams } from "react-router"
 import {
   IonContent,
   IonGrid,
@@ -23,11 +23,15 @@ import { getUserGql } from "../../../graphql/user"
 import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "../../../servers/types"
+import { useSelector } from "react-redux"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
   const [tab, setTab] = useState(0)
   const { username } = useParams()
+  const history = useHistory()
+  const { user: loggedInUser } = useSelector((state) => state.userProfile)
+
   const { data } = useQuery(getUserGql, {
     context: { server: USER_SERVICE_GQL },
     variables: { username: username }
@@ -35,14 +39,14 @@ const ProfilePage = () => {
   useDocTitle(username)
 
   const { getUser } = data || {}
-  const accessToken = localStorage.getItem("accessToken")
-  const decode = accessToken ? jwtDecode(accessToken) : {}
-  const myProfile = username === decode?.username
+
+  const myProfile = username === loggedInUser?.username
+
   const {
     firstName,
     lastName,
     picture,
-    profileBanner,
+    coverPicture,
     oneLinerBio,
     location,
     socialLinks,
@@ -53,13 +57,16 @@ const ProfilePage = () => {
     _id,
     doj
   } = getUser?.user || {}
+
+  const profilePic = picture
+
   const profileHeaderData = {
     _id,
     firstName,
     lastName,
     username,
-    picture,
-    profileBanner,
+    profilePic,
+    coverPicture,
     oneLinerBio,
     location,
     socialLinks,
@@ -67,6 +74,7 @@ const ProfilePage = () => {
     doj,
     connectionType: getUser?.connectionType
   }
+
   const profileBodyData = {
     username,
     about,
@@ -75,6 +83,48 @@ const ProfilePage = () => {
     testScore,
     myProfile
   }
+
+  const locate = useLocation()
+
+  const tabMap = {
+    0: "profile",
+    1: "threads",
+    2: "guestbook",
+    3: "saved",
+    4: "roadmap"
+  }
+
+  // this effect is responsible to show the component(target users who probably came by following a link)
+  useEffect(() => {
+    const query = new URLSearchParams(locate.search).get("tab")
+    if (!query) {
+      history.push("?tab=profile")
+    } else {
+      switch (query) {
+        case "threads":
+          setTab(1)
+          break
+        case "guestbook":
+          setTab(2)
+          break
+        case "saved":
+          setTab(3)
+          break
+
+        case "roadmap":
+          setTab(4)
+          break
+        default:
+          setTab(0)
+      }
+    }
+  }, [])
+
+  // this effect handles tab selections
+
+  useEffect(() => {
+    history.push(`?tab=${tabMap[tab]}`)
+  }, [tab])
 
   if (!getUser?.user) {
     return (
@@ -109,7 +159,7 @@ const ProfilePage = () => {
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
-            {tab === 4 && <Saved userId={_id} firstName={firstName} />}
+            {tab === 3 && <Saved userId={_id} firstName={firstName} />}
           </IonCol>
           {windowWidth >= 1080 && (
             <IonCol className="sidebar">

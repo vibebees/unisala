@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { IonCol, IonGrid, IonPopover, IonRow } from "@ionic/react"
 import "./auth.css"
 import SignIn from "./SignIn/Index"
@@ -6,8 +6,9 @@ import SignUp from "./SignUp/Index"
 import EmailVerify from "./Verification/ForgotPassword/EmailVerify"
 import SignUpVerification from "./Verification/SignUpVerification"
 import ForgotPasswordVerification from "./Verification/ForgotPassword/ForgotPasswordVerification"
-import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 import UserNotVerified from "./Verification/UserNotVerified"
+import useWindowWidth from "../../../hooks/useWindowWidth"
+import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 
 export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
   const [auth, setauth] = useState({
@@ -15,20 +16,10 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
     email: "",
     code: 0
   })
-  const [width, setWidth] = useState(window.innerWidth)
-  const handleResize = () => {
-    const { innerWidth } = window
 
-    if (width !== innerWidth) {
-      setWidth(innerWidth)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  })
+  useEffect(() => {}, [auth])
+
+  const width = useWindowWidth()
 
   return (
     <>
@@ -45,11 +36,15 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
           <IonRow style={{ overflow: "hidden" }}>
             <IonCol>
               {auth.state === "signin" ? (
-                <SignIn setauth={setauth} setActiveNavDrop={setActiveNavDrop} />
+                <SignIn
+                  setauth={setauth}
+                  auth={auth}
+                  setActiveNavDrop={setActiveNavDrop}
+                />
               ) : auth.state === "signup" ? (
                 <SignUp setauth={setauth} />
               ) : auth.state === "SignUpVerification" ? (
-                <SignUpVerification setauth={setauth} />
+                <SignUpVerification setauth={setauth} auth={auth} />
               ) : auth.state === "emailVerify" ? (
                 <EmailVerify setauth={setauth} />
               ) : auth.state === "ForgotPasswordVerification" ? (
@@ -60,7 +55,7 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
                 <UserNotVerified setauth={setauth} auth={auth} />
               ) : null}
             </IonCol>
-            {width > 764 && (
+            {width > 764 && auth.state !== "welcomeForm" && (
               <IonCol size="auto">
                 <img
                   src="https://images.unsplash.com/photo-1597920940566-a77511f9327d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80"
