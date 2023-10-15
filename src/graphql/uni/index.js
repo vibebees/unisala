@@ -158,6 +158,7 @@ export const GetProfessor = gql`
                 percentile25
                 percentile75
               }
+             
             }
             act {
               submitted

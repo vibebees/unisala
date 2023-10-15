@@ -22,14 +22,10 @@ import {
   schoolOutline
 } from "ionicons/icons"
 
-import Grant from "./grant"
-import Libraries from "./libraries"
 import SimilarCollage from "./similarCollage"
 import VisitWebsite from "./visitWebsite"
 import Professors from "./professors"
 import Interview from "./Interview"
-import { useSelector } from "react-redux"
-import Discussion from "../Discussion"
 import { ReportCard } from "../../../component/reportCard"
 import { PollCard } from "../../../component/pollCard"
 import { CardWithCircularGrid } from "../../../component/cardWithCircularGrid"
@@ -38,6 +34,7 @@ import Statstics from "./statistics"
 import Ranking from "./Ranking"
 import { FolderStructure } from "../../../component/folderStructure"
 import StatCardTemplate from "ui/component/DataStatCard/template/StatCardTemplate"
+import StatCardTemplateTwo from "ui/component/DataStatCard/template/StatCardTemplateTwo"
 import RectangularCard from "ui/component/RectangularCardGrid/template/RectangularCard"
 
 const SideDetails = ({
@@ -47,13 +44,8 @@ const SideDetails = ({
   unitId,
   allProps
 }) => {
-  const {
-    reportDataSource,
-    campusPollDataSource,
-    testScoreDataSource,
-    isSideBar,
-    uniData
-  } = allProps
+  const { reportDataSource, campusPollDataSource, isSideBar, uniData } =
+    allProps
 
   const sideMenu = [
     !isSideBar?.scholarshipsEmpty && {
@@ -245,7 +237,12 @@ const SideDetails = ({
           </section>
 
           <section ref={forwardedRef.libraries}>
-            <Libraries librariesAnimate={librariesAnimate} />
+            <StatCardTemplateTwo
+              allProps={{
+                data: uniData.elevatorInfo.library,
+                bodyTitle: "Libraries"
+              }}
+            />
           </section>
 
           {/* <section ref={forwardedRef.grant}>
@@ -254,7 +251,7 @@ const SideDetails = ({
 
           <section ref={forwardedRef.testScore}>
             <CardWithCircularGrid
-              dataSource={testScoreDataSource}
+              dataSource={uniData?.testScore}
               parentProps={allProps}
             />
           </section>

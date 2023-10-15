@@ -5,15 +5,15 @@ import { IonCard, IonLabel, IonText } from "@ionic/react"
 
 const Card = ({ image, value, title }) => {
   return (
-    <div
+    <IonCard
       style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
       }}
-      className="border bg-neutral-100 rounded-md hover:bg-transparent"
+      className="border  ion-padding  m-0 hover:bg-neutral-50 rounded-md hover:bg-transparent"
     >
-      <div className="rounded-rectangle">
+      <div className="rounded-rectangle flex flex-col items-center ">
         <img
           alt=""
           src={image}
@@ -22,7 +22,8 @@ const Card = ({ image, value, title }) => {
           }}
           className="mix-blend-multiply"
         />
-        <IonText color="dark" className="">
+
+        <IonText color="dark" className="text-center ">
           <h1
             style={{
               fontSize: "25px"
@@ -48,7 +49,7 @@ const Card = ({ image, value, title }) => {
           </p>
         </IonText>
       </div>
-    </div>
+    </IonCard>
   )
 }
 

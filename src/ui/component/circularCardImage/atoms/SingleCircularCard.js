@@ -1,11 +1,9 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect } from "react"
-import useIsData from "../../../../../hooks/useIsData"
-
+import React from "react"
+import useIsData from "hooks/useIsData"
 import { IonText } from "@ionic/react"
-import useCountConverter from "../../../../../hooks/useCountConverter"
+import useCountConverter from "hooks/useCountConverter"
 
-const TotalCard = ({ title, value, image }) => {
+const SingleCircularCard = ({ title, value, image }) => {
   const [width, setWidth] = React.useState(window.innerWidth)
   const handleResize = () => {
     const { innerWidth } = window
@@ -14,6 +12,7 @@ const TotalCard = ({ title, value, image }) => {
       setWidth(innerWidth)
     }
   }
+
   React.useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {
@@ -88,4 +87,5 @@ const TotalCard = ({ title, value, image }) => {
     </div>
   )
 }
-export default TotalCard
+
+export default SingleCircularCard
