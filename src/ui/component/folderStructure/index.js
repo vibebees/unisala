@@ -24,7 +24,7 @@ const RenderFolder = ({ item, allProps, customStyles, popUp }) => {
 }
 export const FolderStructure = ({ allProps = {} }) => {
   const { folderName = "", customStyles = {} } = allProps
-  const [popup, setPopup] = useState(false)
+  const [popUp, setPopup] = useState(allProps?.popUp || false)
   const [currentURL, setCurrentURL] = useState("")
 
   const handleItemClick = (item) => {

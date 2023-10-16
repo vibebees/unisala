@@ -23,11 +23,12 @@ export const GetProfessor = gql`
       }
     }
   `,
-  getUpdatedSchoolInfo = (name) =>
-    gql`
-      query {
-        getUpdatedSchoolInfo(name: "${name}") {
-          elevatorInfo {
+  getUpdatedSchoolInfo = (unitId, name) =>
+  gql`
+    query getUpdatedSchoolInfo($unitId: Float, $name: String) {
+      getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
+
+   elevatorInfo {
             unitId
             name
             address {
@@ -390,9 +391,10 @@ export const GetProfessor = gql`
             levelOfDifficulty
             wouldTakeAgain
           }
-        }
       }
-    `,
+    }
+  `,
+
   UniSearchDataList = (name) =>
     gql`
     query {

@@ -8,8 +8,11 @@ import { getUpdatedSchoolInfo } from "../../../../graphql/uni"
 import { UNIVERSITY_SERVICE_GQL } from "../../../../servers/types"
 
 export const UniversityPage = () => {
-  const { id } = useParams(),
-    { loading, data } = useQuery(getUpdatedSchoolInfo(id), {
+  const {id} = useParams()
+
+  const
+    {loading, data} = useQuery(getUpdatedSchoolInfo({name: id}), {
+      variables: { name: id },
       context: { server: UNIVERSITY_SERVICE_GQL }
     }),
     { uniData, isSideBar } = useSelector((store) => store?.university),

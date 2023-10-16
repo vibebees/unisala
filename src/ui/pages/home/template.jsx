@@ -40,13 +40,15 @@ export const Home = ({ allProps }) => {
     {interestedUni} = userInfo || {},
     [unitId] = interestedUni || []
   const [userGuide, setUserGuide] = useState([])
-  const [userSchoolData, setUserSchoolData] = useState({})
 
-    const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
-      context: { server: UNIVERSITY_SERVICE_GQL }
-    })
-    useEffect(() => {
-      const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
+  const {loading: schoolLoading, data: schoolData} = useQuery(getUpdatedSchoolInfo(({unitId})), {
+    skip: !unitId,
+    fetchPolicy: "cache-and-network",
+    variables: { unitId: unitId },
+    context: { server: UNIVERSITY_SERVICE_GQL }
+  })
+  useEffect(() => {
+    const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
       setUserGuide(generatedUserGuide)
     }, [schoolData])
 
@@ -83,7 +85,8 @@ export const Home = ({ allProps }) => {
                   allProps={{
                     ...allProps,
                     folderName: "",
-                    data: userGuide
+                    data: userGuide,
+                    popUp: false
                   }}
                 />
 

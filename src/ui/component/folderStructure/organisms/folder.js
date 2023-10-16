@@ -17,7 +17,6 @@ export const FolderGeneral = ({item, allProps}) => {
         link
     } = item
 
-    console.log(iconSize, folderSize)
   return (
     <>
       <IonCol className="h-80 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center min-w-[250px] !shrink-0">
