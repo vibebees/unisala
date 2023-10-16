@@ -267,4 +267,3 @@ export const PostModalOnClick = ({allProps}) => {
     </IonModal>
   )
 }
-

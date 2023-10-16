@@ -117,4 +117,3 @@ const SpaceIndex = () => {
   )
 }
 export default SpaceIndex
-

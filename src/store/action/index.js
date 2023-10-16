@@ -77,4 +77,3 @@ export const uniQuery = () => {
     dispatch(getUniData(data))
   }
 }
-

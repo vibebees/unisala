@@ -69,7 +69,7 @@ function index() {
     ) {
       console.log("uhohhhh")
       setTab(params)
-      return
+
     } else {
       console.log("heree")
       setTab("all")
@@ -217,4 +217,3 @@ function index() {
 }
 
 export default index
-

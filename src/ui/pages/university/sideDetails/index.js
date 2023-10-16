@@ -132,6 +132,7 @@ const SideDetails = ({
       setWidth(innerWidth)
     }
   }
+
   React.useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {
@@ -199,9 +200,10 @@ const SideDetails = ({
           <section ref={forwardedRef.scholarship}>
             <FolderStructure
               allProps={{
-                ...allProps,
                 folderName: "Scholarships",
-                data: uniData?.scholarshipInfo?.scholarships
+                data: uniData?.scholarshipInfo?.scholarships,
+                showDetails: true,
+                popUp: true
               }}
             />
           </section>

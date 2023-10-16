@@ -42,7 +42,7 @@ export const Home = ({ allProps }) => {
     userGuide = [
       {
         name: schoolData?.name || "University",
-        level: "Review Your School",
+        label: "Review Your School",
         iconSize: 5,
         icon: schoolSharp,
         routing: true,
@@ -50,7 +50,7 @@ export const Home = ({ allProps }) => {
       },
       {
         name: "Computer Science",
-        level: "Intrested Space",
+        label: "Intrested Space",
         icon: book,
         iconSize: 5,
         routing: true,

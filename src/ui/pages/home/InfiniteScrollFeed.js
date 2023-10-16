@@ -74,7 +74,6 @@ export const InfinteFeed = ({ allProps }) => {
   }
 
   const transformedData = transformAndStylePostData(originalData)
-  console.log(transformedData)
 
 return (
     <div>
