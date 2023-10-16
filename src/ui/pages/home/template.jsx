@@ -79,8 +79,9 @@ export const Home = ({ allProps }) => {
           >
             {loggedIn ? (
               <>
-                <CreateAPostCard allProps={allProps} />
                 <FolderStructure allProps={{...allProps, folderName: "", data: userGuide}} />
+
+                <CreateAPostCard allProps={allProps} />
 
                  <InfinteFeed userInfo={user} allProps={allProps} />
               </>
