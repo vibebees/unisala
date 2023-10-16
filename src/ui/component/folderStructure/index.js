@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {useEffect, useState} from "react"
 import {
   IonCard,
   IonCardContent,
@@ -23,7 +23,7 @@ const RenderFolder = ({ item, allProps, customStyles, popUp }) => {
   )
 }
 export const FolderStructure = ({ allProps = {} }) => {
-  const { folderName = "", customStyles = {}, data = [], popUp = false } = allProps
+  const { folderName = "", customStyles = {} } = allProps
   const [popup, setPopup] = useState(false)
   const [currentURL, setCurrentURL] = useState("")
 
@@ -33,7 +33,11 @@ export const FolderStructure = ({ allProps = {} }) => {
       setPopup(true)
     }
   }
+  const [data, setData] = useState(allProps?.data || [])
 
+  useEffect(() => {
+    setData(allProps?.data || [])
+  }, [allProps?.data])
   return (
     <IonCard style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
       <h2 className="font-normal border-b border-neutral-300 text-neutral-700 px-2 text-lg py-2">
