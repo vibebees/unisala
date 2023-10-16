@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {
   IonGrid,
   IonRow,
@@ -38,18 +38,17 @@ export const Home = ({ allProps }) => {
     generateUserGuide
   } = allProps || {},
     {interestedUni} = userInfo || {},
-    [unitId] = interestedUni || [],
-    {schoolData} = allProps || {},
-    userGuide = generateUserGuide(userInfo)
+    [unitId] = interestedUni || []
+  const [userGuide, setUserGuide] = useState([])
+  const [userSchoolData, setUserSchoolData] = useState({})
 
-  if (userInfo) {
     const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
       context: { server: UNIVERSITY_SERVICE_GQL }
     })
-    allProps.schoolData = schoolData?.getUpdatedSchoolInfo.elevatorInfo
-    allProps.schoolDataLoading = schoolLoading
-    allProps.onSearch = false
-  }
+    useEffect(() => {
+      const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
+      setUserGuide(generatedUserGuide)
+    }, [schoolData])
 
   return (
     <IonContent color="light">
