@@ -10,10 +10,11 @@ import { GetTopActiveSpaces } from "../../../graphql/user"
 import { book, helpCircleSharp, personCircle, schoolSharp, starSharp } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import {useHistory, useLocation} from "react-router"
+import { useHistory, useLocation } from "react-router"
+import ProfilePop from "../../component/profilePop"
 
-export const getAllPropsHome = ({ user, loggedIn, userInfo}) => {
-  const [activeProfile, setActiveProfile] = useState(false),
+export const getAllPropsHome = ({ user, loggedIn, userInfo }) => {
+  const [activeProfile, setActiveProfile] = useState({ profile: false }),
     [activeTab, setActiveTab] = useState(0),
     [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
     { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
@@ -35,7 +36,8 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo}) => {
         personCircle,
         activeProfile,
         loggedIn,
-        username: user.username
+        username: user.username,
+        ProfilePop
       })
     },
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
@@ -103,7 +105,7 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo}) => {
       return userGuide
   }
 
-   return {
+  return {
     unisalaImg,
     activeTab,
     setActiveTab,

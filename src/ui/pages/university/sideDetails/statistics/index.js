@@ -1,26 +1,39 @@
 import React from "react"
-import StatisticsEnrollementByRace from "../molecules/StatisticsEnrollementByRace"
-import StatisticsAdmission from "../molecules/StatisticsAdmission"
-import GraduationRate from "../molecules/GraduateRate"
+import Chart from "ui/component/BarChart/atoms/Chart"
 import { useSelector } from "react-redux"
 import statistics from "./statistics.css"
-import {
-  IonContent,
-  IonIcon,
-  IonCard,
-  IonCardContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonText
-} from "@ionic/react"
+import CircularCardTemplate from "ui/component/circularCardImage/template/CircularCardTemplate"
+import { IonCard, IonText } from "@ionic/react"
+import CardHeader from "ui/component/Reusable/cardHeader"
 
 const index = () => {
   const { uniData } = useSelector((store) => store?.university)
   const studentStats = uniData.studentsStats
+  const graduationRate = uniData?.graduationRate
+
+  const chatLabelsOne = {
+    americanIndianOrAlaskaNative: "Native American",
+    asian: "Asian",
+    blackOrAfricanAmerican: "Black",
+    hispanic: "Hispanic",
+    nonresidentAlien: "International",
+    nativeHawaiianOrOtherPacificIslander: "Hawaiian/Pacific Islander",
+    white: "White"
+  }
+
+  const chatLabelsTwo = {
+    americanIndianOrAlaskaNative: "Native American",
+    asian: "Asian",
+    blackOrAfricanAmerican: "Black",
+    hispanic: "Hispanic",
+    men: "Men",
+    nonResidentAlien: "International",
+    raceEthnicityUnknown: "Unknown",
+    totalCohort: "Total Cohort",
+    twoOrMoreRaces: "Multi-Racial",
+    white: "White",
+    women: "Women"
+  }
 
   return (
     <IonCard
@@ -29,21 +42,35 @@ const index = () => {
       }}
       className="flex flex-col"
     >
-      <div className="font-normal flex items-center bg-neutral-100  border-b border-neutral-300 text-neutral-700 px-2 text-lg py-3">
-        <IonText color="dark">
-          <h1 className="px-2">Statistics</h1>
-        </IonText>
-      </div>
-      <section>
-        <StatisticsAdmission data={studentStats} />
-      </section>
-      <section className="px-7 py-7">
-        <StatisticsEnrollementByRace data={studentStats.enrollmentByRace} />
-      </section>
+      <CardHeader header={"Statistics"} />
+      <IonCard>
+        <CircularCardTemplate
+          value={studentStats}
+          header={"Enrolled Students"}
+        />
+      </IonCard>
+      <IonCard className="px-7 shadow-none py-7">
+        <Chart
+          allProps={{
+            chatLabels: chatLabelsOne,
+            data: studentStats?.enrollmentByRace,
+            header: "Enrollment by Race",
+            YAxisLabel: "Enrollment"
+          }}
+        />
+      </IonCard>
       <hr />
-      <section className="px-7 py-7">
-        <GraduationRate data={uniData.graduationRate} />
-      </section>
+      <IonCard className="px-7 shadow-none py-7">
+        <Chart
+          allProps={{
+            chatLabels: chatLabelsTwo,
+            data: graduationRate,
+            header: "Graduation Rates by Category",
+            maxvalue: 100,
+            YAxisLabel: "Graduation Rate (%)"
+          }}
+        />
+      </IonCard>
     </IonCard>
   )
 }

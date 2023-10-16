@@ -22,23 +22,20 @@ import {
   schoolOutline
 } from "ionicons/icons"
 
-import Grant from "./grant"
-import Libraries from "./libraries"
 import SimilarCollage from "./similarCollage"
 import VisitWebsite from "./visitWebsite"
 import Professors from "./professors"
 import Interview from "./Interview"
-import { useSelector } from "react-redux"
-import Discussion from "../Discussion"
 import { ReportCard } from "../../../component/reportCard"
 import { PollCard } from "../../../component/pollCard"
 import { CardWithCircularGrid } from "../../../component/cardWithCircularGrid"
 import StudentCharges from "./studentCharges"
-import FinancialAid from "./financialAid"
 import Statstics from "./statistics"
-import Admission from "./admission"
 import Ranking from "./Ranking"
-import {FolderStructure} from "../../../component/folderStructure"
+import { FolderStructure } from "../../../component/folderStructure"
+import StatCardTemplate from "ui/component/DataStatCard/template/StatCardTemplate"
+import StatCardTemplateTwo from "ui/component/DataStatCard/template/StatCardTemplateTwo"
+import RectangularCard from "ui/component/RectangularCardGrid/template/RectangularCard"
 
 const SideDetails = ({
   activeTab,
@@ -47,13 +44,8 @@ const SideDetails = ({
   unitId,
   allProps
 }) => {
-  const {
-    reportDataSource,
-    campusPollDataSource,
-    testScoreDataSource,
-    isSideBar,
-    uniData
-  } = allProps
+  const { reportDataSource, campusPollDataSource, isSideBar, uniData } =
+    allProps
 
   const sideMenu = [
     !isSideBar?.scholarshipsEmpty && {
@@ -149,14 +141,14 @@ const SideDetails = ({
 
   return (
     <IonGrid className={width > 719 ? "ion-padding" : ""}>
-      <IonRow
+      <IonCol
         className=""
         style={{
           display: "flex"
         }}
       >
         {width > 720 && (
-          <IonCol style={{ flexShrink: 0, height: "auto" }}>
+          <IonRow className="block" style={{ flexShrink: 0, height: "auto" }}>
             <IonCard
               style={{
                 position: "sticky",
@@ -198,21 +190,41 @@ const SideDetails = ({
                 })}
               </IonList>
             </IonCard>
-          </IonCol>
+          </IonRow>
         )}
-        <IonCol className="w-[calc(100%-270px)]" style={{ flex: 1, margin: 0 }}>
+        <IonRow
+          className="w-[calc(100%-270px)] block"
+          style={{ flex: 1, margin: 0 }}
+        >
           <section ref={forwardedRef.scholarship}>
-            <FolderStructure allProps={{...allProps, folderName: "Scholarships", data: uniData?.scholarshipInfo?.scholarships}} />
+            <FolderStructure
+              allProps={{
+                ...allProps,
+                folderName: "Scholarships",
+                data: uniData?.scholarshipInfo?.scholarships
+              }}
+            />
           </section>
           <section ref={forwardedRef.studentCharges}>
             <StudentCharges />
           </section>
           <section ref={forwardedRef.admission}>
-            <Admission />
+            <StatCardTemplate
+              allProps={{
+                data: uniData?.admissionInfo,
+                bodyTitle: "Admission"
+              }}
+            />
           </section>
 
           <section ref={forwardedRef.financialAid}>
-            <FinancialAid />
+            {/* <FinancialAid /> */}
+            <RectangularCard
+              allProps={{
+                data: uniData?.financialAid,
+                year: uniData?.financialAid?.year
+              }}
+            />
           </section>
 
           <section ref={forwardedRef.statistics}>
@@ -225,7 +237,12 @@ const SideDetails = ({
           </section>
 
           <section ref={forwardedRef.libraries}>
-            <Libraries librariesAnimate={librariesAnimate} />
+            <StatCardTemplateTwo
+              allProps={{
+                data: uniData.elevatorInfo.library,
+                bodyTitle: "Libraries"
+              }}
+            />
           </section>
 
           {/* <section ref={forwardedRef.grant}>
@@ -234,7 +251,7 @@ const SideDetails = ({
 
           <section ref={forwardedRef.testScore}>
             <CardWithCircularGrid
-              dataSource={testScoreDataSource}
+              dataSource={uniData?.testScore}
               parentProps={allProps}
             />
           </section>
@@ -270,8 +287,8 @@ const SideDetails = ({
           {/* <section ref={forwardedRef.Interview}>
             <Discussion unitId={unitId} />
           </section> */}
-        </IonCol>
-      </IonRow>
+        </IonRow>
+      </IonCol>
     </IonGrid>
   )
 }

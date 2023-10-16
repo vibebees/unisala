@@ -133,7 +133,8 @@ export const screenLessThan768 = ({
   personCircle,
   activeProfile,
   username,
-  loggedIn
+  loggedIn,
+  ProfilePop
 }) => {
   return (
     <IonHeader
@@ -160,18 +161,28 @@ export const screenLessThan768 = ({
       >
         <SearchBox />
         {loggedIn && (
-          <Link to={`/@/${username}`}>
-            <div className="profile-pop">
-              <IonIcon size="large" icon={personCircle} color="medium" />
-              {/* {activeProfile && <ProfilePop />} */}
-              {/* {activeProfile && (
-              <Authentication
-                setActiveProfile={setActiveProfile}
-                activeProfile={activeProfile}
-              />
-            )} */}
-            </div>
-          </Link>
+          // <Link to={`/@/${username}`}>
+          <div className="profile-pop">
+            <IonIcon
+              size="large"
+              onClick={() =>
+                setActiveProfile({ profile: !activeProfile.profile })
+              }
+              icon={personCircle}
+              color="medium"
+              className="ml-2 scale-125"
+            />
+            {activeProfile.profile && (
+              <div className="absolute max-[290px]:-left-44 shadow-md h-32 bg-white z-30 -left-52">
+                <ProfilePop />
+              </div>
+            )}
+            {/* <Authentication
+              setActiveNavDrop={setActiveProfile}
+              activeNavDrop={activeProfile}
+            /> */}
+          </div>
+          // </Link>
         )}
       </div>
     </IonHeader>
@@ -297,4 +308,3 @@ export const screensMoreThan768 = ({
     </IonCol>
   )
 }
-

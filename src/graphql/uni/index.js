@@ -23,10 +23,10 @@ export const GetProfessor = gql`
       }
     }
   `,
-  getUpdatedSchoolInfo = (unitId) =>
+  getUpdatedSchoolInfo = (name) =>
     gql`
       query {
-        getUpdatedSchoolInfo(unitId: 160612) {
+        getUpdatedSchoolInfo(name: "${name}") {
           elevatorInfo {
             unitId
             name
@@ -158,6 +158,7 @@ export const GetProfessor = gql`
                 percentile25
                 percentile75
               }
+             
             }
             act {
               submitted
