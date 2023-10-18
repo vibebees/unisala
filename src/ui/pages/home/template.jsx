@@ -65,7 +65,7 @@ export const Home = ({ allProps }) => {
         context: { server: UNIVERSITY_SERVICE_GQL }
       }
     )
-    allProps.schoolData = schoolData?.getUpdatedSchoolInfo.elevatorInfo
+    allProps.schoolData = schoolData?.getUpdatedSchoolInfo?.elevatorInfo
     allProps.schoolDataLoading = schoolLoading
     allProps.onSearch = false
   }
@@ -123,3 +123,4 @@ export const Home = ({ allProps }) => {
     </IonContent>
   )
 }
+
