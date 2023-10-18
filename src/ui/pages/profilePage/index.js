@@ -23,7 +23,7 @@ import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
-import {screenGreaterThan1000} from "../home/helper.func"
+import { screenGreaterThan1000 } from "../home/helper.func"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -152,6 +152,9 @@ const ProfilePage = () => {
     <IonContent>
       <IonGrid className="max-width-container">
         <IonRow>
+          {windowWidth >= 1080 && (
+            <IonCol className="sidebar">{screenGreaterThan1000()}</IonCol>
+          )}
           <IonCol>
             <ProfileHeader tab={tab} setTab={setTab} data={profileHeaderData} />
             {tab === 0 && getUser?.user && (
@@ -161,11 +164,6 @@ const ProfilePage = () => {
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
           </IonCol>
-          {windowWidth >= 1080 && (
-            <IonCol className="sidebar">
-             {screenGreaterThan1000()}
-            </IonCol>
-          )}
         </IonRow>
       </IonGrid>
     </IonContent>
