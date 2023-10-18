@@ -29,11 +29,11 @@ const SpaceIndex = () => {
   const { getTopActiveSpaces } = topSpaceData || {}
 
   const { data: yourSpaceData } = useQuery(GetOwnSpace, {
-    variables: { limit: 100, page: 0, isActive: true},
+    variables: { limit: 100, page: 0, isActive: true },
     context: { server: USER_SERVICE_GQL }
   })
   const { getOwnSpaceCategory } = yourSpaceData || {}
-
+  console.log(getOwnSpaceCategory)
   const { data: spaceNewsFeed } = useQuery(GenerateSpaceNewsFeed, {
     variables: { limit: 100, page: 0 },
     context: { server: USER_SERVICE_GQL }
@@ -117,3 +117,4 @@ const SpaceIndex = () => {
   )
 }
 export default SpaceIndex
+

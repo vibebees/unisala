@@ -242,3 +242,4 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     adminssion
   }
 }
+

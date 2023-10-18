@@ -396,7 +396,7 @@ export const GetProfessor = gql`
   UniSearchDataList = (name) =>
     gql`
     query {
-      searchSchool(name: "${name}") {
+      searchSchool(name: "${name}") {UniSearchDataList
         name
         unitId
         address {
@@ -411,6 +411,28 @@ export const GetProfessor = gql`
         graduateOffering
         undergraduateOffering
         pictures
-
       }
-    }`
+    }`,
+  UniFilterResults = gql`
+    query uniFilterResults {
+      searchScholarship(page: 1, pageSize: 10) {
+        scholarships {
+          university_name
+          unitId
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+          }
+          alias
+          ownType
+          tags
+          missionStatement
+          graduateOffering
+          undergraduateOffering
+          pictures
+        }
+      }
+    }
+  `
+

@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
   IonCard,
   IonCardContent,
@@ -8,11 +8,11 @@ import {
   IonContent,
   IonCardTitle
 } from "@ionic/react"
-import {useLocation, Link} from "react-router-dom"
-import {UniSearchDataList} from "../../../graphql/uni"
-import {userSearch} from "../../../graphql/user"
+import { useLocation, Link, useHistory } from "react-router-dom"
+import { UniSearchDataList } from "../../../graphql/uni"
+import { userSearch } from "../../../graphql/user"
 import useDocTitle from "../../../hooks/useDocTitile"
-import {useQuery} from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
@@ -26,14 +26,14 @@ function index() {
   const [tab, setTab] = useState("all")
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
-  const query = searchParams.get("q")
+  const query = searchParams.get("q") || ""
   useDocTitle("Search ᛫ " + query)
-
-  const {data: unidata} = useQuery(UniSearchDataList(query), {
-    context: {server: UNIVERSITY_SERVICE_GQL}
+  const history = useHistory()
+  const { data: unidata } = useQuery(UniSearchDataList(query), {
+    context: { server: UNIVERSITY_SERVICE_GQL }
   })
-  const {data: searchUser} = useQuery(userSearch(query), {
-    context: {server: USER_SERVICE_GQL}
+  const { data: searchUser } = useQuery(userSearch(query), {
+    context: { server: USER_SERVICE_GQL }
   })
 
   const tabs = useMemo(() => {
@@ -57,12 +57,33 @@ function index() {
     ]
   }, [])
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search).get("tab")
+    // check if gotten params is actually valid or not
+    console.log(params)
+    if (
+      params === "all" ||
+      params === "uni" ||
+      params === "user" ||
+      params === "post"
+    ) {
+      setTab(params)
+    } else {
+      console.log("heree")
+      setTab("all")
+    }
+  }, [])
+
+  useEffect(() => {
+    history.push(`?q=${query}&tab=${tab}`)
+  }, [tab])
+
   return (
     <IonContent>
       <IonGrid className="max-width-container">
         <IonCard>
           <IonCardContent>
-            <h1>Search Result For {`"${query}"`}: </h1>
+            {query.length > 0 && <h1>Search Result For {`"${query}"`}: </h1>}
             <div
               style={{
                 display: "inline-flex",
@@ -147,13 +168,10 @@ function index() {
                   </h3>
                   <div>
                     {Array.isArray(unidata?.searchSchool) &&
-                      unidata?.searchSchool.length ? (
+                    unidata?.searchSchool.length ? (
                       unidata?.searchSchool.map((data, index) => {
                         return (
-                          <Link
-                            to={`/university/${data?.name}`}
-                            key={index}
-                          >
+                          <Link to={`/university/${data?.name}`} key={index}>
                             <CourseCard allProps={data} />
                           </Link>
                         )
@@ -194,3 +212,4 @@ function index() {
 }
 
 export default index
+

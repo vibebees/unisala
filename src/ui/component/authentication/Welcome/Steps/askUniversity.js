@@ -77,13 +77,23 @@ const AskUniversity = ({question}) => {
     {text, description} = question,
     options = {
       looking: "I am Exploring following University",
-      applying: "I am Applying following University",
+      applying: "I am Applying/Previously Applied to following University",
       studying: "I am Studying at following University",
       graduated: "I Graduated from following University",
       searchPlaceHolder: "Southeastern Louisiana University 🏛️"
     }
+    const [suggestUni, setSuggestUni] = useState(false) // New state
 
-  const getUniversitites = async () => {
+    const handleSuggestCheckboxChange = () => {
+      if (!suggestUni) { // If it's currently unchecked
+        setWelcomeFormdata({
+          ...welcomeFormdata,
+          interestedUni: []
+        })
+      }
+      setSuggestUni(!suggestUni) // Toggle checkbox
+    }
+const getUniversitites = async () => {
     const token = localStorage.getItem("accessToken")
     setIsLoading(true)
     try {
@@ -137,19 +147,27 @@ const AskUniversity = ({question}) => {
         <QuestionHeader text={text} className="mt-3 " />
 
       </IonRow>
-      <IonCardSubtitle className="text-center mt-3">{options[welcomeFormdata?.userStatus]}</IonCardSubtitle>
-      <IonRow>
-        {/* Displaying the search bar directly below the header */}
-        <IonSearchbar
-          placeholder={options?.searchPlaceHolder}
-          className="font-medium text-neutral-600"
-          onIonInput={(e) => setSearchTerm(e.target.value)}
-        />
-      </IonRow>
+{ !suggestUni && <IonCardSubtitle className="text-center mt-3">{options[welcomeFormdata?.userStatus]}</IonCardSubtitle>}
 
-      <IonRow>
-        <SearchList isLoading={isLoading} results={results} handleclick={handleclick} />
+      {!suggestUni && (
+        <>
+         <IonRow>
+                    <IonSearchbar
+                        placeholder={options?.searchPlaceHolder}
+                        className="font-medium text-neutral-600"
+                        onIonInput={(e) => setSearchTerm(e.target.value)}
+                    />
+                </IonRow>
 
+          <IonRow>
+            <SearchList isLoading={isLoading} results={results} handleclick={handleclick} />
+          </IonRow>
+        </>
+      )}
+
+      <IonRow className="mt-2">
+        <IonCheckbox onClick={handleSuggestCheckboxChange} checked={suggestUni} />
+        <IonText className="ml-2 text-sm font-medium text-neutral-600">I don&apos;t have a university preference yet! </IonText>
       </IonRow>
 
     </IonGrid>

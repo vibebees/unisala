@@ -9,6 +9,7 @@ import {
   IonIcon,
   IonButton
 } from "@ionic/react"
+
 import { Link } from "react-router-dom"
 import SearchBox from "../../component/searchBox"
 import Authentication from "../../component/authentication"
@@ -111,6 +112,18 @@ export const screenGreaterThan1000 = () => {
             </Link>
           )
         })}
+        <Link to="/search?tab=uni" style={{ marginTop: "120px" }}>
+          <IonText
+            className="max-w-[250px] text-[#3880FF] text-center  font-semibold"
+            fill="solid"
+            style={{
+              "--background": "white",
+              "--background-hover": "#eee"
+            }}
+          >
+            <h1 className="py-4">Search Universities</h1>
+          </IonText>
+        </Link>
       </IonCard>
     </IonCol>
   )
@@ -296,3 +309,4 @@ export const screensMoreThan768 = ({
     </IonCol>
   )
 }
+

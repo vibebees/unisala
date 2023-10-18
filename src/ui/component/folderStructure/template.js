@@ -142,53 +142,16 @@ export const Folder = ({ allProps }) => {
 
   return (
     <>
-      <IonCol className="h-80 bg-neutral-50  px-0 shadow-md rounded-md flex justify-center flex-col items-center min-w-[250px] !shrink-0">
+      <IonCol className="h-48 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center w-40 shrink-0 m-0">
         <IconAtom icon={icon} className={folderSize} />
-        <div className="w-full">
+        <div>
           <h3 className="text-center px-2 leading-5 text-lg !font-semibold text-neutral-700">
             {name}
           </h3>
-          <IonCol
-            style={{
-              padding: 0,
-              margin: 0,
-              paddingLeft: "1rem",
-              marginBottom: "1rem",
-              marginTop: "0.7rem"
-            }}
-            className="items-start flex w-full flex-col gap-1"
-          >
-            <IonText className="font-medium text-neutral-600">
-              Requirements :
-            </IonText>
-            <IonText className="text-center !text-xs capitalize">
-              SAT Score :{" "}
-              <span className="font-medium text-neutral-700">
-                {sat.min} - {sat.max}{" "}
-              </span>
-            </IonText>
-            <IonText className="text-center !text-xs capitalize">
-              ACT Score :
-              <span className="font-medium text-neutral-700">
-                {act.min} - {act.max}
-              </span>
-            </IonText>
-
-            <IonText className="text-center !text-xs capitalize">
-              Level :
-              <span className="font-medium text-neutral-700">{level}</span>
-            </IonText>
-            <IonText className="text-center !text-xs capitalize">
-              Scholarship Amount :
-              <span className="font-medium text-neutral-700">
-                {" "}
-                {awards[0]?.scholarship_amount?.amount}
-              </span>
-            </IonText>
-          </IonCol>
+          <p className="text-center !text-xs capitalize">{level}</p>
         </div>
         {!routing && (
-          <div className="border-t  cursor-pointer w-full group hover:bg-neutral-100 border-neutral-200">
+          <div className="border-t mt-3 cursor-pointer w-full group hover:bg-neutral-100 border-neutral-200">
             <Modal
               ModalButton={SeeMoreButton()}
               ModalData={ModalData}
@@ -200,3 +163,4 @@ export const Folder = ({ allProps }) => {
     </>
   )
 }
+
