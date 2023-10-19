@@ -396,7 +396,7 @@ export const GetProfessor = gql`
   UniSearchDataList = (name) =>
     gql`
     query {
-      searchSchool(name: "${name}") {UniSearchDataList
+      searchSchool(name: "${name}") {
         name
         unitId
         address {
