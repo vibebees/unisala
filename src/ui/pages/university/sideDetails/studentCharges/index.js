@@ -1,12 +1,12 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { IonCard, IonCardContent, IonGrid } from "@ionic/react"
+import { IonCard } from "@ionic/react"
 import TableOne from "./template/TableOne"
 import TableTwo from "./template/TableTwo"
 import ApplicationCharge from "./template/ApplicationCharge"
 
 const index = () => {
-  const { uniData, sidebar } = useSelector((store) => store?.university)
+  const { uniData } = useSelector((store) => store?.university)
 
   const studentCharges = uniData?.studentCharges
 

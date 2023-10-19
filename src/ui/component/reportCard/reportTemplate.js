@@ -1,72 +1,60 @@
 // eslint-disable-next-line no-use-before-define
-import React, {useEffect} from "react"
-import {
-    IonCard,
-    IonCardContent, IonCol, IonGrid, IonIcon, IonRow,
-    IonText,
-    IonTitle
-} from "@ionic/react"
-import { arrowDown, arrowUp } from "ionicons/icons"
-import { useSelector } from "react-redux"
-  import "./Report.css"
-import {handleResize} from "../../../utils/screen"
+import React, { useEffect } from "react"
+import { IonCard, IonGrid } from "@ionic/react"
 
-import {ReportHeader} from "./molecules/reportHeader"
-import {ReportAverage} from "./organisms/reportAverage"
-import {ReportBody} from "./organisms/reportBody"
+import "./Report.css"
+import { handleResize } from "../../../utils/screen"
+import CardHeader from "ui/component/Reusable/cardHeader"
 
-export const ReportTemplate = ({allProps}) => {
-    const {
-        width,
-        more,
-        report,
-        setRecords,
-        isSideBar
-    } = allProps
+import { ReportAverage } from "./organisms/reportAverage"
+import { ReportBody } from "./organisms/reportBody"
 
-    useEffect(() => {
-        setRecords([
-            { title: "Academics", report: report?.academics },
-            { title: "Diversity", report: report?.diversity },
-            { title: "Value", report: report?.value },
-            { title: "Athletics", report: report?.atheltics },
-            { title: "Party Scene", report: report?.partyScene },
-            { title: "Professors", report: report?.professors },
-            { title: "Location", report: report?.location },
-            { title: "Dorms", report: report?.dorms },
-            { title: "Campus Food", report: report?.campusFood },
-            { title: "Student Life", report: report?.studentLife },
-            {title: "Safety", report: report?.safety},
-            { title: "Professors", report: report?.professors}
-         ])
-    }, [report])
+export const ReportTemplate = ({ allProps }) => {
+  const { width, more, report, setRecords, isSideBar } = allProps
 
-     useEffect(() => {
-        window.addEventListener("resize", handleResize)
-        return () => {
-            window.removeEventListener("resize", handleResize)
-        }
-    })
+  useEffect(() => {
+    setRecords([
+      { title: "Academics", report: report?.academics },
+      { title: "Diversity", report: report?.diversity },
+      { title: "Value", report: report?.value },
+      { title: "Athletics", report: report?.atheltics },
+      { title: "Party Scene", report: report?.partyScene },
+      { title: "Professors", report: report?.professors },
+      { title: "Location", report: report?.location },
+      { title: "Dorms", report: report?.dorms },
+      { title: "Campus Food", report: report?.campusFood },
+      { title: "Student Life", report: report?.studentLife },
+      { title: "Safety", report: report?.safety },
+      { title: "Professors", report: report?.professors }
+    ])
+  }, [report])
 
-    return isSideBar?.reportEmpty ? null : (
-        <IonCard
-            style={{
-                margin: "15px 0px 0px 0px"
-            }}
-            className="ion-margin-top"
-        >
-           <ReportHeader allProps={allProps}/>
-           <ReportAverage allProps={allProps}/>
-            <IonGrid
-                style={{
-                    margin: 0,
-                    padding: "0px 0px 30px 0px",
-                    height: more || width >= 768 ? "auto" : 225,
-                    overflow: "hidden",
-                    position: "relative"
-                }}
-            >
-                {/* {width < 768 && (
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  })
+
+  return isSideBar?.reportEmpty ? null : (
+    <IonCard
+      style={{
+        margin: "15px 0px 0px 0px"
+      }}
+      className="ion-margin-top"
+    >
+      <CardHeader header={"Report"} />
+      <ReportAverage allProps={allProps} />
+      <IonGrid
+        style={{
+          margin: 0,
+          padding: "0px 0px 30px 0px",
+          height: more || width >= 768 ? "auto" : 225,
+          overflow: "hidden",
+          position: "relative"
+        }}
+      >
+        {/* {width < 768 && (
                     <div
                         onClick={() => {
                             setMore(!more)
@@ -94,8 +82,8 @@ export const ReportTemplate = ({allProps}) => {
                     </div>
                 )} */}
 
-                <ReportBody allProps={allProps}/>
-            </IonGrid>
-        </IonCard>
-    )
+        <ReportBody allProps={allProps} />
+      </IonGrid>
+    </IonCard>
+  )
 }

@@ -1,55 +1,15 @@
-import React, { useEffect, useState } from "react"
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonText,
-  IonTitle,
-  IonToolbar
-} from "@ionic/react"
-import { UniProfile } from "../../uniProfile"
+import React from "react"
+import { IonContent } from "@ionic/react"
 import Discussion from "../../Discussion"
 
-import { useDispatch, useSelector } from "react-redux"
-import { getUniData } from "../../../../../store/action"
-import PreLoader from "../../../../component/preloader"
-import { isSideBar } from "../../../../../store/action/University"
-
-import useDocTitle from "../../../../../hooks/useDocTitile"
 import Review from "../../Discussion/Post"
-import { useHistory, useLocation } from "react-router"
-import { NoDataDefaultCard } from "./noDataCard"
+
 import { HeaderNavigator } from "../molecules/headerNavigator"
 import { SideNavigator } from "../molecules/sideNavigator"
 import { UniversityHeader } from "../molecules/header"
 
 export const UniversityBuild = ({ allProps }) => {
-  const {
-    data,
-    app,
-    profile,
-    statistics,
-    fees,
-    libraries,
-    grant,
-    testScore,
-    similarCollages,
-    report,
-    campusLife,
-    website,
-    Professors,
-    AdmisionAnimate,
-    LibrariesAnimate,
-    appState,
-    activeTab,
-    UniScroll,
-    uniData,
-    interviewExperience,
-    GrantAnimate,
-    scholarshipsEmpty,
-    StudentChargesEmpty
-  } = allProps
+  const { data, app, profile, UniScroll } = allProps
 
   return (
     <IonContent>

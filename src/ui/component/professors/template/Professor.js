@@ -1,30 +1,27 @@
 import React, { useState } from "react"
-import {
-  IonCard,
-  IonCardContent,
-  IonRow,
-  IonIcon,
-  IonSearchbar
-} from "@ionic/react"
-import { chevronBack, chevronForward } from "ionicons/icons"
-import ProfessorCard from "../atoms/ProfessorCard"
+import { IonCard, IonRow, IonSearchbar } from "@ionic/react"
+import CardHeader from "ui/component/Reusable/cardHeader"
+import ProfessorCard from "../moecules/ProfessorCard"
+import "./professors.css"
 
-const Professor = ({ data }) => {
+const Professor = ({ allProps }) => {
   const [majorSearch, setMajorSearch] = useState("")
-  const [newData, setNewData] = useState(data)
+  const [newData, setNewData] = useState(allProps)
 
   const handleChange = (ev) => {
     const query = ev.target.value
     setMajorSearch(query)
     if (query.length === 0) {
-      setNewData(data)
+      setNewData(allProps)
     } else {
-      const newData = data.filter((item) =>
+      const newData = allProps.filter((item) =>
         item.professorName.toLowerCase().includes(query.toLowerCase())
       )
       setNewData(newData)
     }
   }
+
+  if (allProps.length === 0) return null
 
   return (
     <>
@@ -34,9 +31,7 @@ const Professor = ({ data }) => {
           margin: "10px 0px 0px 0px"
         }}
       >
-        <IonCardContent>
-          <h1>Professors</h1>
-        </IonCardContent>
+        <CardHeader header={"Professor"} />
         <div className="field-search-field">
           <IonSearchbar
             animated={true}
@@ -54,7 +49,7 @@ const Professor = ({ data }) => {
           {newData?.map((item, index) => {
             return <ProfessorCard data={item} key={index} />
           })}
-          <div
+          {/* <div
             style={{
               borderTop: "1px solid #C4C4C4",
               width: "100%",
@@ -75,9 +70,9 @@ const Professor = ({ data }) => {
               }}
               icon={chevronForward}
             />
-          </div>
+          </div> */}
         </IonRow>
-        {!data?.length === 0 && (
+        {!allProps?.length === 0 && (
           <IonRow>
             <h1 className="text-center pt-1 pb-1" style={{ width: "100%" }}>
               No data

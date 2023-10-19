@@ -1,13 +1,4 @@
-import React, { useEffect, useState } from "react"
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonText,
-  IonTitle,
-  IonToolbar
-} from "@ionic/react"
+import React, { useEffect } from "react"
 
 import { useDispatch } from "react-redux"
 import { getUniData } from "../../../../../store/action"
@@ -45,7 +36,8 @@ export const UniversityTemplate = ({ allProps }) => {
       scholarshipsEmpty,
       studentChargesEmpty,
       statisticsEmpty,
-      handleScrolling
+      handleScrolling,
+      admissionEmpty
     } = allProps,
     dispatch = useDispatch()
 
@@ -83,7 +75,8 @@ export const UniversityTemplate = ({ allProps }) => {
         interviewExperienceEmpty,
         scholarshipsEmpty,
         studentChargesEmpty,
-        statisticsEmpty
+        statisticsEmpty,
+        admissionEmpty
       })
     )
   }, [
@@ -97,7 +90,8 @@ export const UniversityTemplate = ({ allProps }) => {
     professorsEmpty,
     interviewExperienceEmpty,
     scholarshipsEmpty,
-    statisticsEmpty
+    statisticsEmpty,
+    admissionEmpty
   ])
 
   useEffect(() => {
