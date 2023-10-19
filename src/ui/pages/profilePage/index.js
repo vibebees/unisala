@@ -156,6 +156,9 @@ const ProfilePage = () => {
     <IonContent>
       <IonGrid className="max-width-container">
         <IonRow>
+          {windowWidth >= 1080 && (
+            <IonCol className="sidebar">{screenGreaterThan1000()}</IonCol>
+          )}
           <IonCol>
             <ProfileHeader tab={tab} setTab={setTab} data={profileHeaderData} />
             {tab === 0 && getUser?.user && (
@@ -165,8 +168,6 @@ const ProfilePage = () => {
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
           </IonCol>
-
-          {windowWidth >= 1000 && views.greaterThan100}
         </IonRow>
       </IonGrid>
     </IonContent>
@@ -174,4 +175,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage
-
