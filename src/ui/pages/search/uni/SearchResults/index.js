@@ -16,7 +16,6 @@ import { USER_SERVICE_GQL } from "../../../../../servers/types"
 function index() {
   const { searchData } = useSelector((store) => store?.university || [])
 
-  console.log({ searchData })
   return searchData?.length ? (
     <>
       {Array.isArray(searchData) &&
@@ -43,3 +42,4 @@ function index() {
 }
 
 export default index
+
