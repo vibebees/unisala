@@ -23,17 +23,7 @@ const HomeFeed = ({userInfo}) => {
             }
             return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
-                <CourseCard
-                  image={post?.image}
-                  name={post?.name}
-                  description={post?.description}
-                  city={post?.location}
-                  review={post?.review}
-                  average={post?.averageRating}
-                  acceptanceRate={post?.acceptanceRate}
-                  act={post?.actRange}
-                  type={post?.type}
-                />
+                <CourseCard allProps={post} />
               </Link>
             ) : (
               <div

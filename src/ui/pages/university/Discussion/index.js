@@ -39,7 +39,9 @@ export default function Discussion({ uniId }) {
     },
     update: (cache, { data: { addPost } }) => {
       const post = {
-        ...addPost?.post,
+        date: addPost.post.date,
+        postText: addPost.post.postText,
+        _id: addPost.post._id,
         user: {
           _id: user._id,
           username: user.username,
@@ -48,26 +50,28 @@ export default function Discussion({ uniId }) {
           picture: user.picture || null
         },
         upVoteCount: 0,
+        images: addPost.post.images || [],
         postCommentsCount: 0,
         upVoted: false,
         saved: false,
+        userId: null,
         __typename: "Post"
       }
 
-      const data = cache.readQuery({
+      const { getUserPost } = cache.readQuery({
         query: GetUserPost,
-        variables: { unitId: uniId, page: 0, pageSize: 10, userId: user._id },
+        variables: { unitId: uniId, page: 0 },
         context: { server: "USER_SERVICE_GQL" }
       })
 
       cache.writeQuery({
         query: GetUserPost,
-        variables: { unitId: uniId, page: 0, pageSize: 10, userId: user._id },
+        variables: { unitId: uniId, page: 0 },
         context: { server: "USER_SERVICE_GQL" },
         data: {
-          addPost: {
-            addPost,
-            Posts: [post, addPost.Posts]
+          getUserPost: {
+            ...getUserPost,
+            Posts: [post, ...getUserPost.Posts]
           }
         }
       })

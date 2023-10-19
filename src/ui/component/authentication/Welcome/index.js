@@ -1,92 +1,86 @@
-/* eslint-disable react/jsx-key */
-import React, { useState, createContext } from "react"
-import FirstStep from "./Steps/FirstStep"
-import { useQuery } from "@apollo/client"
-import { GetAllQuestions } from "../../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../../servers/types"
-import SecondStep from "./Steps/SecondStep"
-import ThirdStep from "./Steps/ThirdStep"
-import FourthStep from "./Steps/FourthStep"
-import FifthStep from "./Steps/FifthStep"
+import React, {useState, createContext, useMemo, useEffect, useRef} from "react"
+import {IonGrid, IonRow, IonCol, IonModal, IonContent, IonButton, IonIcon} from "@ionic/react"
+import Welcome from "./Steps/welcome"
+import AskMajor from "./Steps/askMajor"
+import AskCurrentStatus from "./Steps/askCurrentStatus"
+import AskUniversity from "./Steps/askUniversity"
+import AskLevelofStudy from "./Steps/askLevelOfStudy"
 import Indicators from "./Steps/Indicators"
 import StepsButtons from "./Steps/StepsButtons"
+import {useQuery} from "@apollo/client"
+import {GetAllQuestions} from "../../../../graphql/user"
+import {USER_SERVICE_GQL} from "../../../../servers/types"
 import clsx from "clsx"
 import PreLoader from "../../preloader"
-import { IonCard } from "@ionic/react"
-import "./Steps/index.css"
+import "./index.css"
+
 export const WelcomeData = createContext()
-const index = ({ setNewUser }) => {
+
+const Index = ({allProps}) => {
   const [currentStep, setCurrentStep] = useState(1)
-
   const [welcomeFormdata, setWelcomeFormdata] = useState({
-      interestedSubjects: [],
-      userStatus: "",
-      interestedUni: [],
-      studyLevel: ""
-    }),
-    { data, loading, error } = useQuery(GetAllQuestions, {
-      context: { server: USER_SERVICE_GQL }
-    })
+    interestedSubjects: [],
+    userStatus: "",
+    interestedUni: [],
+    studyLevel: ""
+  }),
+  {setNewUser, newUser} = allProps
 
-  if (loading) {
-    return (
-      <>
-        <PreLoader />
-      </>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="text-center text-red-500 py-4">Something went wrong</div>
-    )
-  }
+  const {data, loading, error} = useQuery(GetAllQuestions, {
+    context: {server: USER_SERVICE_GQL}
+  }),
+  questions = data?.getAllQuestions?.questions
 
   const stepComponents = [
-    <FirstStep />,
-    <SecondStep />,
-    <ThirdStep />,
-    <FourthStep />,
-    <FifthStep />
-  ]
+    <Welcome key="welcome" />,
+    <AskCurrentStatus key="userStatus" />,
+    <AskMajor key="interestedSubjects" />,
+    <AskLevelofStudy key="studyLevel" />,
+    <AskUniversity key="interestedUni" />
+  ],
+    modalRef = useRef(null)
+
+if (loading) return <PreLoader />
+  if (error) return <div className="text-center text-red-500 py-4">Something went wrong</div>
 
   return (
-    <>
-      <div className="fixed  left-0 top-0 z-[200] max-md:px-8 py-5 bg-black bg-opacity-30 h-full grid place-items-center w-full">
-        <div className="h-96 relative z-50 max-md:h-[80vh]  bg-white shadow-lg  overflow-hidden   max-w-3xl w-full">
-          <WelcomeData.Provider
-            value={{
-              data,
-              welcomeFormdata,
-              setWelcomeFormdata
-            }}
-          >
+<IonModal ref={modalRef} isOpen={newUser}>
+      <WelcomeData.Provider value={{data, welcomeFormdata, setWelcomeFormdata}}>
+        <IonGrid >
+          <IonRow>
             <Indicators currentStep={currentStep} />
-            <div className="flex w-full">
-              {stepComponents.map((step, index) => (
-                <div
-                  key={index}
-                  className={clsx("absolute full-size", {
-                    "z-1000": currentStep === index + 1,
-                    "z-0 opacity-0 pointer-events-none": currentStep !== index + 1,
-                    "fade-enter": currentStep === index + 1,
-                    "fade-exit": currentStep !== index + 1
-                  })}
-                >
-                  <IonCard className="no-shadow">{step}</IonCard>
-                </div>
-              ))}
-            </div>
-            <StepsButtons
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-              setNewUser={setNewUser}
-            />
-          </WelcomeData.Provider>
-        </div>
-      </div>
-    </>
+          </IonRow>
+          <IonRow>
+
+            {stepComponents.map((step, index) => (
+               <div
+               key={index}
+               className={clsx("step-container absolute left-0 w-full", {
+                 "z-10": currentStep === index + 1,
+                 "z-0 opacity-0": currentStep !== index + 1,
+                 "fade-enter": currentStep === index + 1,
+                 "fade-exit": currentStep !== index + 1
+               })}
+              >
+
+                  {
+                    index === 0 ? step : React.cloneElement(step, { question: questions[index - 1], category: questions[index - 1].category })
+                  }
+
+              </div>
+            ))}
+
+            <IonRow>
+              <StepsButtons
+                currentStep={currentStep}
+                setCurrentStep={setCurrentStep}
+                allProps={{...allProps, currentStep, setCurrentStep, modalRef}}
+              />
+            </IonRow>
+          </IonRow>
+        </IonGrid>
+      </WelcomeData.Provider>
+    </IonModal>
   )
 }
-
-export default index
+export default Index

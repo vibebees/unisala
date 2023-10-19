@@ -65,10 +65,10 @@ export const ProfilePop = ({
       <div className="profile-drop-div">
         <IonButtons
           onClick={() => {
-            setPopoverOpen(false)
-            setActiveNavDrop({
-              profile: false
-            })
+            // setPopoverOpen(false)
+            // setActiveNavDrop({
+            //   profile: false
+            // })
             localStorage.clear()
             window.location.reload()
           }}

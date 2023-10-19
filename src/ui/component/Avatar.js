@@ -4,7 +4,13 @@ import {thumbs} from "@dicebear/collection"
 import {getImage} from "../../servers/s3.configs"
 
 export function Avatar({profilePic, username}) {
-  const [profileImage, setProfileImage] = useState(profilePic)
+  const [profileImage, setProfileImage] = useState()
+
+  useEffect(() => {
+    if (profileImage) {
+      setProfileImage(profilePic)
+    }
+  }, [])
 
   const avatar = useMemo(() => {
     // eslint-disable-next-line no-sync
@@ -20,9 +26,9 @@ export function Avatar({profilePic, username}) {
   }, [])
   return (
     <img
-      src={profileImage || avatar}
+      src={profileImage || avatar || ""}
       className="user-profile__img"
-      alt={username}
+      alt={"unisala"}
       style={{
         width: "100%",
         height: "100%",

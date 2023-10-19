@@ -52,17 +52,7 @@ function index({ userId, firstName }) {
               Posts.map((item, index) => {
                 return item.type === "university" ? (
                   <Link key={index} to={`/university/${index}`}>
-                    <CourseCard
-                      image={item.image}
-                      Title={item.Title}
-                      description={item.description}
-                      locations={item.location}
-                      review={item.review}
-                      avarage={item.avarage}
-                      acceptance={item.acceptance}
-                      act={item.act}
-                      type={item.type}
-                    />
+                    <CourseCard allProps={item}/>
                   </Link>
                 ) : (
                   <div

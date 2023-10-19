@@ -19,6 +19,7 @@ import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
+import clsx from "clsx"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -198,16 +199,37 @@ const Thread = ({ thread, refetch }) => {
             </>
           )}
         </div>
-        <Link
-          to={`/thread/${_id}`}
-          className="thread_image  w-max relative block before:absolute before:top-0 before:left-0 before:z-10 before:content-[''] before:w-full before:h-full before:bg-[#00000013]"
-        >
-          {images?.length > 0 && images.map((img, index) => <img src={img} key= {index} alt="" />)}
-          {postImage && <img src={postImage} alt="unisala-post" />}
+        <Link to={`/thread/${_id}`} className={clsx("  flex")}>
+          {images?.length > 0 && (
+            <>
+              <img
+                src={images[0]}
+                alt="images"
+                className={clsx(
+                  " object-cover",
+                  images?.length > 1
+                    ? "w-1/2"
+                    : "w-full max-w-[500px] shadow-md"
+                )}
+              />
 
-          <h1 className="absolute  top-[50%] left-[50%] origin-top-left text-2xl text-gray-800">
-            {images?.length - 1 > 0 && `+${images?.length - 1}`}
-          </h1>
+              {images?.length > 1 && (
+                <div className="w-1/2  relative">
+                  <img
+                    src={images[1]}
+                    alt="images"
+                    className="shrink-0   object-cover w-max"
+                  />
+                  <div className="absolute grid place-content-center  bg-neutral-950 z-10 bg-opacity-40 top-0 left-0 right-0 bottom-0 w-full h-full ">
+                    <h3 className="text-neutral-50 font-semibold text-2xl">
+                      {" "}
+                      +{images?.length - 1}
+                    </h3>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </Link>
         <div className="thread_footer">
           <Upvote
@@ -231,7 +253,7 @@ const Thread = ({ thread, refetch }) => {
 
       {/* check if the post is that of the logged in user, then only show options to
       delete and update */}
-      {loggedinUser?.username === thread.user.username && (
+      {loggedinUser?.username === thread?.user?.username && (
         <div className="absolute top-4 right-8">
           <div className="relative">
             <button onClick={() => setShowOptions((prev) => !prev)}>

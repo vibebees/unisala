@@ -12,7 +12,6 @@ function Upvote({ upVoteCount, postId, upVoted, isReply }) {
     upVoted: upVoted,
     upVoteCount: upVoteCount
   })
-  console.log("upvote rendereddddd")
   const [upVote] = useMutation(UpVote, {
     variables: { postId },
     context: { server: USER_SERVICE_GQL },

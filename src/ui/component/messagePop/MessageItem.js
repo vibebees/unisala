@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel, IonRow, IonText } from "@ionic/react"
 import { addCircle, helpCircle, informationCircle } from "ionicons/icons"
+import { Avatar } from "../Avatar"
 export const MessageItem = ({ firstName, username, lastName, picture, _id, image, message = {}, seen = false }) => {
 
     // const [seen, setSeen] = useState(false)
@@ -19,9 +20,11 @@ export const MessageItem = ({ firstName, username, lastName, picture, _id, image
                 }}
                 lines="none"
             >
+
                 <IonAvatar slot="start">
-                    <img src={"https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"} />
-                </IonAvatar>
+                <Avatar profilePic={firstName + " " + lastName} username={firstName + lastName} />
+
+                 </IonAvatar>
                 <IonLabel>
                     <div className="flex ">
                         {" "}
