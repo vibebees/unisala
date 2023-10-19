@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import {
   IonGrid,
   IonRow,
@@ -28,29 +28,31 @@ export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
 
   const {
-    width,
-    newUser,
-    user,
-    loggedIn,
-    views,
-    refetch,
-    userInfo = {},
-    generateUserGuide
-  } = allProps || {},
-    {interestedUni} = userInfo || {},
-    [unitId] = interestedUni || []
-  const [userGuide, setUserGuide] = useState([])
+      width,
+      newUser,
+      user,
+      loggedIn,
+      views,
+      refetch,
+      userInfo = {},
+      generateUserGuide
+    } = allProps || {},
+    { interestedUni } = userInfo || {},
+    [unitId] = interestedUni || [],
+    { schoolData } = allProps || {},
+    userGuide = generateUserGuide(userInfo)
 
-  const {loading: schoolLoading, data: schoolData} = useQuery(getUpdatedSchoolInfo(({unitId})), {
-    skip: !unitId,
-    fetchPolicy: "cache-and-network",
-    variables: { unitId: unitId },
-    context: { server: UNIVERSITY_SERVICE_GQL }
-  })
-  useEffect(() => {
-    const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
-      setUserGuide(generatedUserGuide)
-    }, [schoolData])
+  if (userInfo) {
+    const { loading: schoolLoading, data: schoolData } = useQuery(
+      getUpdatedSchoolInfo(unitId),
+      {
+        context: { server: UNIVERSITY_SERVICE_GQL }
+      }
+    )
+    allProps.schoolData = schoolData?.getUpdatedSchoolInfo?.elevatorInfo
+    allProps.schoolDataLoading = schoolLoading
+    allProps.onSearch = false
+  }
 
   return (
     <IonContent color="light">

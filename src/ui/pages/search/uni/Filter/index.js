@@ -10,7 +10,10 @@ import {
 import "./index.css"
 import { useEffect, useState } from "react"
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import {
+  UNIVERSITY_SERVICE_GQL,
+  USER_SERVICE_GQL
+} from "../../../../../servers/types"
 import { UniFilterResults } from "../../../../../graphql/uni"
 import { searchGetSuccess } from "../../../../../store/action"
 import { useDispatch } from "react-redux"
@@ -20,14 +23,16 @@ function index() {
   const [act, setAct] = useState(1)
   const [gpa, setGpa] = useState(3)
   const { data, loading, refetch } = useQuery(UniFilterResults, {
-    context: { server: USER_SERVICE_GQL },
+    context: { server: UNIVERSITY_SERVICE_GQL },
     fetchPolicy: "network-only"
   })
+
+  console.log({ data }, "dataaaaaaaaaaaaaa")
   const dispatch = useDispatch()
   useEffect(() => {
     const interval = setTimeout(() => {
       if (gpa > 3 || sat > 400 || act > 1) {
-        refetch({ page: 1, pagesize: 10, gpa: gpa, act: act })
+        refetch()
         console.log(data?.searchScholarship?.scholarships)
       }
     }, 1000)
@@ -305,3 +310,4 @@ function index() {
 }
 
 export default index
+
