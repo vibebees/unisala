@@ -131,7 +131,7 @@ function index() {
         Remove Filters
       </IonButton>
       <IonCardContent>
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">College Type</h2>
           <div className="field search-field">
             <IonCheckbox slot="start" />
@@ -162,9 +162,9 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Other</IonLabel>
           </div>
-        </div>
+        </div> */}
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Majors</h2>
           <div className="field search-field">
             <IonSelect
@@ -182,7 +182,7 @@ function index() {
               </IonSelectOption>
             </IonSelect>
           </div>
-        </div>
+        </div> */}
 
         <div className="search-control">
           <IonLabel>States</IonLabel>
@@ -210,11 +210,11 @@ function index() {
           </div>
         </div> */}
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Cost (net price)</h2>
           <IonLabel>Select a value</IonLabel>
           <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
-        </div>
+        </div> */}
 
         {/* <div className="search-control">
           <h2 className="search-control__label">Student body size</h2>
@@ -287,7 +287,7 @@ function index() {
           </IonSelect>
         </div>
 
-        <div className="search-control">
+        {/* <div className="search-control">
           <h2 className="search-control__label">Admission process</h2>
           <div className="field search-field">
             <IonSelect
@@ -340,7 +340,7 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Not selective</IonLabel>
           </div>
-        </div>
+        </div> */}
 
         {/* <div className="search-control">
           <h2 className="search-control__label">Religious affiliation</h2>
