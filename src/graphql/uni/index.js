@@ -417,18 +417,22 @@ export const GetProfessor = gql`
     }`,
   UniFilterResults = gql`
     query uniFilterResults {
-      searchScholarship(satScore: { min: 400, max: 1200 }) {
-        status {
-          success
-          message
-        }
+      searchScholarship(page: 1, pageSize: 10) {
         scholarships {
-          level
           university_name
-          sat {
-            max
-            min
+          unitId
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
           }
+          alias
+          ownType
+          tags
+          missionStatement
+          graduateOffering
+          undergraduateOffering
+          pictures
         }
       }
     }

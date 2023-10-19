@@ -67,9 +67,7 @@ function index() {
       params === "user" ||
       params === "post"
     ) {
-      console.log("uhohhhh")
       setTab(params)
-
     } else {
       console.log("heree")
       setTab("all")
@@ -173,10 +171,7 @@ function index() {
                     unidata?.searchSchool.length ? (
                       unidata?.searchSchool.map((data, index) => {
                         return (
-                          <Link
-                            to={`/university/${data?.name}`}
-                            key={index}
-                          >
+                          <Link to={`/university/${data?.name}`} key={index}>
                             <CourseCard allProps={data} />
                           </Link>
                         )
