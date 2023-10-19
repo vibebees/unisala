@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, {useEffect, useState} from "react"
 import {
   IonGrid,
   IonRow,
@@ -7,52 +7,48 @@ import {
   IonCard,
   IonItem
 } from "@ionic/react"
-import { CreateAPostCard } from "../../component/post/index"
-import { getUserProfile } from "../../../graphql/user"
+import {CreateAPostCard} from "../../component/post/index"
+ import { getUserProfile } from "../../../graphql/user"
 import UnisalaIntro from "./UnisalaIntro"
-import "./Home.css"
+ import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { InfinteFeed } from "./InfiniteScrollFeed"
 import AffliatedUniCard from "../../component/courseCard"
-import { Link } from "react-router-dom"
-import { useQuery } from "@apollo/client"
-import { getUpdatedSchoolInfo } from "../../../graphql/uni"
-import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
-import { LikeATag } from "../../component/tags"
-import { UserGuide } from "../../component/userGuide"
-import { FolderStructure } from "../../component/folderStructure"
-import { book, schoolOutline, schoolSharp } from "ionicons/icons"
+import {Link} from "react-router-dom"
+import {useQuery} from "@apollo/client"
+import {getUpdatedSchoolInfo} from "../../../graphql/uni"
+import {UNIVERSITY_SERVICE_GQL} from "../../../servers/types"
+import {LikeATag} from "../../component/tags"
+import {UserGuide} from "../../component/userGuide"
+import {FolderStructure} from "../../component/folderStructure"
+import {book, schoolOutline, schoolSharp} from "ionicons/icons"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
 
   const {
-      width,
-      newUser,
-      user,
-      loggedIn,
-      views,
-      refetch,
-      userInfo = {},
-      generateUserGuide
-    } = allProps || {},
-    { interestedUni } = userInfo || {},
-    [unitId] = interestedUni || [],
-    { schoolData } = allProps || {},
-    userGuide = generateUserGuide(userInfo)
+    width,
+    newUser,
+    user,
+    loggedIn,
+    views,
+    refetch,
+    userInfo = {},
+    generateUserGuide
+  } = allProps || {},
+    {interestedUni} = userInfo || {},
+    [unitId] = interestedUni || []
+  const [userGuide, setUserGuide] = useState([])
+  const [userSchoolData, setUserSchoolData] = useState({})
 
-  if (userInfo) {
-    const { loading: schoolLoading, data: schoolData } = useQuery(
-      getUpdatedSchoolInfo(unitId),
-      {
-        context: { server: UNIVERSITY_SERVICE_GQL }
-      }
-    )
-    allProps.schoolData = schoolData?.getUpdatedSchoolInfo?.elevatorInfo
-    allProps.schoolDataLoading = schoolLoading
-    allProps.onSearch = false
-  }
+    const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
+      context: { server: UNIVERSITY_SERVICE_GQL }
+    })
+    useEffect(() => {
+      const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
+      setUserGuide(generatedUserGuide)
+    }, [schoolData])
 
   return (
     <IonContent color="light">
@@ -82,16 +78,11 @@ export const Home = ({ allProps }) => {
           >
             {loggedIn ? (
               <>
-                <CreateAPostCard allProps={allProps} />
-                <FolderStructure
-                  allProps={{
-                    ...allProps,
-                    folderName: "",
-                    data: userGuide
-                  }}
-                />
+                <FolderStructure allProps={{...allProps, folderName: "", data: userGuide}} />
 
-                <InfinteFeed userInfo={user} allProps={allProps} />
+                <CreateAPostCard allProps={allProps} />
+
+                 <InfinteFeed userInfo={user} allProps={allProps} />
               </>
             ) : (
               <UnisalaIntro />
@@ -99,12 +90,9 @@ export const Home = ({ allProps }) => {
           </IonCol>
           {/* view on the left famous school */}
           {width > 1000 && views.greaterThan1000}
-          {loggedIn && newUser && (
-            <WelcomeSteps allProps={{ ...allProps, refetch }} />
-          )}
+          {loggedIn && newUser && <WelcomeSteps allProps={{...allProps, refetch}} />}
         </IonRow>
       </IonGrid>
     </IonContent>
   )
 }
-
