@@ -1,5 +1,4 @@
 import {
-  IonButton,
   IonCard,
   IonCardContent,
   IonCheckbox,
@@ -18,119 +17,41 @@ import {
 import { UniFilterResults } from "../../../../../graphql/uni"
 import { searchGetSuccess } from "../../../../../store/action"
 import { useDispatch } from "react-redux"
-import { statesArray } from "utils/lib/states"
 
-import Select from "react-select"
 function index() {
-  const SAT_SCORES = [
-    {
-      min: 400,
-      max: 600
-    },
-    {
-      min: 600,
-      max: 800
-    },
-    {
-      min: 800,
-      max: 1000
-    },
-    {
-      min: 1000,
-      max: 1200
-    },
-    {
-      min: 1200,
-      max: 1400
-    },
-    {
-      min: 1400,
-      max: 1600
-    }
-  ]
-
-  const ACT_SCORE = [
-    {
-      min: 8,
-      max: 12
-    },
-    {
-      min: 12,
-      max: 16
-    },
-    {
-      min: 16,
-      max: 20
-    },
-    {
-      min: 24,
-      max: 28
-    },
-    {
-      min: 28,
-      max: 32
-    },
-    {
-      min: 32,
-      max: 36
-    }
-  ]
-
-  const INITIAL_QUERY_DATA = {
-    satScore: { min: 0, max: 0 },
-    actScore: { min: 0, max: 0 },
-    page: 1,
-    pageSize: 10,
-    state: ""
-  }
-
-  const [sat, setSat] = useState("Sat Score")
-  const [act, setAct] = useState("Act Score")
-
-  const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
-  const [getScholarship, { data }] = useLazyQuery(UniFilterResults, {
-    context: { server: UNIVERSITY_SERVICE_GQL }
+  const [sat, setSat] = useState(400)
+  const [act, setAct] = useState(1)
+  const [gpa, setGpa] = useState(3)
+  const { data, loading, refetch } = useQuery(UniFilterResults, {
+    context: { server: UNIVERSITY_SERVICE_GQL },
+    fetchPolicy: "network-only"
   })
+
+  console.log({ data }, "dataaaaaaaaaaaaaa")
   const dispatch = useDispatch()
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      if (gpa > 3 || sat > 400 || act > 1) {
+        refetch()
+        console.log(data?.searchScholarship?.scholarships)
+      }
+    }, 1000)
 
-  const handleData = (e, identify) => {
-    let value
-    if (identify === "state") {
-      value = e.label
-    } else {
-      value = e.detail.value
-    }
-
-    if (identify === "satScore") {
-      setSat(`${value.min} - ${value.max}`)
-    }
-    if (identify === "actScore") {
-      setAct(`${value.min} - ${value.max}`)
-    }
-
-    setQueryData((prev) => ({
-      ...prev,
-      [identify]: value
-    }))
-    getScholarship({ variables: { ...queryData, [identify]: value } })
-  }
+    return () => clearTimeout(interval)
+  }, [sat, act, gpa])
 
   useEffect(() => {
-    dispatch(searchGetSuccess(data?.searchScholarship?.scholarships))
+    console.log("updating storee.................")
+    if (data?.searchScholarship?.scholarships?.length > 0) {
+      dispatch(searchGetSuccess(data?.searchScholarship?.scholarships))
+    }
   }, [data])
 
+  console.log({ data: data?.searchScholarship?.scholarships })
   return (
-    <IonCard className="filter-card-wrapper relative">
-      <IonButton
-        className="text-xs absolute right-1 top-1 "
-        size="small"
-        fill="clear"
-        onClick={() => setQueryData(INITIAL_QUERY_DATA)}
-      >
-        Remove Filters
-      </IonButton>
+    <IonCard className="filter-card-wrapper">
       <IonCardContent>
-        {/* <div className="search-control">
+        <div className="search-control">
           <h2 className="search-control__label">College Type</h2>
           <div className="field search-field">
             <IonCheckbox slot="start" />
@@ -161,9 +82,9 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Other</IonLabel>
           </div>
-        </div> */}
+        </div>
 
-        {/* <div className="search-control">
+        <div className="search-control">
           <h2 className="search-control__label">Majors</h2>
           <div className="field search-field">
             <IonSelect
@@ -181,16 +102,6 @@ function index() {
               </IonSelectOption>
             </IonSelect>
           </div>
-        </div> */}
-
-        <div className="search-control">
-          <IonLabel>States</IonLabel>
-          <Select
-            options={statesArray}
-            isSearchable
-            placeholder="Select a state"
-            onChange={(e) => handleData(e, "state")}
-          />
         </div>
 
         {/* <div className="search-control">
@@ -209,11 +120,11 @@ function index() {
           </div>
         </div> */}
 
-        {/* <div className="search-control">
+        <div className="search-control">
           <h2 className="search-control__label">Cost (net price)</h2>
           <IonLabel>Select a value</IonLabel>
           <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
-        </div> */}
+        </div>
 
         {/* <div className="search-control">
           <h2 className="search-control__label">Student body size</h2>
@@ -256,37 +167,30 @@ function index() {
         </div> */}
 
         <div className="search-control">
-          <h2 className="search-control__label mb-4">Test scores</h2>
+          <h2 className="search-control__label">Test scores</h2>
           <IonLabel>SAT:</IonLabel>
-          <IonSelect
-            interface="popover"
-            placeholder={sat}
-            className="select-field"
-            onIonChange={(e) => handleData(e, "satScore")}
-          >
-            {SAT_SCORES.map((val, i) => (
-              <IonSelectOption key={i} value={val}>
-                {val.min} - {val.max}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-
+          <IonRange
+            pin={true}
+            min={400}
+            max={1600}
+            pinFormatter={(value) => {
+              setSat(value)
+              return value
+            }}
+          ></IonRange>
           <IonLabel>ACT:</IonLabel>
-          <IonSelect
-            interface="popover"
-            placeholder={act}
-            className="select-field"
-            onIonChange={(e) => handleData(e, "actScore")}
-          >
-            {ACT_SCORE.map((val, i) => (
-              <IonSelectOption key={i} value={val}>
-                {val.min} - {val.max}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
+          <IonRange
+            pin={true}
+            min={1}
+            max={36}
+            pinFormatter={(value) => {
+              setAct(value)
+              return value
+            }}
+          ></IonRange>
         </div>
 
-        {/* <div className="search-control">
+        <div className="search-control">
           <h2 className="search-control__label">Admission process</h2>
           <div className="field search-field">
             <IonSelect
@@ -339,7 +243,7 @@ function index() {
             <IonCheckbox slot="start" />
             <IonLabel>Not selective</IonLabel>
           </div>
-        </div> */}
+        </div>
 
         {/* <div className="search-control">
           <h2 className="search-control__label">Religious affiliation</h2>
