@@ -22,7 +22,6 @@ import { statesArray } from "utils/lib/states"
 
 import Select from "react-select"
 function index() {
-  console.log("re render")
   const SAT_SCORES = [
     {
       min: 400,
