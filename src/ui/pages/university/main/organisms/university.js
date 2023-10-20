@@ -1,15 +1,20 @@
-import React from "react"
-import { IonContent } from "@ionic/react"
+import React, { useEffect, useState } from "react"
+import {
+  IonContent
+} from "@ionic/react"
 import Discussion from "../../Discussion"
-
 import Review from "../../Discussion/Post"
-
 import { HeaderNavigator } from "../molecules/headerNavigator"
 import { SideNavigator } from "../molecules/sideNavigator"
 import { UniversityHeader } from "../molecules/header"
 
 export const UniversityBuild = ({ allProps }) => {
-  const { data, app, profile, UniScroll } = allProps
+  const {
+    data,
+    app,
+    profile,
+    UniScroll
+  } = allProps
 
   return (
     <IonContent>
@@ -38,8 +43,8 @@ export const UniversityBuild = ({ allProps }) => {
               margin: "0 auto"
             }}
           >
-            <Discussion uniId={data?.getSchoolInfo?.unitId} />
-            <Review uniId={data?.getSchoolInfo?.unitId} />
+            <Discussion uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId} />
+            <Review uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId} />
           </div>
         </div>
       </section>

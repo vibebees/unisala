@@ -46,7 +46,6 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo }) => {
     width = useWindowWidth(),
     history = useHistory(),
     location = useLocation(),
-    [unitId, setUnitId] = useState(userInfo?.getUser?.user?.unitId || undefined),
     generateUserGuide = (userProfile, schoolData) => {
       const interestedSubjects = userProfile?.interestedSubjects || []
       const interestedUni = userProfile?.interestedUni || []
@@ -62,7 +61,7 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo }) => {
             icon: schoolSharp, // Make sure to have the appropriate icons imported
             iconSize: 5,
             routing: true,
-            link: `/university/${schoolData?.name}`
+            link: `/university/${schoolData?.name}}`
         })
     }
 

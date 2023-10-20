@@ -24,8 +24,8 @@ export const FolderStructure = ({ allProps = {} }) => {
 
   const handleItemClick = (item) => {
     if (item.key === "interviewPrep") {
-      setCurrentURL(item.link)
-      setPopup(true)
+        setCurrentURL(item.link)
+        setPopup(true)
     }
   }
   const [data, setData] = useState(allProps?.data || [])
@@ -36,6 +36,9 @@ export const FolderStructure = ({ allProps = {} }) => {
 
   if (allProps?.data?.length === 0) return null
 
+  useEffect(() => {
+    setData(allProps?.data || [])
+  }, [allProps?.data])
   return (
     <IonCard style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
       <CardHeader header={folderName} />
