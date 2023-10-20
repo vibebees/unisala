@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import {
   IonGrid,
   IonRow,
@@ -43,6 +43,7 @@ export const Home = ({ allProps }) => {
   const [userSchoolData, setUserSchoolData] = useState({})
 
     const { loading: schoolLoading, data: schoolData } = useQuery(getUpdatedSchoolInfo(unitId), {
+      variables: {unitId},
       context: { server: UNIVERSITY_SERVICE_GQL }
     })
     useEffect(() => {
@@ -78,11 +79,17 @@ export const Home = ({ allProps }) => {
           >
             {loggedIn ? (
               <>
-                <FolderStructure allProps={{...allProps, folderName: "", data: userGuide}} />
-
                 <CreateAPostCard allProps={allProps} />
+                <FolderStructure
+                  allProps={{
+                    ...allProps,
+                    folderName: "",
+                    data: userGuide,
+                    popUp: false
+                  }}
+                />
 
-                 <InfinteFeed userInfo={user} allProps={allProps} />
+                <InfinteFeed userInfo={user} allProps={allProps} />
               </>
             ) : (
               <UnisalaIntro />

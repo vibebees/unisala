@@ -34,11 +34,10 @@ export const FolderStructure = ({ allProps = {} }) => {
     setData(allProps?.data || [])
   }, [allProps?.data])
 
-  if (allProps?.data?.length === 0) return null
 
-  useEffect(() => {
-    setData(allProps?.data || [])
-  }, [allProps?.data])
+   if (allProps?.data?.length === 0) return null
+
+
   return (
     <IonCard style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
       <CardHeader header={folderName} />
