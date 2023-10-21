@@ -393,10 +393,9 @@ export const GetProfessor = gql`
         }
       }
     `,
-  UniSearchDataList = (name) =>
-    gql`
-    query {
-      searchSchool(name: "${name}") {
+  UniSearchDataList = gql`
+    query UniSearchDataList($name: String) {
+      searchSchool(name: $name) {
         name
         unitId
         address {
@@ -412,7 +411,8 @@ export const GetProfessor = gql`
         undergraduateOffering
         pictures
       }
-    }`,
+    }
+  `,
   UniFilterResults = gql`
     query uniFilterResults(
       $satScore: RangeInput
