@@ -3,10 +3,13 @@ import {
   IonCard,
   IonCardContent,
   IonCheckbox,
+  IonContent,
   IonLabel,
   IonRange,
   IonSelect,
-  IonSelectOption
+  IonSelectOption,
+  IonSpinner,
+  IonText
 } from "@ionic/react"
 import "./index.css"
 import { useEffect, useRef, useState } from "react"
@@ -93,7 +96,7 @@ function index() {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
-  const [getScholarship, { data }] = useLazyQuery(UniFilterResults, {
+  const [getScholarship, { data, loading }] = useLazyQuery(UniFilterResults, {
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
   const dispatch = useDispatch()
@@ -150,32 +153,41 @@ function index() {
     context: { server: UNIVERSITY_SERVICE_GQL },
     skip: true
   })
+
   const removeFilter = async () => {
     setQueryData(INITIAL_QUERY_DATA)
     setSat("Sat Score")
     setAct("Act Score")
-    console.log(selectInputRef.current)
+
     selectInputRef.current.clearValue()
     const searchValue = queryParams.get("q")
-    console.log({ searchValue })
     const { data } = await GetUni({ variables: { name: searchValue } })
 
     dispatch(searchGetSuccess(data?.searchSchool))
+    setIsFiltered(false)
   }
-
+  console.log({ isFiltered })
   return (
     <>
-      {isFiltered && (
-        <IonButton
-          className="text-xs relative right-0 text-right"
-          size="small"
-          fill="clear"
-          onClick={removeFilter}
-        >
-          Remove Filters
-        </IonButton>
-      )}
       <IonCard className="filter-card-wrapper relative">
+        {isFiltered ? (
+          loading ? (
+            <IonSpinner name="crescent"></IonSpinner>
+          ) : (
+            <IonButton
+              className=" relative right-0 text-right"
+              size="small"
+              fill="outline"
+              onClick={removeFilter}
+            >
+              Remove Filters
+            </IonButton>
+          )
+        ) : (
+          <IonText className="p-2 text-lg" color={"primary"}>
+            Showing results for: {queryParams.get("q")}
+          </IonText>
+        )}
         <IonCardContent>
           {/* <div className="search-control">
           <h2 className="search-control__label">College Type</h2>
