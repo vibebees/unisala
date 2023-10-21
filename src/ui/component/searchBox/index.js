@@ -7,7 +7,10 @@ import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { userSearch } from "../../../graphql/user"
 
-import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
+import {
+  UNIVERSITY_SERVICE_GQL,
+  USER_SERVICE_GQL
+} from "../../../servers/types"
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
 
@@ -16,7 +19,7 @@ function Index() {
   const [dropDownOptions, setDropDownOptions] = useState(false)
   const history = useHistory()
   const [options, setOptions] = useState([])
-  const [GetUni, unidata] = useLazyQuery(UniSearchDataList(), {
+  const [GetUni, unidata] = useLazyQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
     skip: true
   })
@@ -100,3 +103,4 @@ function Index() {
 }
 
 export default Index
+

@@ -12,8 +12,9 @@ import { UNIVERSITY_SERVICE_GQL } from "../../../../servers/types"
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
-  const { data } = useQuery(UniSearchDataList(query), {
-    context: { server: UNIVERSITY_SERVICE_GQL }
+  const { data } = useQuery(UniSearchDataList, {
+    context: { server: UNIVERSITY_SERVICE_GQL },
+    variables: { name: query }
   })
   useEffect(() => {
     dispatch(searchGetSuccess(data?.searchSchool))
@@ -37,3 +38,4 @@ function index({ query }) {
 }
 
 export default index
+

@@ -24,11 +24,10 @@ export const GetProfessor = gql`
     }
   `,
   getUpdatedSchoolInfo = (unitId, name) =>
-  gql`
-    query getUpdatedSchoolInfo($unitId: Float, $name: String) {
-      getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
-
-   elevatorInfo {
+    gql`
+      query getUpdatedSchoolInfo($unitId: Float, $name: String) {
+        getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
+          elevatorInfo {
             unitId
             name
             address {
@@ -159,7 +158,6 @@ export const GetProfessor = gql`
                 percentile25
                 percentile75
               }
-
             }
             act {
               submitted
@@ -391,14 +389,12 @@ export const GetProfessor = gql`
             levelOfDifficulty
             wouldTakeAgain
           }
+        }
       }
-    }
-  `,
-
-  UniSearchDataList = (name) =>
-    gql`
-    query {
-      searchSchool(name: "${name}") {
+    `,
+  UniSearchDataList = gql`
+    query UniSearchDataList($name: String) {
+      searchSchool(name: $name) {
         name
         unitId
         address {
@@ -414,7 +410,8 @@ export const GetProfessor = gql`
         undergraduateOffering
         pictures
       }
-    }`,
+    }
+  `,
   UniFilterResults = gql`
     query uniFilterResults(
       $satScore: RangeInput
@@ -449,3 +446,4 @@ export const GetProfessor = gql`
       }
     }
   `
+

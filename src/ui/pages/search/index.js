@@ -29,8 +29,9 @@ function index() {
   const query = searchParams.get("q") || ""
   useDocTitle("Search ᛫ " + query)
   const history = useHistory()
-  const { data: unidata } = useQuery(UniSearchDataList(query), {
-    context: { server: UNIVERSITY_SERVICE_GQL }
+  const { data: unidata } = useQuery(UniSearchDataList, {
+    context: { server: UNIVERSITY_SERVICE_GQL },
+    variables: { name: query }
   })
   const { data: searchUser } = useQuery(userSearch(query), {
     context: { server: USER_SERVICE_GQL }
