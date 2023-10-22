@@ -14,15 +14,16 @@ import {
   people,
   personCircle
 } from "ionicons/icons"
-import { Link } from "react-router-dom"
-import SearchBox from "./searchBox"
+import { Link, useLocation } from "react-router-dom"
 import ProfilePop from "./profilePop"
 import jwtDecode from "jwt-decode"
 import { useSelector } from "react-redux"
+import {SearchBar} from "./searchBox"
 
 const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
   const popover = useRef(null)
   const [popoverOpen, setPopoverOpen] = useState(false)
+  const location = useLocation()
 
   const openPopover = (e) => {
       popover.current.event = e
@@ -101,8 +102,8 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
             />
           </Link>
           <div style={{ width: "100%" }}>
-            <SearchBox />
-          </div>
+        {!(location.pathname === "/search") && <SearchBar />}
+      </div>
         </div>
         <IonRow style={{ display: "inline-flex", gap: "2.5rem" }}>
           {decode &&

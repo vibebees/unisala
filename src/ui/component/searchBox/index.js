@@ -11,7 +11,7 @@ import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
 
-function Index() {
+export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
   const [dropDownOptions, setDropDownOptions] = useState(false)
   const history = useHistory()
@@ -53,8 +53,8 @@ function Index() {
       <div className="search-box">
         <IonInput
           type="text"
-          placeholder="Search"
-          className="search-input-box"
+          placeholder="Search here..."
+          className="w-full border rounded search-input-box"
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               setDropDownOptions(false)
@@ -73,10 +73,10 @@ function Index() {
           }}
         />
         <Link
-          to={searchValue ? `/search?q=${searchValue}` : "#"}
+          to={searchValue ? `/search?q=${searchValue}` : "/search?q='default'"}
           className="search-box__search-icon"
         >
-          <IonIcon
+            <IonIcon
             icon={searchCircle}
             className="search-box__icon"
             onClick={() => setDropDownOptions(false)}
@@ -98,5 +98,3 @@ function Index() {
     </>
   )
 }
-
-export default Index

@@ -10,7 +10,7 @@ import {
   IonButton
 } from "@ionic/react"
 import { Link } from "react-router-dom"
-import SearchBox from "../../component/searchBox"
+import {SearchBar} from "../../component/searchBox"
 import Authentication from "../../component/authentication"
 
 import { useSelector } from "react-redux"
@@ -159,7 +159,7 @@ export const screenLessThan768 = ({
           alignItems: "center"
         }}
       >
-        <SearchBox />
+        <SearchBar />
         {loggedIn && (
           // <Link to={`/@/${username}`}>
           <div className="profile-pop">
