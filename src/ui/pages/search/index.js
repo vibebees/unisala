@@ -1,5 +1,5 @@
-import searchTemplate from "./template"
+import {SearchTemplate} from "./template"
 
 export default function Search() {
-  return searchTemplate()
+  return SearchTemplate()
 }

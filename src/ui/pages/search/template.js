@@ -23,7 +23,7 @@ import UserSearchResult from "./user"
 import UniSearchResult from "./uni"
 import {SearchBar} from "ui/component/searchBox"
 
-export const searchTemplate = () => {
+export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
