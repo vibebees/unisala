@@ -56,7 +56,7 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
     }
   ]
   const [active, setActive] = useState("")
-  const accessToken = localStorage?.getItem("accessToken")
+  const {accessToken} = useSelector((state) => state?.auth)
   const decode = accessToken && jwtDecode(accessToken)
 
   useEffect(() => {
