@@ -4,7 +4,6 @@ import { IonReactRouter } from "@ionic/react-router"
 import { PersistGate } from "redux-persist/integration/react"
 import { persistor, store } from "./store/store"
 import { useDispatch, Provider } from "react-redux"
-import jwtDecode from "jwt-decode"
 
 /* Core CSS required for Ionic components to work properly */
 
@@ -26,12 +25,9 @@ import "@ionic/react/css/display.css"
 import Nav from "./ui/component/NavBar"
 import { PageRoute } from "./ui/component/PageRoute"
 import AuthModal from "./ui/component/authentication"
-import { getUserProfile } from "./store/action/userProfile"
 import useWindowWidth from "./hooks/useWindowWidth"
 import MobileNav from "./ui/component/MobileNav"
-import { CreateAPost, CreateAPostModal } from "./ui/component/post/molecules/PostModalOnClick"
-import { userServer } from "./servers/endpoints"
-import { getPresingedUrl } from "./store/action/authenticationAction"
+import {getNewToken} from "api/authentication"
 
 /* Theme variables */
 
@@ -43,6 +39,34 @@ lib.R = R
 lib.axios = axios
 setupIonicReact()
 
+const DesktopView = ({ setActiveNavDrop, activeNavDrop }) => {
+  return (
+    <div>
+      <Nav
+        setActiveNavDrop={setActiveNavDrop}
+        activeNavDrop={activeNavDrop}
+      />
+      <IonRouterOutlet style={{ marginTop: "65px" }}>
+        <PageRoute />
+      </IonRouterOutlet>
+    </div>
+  )
+}
+
+// src/components/organisms/MobileView.js
+const MobileView = ({ setCreateAPostPopUp }) => {
+  return <MobileNav setCreateAPostPopUp={setCreateAPostPopUp} />
+}
+
+// src/components/molecules/AuthModalWrapper.js
+const AuthModalWrapper = ({ setActiveNavDrop, activeNavDrop }) => {
+  return activeNavDrop.profile ? (
+    <AuthModal
+      setActiveNavDrop={setActiveNavDrop}
+      activeNavDrop={activeNavDrop}
+    />
+  ) : null
+}
 const App = () => {
   const width = useWindowWidth()
   const [createAPostPopUp, setCreateAPostPopUp] = useState(false)
@@ -52,43 +76,16 @@ const App = () => {
     message: false,
     notification: false
   })
-  const allProps = {
-    setCreateAPostPopUp,
-    createAPostPopUp
-  }
-
   const dispatch = useDispatch()
 
+  const allProps = {
+    createAPostPopUp,
+    setCreateAPostPopUp,
+    activeNavDrop,
+    setActiveNavDrop
+  }
   useEffect(() => {
-    const getNewToken = async () => {
-      if (!localStorage.getItem("refreshToken")) {
-        dispatch(getUserProfile({ user: {}, loggedIn: false }))
-        return
-      }
-      try {
-        const { data } = await axios.post(userServer + "/refreshToken", {
-          refreshToken: localStorage.getItem("refreshToken")
-        })
-        if (!data.success) {
-          localStorage.removeItem("refreshToken")
-          localStorage.removeItem("accessToken")
-          dispatch(getUserProfile({ user: {}, loggedIn: false }))
-        }
-        data?.refreshToken &&
-          localStorage.setItem("refreshToken", data?.refreshToken || "")
-        data?.accessToken &&
-          localStorage.setItem("accessToken", data?.accessToken || "")
-        const decode = jwtDecode(data?.accessToken)
-
-        dispatch(
-          getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
-        )
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getNewToken()
-
+    getNewToken(dispatch)
   }, [])
 
   return (
@@ -96,31 +93,21 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <IonApp>
           <IonPage>
-            <IonReactRouter>
+          <IonReactRouter>
               {width >= 768 && (
-                <div>
-                  <Nav
-                    setActiveNavDrop={setActiveNavDrop}
-                    activeNavDrop={activeNavDrop}
-                  />
-
-                  <IonRouterOutlet
-                    style={{
-                      marginTop: "65px"
-                    }}
-                  >
-                    <PageRoute />
-                  </IonRouterOutlet>
-                </div>
-              )}
-              {activeNavDrop.profile && (
-                <AuthModal
+                <DesktopView
                   setActiveNavDrop={setActiveNavDrop}
                   activeNavDrop={activeNavDrop}
                 />
               )}
+
+              <AuthModalWrapper
+                setActiveNavDrop={setActiveNavDrop}
+                activeNavDrop={activeNavDrop}
+              />
+
               {width < 768 && (
-                <MobileNav setCreateAPostPopUp={setCreateAPostPopUp} />
+                <MobileView setCreateAPostPopUp={setCreateAPostPopUp} />
               )}
             </IonReactRouter>
           </IonPage>
