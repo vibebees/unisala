@@ -24,10 +24,11 @@ import MorePop from "./MorePop"
 import {ThreadSkeleton} from "../../../component/skeleton/threadSkeleton"
 import { USER_SERVICE_GQL } from "../../../../servers/types"
 import { Avatar } from "../../../component/Avatar"
+import {useSelector} from "react-redux"
 
 function index({ userId, firstName }) {
   const [page, setPage] = useState(0)
-  const accessToken = localStorage.getItem("accessToken")
+  const {accessToken} = useSelector((state) => state?.auth)
   const decode = accessToken && jwtDecode(accessToken)
   const [isOpen, setIsOpen] = useState(false)
   const [guestbookList, setGuestbookList] = useState([])

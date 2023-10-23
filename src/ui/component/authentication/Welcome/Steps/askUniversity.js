@@ -18,6 +18,7 @@ import {universityServer} from "../../../../../servers/endpoints"
 import {useDebouncedEffect} from "../../../../../hooks/useDebouncedEffect"
 import Noimagefound from "./../../../../../assets/no_image_found.png"
 import clsx from "clsx"
+import {useSelector} from "react-redux"
 
 const QuestionHeader = ({text}) => (
   <>
@@ -94,7 +95,7 @@ const AskUniversity = ({question}) => {
       setSuggestUni(!suggestUni) // Toggle checkbox
     }
 const getUniversitites = async () => {
-    const token = localStorage.getItem("accessToken")
+    const token = useSelector((state) => state?.auth?.accessToken)
     setIsLoading(true)
     try {
       const res = await axios.get(

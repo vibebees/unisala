@@ -1,42 +1,19 @@
-import axios from "axios"
-import { useRef } from "react"
-import { useIonToast } from "@ionic/react"
+import {useRef} from "react"
+import {useIonToast} from "@ionic/react"
 
 import "./auth.css"
-import { useScript } from "../../../hooks/useScript"
-import { userServer } from "../../../servers/endpoints"
+import {useScript} from "../../../hooks/useScript"
+import {useDispatch} from "react-redux"
+import {googleAuthAction} from "store/action/authenticationAction"
 
-export const GoogleAuth = ({ setauth }) => {
+export const GoogleAuth = ({setauth}) => {
   const [present, dismiss] = useIonToast()
-  const googlebuttonref = useRef()
+  const googlebuttonref = useRef(),
+    dispatch = useDispatch()
+
   const onGoogleSignIn = (user) => {
-    const { credential } = user
-    axios
-      .post(userServer + `/auth/google`, { token: credential })
-      .then((res) => {
-        if (res.data.success) {
-          localStorage.setItem("accessToken", res?.data.accessToken)
-          localStorage.setItem("refreshToken", res?.data.refreshToken)
-          if (res?.data.isFirstLogin) {
-            localStorage.setItem("newUser", "true")
-            window.location.reload()
-          } else {
-            window.innerWidth < 768
-              ? window.location.replace("/home")
-              : window.location.reload()
-          }
-          window.reload()
-        }
-        if (!res.data.success) {
-          present({
-            duration: 3000,
-            message: res.data.message,
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-        }
-      })
+    const {credential} = user
+    dispatch(googleAuthAction({present, dismiss, credential}))
   }
 
   useScript("https://accounts.google.com/gsi/client", () => {

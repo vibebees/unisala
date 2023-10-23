@@ -4,10 +4,11 @@ import {
   MY_NETWORK_RECENT_MESSAGES,
   UNREAD_MESSAGES,
   REMOVE_UNREAD_MESSAGES,
-  UPDATE_USER_PROFILE
+  UPDATE_USER_PROFILE,
+  LOGIN
 } from "../action/types"
 
-const initialState = {
+export const USER_PROFILE_INITIAL_STATE = {
   user: {},
   loggedIn: false,
   friendList: [],
@@ -15,7 +16,7 @@ const initialState = {
   unreadMessages: []
 }
 
-const UserProfile = (state = initialState, action) => {
+const UserProfile = (state = USER_PROFILE_INITIAL_STATE, action) => {
   const { type, payload } = action
   switch (type) {
     case GET_USER_PROFILE:
@@ -42,7 +43,6 @@ const UserProfile = (state = initialState, action) => {
         recentMessages: payload
       }
     case UNREAD_MESSAGES:
-      console.log("reducer update unread message", payload)
       if (state.unreadMessages.includes(payload)) {
         // If the ID is already in the array, return the state without modifying it
         return state
@@ -53,12 +53,16 @@ const UserProfile = (state = initialState, action) => {
         unreadMessages: [...state.unreadMessages, payload]
       }
     case REMOVE_UNREAD_MESSAGES:
-      console.log("reducer on removing unread message", payload)
       return {
         ...state,
         unreadMessages: state.unreadMessages.filter((id) => id !== payload)
       }
 
+    case LOGIN:
+      return {
+        ...state,
+        loggedIn: true
+      }
     default:
       return state
   }
