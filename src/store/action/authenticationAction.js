@@ -117,8 +117,7 @@ export const registerUser = ({
 }
 
 export const googleAuthAction = ({present, dismiss, credential}) => {
-  return (dispatch) => {
-    axios
+  return (dispatch) => axios
       .post(userServer + `/auth/google`, {token: credential})
       .then((res) => {
         if (res.data.success) {
@@ -151,8 +150,21 @@ export const googleAuthAction = ({present, dismiss, credential}) => {
           })
         }
       })
-  }
 }
+
+const getNewRefreshToken = (refreshToken) => {
+  return (dispatch) => axios.post(userServer + `/refreshToken`, {refreshToken})
+    .then((res) => {
+      if (res.data.success) {
+        dispatch({
+          type: USER_LOGIN,
+          payload: res.data
+        })
+      }
+    })
+}
+
+
 // export const isLoggedIn = (user) => {
 //     try {
 //         return (dispatch) => axios.post(`${backendHost}`, {

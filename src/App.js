@@ -3,7 +3,7 @@ import { IonApp, IonPage, IonRouterOutlet, setupIonicReact } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import { PersistGate } from "redux-persist/integration/react"
 import { persistor, store } from "./store/store"
-import { useDispatch, Provider } from "react-redux"
+import { useDispatch, Provider, useSelector } from "react-redux"
 
 /* Core CSS required for Ionic components to work properly */
 
@@ -73,6 +73,7 @@ const AuthModalWrapper = ({ setActiveNavDrop, activeNavDrop }) => {
 const App = () => {
   const width = useWindowWidth()
   const [createAPostPopUp, setCreateAPostPopUp] = useState(false)
+  const {refreshToken, accessToken} = useSelector((state) => state?.auth)
 
   const [activeNavDrop, setActiveNavDrop] = useState({
     profile: false,
@@ -80,44 +81,12 @@ const App = () => {
     notification: false
   })
   const dispatch = useDispatch()
-  const getNewToken = async () => {
-    if (!localStorage.getItem("refreshToken")) {
-      dispatch(getUserProfile({ user: {}, loggedIn: false }))
-      return
-    }
-    try {
-      const { data } = await axios.post(userServer + "/refreshToken", {
-        refreshToken: localStorage.getItem("refreshToken")
-      })
-      if (!data.success) {
-        localStorage.removeItem("refreshToken")
-        localStorage.removeItem("accessToken")
-        dispatch(getUserProfile({ user: {}, loggedIn: false }))
-      }
-      data?.refreshToken &&
-        localStorage.setItem("refreshToken", data?.refreshToken || "")
-      data?.accessToken &&
-        localStorage.setItem("accessToken", data?.accessToken || "")
-      const decode = jwtDecode(data?.accessToken)
-
-      dispatch(
-        getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
-      )
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-
-  const allProps = {
-    createAPostPopUp,
-    setCreateAPostPopUp,
-    activeNavDrop,
-    setActiveNavDrop
-  }
   useEffect(() => {
-    getNewToken(dispatch)
-  }, [])
+    if (accessToken) {
+      const decode = jwtDecode(accessToken)
+      dispatch(getUserProfile({user: {...decode}, loggedIn: Boolean(decode)}))
+    }
+  }, [refreshToken, accessToken])
 
   return (
     <Provider store={store}>
