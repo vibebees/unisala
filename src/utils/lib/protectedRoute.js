@@ -11,9 +11,6 @@ function ProtectedRoute({ children }) {
 
   // Check if the route is in the allowedRoutes array and user is not logged in
   if (!loggedIn && allowedRoutes.includes(route)) {
-    if (route === "thread" && id) {
-      return children
-    }
     return children
   }
 

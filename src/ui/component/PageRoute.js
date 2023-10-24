@@ -4,6 +4,7 @@ import ProtectedRoute from "../../utils/lib/protectedRoute"
 
 import PreLoader from "./preloader"
 import {StudyAbroadRoadmap} from "ui/pages/roadmap/visaRoadMap"
+import {UnisalaLandingPage} from "ui/pages/home/UnisalaIntro"
 const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
 const HomePage = lazy(() => import("../pages/home"))

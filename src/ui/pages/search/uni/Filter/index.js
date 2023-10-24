@@ -166,7 +166,6 @@ function index() {
     dispatch(searchGetSuccess(data?.searchSchool))
     setIsFiltered(false)
   }
-  console.log({ isFiltered })
   return (
     <>
       <IonCard className="filter-card-wrapper relative">

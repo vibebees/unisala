@@ -11,7 +11,6 @@ import "./index.css"
 import {screensMoreThan768} from "../home/helper.func"
 
 const ProfilePage = () => {
-  let windowWidth = useWindowWidth()
 
   return (
     <IonContent>

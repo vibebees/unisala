@@ -2,7 +2,7 @@ import { IonCard, IonCardContent, IonButton, IonText, IonIcon } from "@ionic/rea
 import roadmap from "./../../../assets/roadmap.png"
 import {lockOpenOutline} from "ionicons/icons"
 
-function UnisalaIntro() {
+export const UnisalaLandingPage = ({allProps}) => {
   return (
     <div style={{margin: "27px 0px 0px 0px"}}>
       <IonCard className="mb-1">
@@ -178,5 +178,3 @@ function UnisalaIntro() {
     </div>
   )
 }
-
-export default UnisalaIntro

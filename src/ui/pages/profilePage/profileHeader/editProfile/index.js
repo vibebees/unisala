@@ -203,8 +203,6 @@ function index({ profileHeader }) {
 
           if (result.ok) {
             // If the upload is successful, add the post with the S3 image URL
-            console.log(url)
-            console.log("cover img: Uploaded to S3")
           } else {
             console.error("Failed to upload image to S3")
           }

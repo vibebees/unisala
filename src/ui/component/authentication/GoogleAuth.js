@@ -10,7 +10,6 @@ import {useHistory} from "react-router"
 export const GoogleAuth = ({setauth, allProps}) => {
 
   const {setPopoverOpen, authFromPopUp} = allProps
-  console.log(allProps)
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef(),
     dispatch = useDispatch(),
