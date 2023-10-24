@@ -44,7 +44,7 @@ const spaceRoutes = () => (
   </>
 )
 
-export const PageRoute = () => (
+export const PageRoute = ({allProps}) => (
   <Switch>
     <Suspense fallback={<PreLoader />}>
       <Route exact path="/home">
@@ -86,7 +86,7 @@ export const PageRoute = () => (
       </Route>
 
       <Route path="/login" exact>
-        <Login />
+        <Login allProps = {allProps} />
       </Route>
 
       <Route path="/roadmap" exact>

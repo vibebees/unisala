@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { IonCol, IonGrid, IonPopover, IonRow } from "@ionic/react"
+import {useEffect, useState} from "react"
+import {IonCol, IonGrid, IonPopover, IonRow} from "@ionic/react"
 import "./auth.css"
 import SignIn from "./SignIn/Index"
 import SignUp from "./SignUp/Index"
@@ -10,17 +10,15 @@ import UserNotVerified from "./Verification/UserNotVerified"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 
-export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
+export const Authentication = ({allProps}) => {
+  const {activeNavDrop, setActiveNavDrop} = allProps
   const [auth, setauth] = useState({
     state: "signin",
     email: "",
     code: 0
   })
 
-  useEffect(() => {}, [auth])
-
   const width = useWindowWidth()
-
   return (
     <>
       <IonPopover
@@ -33,16 +31,17 @@ export const Authentication = ({ activeNavDrop, setActiveNavDrop }) => {
         className="auth-pop"
       >
         <IonGrid>
-          <IonRow style={{ overflow: "hidden" }}>
+          <IonRow style={{overflow: "hidden"}}>
             <IonCol>
               {auth.state === "signin" ? (
                 <SignIn
                   setauth={setauth}
                   auth={auth}
                   setActiveNavDrop={setActiveNavDrop}
+                  allProps={allProps}
                 />
               ) : auth.state === "signup" ? (
-                <SignUp setauth={setauth} />
+                <SignUp setauth={setauth} allProps={allProps} />
               ) : auth.state === "SignUpVerification" ? (
                 <SignUpVerification setauth={setauth} auth={auth} />
               ) : auth.state === "emailVerify" ? (

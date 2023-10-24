@@ -6,14 +6,17 @@ import {useScript} from "../../../hooks/useScript"
 import {useDispatch} from "react-redux"
 import {googleAuthAction} from "store/action/authenticationAction"
 
-export const GoogleAuth = ({setauth}) => {
+export const GoogleAuth = ({setauth, allProps}) => {
+
+  const {setPopoverOpen} = allProps
+  console.log(allProps)
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef(),
     dispatch = useDispatch()
 
   const onGoogleSignIn = (user) => {
     const {credential} = user
-    dispatch(googleAuthAction({present, dismiss, credential}))
+    dispatch(googleAuthAction({present, dismiss, credential, setPopoverOpen}))
   }
 
   useScript("https://accounts.google.com/gsi/client", () => {
