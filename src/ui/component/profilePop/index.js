@@ -8,17 +8,17 @@ import {useSelector} from "react-redux"
 import {Avatar} from "../Avatar"
 
 export const ProfilePop = ({allProps}) => {
-  const {setPopoverOpen,
-    setActiveNavDrop,
-    activeNavDrop,
-    setActive} = allProps
+  const {setPopoverOpen = () => {},
+    setActiveNavDrop = () => {},
+    activeNavDrop = {},
+    setActive = () => {}} = allProps
   const {user, loggedIn} = useSelector((state) => state.userProfile)
   const profilePic = user?.picture
 
   useEffect(() => {
     if (!loggedIn) {
       setActiveNavDrop({
-        profile: !activeNavDrop.profile
+        profile: !activeNavDrop?.profile
       })
     }
   }, [loggedIn])

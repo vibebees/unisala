@@ -32,7 +32,7 @@ import "./styles.css"
 import { createAvatar } from "@dicebear/core"
 import { thumbs } from "@dicebear/collection"
 
-export const StudyAbroadRoadmap = () => {
+export const StudyAbroadRoadmapInput = () => {
   const [firstStep, setfirstStep] = useState(true)
   const [data, setdata] = useState({
     stepOne: "",

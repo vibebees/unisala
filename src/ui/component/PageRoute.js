@@ -1,8 +1,9 @@
 import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
 import ProtectedRoute from "../../utils/lib/protectedRoute"
-import { StudyAbroadRoadmap } from "../pages/roadmap"
+
 import PreLoader from "./preloader"
+import {StudyAbroadRoadmap} from "ui/pages/roadmap/visaRoadMap"
 const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
 const HomePage = lazy(() => import("../pages/home"))
@@ -47,6 +48,10 @@ const spaceRoutes = () => (
 export const PageRoute = ({allProps}) => (
   <Switch>
     <Suspense fallback={<PreLoader />}>
+    <Route path="/roadmap" exact>
+        <StudyAbroadRoadmap />
+      </Route>
+
       <Route exact path="/home">
         <HomePage />
       </Route>
@@ -89,9 +94,7 @@ export const PageRoute = ({allProps}) => (
         <Login allProps = {allProps} />
       </Route>
 
-      <Route path="/roadmap" exact>
-        <StudyAbroadRoadmap />
-      </Route>
+
 
       <Route path="*" exact>
         <PageNotFound />

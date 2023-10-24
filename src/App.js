@@ -53,7 +53,6 @@ const MobileView = ({allProps}) => {
 }
 
 const App = () => {
-
   const allProps = appProps(),
     {accessToken, refreshToken, width, setActiveNavDrop, activeNavDrop, setCreateAPostPopUp, dispatch} = allProps
 

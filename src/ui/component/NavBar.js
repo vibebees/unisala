@@ -149,11 +149,10 @@ const Nav = ({allProps}) => {
             isOpen={popoverOpen}
             onDidDismiss={() => {
               setPopoverOpen(false)
-              console.log("popover closed", popoverOpen)
             }}
           >
             <ProfilePop
-              allProps={allProps}
+              allProps={{...allProps, authFromPopUp: true}}
             />
           </IonPopover>
         </IonRow>

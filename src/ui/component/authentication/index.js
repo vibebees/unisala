@@ -22,7 +22,7 @@ export const Authentication = ({allProps}) => {
   return (
     <>
       <IonPopover
-        isOpen={activeNavDrop.profile}
+        isOpen={activeNavDrop?.profile}
         onDidDismiss={() =>
           setActiveNavDrop({
             profile: false
@@ -75,7 +75,7 @@ export const Authentication = ({allProps}) => {
           right: 0,
           bottom: 0,
           zIndex: 999,
-          display: activeNavDrop.profile ? "block" : "none"
+          display: activeNavDrop?.profile ? "block" : "none"
         }}
       />
     </>

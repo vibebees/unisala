@@ -116,7 +116,7 @@ export const registerUser = ({
       })
 }
 
-export const googleAuthAction = ({present, dismiss, credential, setPopoverOpen}) => {
+export const googleAuthAction = ({present, dismiss, credential, setPopoverOpen, moveToHome}) => {
   return (dispatch) => axios
       .post(userServer + `/auth/google`, {token: credential})
       .then((res) => {
@@ -136,6 +136,7 @@ export const googleAuthAction = ({present, dismiss, credential, setPopoverOpen})
 
           dismiss()
           setPopoverOpen(false)
+          moveToHome()
         }
         if (!res.data.success) {
           dispatch({

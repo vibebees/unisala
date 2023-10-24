@@ -12,10 +12,7 @@ export const LoginPopUp = ({allProps}) => {
         onDidDismiss={() => setPopoverOpen(false)}
       >
         <ProfilePop
-          setPopoverOpen={setPopoverOpen}
-          activeNavDrop={activeNavDrop}
-          setActiveNavDrop={setActiveNavDrop}
-          setActive={setActive}
+          allProps={{...allProps, authFromPopUp: true}}
         />
       </IonPopover>
     )
