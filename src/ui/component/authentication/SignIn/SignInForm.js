@@ -6,12 +6,14 @@ import { userServer } from "../../../../servers/endpoints"
 import { validateSignIn } from "../../../../utils/components/validate"
 import { useDispatch } from "react-redux"
 import { loginUser } from "../../../../store/action/authenticationAction"
+import { useLocation } from "react-router"
 
 const SignInForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const [datacheck, setdatacheck] = useState(false)
   const [errors, seterrors] = useState({})
   const [loading, setLoading] = useState(false)
+  const location = useLocation()
   const [input, setInput] = useState({
     email: "",
     password: ""
@@ -90,16 +92,18 @@ const SignInForm = ({ setauth }) => {
       >
         {loading ? <IonSpinner></IonSpinner> : "Login"}
       </button>
-      <IonRow className="auth-change inline-flex">
-        <p>Not Registered Yet?</p>
-        <a
-          onClick={() => {
-            setauth({ state: "signup" })
-          }}
-        >
-          Create an account
-        </a>
-      </IonRow>
+      {location.pathname !== "/" && (
+        <IonRow className="auth-change inline-flex">
+          <p>Not Registered Yet?</p>
+          <a
+            onClick={() => {
+              setauth({ state: "signup" })
+            }}
+          >
+            Create an account
+          </a>
+        </IonRow>
+      )}
     </form>
   )
 }

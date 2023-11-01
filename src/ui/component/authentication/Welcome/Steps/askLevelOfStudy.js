@@ -9,15 +9,16 @@ import {
 import { WelcomeData } from ".."
 
 const StudyLevelOption = ({ value, label, isChecked, handleClick }) => (
-  <IonRow className="gap-2">
+  <IonRow className="gap-2 !flex-nowrap">
     <IonCheckbox
       checked={isChecked}
       value={value}
+      className="shrink-0"
       onClick={handleClick}
     >
       {label}
     </IonCheckbox>
-    <label className="text-sm font-medium text-neutral-600">
+    <label className="text-sm shrink-0 font-medium text-neutral-600">
       {label}
     </label>
   </IonRow>
@@ -26,20 +27,18 @@ const StudyLevelOption = ({ value, label, isChecked, handleClick }) => (
 const QuestionHeader = ({ text }) => (
   <IonGrid>
     <IonText color="primary">
-      <h1 className="font-semibold text-xl text-neutral-600">
-        {text}
-      </h1>
+      <h1 className="font-semibold text-xl text-neutral-600">{text}</h1>
     </IonText>
   </IonGrid>
 )
 
-const LevelOfStudy = ({question}) => {
+const LevelOfStudy = ({ question }) => {
   const {
-    data: QuestionData,
-    setWelcomeFormdata,
-    welcomeFormdata
-  } = useContext(WelcomeData),
-    {text, options, description} = question
+      data: QuestionData,
+      setWelcomeFormdata,
+      welcomeFormdata
+    } = useContext(WelcomeData),
+    { text, options, description } = question
 
   const handleclick = (e) => {
     const data = e.target.value
@@ -54,7 +53,8 @@ const LevelOfStudy = ({question}) => {
         <IonGrid className="mx-12 max-md:mx-3 mt-14 ">
           <QuestionHeader text={text} />
           <IonCardSubtitle className="text-center">
-             <strong>{welcomeFormdata?.userStatus} </strong> which level of higher education?
+            <strong>{welcomeFormdata?.userStatus} </strong> which level of
+            higher education?
           </IonCardSubtitle>
 
           <IonGrid className="mt-8 grid grid-cols-2 max-md:grid-cols-1 gap-8 ">
