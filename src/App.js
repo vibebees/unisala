@@ -71,7 +71,10 @@ const App = () => {
             <IonReactRouter>
               {width >= 768 && <DesktopView allProps={allProps} />}
               {width < 768 && (
-                <MobileView setCreateAPostPopUp={setCreateAPostPopUp} />
+                <MobileView
+                  allProps={allProps}
+                  setCreateAPostPopUp={setCreateAPostPopUp}
+                />
               )}
             </IonReactRouter>
           </IonPage>
