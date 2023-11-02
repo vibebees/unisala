@@ -4,6 +4,7 @@ import {
   IonCardContent,
   IonCheckbox,
   IonContent,
+  IonInput,
   IonLabel,
   IonRange,
   IonSelect,
@@ -81,16 +82,73 @@ function index() {
     }
   ]
 
+  const APPLICATION_FEES = [
+    {
+      min: 0,
+      max: 0
+    },
+    {
+      min: 0,
+      max: 20
+    },
+    {
+      min: 20,
+      max: 40
+    },
+    {
+      min: 40,
+      max: 60
+    },
+    {
+      min: 60,
+      max: 80
+    },
+    {
+      min: 80,
+      max: 100
+    },
+    {
+      min: 100,
+      max: null
+    }
+  ]
+
   const INITIAL_QUERY_DATA = {
     satScore: { min: 0, max: 0 },
     actScore: { min: 0, max: 0 },
     page: 1,
     pageSize: 10,
-    state: ""
+    state: null,
+    major: null
   }
+
+  const COA = [
+    {
+      min: 0,
+      max: 5
+    },
+    {
+      min: 5,
+      max: 10
+    },
+    {
+      min: 10,
+      max: 15
+    },
+    {
+      min: 15,
+      max: 20
+    },
+    {
+      min: 20,
+      max: null
+    }
+  ]
 
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
+  const [app, setApp] = useState("Application Fee")
+  const [coa, setCoa] = useState("COA")
   const selectInputRef = useRef()
   const [isFiltered, setIsFiltered] = useState(false)
   const location = useLocation()
@@ -120,6 +178,29 @@ function index() {
       setAct(`${value.min} - ${value.max}`)
     }
 
+    if (identify === "major") {
+      value = e.currentTarget.value
+    }
+    if (identify === "applicationFee") {
+      let st
+
+      if (value.max === 0) {
+        st = "Free"
+      } else if (value.max === null) {
+        st = "100+"
+      } else {
+        st = `${value.min} - ${value.max}`
+      }
+      setApp(st)
+      console.log(value)
+    }
+    if (identify === "coa") {
+      if (value.max === null) {
+        setCoa("20k$+")
+      } else {
+        setCoa(`${value.min} - ${value.max}`)
+      }
+    }
     setQueryData((prev) => ({
       ...prev,
       [identify]: value
@@ -161,6 +242,7 @@ function index() {
 
     selectInputRef.current.clearValue()
     const searchValue = queryParams.get("q")
+    //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
     const { data } = await GetUni({ variables: { name: searchValue } })
 
     dispatch(searchGetSuccess(data?.searchSchool))
@@ -188,59 +270,6 @@ function index() {
           </IonText>
         )}
         <IonCardContent>
-          {/* <div className="search-control">
-          <h2 className="search-control__label">College Type</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>4 Year</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Private</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Public</IonLabel>
-          </div>
-
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>2 Year</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Community</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Trade/career</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Other</IonLabel>
-          </div>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Majors</h2>
-          <div className="field search-field">
-            <IonSelect
-              interface="popover"
-              placeholder="Any"
-              className="select-field"
-            >
-              <IonSelectOption value="Any">Any</IonSelectOption>
-              <IonSelectOption value="Agricultural Science">
-                Agricultural Science
-              </IonSelectOption>
-              <IonSelectOption value="Art">Art</IonSelectOption>
-              <IonSelectOption value="Architecture">
-                Architecture
-              </IonSelectOption>
-            </IonSelect>
-          </div>
-        </div> */}
-
           <div className="search-control z-40">
             <IonLabel>States</IonLabel>
             <Select
@@ -252,68 +281,6 @@ function index() {
               styles={customStyles}
             />
           </div>
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Online friendliness</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Fully online</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Large online program</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Some online degrees</IonLabel>
-          </div>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Cost (net price)</h2>
-          <IonLabel>Select a value</IonLabel>
-          <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Student body size</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Small</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Medium</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Large</IonLabel>
-          </div>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Specialty</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Liberal arts</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>All-women</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>All-men</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>HBCU</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Hispanic-serving institutions</IonLabel>
-          </div>
-        </div> */}
 
           <div className="search-control">
             <h2 className="search-control__label mb-4">Test scores</h2>
@@ -346,120 +313,53 @@ function index() {
             </IonSelect>
           </div>
 
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Admission process</h2>
-          <div className="field search-field">
+          <div className="search-control">
+            <h2 className="search-control__label mb-4">Major</h2>
+
+            <IonInput
+              onIonChange={(e) => {
+                handleData(e, "major")
+              }}
+              className="select-field"
+            ></IonInput>
+          </div>
+
+          <div className="search-control">
+            <h2 className="search-control__label mb-4">Fees</h2>
+            <IonLabel>Application Fee</IonLabel>
             <IonSelect
               interface="popover"
-              placeholder="Any"
+              placeholder={app}
               className="select-field"
+              onIonChange={(e) => handleData(e, "applicationFee")}
             >
-              <IonSelectOption value="any">Any</IonSelectOption>
-              <IonSelectOption value="No Application Fee">
-                No Application Fee
-              </IonSelectOption>
-              <IonSelectOption value="Accepts Common App">
-                Accepts Common App
-              </IonSelectOption>
-              <IonSelectOption value="Test-Optional">
-                Test-Optional
-              </IonSelectOption>
-              <IonSelectOption value="Offers Early Decision">
-                Offers Early Decision
-              </IonSelectOption>
-              <IonSelectOption value="Offers Early Action">
-                Offers Early Action
-              </IonSelectOption>
-              <IonSelectOption value="Rolling Admission">
-                Rolling Admission
-              </IonSelectOption>
+              {APPLICATION_FEES.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === 0
+                    ? "Free"
+                    : val.max === null
+                    ? "100+"
+                    : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
             </IonSelect>
-          </div>
-        </div>
 
-        <div className="search-control">
-          <h2 className="search-control__label">Selectivity</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Extremely selective</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Very selective</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Selective</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Average</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Not selective</IonLabel>
-          </div>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Religious affiliation</h2>
-          <div className="field search-field">
+            <IonLabel className="mt-4">Cost of Attendence</IonLabel>
             <IonSelect
               interface="popover"
-              placeholder="Any"
+              placeholder={coa}
               className="select-field"
+              onIonChange={(e) => handleData(e, "coa")}
             >
-              <IonSelectOption value="any">Any</IonSelectOption>
-              <IonSelectOption value="catholic">Catholid</IonSelectOption>
-              <IonSelectOption value="christian">Christian</IonSelectOption>
-              <IonSelectOption value="jewish">Jewish</IonSelectOption>
+              {COA.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === null
+                    ? val.min + "k$+"
+                    : val.min + "-" + val.max + "k$"}
+                </IonSelectOption>
+              ))}
             </IonSelect>
           </div>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">Good for</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Veterans</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>International students</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Adult learners</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Low-income students</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Middle-class students</IonLabel>
-          </div>
-        </div> */}
-
-          {/* <div className="search-control">
-          <h2 className="search-control__label">
-            Starting salary after graduation
-          </h2>
-          <div className="field search-field">
-            <IonSelect
-              interface="popover"
-              placeholder="Any"
-              className="select-field"
-            >
-              <IonSelectOption value="any">Any</IonSelectOption>
-              <IonSelectOption value="$65,000+">$65,000+</IonSelectOption>
-              <IonSelectOption value="$55,000+">$55,000+</IonSelectOption>
-              <IonSelectOption value="$45,000+">$45,000+</IonSelectOption>
-              <IonSelectOption value="$35,000+">$35,000+</IonSelectOption>
-              <IonSelectOption value="$25,000+">$25,000+</IonSelectOption>
-            </IonSelect>
-          </div>
-        </div> */}
         </IonCardContent>
       </IonCard>
     </>
