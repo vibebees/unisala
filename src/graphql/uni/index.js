@@ -419,6 +419,7 @@ export const GetProfessor = gql`
       $page: Int
       $pageSize: Int
       $state: String
+      $major: String
     ) {
       searchScholarship(
         page: $page
@@ -426,6 +427,7 @@ export const GetProfessor = gql`
         satScore: $satScore
         actScore: $actScore
         state: $state
+        major: $major
       ) {
         scholarships {
           name
