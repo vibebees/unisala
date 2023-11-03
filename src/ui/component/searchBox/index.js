@@ -39,7 +39,7 @@ export const SearchBar = () => {
     }
   }
 
-  useDebouncedEffect(searchUniFromBar(searchValue, 5, setOptions, token), [searchValue], 800)
+  useDebouncedEffect(searchUniFromBar(searchValue, 5, setOptions, token), [searchValue], 300)
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -59,7 +59,7 @@ export const SearchBar = () => {
       <div className="search-box">
         <IonInput
           type="text"
-          placeholder="Search here..."
+          placeholder="Search University here..."
           className="w-full border rounded search-input-box"
           onKeyUp={(e) => {
             if (e.key === "Enter") {

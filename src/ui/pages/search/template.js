@@ -29,8 +29,10 @@ export const SearchTemplate = () => {
   const searchParams = new URLSearchParams(location.search)
   const query = searchParams.get("q") || ""
   useDocTitle("Search ᛫ " + query)
+
   const history = useHistory()
-  const { data: unidata } = useQuery(UniSearchDataList(query), {
+  const {data: unidata} = useQuery(UniSearchDataList, {
+    variables: {name: query},
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
   const { data: searchUser } = useQuery(userSearch(query), {
