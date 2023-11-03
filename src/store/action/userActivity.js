@@ -23,16 +23,22 @@ export
   removeSeenEye = (seenBy) => (dispatch) => {
     dispatch({type: REMOVE_SEEN_MESSAGE, payload: seenBy})
   },
-  searchUniFromBar = (uniName = "", numberOfSuggestion = 5, setResult) => {
+  searchUniFromBar = (uniName = "", numberOfSuggestion = 5, setResult, token) => {
+
     return async (dispatch) => {
       uniName.length > 0 && await axios
-        .get(universityServer + `/keyword/schoolname/${uniName}/${numberOfSuggestion}`)
+        .get(universityServer + `/keyword/schoolname/${uniName}/${numberOfSuggestion}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
         .then((res) => {
           setResult(res?.data)
-          dispatch({
-            type: UNI_SEARCH_RESULT,
-            payload: res?.data
-          })
+          // dispatch({
+          //   type: UNI_SEARCH_RESULT,
+          //   payload: res?.data
+          // })
           // setUsers(() => res?.data?.data?.users || []);
         })
         .catch((err) => {

@@ -8,22 +8,12 @@ import "./theme/tailwind.css"
 import { Provider } from "react-redux"
 import { store } from "./store/store"
 import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  HttpLink,
-  ApolloLink,
-  fromPromise,
-  useApolloClient
+  ApolloProvider
 } from "@apollo/client"
 
 import { createRoot } from "react-dom/client"
 import { client } from "./servers/endpoints"
 
-// const client = new ApolloClient({
-//     link: from([authLink, errorLink, user]),
-//     cache: new InMemoryCache()
-// })
 const root = createRoot(document.getElementById("root"))
 client.clearStore()
 root.render(

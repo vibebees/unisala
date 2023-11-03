@@ -22,30 +22,28 @@ import {
   schoolOutline
 } from "ionicons/icons"
 
-import SimilarCollage from "./similarCollage"
 import VisitWebsite from "./visitWebsite"
-import Professors from "./professors"
+import Professors from "../../../component/professors/template/Professor"
 import Interview from "./Interview"
 import { ReportCard } from "../../../component/reportCard"
 import { PollCard } from "../../../component/pollCard"
 import { CardWithCircularGrid } from "../../../component/cardWithCircularGrid"
 import StudentCharges from "./studentCharges"
 import Statstics from "./statistics"
-import Ranking from "./Ranking"
+import Ranking from "./Ranking/template"
 import { FolderStructure } from "../../../component/folderStructure"
 import StatCardTemplate from "ui/component/DataStatCard/template/StatCardTemplate"
 import StatCardTemplateTwo from "ui/component/DataStatCard/template/StatCardTemplateTwo"
 import RectangularCard from "ui/component/RectangularCardGrid/template/RectangularCard"
+import ImageCard from "ui/component/ScrollableImageCard/template/ImageCard"
 
 const SideDetails = ({
   activeTab,
   forwardedRef,
-  librariesAnimate,
-  unitId,
+
   allProps
 }) => {
-  const { reportDataSource, campusPollDataSource, isSideBar, uniData } =
-    allProps
+  const { isSideBar, uniData } = allProps
 
   const sideMenu = [
     !isSideBar?.scholarshipsEmpty && {
@@ -59,10 +57,10 @@ const SideDetails = ({
       ref: "studentCharges"
     },
 
-    !isSideBar?.adminssionEmpty && {
+    !isSideBar?.admissionEmpty && {
       title: "Admission",
       icon: cashOutline,
-      ref: "adminssion"
+      ref: "admission"
     },
 
     !isSideBar?.financialAidEmpty && {
@@ -96,11 +94,6 @@ const SideDetails = ({
       icon: peopleOutline,
       ref: "Professors"
     },
-    // !isSideBar?.grantsEmpty && {
-    //   title: "Grant",
-    //   icon: thumbsUpOutline,
-    //   ref: "grant"
-    // },
 
     !isSideBar?.similarCollagesEmpty && {
       title: "Similar Collages",
@@ -220,7 +213,6 @@ const SideDetails = ({
           </section>
 
           <section ref={forwardedRef.financialAid}>
-            {/* <FinancialAid /> */}
             <RectangularCard
               allProps={{
                 data: uniData?.financialAid,
@@ -230,11 +222,6 @@ const SideDetails = ({
           </section>
 
           <section ref={forwardedRef.statistics}>
-            {/* <Admission
-              appState={appState}
-              admissionAnimate={admissionAnimate}
-              UniScroll={UniScroll}
-            /> */}
             <Statstics />
           </section>
 
@@ -247,10 +234,6 @@ const SideDetails = ({
             />
           </section>
 
-          {/* <section ref={forwardedRef.grant}>
-            <Grant grantAnimate={grantAnimate} />
-          </section> */}
-
           <section ref={forwardedRef.testScore}>
             <CardWithCircularGrid
               dataSource={uniData?.testScore}
@@ -262,14 +245,17 @@ const SideDetails = ({
             <VisitWebsite />
           </section>
           <section ref={forwardedRef.Professors}>
-            <Professors />
+            <Professors allProps={uniData?.professors} />
           </section>
           <section ref={forwardedRef.similarCollages}>
-            <SimilarCollage />
+            <ImageCard
+              allProps={{
+                data: uniData?.similarSchools,
+                header: "Similar Collages"
+              }}
+            />
           </section>
-          <section ref={forwardedRef.Interview}>
-            <Interview unitId={unitId} />
-          </section>
+
           <section ref={forwardedRef.report}>
             <ReportCard
               dataSource={uniData.userEvaluation.report}
@@ -289,6 +275,9 @@ const SideDetails = ({
           {/* <section ref={forwardedRef.Interview}>
             <Discussion unitId={unitId} />
           </section> */}
+          <section ref={forwardedRef.Interview}>
+            <Interview unitId={uniData?.elevatorInfo?.unitId} />
+          </section>
         </IonRow>
       </IonCol>
     </IonGrid>

@@ -17,7 +17,6 @@ const myBucket = new AWS.S3({
 const ImageUpload = () => {
     const [progress, setProgress] = useState(0)
     const [selectedFile, setSelectedFile] = useState(null)
-    console.log(progress)
 
     const handleFileInput = (e) => {
         setSelectedFile(e.target.files[0])

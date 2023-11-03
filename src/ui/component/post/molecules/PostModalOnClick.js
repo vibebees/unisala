@@ -1,6 +1,7 @@
 import { useState, useRef } from "react"
-import { useMutation } from "@apollo/client"
+import { useMutation, useApolloClient, gql } from "@apollo/client"
 import { useSelector } from "react-redux"
+
 import {
   IonAvatar,
   IonButton,
@@ -33,11 +34,11 @@ import axios from "axios"
 import { userServer } from "../../../../servers/endpoints"
 import clsx from "clsx"
 
-export const PostModalOnClick = ({allProps}) => {
-
-  const { setCreateAPostPopUp, createAPostPopUp, tags} = allProps
+export const PostModalOnClick = ({ allProps }) => {
+  const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
+  const client = useApolloClient()
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
   const [files, setFiles] = useState(null)
@@ -64,7 +65,7 @@ export const PostModalOnClick = ({allProps}) => {
         type: "post",
         saved: false,
         images: addPost.post.images || [],
-        __typename: "Post"
+        __typename: "PostNewsFeed"
       }
       if (!tags) {
         const data = cache.readQuery({
@@ -117,6 +118,22 @@ export const PostModalOnClick = ({allProps}) => {
             }
           }
         )
+
+        if (res.data.success) {
+          const imageLinks = res.data.post.images
+          client.cache.modify({
+            id: client.cache.identify({
+              __typename: "PostNewsFeed",
+              _id: data.addPost.post._id
+            }),
+            fields: {
+              postText(existingImages = []) {
+                console.log(existingImages)
+                return [...existingImages, ...imageLinks]
+              }
+            }
+          })
+        }
       }
       present({
         duration: 3000,
@@ -179,12 +196,17 @@ export const PostModalOnClick = ({allProps}) => {
   }
   // text editor
   return (
-    <IonModal onDidDismiss={() => setCreateAPostPopUp(false)} isOpen={createAPostPopUp}>
+    <IonModal
+      onDidDismiss={() => setCreateAPostPopUp(false)}
+      isOpen={createAPostPopUp}
+    >
       <IonHeader className="">
         <IonToolbar>
           <IonTitle>Start a Discussion</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={() => setCreateAPostPopUp(false)}>Close</IonButton>
+            <IonButton onClick={() => setCreateAPostPopUp(false)}>
+              Close
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

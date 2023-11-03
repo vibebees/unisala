@@ -11,7 +11,6 @@ import "./index.css"
 import {screensMoreThan768} from "../home/helper.func"
 
 const ProfilePage = () => {
-  let windowWidth = useWindowWidth()
 
   return (
     <IonContent>
@@ -35,26 +34,19 @@ const ProfilePage = () => {
                   Unisala.
                   <br />
                   <br /> How does it work?
-                  <br /> lorem ipsum....
-                  <br />
-                  <br />
-                  Quick
-                  <br /> ✍️ Ask your queries
+                  <br /> ✍️ Ask & Answer questions from other students
+                  <br /> 👨‍🏫 👩‍🏫 Search Professor
+                  <br /> 📊 See detail info & statistics about university
+                  <br /> 📚 Follow topics and courses
                   <br /> 📃 Read stories from your personalized feed
                   <br /> 😎 Keep your profile up-to-date
-                  <br /> 🚔 Code of Conduct
-                  <br />
-                  <br /> We share the best articles on Twitter and LinkedIn.
-                  Follow us to stay updated
+
+
                 </div>
               </IonCardContent>
             </IonCard>
           </IonCol>
-          {windowWidth >= 1080 && (
-            <IonCol className="sidebar">
-              {screensMoreThan768()}
-            </IonCol>
-          )}
+
         </IonRow>
       </IonGrid>
     </IonContent>

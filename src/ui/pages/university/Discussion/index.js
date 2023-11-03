@@ -4,7 +4,6 @@ import {
   IonCard,
   IonCardContent,
   IonIcon,
-  IonTextarea,
   useIonToast
 } from "@ionic/react"
 import { useSelector } from "react-redux"
@@ -19,10 +18,8 @@ import TextEditor from "../../../../utils/components/TextEditor"
 export default function Discussion({ uniId }) {
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()
-  const input = React.useRef()
   const [reply, setReply] = React.useState("")
   const [tag, setTag] = React.useState("")
-
   const [submitUniReview] = useMutation(AddPost, {
     context: { server: "USER_SERVICE_GQL" },
     variables: { unitId: uniId, postText: reply, postTag: tag },

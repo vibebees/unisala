@@ -16,6 +16,7 @@ import {WelcomeData} from ".."
 import {universityServer} from "../../../../../servers/endpoints"
 import axios from "axios"
 import {useDebouncedEffect} from "../../../../../hooks/useDebouncedEffect"
+import {useSelector} from "react-redux"
 
 const QuestionTitle = ({title}) => (
   <IonText color="primary">
@@ -84,7 +85,7 @@ const SecondStep = ({question}) => {
     {text, options, description} = question
 
   const getMajors = async () => {
-    const token = localStorage.getItem("accessToken")
+    const token = useSelector((state) => state?.auth?.accessToken)
     setIsLoading(true)
     try {
       const res = await axios.get(

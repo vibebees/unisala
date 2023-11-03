@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { IonButton, useIonToast } from "@ionic/react"
 import clsx from "clsx"
 import { WelcomeData } from ".."
-import { useDispatch, Provider } from "react-redux"
+import { useDispatch, Provider, useSelector } from "react-redux"
 import { useMutation, useQuery } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../../store/action/userProfile"
@@ -13,7 +13,7 @@ const StepsButtons = ({allProps}) => {
   const { welcomeFormdata } = useContext(WelcomeData),
     dispatch = useDispatch(),
     [present, dismiss] = useIonToast(),
-    accessToken = localStorage.getItem("accessToken"),
+     {accessToken} = useSelector((state) => state?.auth),
     decode = jwtDecode(accessToken),
     [users, setUsers] = useState({
       email: decode.email,

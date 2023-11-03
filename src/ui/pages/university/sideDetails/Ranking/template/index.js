@@ -1,11 +1,13 @@
 import React from "react"
 import Ranking from "../molecules/Ranking"
 import { useSelector } from "react-redux"
-import { IonCard, IonCardContent } from "@ionic/react"
+import { IonCard } from "@ionic/react"
 
 const index = () => {
-  const { uniData, sidebar } = useSelector((store) => store?.university)
+  const { uniData } = useSelector((store) => store?.university)
   const ranking = uniData?.userEvaluation?.rankings
+
+  if (!ranking) return null
 
   return (
     <IonCard

@@ -24,11 +24,10 @@ export const GetProfessor = gql`
     }
   `,
   getUpdatedSchoolInfo = (unitId, name) =>
-  gql`
-    query getUpdatedSchoolInfo($unitId: Float, $name: String) {
-      getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
-
-   elevatorInfo {
+    gql`
+      query getUpdatedSchoolInfo($unitId: Float, $name: String) {
+        getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
+          elevatorInfo {
             unitId
             name
             address {
@@ -159,7 +158,6 @@ export const GetProfessor = gql`
                 percentile25
                 percentile75
               }
-
             }
             act {
               submitted
@@ -391,14 +389,12 @@ export const GetProfessor = gql`
             levelOfDifficulty
             wouldTakeAgain
           }
+        }
       }
-    }
-  `,
-
-  UniSearchDataList = (name) =>
-    gql`
-    query {
-      searchSchool(name: "${name}") {
+    `,
+  UniSearchDataList = gql`
+    query UniSearchDataList($name: String) {
+      searchSchool(name: $name) {
         name
         unitId
         address {
@@ -414,22 +410,40 @@ export const GetProfessor = gql`
         undergraduateOffering
         pictures
       }
-    }`,
+    }
+  `,
   UniFilterResults = gql`
-    query uniFilterResults {
-      searchScholarship(satScore: { min: 400, max: 1200 }) {
-        status {
-          success
-          message
-        }
+    query uniFilterResults(
+      $satScore: RangeInput
+      $actScore: RangeInput
+      $page: Int
+      $pageSize: Int
+      $state: String
+    ) {
+      searchScholarship(
+        page: $page
+        pageSize: $pageSize
+        satScore: $satScore
+        actScore: $actScore
+        state: $state
+      ) {
         scholarships {
-          level
-          university_name
-          sat {
-            max
-            min
+          name
+          unitId
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
           }
+          alias
+          ownType
+          tags
+          missionStatement
+          graduateOffering
+          undergraduateOffering
+          pictures
         }
       }
     }
   `
+

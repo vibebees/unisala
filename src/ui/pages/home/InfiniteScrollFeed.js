@@ -14,6 +14,7 @@ export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
 
   const {page, setPage} = allProps
+  console.log({user})
   const { data, loading, fetchMore } = useQuery(getNewsFeed, {
     variables: { userId: user._id, page: 0 },
     context: { server: USER_SERVICE_GQL }

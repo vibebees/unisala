@@ -23,7 +23,7 @@ import useDocTitle from "../../../hooks/useDocTitile"
 import noResultsFound from "../../../assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "../../../servers/types"
 import { useSelector } from "react-redux"
-import {screenGreaterThan1000} from "../home/helper.func"
+import { screenGreaterThan1000 } from "../home/helper.func"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -73,6 +73,10 @@ const ProfilePage = () => {
     myProfile,
     doj,
     connectionType: getUser?.connectionType
+  }
+
+  const views = {
+    greaterThan100: screenGreaterThan1000()
   }
 
   const profileBodyData = {
@@ -161,11 +165,8 @@ const ProfilePage = () => {
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
           </IonCol>
-          {windowWidth >= 1080 && (
-            <IonCol className="sidebar">
-             {screenGreaterThan1000()}
-            </IonCol>
-          )}
+
+          {windowWidth >= 1000 && views.greaterThan100}
         </IonRow>
       </IonGrid>
     </IonContent>

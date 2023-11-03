@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import {useState, useRef, useEffect} from "react"
 import {
   IonGrid,
   IonRow,
@@ -14,51 +14,21 @@ import {
   people,
   personCircle
 } from "ionicons/icons"
-import { Link, useLocation } from "react-router-dom"
+import {Link} from "react-router-dom"
+import SearchBox from "./searchBox"
 import ProfilePop from "./profilePop"
-import jwtDecode from "jwt-decode"
-import { useSelector } from "react-redux"
-import {SearchBar} from "./searchBox"
+import {useSelector} from "react-redux"
 
-const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
-  const popover = useRef(null)
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const location = useLocation()
+const Nav = ({allProps}) => {
+
+  const {setActive, setPopoverOpen, popover, decode, navigation, activeNavDrop, active, popoverOpen, setActiveNavDrop} = allProps
 
   const openPopover = (e) => {
-      popover.current.event = e
-      setPopoverOpen(true)
-    },
-    unreadMessagesCount = useSelector(
-      (state) => state?.userProfile?.unreadMessages?.length
-    )
+    popover.current.event = e
+    setPopoverOpen(true)
+  },
+    unreadMessagesCount = 0 || useSelector((state) => state?.userProfile?.unreadMessages?.length)
 
-  const navigation = [
-    {
-      name: "Home",
-      icon: home,
-      link: "/home"
-    },
-    {
-      name: "My Network",
-      icon: people,
-      link: "/mynetwork"
-    },
-    {
-      name: "Messages",
-      icon: chatbubbles,
-      link: "/messages",
-      count: unreadMessagesCount
-    },
-    {
-      name: "Notification",
-      icon: notifications,
-      link: "/notifications"
-    }
-  ]
-  const [active, setActive] = useState("")
-  const accessToken = localStorage?.getItem("accessToken")
-  const decode = accessToken && jwtDecode(accessToken)
 
   useEffect(() => {
     setActive(window.location.pathname)
@@ -101,15 +71,15 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
               }}
             />
           </Link>
-          <div style={{ width: "100%" }}>
-        {!(location.pathname === "/search") && <SearchBar />}
-      </div>
+          <div style={{width: "100%"}}>
+            <SearchBox />
+          </div>
         </div>
-        <IonRow style={{ display: "inline-flex", gap: "2.5rem" }}>
+        <IonRow style={{display: "inline-flex", gap: "2.5rem"}}>
           {decode &&
             navigation.map((item, index) => {
               return (
-                <div key={index} style={{ cursor: "pointer" }} className="flex">
+                <div key={index} style={{cursor: "pointer"}} className="flex">
                   <Link
                     to={item?.link}
                     onClick={() => setActive(`${item?.link}`)}
@@ -123,7 +93,7 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
                         gap: "3px"
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center" }}>
+                      <div style={{display: "flex", alignItems: "center"}}>
                         <IonIcon
                           style={{
                             fontSize: "25px"
@@ -165,25 +135,24 @@ const Nav = ({ setActiveNavDrop, activeNavDrop }) => {
             }}
           >
             <IonIcon
-              style={{ fontSize: "25px" }}
+              style={{fontSize: "25px"}}
               color={active?.includes("@") ? "dark" : "medium"}
               icon={personCircle}
             />
 
             <IonText color={activeNavDrop.profile ? "dark" : "medium"}>
-              <p style={{ margin: 0, fontSize: "14px" }}>My profile</p>
+              <p style={{margin: 0, fontSize: "14px"}}>My profile</p>
             </IonText>
           </div>
           <IonPopover
             ref={popover}
             isOpen={popoverOpen}
-            onDidDismiss={() => setPopoverOpen(false)}
+            onDidDismiss={() => {
+              setPopoverOpen(false)
+            }}
           >
             <ProfilePop
-              setPopoverOpen={setPopoverOpen}
-              activeNavDrop={activeNavDrop}
-              setActiveNavDrop={setActiveNavDrop}
-              setActive={setActive}
+              allProps={{...allProps, authFromPopUp: true}}
             />
           </IonPopover>
         </IonRow>

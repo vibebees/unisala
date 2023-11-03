@@ -3,6 +3,7 @@ import {
   BEFORE_AUTH_TRACK_PATH,
   CLEAR_AUTH_ERROR,
   EMAIL_VERIFICATION_RESENT,
+  LOGIN,
   LOGOUT,
   OAUTH,
   PASSWORD_RESET_ASK_EMAIL,
@@ -86,7 +87,6 @@ export const registerUser = ({
         setsave(false)
         if (res.data.success === true) {
           setdatacheck(false)
-          console.log(input)
           setauth({ state: "SignUpVerification", email: input.email })
           dispatch({
             type: USER_REGISTRATION,
@@ -115,6 +115,57 @@ export const registerUser = ({
         setdatacheck(false)
       })
 }
+
+export const googleAuthAction = ({present, dismiss, credential, setPopoverOpen, moveToHome}) => {
+  return (dispatch) => axios
+      .post(userServer + `/auth/google`, {token: credential})
+      .then((res) => {
+        if (res.data.success) {
+
+          if (res?.data.isFirstLogin) {
+            localStorage.setItem("newUser", "true")
+          }
+          dispatch({
+            type: USER_LOGIN,
+            payload: res.data
+          })
+          dispatch({
+            type: LOGIN,
+            payload: res.data
+          })
+
+          dismiss()
+          setPopoverOpen(false)
+          moveToHome()
+        }
+        if (!res.data.success) {
+          dispatch({
+            type: USER_LOGIN_ERROR,
+            payload: res.data
+          })
+          present({
+            duration: 3000,
+            message: res.data.message,
+            buttons: [{text: "X", handler: () => dismiss()}],
+            color: "primary",
+            mode: "ios"
+          })
+        }
+      })
+}
+
+const getNewRefreshToken = (refreshToken) => {
+  return (dispatch) => axios.post(userServer + `/refreshToken`, {refreshToken})
+    .then((res) => {
+      if (res.data.success) {
+        dispatch({
+          type: USER_LOGIN,
+          payload: res.data
+        })
+      }
+    })
+}
+
 
 // export const isLoggedIn = (user) => {
 //     try {

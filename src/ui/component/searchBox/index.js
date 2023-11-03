@@ -7,16 +7,21 @@ import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { userSearch } from "../../../graphql/user"
 
-import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
+import {
+  UNIVERSITY_SERVICE_GQL,
+  USER_SERVICE_GQL
+} from "../../../servers/types"
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
+import { searchUniFromBar } from "store/action/userActivity"
+import { useSelector } from "react-redux"
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
   const [dropDownOptions, setDropDownOptions] = useState(false)
   const history = useHistory()
   const [options, setOptions] = useState([])
-  const [GetUni, unidata] = useLazyQuery(UniSearchDataList(), {
+  const [GetUni, unidata] = useLazyQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
     skip: true
   })
@@ -25,15 +30,16 @@ export const SearchBar = () => {
     skip: true
   })
   const dropdownRef = useRef(null)
+  const token = useSelector((state) => state?.auth?.accessToken)
 
   const handleSearch = () => {
     if (searchValue) {
-      GetUni({ variables: { searchValue } })
-      GetUser({ variables: { searchValue } })
+      // GetUni({ variables: { searchValue } })
+      // GetUser({ variables: { searchValue } })
     }
   }
 
-  useDebouncedEffect(handleSearch, [searchValue], 1000)
+  useDebouncedEffect(searchUniFromBar(searchValue, 5, setOptions, token), [searchValue], 800)
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
