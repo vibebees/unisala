@@ -4,6 +4,7 @@ import { IonCardContent, IonText, IonGrid, IonIcon } from "@ionic/react"
 import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons"
 import similarCollege from "./similarCollege.css"
 import clsx from "clsx"
+import {Link} from "react-router-dom"
 
 const ScrollableCard = ({ allProps }) => {
   const { title, data, className } = allProps
@@ -40,7 +41,11 @@ const ScrollableCard = ({ allProps }) => {
           )}
         >
           {data?.map((item, index) => {
-            return <SingleImageCard key={index} allProps={item} />
+            return (
+              <Link to={"/university/" + item?.name} key={index}>
+                <SingleImageCard key={index} allProps={item} />
+              </Link>
+            )
           })}
         </div>
         <button

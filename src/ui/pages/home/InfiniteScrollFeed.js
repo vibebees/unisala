@@ -75,6 +75,7 @@ export const InfinteFeed = ({ allProps }) => {
 
   const transformedData = transformAndStylePostData(originalData)
 
+
 return (
     <div>
     {Posts?.map((item, index) => {
