@@ -120,15 +120,16 @@ export const SignUpForm = ({ setauth }) => {
         {save ? <IonSpinner></IonSpinner> : "Register"}
       </button>
       {location.pathname !== "/" && (
-        <IonRow className="auth-change inline-flex">
-          <p>Already a member?</p>
-          <a
-            onClick={() => {
-              setauth({ state: "signin" })
-            }}
-          >
-            sign in
-          </a>
+        <IonRow
+          onClick={() => {
+            setauth({ state: "signin" })
+          }}
+          className="auth-change mt-7 inline-flex"
+        >
+          <p className="text-blue-600 font-medium text-lg">
+            Already a member?{" "}
+            <span className="underline underline-offset-4"> sign in</span>
+          </p>
         </IonRow>
       )}
     </form>

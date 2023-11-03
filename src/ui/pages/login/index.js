@@ -17,10 +17,10 @@ export const Login = ({ allProps }) => {
   })
 
   return (
-    <IonContent className="auth-pop">
-      <IonGrid>
+    <IonContent className="auth-pop ">
+      <IonGrid className="">
         <IonRow style={{ overflow: "hidden" }}>
-          <IonCol className="">
+          <IonCol>
             {auth.state === "signin" ? (
               <SignIn auth={auth} setauth={setauth} allProps={allProps} />
             ) : auth.state === "signup" ? (

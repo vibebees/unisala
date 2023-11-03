@@ -93,15 +93,16 @@ const SignInForm = ({ setauth }) => {
         {loading ? <IonSpinner></IonSpinner> : "Login"}
       </button>
       {location.pathname !== "/" && (
-        <IonRow className="auth-change inline-flex">
-          <p>Not Registered Yet?</p>
-          <a
-            onClick={() => {
-              setauth({ state: "signup" })
-            }}
-          >
-            Create an account
-          </a>
+        <IonRow
+          onClick={() => {
+            setauth({ state: "signup" })
+          }}
+          className="auth-change mt-8 inline-flex "
+        >
+          <p className="text-blue-600 font-medium text-lg">
+            Not Registered Yet?{" "}
+            <span className="underline underline-offset-4"> Click Here</span>
+          </p>
         </IonRow>
       )}
     </form>

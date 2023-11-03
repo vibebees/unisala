@@ -18,69 +18,7 @@ import UserNotVerified from "./Verification/UserNotVerified"
 import useWindowWidth from "../../../hooks/useWindowWidth"
 import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 import clsx from "clsx"
-
-const TextCompnonent = ({ setShowSignup, showSignup, setauth }) => {
-  return (
-    <IonRow className="w-full flex flex-col">
-      <div className="relative h-20">
-        <IonText
-          className={clsx(
-            "w-full  text-center top-0 absolute text-3xl font-bold",
-            showSignup ? "slide-out-right-text" : "slide-in-right"
-          )}
-        >
-          Welcome Back!
-        </IonText>
-        <IonText
-          className={clsx(
-            "w-full  absolute top-0 text-center text-3xl font-bold",
-            showSignup ? "slide-in-left" : "slide-out-left-text"
-          )}
-        >
-          Hello There!, Welcome to Unisala
-        </IonText>
-      </div>
-
-      <div className=" bordre-white h-20 relative   ">
-        <IonText
-          className={clsx(
-            " mt-2 px-10 bg-transparent absolute top-0  text-neutral-200 w-full  text-center text-base font-medium",
-            showSignup ? "slide-out-right-text" : "slide-in-right"
-          )}
-        >
-          To keep connected with us please login with your personal info.
-        </IonText>
-        <IonText
-          className={clsx(
-            " mt-2 px-8 absolute top-0 text-neutral-200 w-full  text-center text-base font-medium",
-            showSignup ? "slide-in-left" : "slide-out-left-text"
-          )}
-        >
-          We&lsquo;re thrilled to have you join our community. Let&lsquo;s get
-          you set up.
-        </IonText>
-      </div>
-
-      <button
-        onClick={() => {
-          if (!showSignup) {
-            setauth({
-              state: "signup",
-              email: "",
-              code: 0
-            })
-          }
-          setShowSignup(!showSignup)
-        }}
-        className={clsx(
-          " border mx-auto border-solid   mt-1  px-6 text-lg py-1 text-white bg-blue-500   border-neutral-300  rounded-full"
-        )}
-      >
-        {showSignup ? "Login" : "Sign Up"}
-      </button>
-    </IonRow>
-  )
-}
+import LoginText from "./LoginText"
 
 export const Authentication = ({ allProps }) => {
   const { activeNavDrop, setActiveNavDrop } = allProps
@@ -113,11 +51,7 @@ export const Authentication = ({ allProps }) => {
                   : "right-0 left-1/2 max-md:left-0 max-md:top-1/2"
               )}
             >
-              <TextCompnonent
-                setShowSignup={setShowSignup}
-                showSignup={showSignup}
-                setauth={setauth}
-              />
+              <LoginText allProps={{ setShowSignup, showSignup, setauth }} />
             </IonCard>
             <IonCol
               className={clsx(

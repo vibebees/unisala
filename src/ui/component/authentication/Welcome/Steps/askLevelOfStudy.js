@@ -9,7 +9,7 @@ import {
 import { WelcomeData } from ".."
 
 const StudyLevelOption = ({ value, label, isChecked, handleClick }) => (
-  <IonRow className="gap-2 !flex-nowrap">
+  <IonRow className="gap-2 items-start flex-nowrap">
     <IonCheckbox
       checked={isChecked}
       value={value}
