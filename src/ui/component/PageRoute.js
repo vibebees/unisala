@@ -5,6 +5,7 @@ import ProtectedRoute from "../../utils/lib/protectedRoute"
 import PreLoader from "./preloader"
 import {StudyAbroadRoadmap} from "ui/pages/roadmap/visaRoadMap"
 import {UnisalaLandingPage} from "ui/pages/home/UnisalaIntro"
+import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
 const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
 const HomePage = lazy(() => import("../pages/home"))
@@ -51,6 +52,11 @@ export const PageRoute = ({allProps}) => (
     <Suspense fallback={<PreLoader />}>
     <Route path="/roadmap" exact>
         <StudyAbroadRoadmap />
+      </Route>
+
+
+      <Route path="/myjourney" exact>
+        <StudyAbroadRoadmapInput />
       </Route>
 
       <Route exact path="/home">

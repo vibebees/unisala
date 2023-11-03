@@ -13,6 +13,8 @@ import {
 } from "../../../servers/types"
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
+import { searchUniFromBar } from "store/action/userActivity"
+import { useSelector } from "react-redux"
 
 function Index() {
   const [searchValue, setSearchValue] = useState("")
@@ -28,15 +30,16 @@ function Index() {
     skip: true
   })
   const dropdownRef = useRef(null)
+  const token = useSelector((state) => state?.auth?.accessToken)
 
   const handleSearch = () => {
     if (searchValue) {
-      GetUni({ variables: { searchValue } })
-      GetUser({ variables: { searchValue } })
+      // GetUni({ variables: { searchValue } })
+      // GetUser({ variables: { searchValue } })
     }
   }
 
-  useDebouncedEffect(handleSearch, [searchValue], 1000)
+  useDebouncedEffect(searchUniFromBar(searchValue, 5, setOptions, token), [searchValue], 800)
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -58,6 +61,7 @@ function Index() {
           type="text"
           placeholder="Search"
           className="search-input-box"
+          autocorrect="on"
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               setDropDownOptions(false)
