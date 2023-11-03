@@ -25,9 +25,7 @@ const StatusOption = ({ value, label, handleClick, isChecked }) => (
     >
       {label}
     </IonCheckbox>
-    <label className="text-sm  font-medium text-neutral-600">
-      {label}dkhfad siofhsd djkf hf oaisd osidfa osi fasdiuf isdfis idshfiasd{" "}
-    </label>
+    <label className="text-sm  font-medium text-neutral-600">{label}</label>
   </IonRow>
 )
 

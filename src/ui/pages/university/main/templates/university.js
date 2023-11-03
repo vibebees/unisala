@@ -51,12 +51,6 @@ export const UniversityTemplate = ({ allProps }) => {
   }, [location.search])
 
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.set("tab", activeTab.toString())
-    history.push({ search: params.toString() })
-  }, [activeTab])
-
-  useEffect(() => {
     dispatch(getUniData(data?.getUpdatedSchoolInfo))
   }, [data])
 

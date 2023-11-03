@@ -18,9 +18,7 @@ const StudyLevelOption = ({ value, label, isChecked, handleClick }) => (
     >
       {label}
     </IonCheckbox>
-    <label className="text-sm shrink-0 font-medium text-neutral-600">
-      {label}
-    </label>
+    <label className="text-sm  font-medium text-neutral-600">{label}</label>
   </IonRow>
 )
 

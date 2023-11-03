@@ -45,7 +45,10 @@ const SearchInput = ({ term, setTerm, isLoading, results, handleClick }) => (
       placeholder=" Criminal Justice ⚖️"
       className="font-medium text-neutral-600 w-full shadow-md rounded-lg"
       value={term}
-      onIonInput={(e) => setTerm(e.target.value)}
+      onIonInput={(e) => {
+        setTerm(e.target.value)
+        console.log(e.target.value)
+      }}
     />
     <div className="mt-4 border rounded-lg overflow-y-auto max-h-60 shadow-inner">
       <MajorList
@@ -82,7 +85,7 @@ const MajorList = ({ isLoading, results, handleClick }) => (
 
 const SecondStep = ({ question }) => {
   const [searchInput, setSearchInput] = useState(false),
-    [searcTerm, setSearchTerm] = useState(""),
+    [searchTerm, setSearchTerm] = useState(""),
     [isLoading, setIsLoading] = useState(false),
     [results, setResults] = useState([]),
     {
@@ -93,12 +96,19 @@ const SecondStep = ({ question }) => {
     [showOptions, setShowOptions] = useState(true),
     { text, options, description } = question
 
+  function handleInput() {
+    getMajors()
+  }
+
+  useDebouncedEffect(handleInput, [searchTerm], 2000)
+
   const getMajors = async () => {
+    console.log("api called")
     const token = useSelector((state) => state?.auth?.accessToken)
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/spaces/${searcTerm}/4`,
+        `${universityServer}/keyword/spaces/${searchTerm}/4`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -112,10 +122,6 @@ const SecondStep = ({ question }) => {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const handleInput = () => {
-    getMajors()
   }
 
   const handleclick = (e) => {
@@ -141,8 +147,6 @@ const SecondStep = ({ question }) => {
     // Toggle the searchInput checkbox
     setSearchInput(!showOptions)
   }
-
-  useDebouncedEffect(handleInput, [searcTerm], 300)
 
   return (
     <div>
@@ -181,7 +185,7 @@ const SecondStep = ({ question }) => {
           {!showOptions && (
             <div>
               <SearchInput
-                term={searcTerm}
+                term={searchTerm}
                 setTerm={setSearchTerm}
                 isLoading={isLoading}
                 results={results}

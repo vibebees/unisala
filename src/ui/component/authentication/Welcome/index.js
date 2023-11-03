@@ -65,31 +65,34 @@ const Index = ({ allProps }) => {
       <WelcomeData.Provider
         value={{ data, welcomeFormdata, setWelcomeFormdata }}
       >
-        <IonRow className="flex-col">
-          <IonCol>
+        <IonRow className="flex-col h-full">
+          <IonCol size="auto">
             <Indicators currentStep={currentStep} />
           </IonCol>
-          <IonCol className="">
-            {stepComponents.map((step, index) => (
-              <div
-                key={index}
-                className={clsx("step-container absolute left-0 w-full", {
-                  "z-10": currentStep === index + 1,
-                  "z-0 opacity-0": currentStep !== index + 1,
-                  "fade-enter": currentStep === index + 1,
-                  "fade-exit": currentStep !== index + 1
-                })}
-              >
-                {index === 0
-                  ? step
-                  : React.cloneElement(step, {
-                      question: questions[index - 1],
-                      category: questions[index - 1].category
-                    })}
-              </div>
-            ))}
-          </IonCol>
-          <IonCol>
+          <IonRow className=" flex-1">
+            <IonCol className=" welcomeScroll overflow-y-auto  h-full ">
+              {stepComponents.map((step, index) => (
+                <div
+                  key={index}
+                  className={clsx("step-container  absolute left-0 w-full", {
+                    "z-10": currentStep === index + 1,
+                    "z-0 opacity-0": currentStep !== index + 1,
+                    "fade-enter": currentStep === index + 1,
+                    "fade-exit": currentStep !== index + 1
+                  })}
+                >
+                  {index === 0
+                    ? step
+                    : React.cloneElement(step, {
+                        question: questions[index - 1],
+                        category: questions[index - 1].category
+                      })}
+                </div>
+              ))}
+            </IonCol>
+          </IonRow>
+
+          <IonCol size="auto" className="">
             <StepsButtons
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
