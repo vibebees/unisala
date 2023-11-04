@@ -14,7 +14,6 @@ export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
 
   const {page, setPage} = allProps
-  console.log({user})
   const { data, loading, fetchMore } = useQuery(getNewsFeed, {
     variables: { userId: user._id, page: 0 },
     context: { server: USER_SERVICE_GQL }
@@ -76,6 +75,7 @@ export const InfinteFeed = ({ allProps }) => {
 
   const transformedData = transformAndStylePostData(originalData)
 
+
 return (
     <div>
     {Posts?.map((item, index) => {
@@ -83,7 +83,6 @@ return (
        if (item.section === "elevatorInfo") {
         newData = transformAndStylePostData(item)
        }
-      console.log(item.name)
       if (item.type === "uni" && item.section === "elevatorInfo") {
         return (
 

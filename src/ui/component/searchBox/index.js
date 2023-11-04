@@ -13,8 +13,10 @@ import {
 } from "../../../servers/types"
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
+import { searchUniFromBar } from "store/action/userActivity"
+import { useSelector } from "react-redux"
 
-function Index() {
+export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
   const [dropDownOptions, setDropDownOptions] = useState(false)
   const history = useHistory()
@@ -28,15 +30,20 @@ function Index() {
     skip: true
   })
   const dropdownRef = useRef(null)
+  const token = useSelector((state) => state?.auth?.accessToken)
 
   const handleSearch = () => {
     if (searchValue) {
-      GetUni({ variables: { searchValue } })
-      GetUser({ variables: { searchValue } })
+      // GetUni({ variables: { searchValue } })
+      // GetUser({ variables: { searchValue } })
     }
   }
 
-  useDebouncedEffect(handleSearch, [searchValue], 1000)
+  useDebouncedEffect(
+    searchUniFromBar(searchValue, 5, setOptions, token),
+    [searchValue],
+    300
+  )
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -102,5 +109,3 @@ function Index() {
     </>
   )
 }
-
-export default Index

@@ -17,10 +17,12 @@ import { InfinteFeed } from "./InfiniteScrollFeed"
 
 import {useQuery} from "@apollo/client"
 import {getUpdatedSchoolInfo} from "../../../graphql/uni"
-import {UNIVERSITY_SERVICE_GQL} from "../../../servers/types"
+import {UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL} from "../../../servers/types"
 
 import {FolderStructure} from "../../component/folderStructure"
 import {UnisalaLandingPage} from "./UnisalaIntro"
+import ScrollableCard from "ui/component/ScrollableImageCard/organism/ScrollableCard"
+import {fetchFamousUniversities} from "graphql/user"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -46,6 +48,14 @@ export const Home = ({ allProps }) => {
     variables: { unitId },
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
+  const { data: famousUniversities } = useQuery(fetchFamousUniversities, {
+    variables: { limit: 100, page: 0 },
+    context: { server: USER_SERVICE_GQL }
+  })
+
+
+
+  const discoverUni = famousUniversities?.getFamousUniversity
 
   useEffect(() => {
     const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
@@ -61,6 +71,12 @@ export const Home = ({ allProps }) => {
           folderName: "",
           data: userGuide,
           popUp: false
+        }}
+      />
+      <ScrollableCard
+        allProps={{
+          data: discoverUni,
+          className: "similarschoolss"
         }}
       />
       <InfinteFeed userInfo={user} allProps={allProps} />

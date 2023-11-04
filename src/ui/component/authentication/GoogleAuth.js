@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux"
 import { googleAuthAction } from "store/action/authenticationAction"
 import { useHistory } from "react-router"
 
-export const GoogleAuth = ({ setauth, allProps }) => {
+export const GoogleAuth = ({ setauth, allProps = {} }) => {
   const { setPopoverOpen, authFromPopUp } = allProps
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef(),
