@@ -1,14 +1,6 @@
 import axios from "axios"
 import {
-  BEFORE_AUTH_TRACK_PATH,
-  CLEAR_AUTH_ERROR,
-  EMAIL_VERIFICATION_RESENT,
   LOGIN,
-  LOGOUT,
-  OAUTH,
-  PASSWORD_RESET_ASK_EMAIL,
-  PASSWORD_RESET_ASK_PASSWORD,
-  SHOW_ALERT,
   USER_LOGIN,
   USER_LOGIN_ERROR,
   USER_REGISTRATION
@@ -20,12 +12,12 @@ import {
 } from "../types/userActivity"
 
 export const loginUser = ({
-  userServer,
   input,
   setLoading,
   present,
   dismiss,
-  setauth
+  setauth,
+  history
 }) => {
   return (dispatch) => {
     axios
@@ -37,9 +29,7 @@ export const loginUser = ({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          window.innerWidth < 768
-            ? window.location.replace("/home")
-            : window.location.reload()
+          history?.push("/home")
         }
 
         if (!res.data.success) {

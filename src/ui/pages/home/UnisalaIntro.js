@@ -34,7 +34,7 @@ export const UnisalaLandingPage = ({allProps}) => {
             <div className="flex gap-4 w-full pr-28 justify-end ">
               <button
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-                onClick={() => window.open("/login", "_blank")} // Replace '/login' with your login URL
+                onClick={() => window.location.replace("/login")} // Replace '/login' with your login URL
               >
                 <IonIcon icon={lockOpenOutline} />
                 &nbsp; Log In Now
