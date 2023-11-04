@@ -414,22 +414,30 @@ export const GetProfessor = gql`
   `,
   UniFilterResults = gql`
     query uniFilterResults(
-      $satScore: RangeInput
-      $actScore: RangeInput
-      $page: Int
-      $pageSize: Int
+      $sat: RangeInput
+      $act: RangeInput
+      $graduateApplicationFee: RangeInput
+      $undergraduateApplicationFee: RangeInput
+      $graduateInStateTuitionFee: RangeInput
+      $graduateOutOfStateTuitionFee: RangeInput
+      $undergraduateInStateTuitionFee: RangeInput
+      $undergraduateOutOfStateTuitionFee: RangeInput
       $state: String
-      $major: String
     ) {
-      searchScholarship(
-        page: $page
-        pageSize: $pageSize
-        satScore: $satScore
-        actScore: $actScore
+      searchUniversity(
+        pageSize: 10
+        page: 1
+        sat: $sat
+        act: $act
+        graduateApplicationFee: $graduateApplicationFee
+        undergraduateApplicationFee: $undergraduateApplicationFee
+        graduateInStateTuitionFee: $graduateInStateTuitionFee
+        graduateOutOfStateTuitionFee: $graduateOutOfStateTuitionFee
+        undergraduateInStateTuitionFee: $undergraduateInStateTuitionFee
+        undergraduateOutOfStateTuitionFee: $undergraduateOutOfStateTuitionFee
         state: $state
-        major: $major
       ) {
-        scholarships {
+        elevatorInfo {
           name
           unitId
           address {
@@ -444,6 +452,23 @@ export const GetProfessor = gql`
           graduateOffering
           undergraduateOffering
           pictures
+        }
+
+        studentCharges {
+          undergraduateApplicationFee
+          undergraduate {
+            inState {
+              tuition
+            }
+            offCampusWithFamily {
+              costOfAttendance {
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+          }
         }
       }
     }

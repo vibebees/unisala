@@ -222,7 +222,7 @@ function loadingScreen() {
 
 function CourseCard({ allProps }) {
   const { name, ownType, tags, loading = false, schoolDataLoading } = allProps
-
+  console.log({ courseCard: allProps })
   if (loading || schoolDataLoading || name === undefined) {
     return loadingScreen()
   }
