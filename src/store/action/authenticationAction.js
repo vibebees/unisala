@@ -61,50 +61,61 @@ export const loginUser = ({
   }
 }
 
-export const registerUser = ({
-  userServer,
-  input,
-  setdatacheck,
-  setauth,
-  setsave,
-  present,
-  dismiss
-}) => {
-  return (dispatch) =>
-    axios
-      .post(userServer + `/register`, input)
-      .then((res) => {
-        setsave(false)
-        if (res.data.success === true) {
-          setdatacheck(false)
-          setauth({ state: "SignUpVerification", email: input.email })
-          dispatch({
-            type: USER_REGISTRATION,
-            payload: res
-          })
-        }
-        if (res.data.success === false) {
-          present({
-            duration: 3000,
-            message: res.data.message,
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-        }
-      })
-      .catch(() => {
-        setsave(false)
+export const registerUser = ({input, setsave, setdatacheck, setauth, present, dismiss}) => (dispatch) => {
+  setsave(true) // Assuming this is meant to indicate loading
+
+  axios.post(userServer + `/register`, input)
+    .then((res) => {
+      setsave(false) // Stop loading indication
+      if (res.data.success === true) {
+        setdatacheck(false) // Reset data check if successful
+        setauth({ state: "SignUpVerification", email: input.email })
+        dispatch({
+          type: USER_REGISTRATION,
+          payload: res.data // Usually you only need the data, not the entire response
+        })
+      } else if (res.data.success === false) {
+        // Handle case where success is explicitly false
         present({
           duration: 3000,
-          message: "Something went wrong: 500",
+          message: res.data.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
         })
-        setdatacheck(false)
-      })
+      }
+    })
+    .catch((err) => {
+      setsave(false) // Stop loading indication
+      setdatacheck(false) // Reset data check on error
+
+      // Check if the error response has the expected format
+      if (err.response && err.response.data.errors) {
+        // Example action dispatch on error
+
+
+        // Present the first error message to the user
+        const firstError = err.response.data.errors[0]
+        if (firstError) {
+          present({
+            duration: 3000,
+            message: firstError.msg,
+            buttons: [{ text: "X", handler: () => dismiss() }],
+            color: "danger",
+            mode: "ios"
+          })
+        }
+      } else {
+        // Handle unexpected errors
+        console.error("An unexpected error occurred", err)
+        // Optionally dispatch another action or show a different message
+      }
+    })
 }
+
+// USAGE
+// dispatch(registerUser(input, setsave, setdatacheck, setauth, present, dismiss));
+
 
 export const googleAuthAction = ({present, dismiss, credential, setPopoverOpen, moveToHome}) => {
   return (dispatch) => axios
