@@ -86,6 +86,7 @@ const MajorList = ({ isLoading, results, handleClick }) => (
 const SecondStep = ({ question }) => {
   const [searchInput, setSearchInput] = useState(false),
     [searchTerm, setSearchTerm] = useState(""),
+    token = useSelector((state) => state?.auth?.accessToken),
     [isLoading, setIsLoading] = useState(false),
     [results, setResults] = useState([]),
     {
@@ -104,7 +105,7 @@ const SecondStep = ({ question }) => {
 
   const getMajors = async () => {
     console.log("api called")
-    const token = useSelector((state) => state?.auth?.accessToken)
+    console.log("token", token)
     setIsLoading(true)
     try {
       const res = await axios.get(
