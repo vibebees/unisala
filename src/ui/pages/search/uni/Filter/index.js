@@ -6,11 +6,14 @@ import {
   IonContent,
   IonInput,
   IonLabel,
+  IonRadio,
+  IonRadioGroup,
   IonRange,
   IonSelect,
   IonSelectOption,
   IonSpinner,
-  IonText
+  IonText,
+  useIonToast
 } from "@ionic/react"
 import "./index.css"
 import { useEffect, useRef, useState } from "react"
@@ -114,12 +117,18 @@ function index() {
   ]
 
   const INITIAL_QUERY_DATA = {
-    satScore: { min: 0, max: 0 },
-    actScore: { min: 0, max: 0 },
+    sat: null,
+    act: null,
     page: 1,
     pageSize: 10,
     state: null,
-    major: null
+    major: null,
+    graduateApplicationFee: null,
+    undergraduateApplicationFee: null,
+    undergraduateInStateTuitionFee: null,
+    undergraduateOutOfStateTuitionFee: null,
+    graduateInStateTuitionFee: null,
+    graduateOutOfStateTuitionFee: null
   }
 
   const COA = [
@@ -144,24 +153,29 @@ function index() {
       max: null
     }
   ]
-
+  const [present, dismiss] = useIonToast()
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
   const [app, setApp] = useState("Application Fee")
   const [coa, setCoa] = useState("COA")
+  const [tuition, setTuition] = useState("Tuition Fees")
+  const [degree, setDegree] = useState(null)
+  const [locationType, setLocationType] = useState(null) // in state or out state
   const selectInputRef = useRef()
   const [isFiltered, setIsFiltered] = useState(false)
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
-  const [getScholarship, { data, loading }] = useLazyQuery(UniFilterResults, {
-    context: { server: UNIVERSITY_SERVICE_GQL }
-  })
+  const [getScholarship, { data, loading, refetch }] = useLazyQuery(
+    UniFilterResults,
+    {
+      context: { server: UNIVERSITY_SERVICE_GQL }
+    }
+  )
   const dispatch = useDispatch()
 
   const handleData = (e, identify) => {
     // indicate that filtered is applied
-
     setIsFiltered(true)
     let value
     if (identify === "state") {
@@ -171,10 +185,10 @@ function index() {
       value = e.detail.value
     }
 
-    if (identify === "satScore") {
+    if (identify === "sat") {
       setSat(`${value.min} - ${value.max}`)
     }
-    if (identify === "actScore") {
+    if (identify === "sat") {
       setAct(`${value.min} - ${value.max}`)
     }
 
@@ -182,6 +196,19 @@ function index() {
       value = e.currentTarget.value
     }
     if (identify === "applicationFee") {
+      // check if it is for grad or undergrad
+      if (degree) {
+        identify = `${degree}ApplicationFee`
+      } else {
+        present({
+          duration: 3000,
+          message: "Please select the type of your degree.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+        return
+      }
       let st
 
       if (value.max === 0) {
@@ -194,11 +221,33 @@ function index() {
       setApp(st)
       console.log(value)
     }
+
     if (identify === "coa") {
       if (value.max === null) {
         setCoa("20k$+")
       } else {
         setCoa(`${value.min} - ${value.max}`)
+      }
+    }
+    if (identify === "tuition") {
+      if (degree && locationType) {
+        identify = `${degree}${locationType}TuitionFee`
+        console.log(identify)
+      } else {
+        present({
+          duration: 3000,
+          message:
+            "Please select the type of your degree and prefered location type.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+        return
+      }
+      if (value.max === null) {
+        setTuition("20k$+")
+      } else {
+        setTuition(`${value.min} - ${value.max}`)
       }
     }
     setQueryData((prev) => ({
@@ -209,7 +258,12 @@ function index() {
   }
 
   useEffect(() => {
-    dispatch(searchGetSuccess(data?.searchScholarship?.scholarships))
+    // map the array to align with the data structure of unfiltered universities
+    const d = data?.searchUniversity.map((item) => ({
+      ...item.elevatorInfo,
+      ...item.studentCharges
+    }))
+    dispatch(searchGetSuccess(d))
   }, [data])
 
   const customStyles = {
@@ -227,9 +281,6 @@ function index() {
     })
   }
 
-  // if filter is removed refetch the searchSchool query
-  // it wont refetch as the data is already available in the cache(tested)
-
   const [GetUni] = useLazyQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
     skip: true
@@ -239,12 +290,13 @@ function index() {
     setQueryData(INITIAL_QUERY_DATA)
     setSat("Sat Score")
     setAct("Act Score")
-
+    setApp("Application Fee")
+    setCoa("COA")
+    setTuition("Tuition Fee")
     selectInputRef.current.clearValue()
     const searchValue = queryParams.get("q")
     //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
     const { data } = await GetUni({ variables: { name: searchValue } })
-
     dispatch(searchGetSuccess(data?.searchSchool))
     setIsFiltered(false)
   }
@@ -270,6 +322,45 @@ function index() {
           </IonText>
         )}
         <IonCardContent>
+          <div className="search-control ">
+            <IonRadioGroup allowEmptySelection={false}>
+              <h2 className="search-control__label">Which describes you?</h2>
+              <br />
+
+              <IonText className="mr-3">Undergraduate</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={() => setDegree("undergraduate")}
+                value="undergraduate"
+              ></IonRadio>
+
+              <IonText className="mx-3">Graduate</IonText>
+              <IonRadio
+                onIonFocus={() => {
+                  setDegree("graduate")
+                }}
+                value="graduate"
+              ></IonRadio>
+            </IonRadioGroup>
+
+            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+              <h2 className="search-control__label">Location Type</h2>
+              <br />
+
+              <IonText className="mr-3">In State</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={() => setLocationType("InState")}
+                value="inState"
+              ></IonRadio>
+
+              <IonText className="mx-3">Out State</IonText>
+              <IonRadio
+                onIonFocus={() => setLocationType("OutOfState")}
+                value="outState"
+              ></IonRadio>
+            </IonRadioGroup>
+          </div>
           <div className="search-control z-40">
             <IonLabel>States</IonLabel>
             <Select
@@ -289,7 +380,7 @@ function index() {
               interface="popover"
               placeholder={sat}
               className="select-field"
-              onIonChange={(e) => handleData(e, "satScore")}
+              onIonChange={(e) => handleData(e, "sat")}
             >
               {SAT_SCORES.map((val, i) => (
                 <IonSelectOption key={i} value={val}>
@@ -303,7 +394,7 @@ function index() {
               interface="popover"
               placeholder={act}
               className="select-field"
-              onIonChange={(e) => handleData(e, "actScore")}
+              onIonChange={(e) => handleData(e, "act")}
             >
               {ACT_SCORE.map((val, i) => (
                 <IonSelectOption key={i} value={val}>
@@ -340,6 +431,22 @@ function index() {
                     : val.max === null
                     ? "100+"
                     : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+
+            <IonLabel className="mt-4">Tuition Fees</IonLabel>
+            <IonSelect
+              interface="popover"
+              placeholder={tuition}
+              className="select-field"
+              onIonChange={(e) => handleData(e, "tuition")}
+            >
+              {COA.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === null
+                    ? val.min + "k$+"
+                    : val.min + "-" + val.max + "k$"}
                 </IonSelectOption>
               ))}
             </IonSelect>

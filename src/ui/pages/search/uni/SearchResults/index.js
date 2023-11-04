@@ -9,12 +9,10 @@ import { Link } from "react-router-dom"
 import CourseCard from "../../../../component/courseCard"
 import noResultsFound from "../../../../../assets/no-results.jpg"
 import "./index.css"
-import { useQuery } from "@apollo/client"
-import { UniFilterResults } from "../../../../../graphql/uni"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
 function index() {
   const { searchData } = useSelector((store) => store?.university || [])
+  console.log({ searchData })
 
   return searchData?.length ? (
     <>
