@@ -1,21 +1,21 @@
 import {combineReducers} from "redux"
 import introductionReducer from "./intro"
-import auth from "./auth"
 import storage from "redux-persist/lib/storage"
 import {persistReducer} from "redux-persist"
 import University from "./university"
-import UserProfile from "./userProfile"
 import userActivity from "./userActivity"
+import userProfile from "./userProfile"
+import auth from "./auth"
 
 const rootReducer = combineReducers({
     introductionQuestionAnswered: introductionReducer,
-    auth: auth,
     university: University,
-    userProfile: UserProfile,
+    userProfile,
+    auth,
     userActivity
 })
 const persistConfig = {
-    key: "developmentF4",
+    key: "developmentF5",
     storage
 }
 

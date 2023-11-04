@@ -279,10 +279,10 @@
     "prefer-arrow-callback": "off",
     "prefer-const": "off",
     "prefer-destructuring": [
-      "error",
+      "off",
       {
         "array": true,
-        "object": true
+        "object": false
       },
       {
         "enforceForRenamedProperties": false

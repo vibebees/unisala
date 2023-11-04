@@ -7,16 +7,21 @@ import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../graphql/uni"
 import { userSearch } from "../../../graphql/user"
 
-import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "../../../servers/types"
+import {
+  UNIVERSITY_SERVICE_GQL,
+  USER_SERVICE_GQL
+} from "../../../servers/types"
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
+import { searchUniFromBar } from "store/action/userActivity"
+import { useSelector } from "react-redux"
 
-function Index() {
+export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
   const [dropDownOptions, setDropDownOptions] = useState(false)
   const history = useHistory()
   const [options, setOptions] = useState([])
-  const [GetUni, unidata] = useLazyQuery(UniSearchDataList(), {
+  const [GetUni, unidata] = useLazyQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
     skip: true
   })
@@ -25,15 +30,16 @@ function Index() {
     skip: true
   })
   const dropdownRef = useRef(null)
+  const token = useSelector((state) => state?.auth?.accessToken)
 
   const handleSearch = () => {
     if (searchValue) {
-      GetUni({ variables: { searchValue } })
-      GetUser({ variables: { searchValue } })
+      // GetUni({ variables: { searchValue } })
+      // GetUser({ variables: { searchValue } })
     }
   }
 
-  useDebouncedEffect(handleSearch, [searchValue], 1000)
+  useDebouncedEffect(searchUniFromBar(searchValue, 5, setOptions, token), [searchValue], 300)
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -53,8 +59,8 @@ function Index() {
       <div className="search-box">
         <IonInput
           type="text"
-          placeholder="Search"
-          className="search-input-box"
+          placeholder="Search University here..."
+          className="w-full border rounded search-input-box"
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               setDropDownOptions(false)
@@ -73,10 +79,10 @@ function Index() {
           }}
         />
         <Link
-          to={searchValue ? `/search?q=${searchValue}` : "#"}
+          to={searchValue ? `/search?q=${searchValue}` : "/search?q='default'"}
           className="search-box__search-icon"
         >
-          <IonIcon
+            <IonIcon
             icon={searchCircle}
             className="search-box__icon"
             onClick={() => setDropDownOptions(false)}
@@ -98,5 +104,3 @@ function Index() {
     </>
   )
 }
-
-export default Index

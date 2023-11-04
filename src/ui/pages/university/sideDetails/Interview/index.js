@@ -1,13 +1,12 @@
 import { useState } from "react"
-import { IonAvatar, IonCard, IonCardContent, IonButton } from "@ionic/react"
+import { IonAvatar, IonCard, IonButton } from "@ionic/react"
 import { Avatar } from "../../../../component/Avatar"
 import { useQuery } from "@apollo/client"
 import { GetInterviewExperience } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
-import { on } from "events"
+import CardHeader from "ui/component/Reusable/cardHeader"
 
 export default function index({ unitId }) {
-  const [interviewdata, setInterviewdata] = useState([])
   const [page, setPage] = useState(1)
   const { data, loading, fetchMore } = useQuery(GetInterviewExperience, {
     variables: { unitId, page: 1, pageSize: 1 },
@@ -44,13 +43,7 @@ export default function index({ unitId }) {
       }}
       className="ion-margin-top"
     >
-      <IonCardContent
-        style={{
-          borderBottom: "1px solid #C4C4C4"
-        }}
-      >
-        <h1>Interview Experience</h1>
-      </IonCardContent>
+      <CardHeader header={"Interview Experience"} />
 
       <div
         style={{

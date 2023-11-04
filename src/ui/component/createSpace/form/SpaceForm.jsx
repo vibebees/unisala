@@ -54,7 +54,6 @@ const SpaceForm = ({ setIsOpen }) => {
         setRedirecting(true)
 
         if (file) {
-          console.log("file founddd", file)
           formData.append("image", file[0])
           const res = await axios.post(
             userServer +

@@ -74,7 +74,7 @@ export const InfinteFeed = ({ allProps }) => {
   }
 
   const transformedData = transformAndStylePostData(originalData)
-  console.log(transformedData)
+
 
 return (
     <div>
@@ -83,7 +83,6 @@ return (
        if (item.section === "elevatorInfo") {
         newData = transformAndStylePostData(item)
        }
-      console.log(item.name)
       if (item.type === "uni" && item.section === "elevatorInfo") {
         return (
 

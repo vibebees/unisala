@@ -5,7 +5,7 @@ import { createRef, useState } from "react"
 export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
   const UniEmpty = useIsEmpty(uniData || {}, "School"),
     reportEmpty = useIsEmpty(uniData?.userEvaluation?.report || {}, "Report"),
-    similarCollagesEmpty = useIsEmpty(uniData?.similarSchools || {}, "Report"),
+    similarCollagesEmpty = useIsEmpty(uniData?.similarSchools || {}),
     applicantsEmpty = useIsEmpty(uniData?.applicants || {}, "Applicants"),
     campusLifeEmpty = useIsEmpty(
       uniData?.userEvaluation?.reviews || {},
@@ -30,12 +30,12 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     ),
     financialAidEmpty = useIsEmpty(uniData?.financialAid || {}, "FinancialAid"),
     statisticsEmpty = useIsEmpty(uniData?.studentsStats || {}, "Statistics"),
-    adminssionEmpty = useIsEmpty(uniData?.admissionInfo || {}, "Admission"),
+    admissionEmpty = useIsEmpty(uniData?.admissionInfo || {}, "Admission"),
     app = createRef(),
     profile = createRef(),
     statistics = createRef(),
     fees = createRef(),
-    adminssion = createRef(),
+    admission = createRef(),
     libraries = createRef(),
     grant = createRef(),
     testScore = createRef(),
@@ -76,13 +76,6 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
       }
     },
     handleScrolling = () => {
-      // if (
-      //   scrollTop - profile?.current?.clientHeight <
-      //   statistics?.current?.offsetTop
-      // ) {
-      //   setActiveTab(0)
-      //   // setAdmissionAnimate(true)
-      // }
       if (
         scholarship?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
@@ -96,7 +89,7 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
         setActiveTab(1)
       }
       if (
-        adminssion?.current?.offsetTop <=
+        admission?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
         setActiveTab(2)
@@ -111,70 +104,51 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
         statistics?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(3)
+        setActiveTab(4)
       }
 
       if (
         libraries?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(4)
+        setActiveTab(5)
       }
-      // if (
-      //   libraries?.current?.offsetTop <=
-      //     scrollTop - profile?.current?.clientHeight + clientHeight &&
-      //   libraries?.current?.clientHeight !== 0
-      // ) {
-      //   setLibrariesAnimate(true)
-      // }
-      if (
-        grant?.current?.offsetTop <=
-        scrollTop - profile?.current?.clientHeight
-      ) {
-        setActiveTab(3)
-      }
-      if (
-        grant?.current?.offsetTop <=
-          scrollTop - profile?.current?.clientHeight + clientHeight &&
-        grant?.current?.clientHeight !== 0
-      ) {
-        setGrantAnimate(true)
-      }
+
       if (
         testScore?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(5)
+        setActiveTab(6)
       }
       if (
         report?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(6)
+        setActiveTab(7)
       }
       if (
         campusLife?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(7)
+        setActiveTab(8)
       }
       if (
         website?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(6)
+        setActiveTab(8)
       }
       if (
         Professors?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(7)
+        setActiveTab(9)
       }
       if (
         similarCollages?.current?.offsetTop <=
         scrollTop - profile?.current?.clientHeight
       ) {
-        setActiveTab(8)
+        setActiveTab(10)
       }
     }
 
@@ -238,8 +212,7 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     campusPollDataSource: uniData?.students?.campusLife?.poll,
     isSideBar,
     testScoreDataSource: uniData?.testScore,
-    adminssionEmpty,
-    adminssion
+    admissionEmpty,
+    admission
   }
 }
-

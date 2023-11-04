@@ -5,8 +5,8 @@ import {getAllPropsHome} from "./getAllProps"
 import {useSelector} from "react-redux"
 import {getUserProfile} from "../../../graphql/user"
 import {useQuery} from "@apollo/client"
-import {UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL} from "../../../servers/types"
-import {getUpdatedSchoolInfo} from "../../../graphql/uni"
+import {USER_SERVICE_GQL} from "../../../servers/types"
+
 export default function HomePage({setPopup}) {
   const socket = useRef(null)
   const {user, loggedIn} = useSelector((store) => store?.userProfile || {})

@@ -1,56 +1,37 @@
+import {BEFORE_AUTH_TRACK_PATH, CLEAR_AUTH_ERROR, EMAIL_VERIFICATION_RESENT, LOGOUT, OAUTH, PASSWORD_RESET_ASK_EMAIL, PASSWORD_RESET_ASK_PASSWORD, SHOW_ALERT, USER_LOGIN, USER_LOGIN_ERROR, USER_REGISTRATION} from "store/action/types"
 import {UNI_SERV_SIGNED_URL, USER_SERV_SIGNED_URL} from "../types/userActivity"
 
-export let initial = {
+export const AUTH_INITIAL_STATE = {
     refreshToken: null,
     accessToken: null,
     uniSeviceSignedUrl: null,
-    userSeviceSignedUrl: null
+    userSeviceSignedUrl: null,
+    loggedIn: false
 }
-// const auth = (state = initial, action) => {
-//     switch (action.type) {
-//         case "USER_LOGIN":
-//             return state
-//         default:
-//             return state
-//     }
-// }
-// export default auth
-
-const authentication = (state = initial, action) => {
+const authentication = (state = AUTH_INITIAL_STATE, action) => {
     const {type, payload} = action
 
     switch (type) {
-        case "USER_REGISTRATION":
+        case USER_REGISTRATION:
             return state
 
-        case "USER_LOGIN":
+        case USER_LOGIN:
             state = {
                 ...state,
-                refreshToken: payload.refreshToken,
-                accessToken: payload.accessToken,
-                message: payload.message,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
-                username: payload.username,
-                id: payload.id
-
+                refreshToken: payload?.refreshToken,
+                accessToken: payload?.accessToken,
+                loggedIn: true
             }
-
-            localStorage.setItem("accessToken", state.accessToken)
-            localStorage.setItem("refreshToken", state.refreshToken)
-
             return state
-        case "OAUTH":
-            localStorage.setItem("username", payload.username)
-            localStorage.setItem("token", payload.token)
+        case OAUTH:
             state = {
                 ...state,
-                userId: payload.userId,
-                token: payload.token,
-                username: payload.username
+                refreshToken: "payload?.refreshToken",
+                accessToken: " payload?.accessToken",
+                loggedIn: true
             }
             return state
-        case "LOGOUT":
+        case LOGOUT:
             localStorage.removeItem("username")
             localStorage.removeItem("token")
             state = {
@@ -68,7 +49,7 @@ const authentication = (state = initial, action) => {
                 showAuthAlert: false
             }
             return state
-        case "BEFORE_AUTH_TRACK_PATH":
+        case BEFORE_AUTH_TRACK_PATH:
             if (action.typeofpayload === "string") {
                 state = {
                     ...state,
@@ -76,13 +57,13 @@ const authentication = (state = initial, action) => {
                 }
             }
             return state
-        case "SHOW_ALERT":
+        case SHOW_ALERT:
             state = {
                 ...state,
                 showAuthAlert: payload
             }
             return state
-        case "EMAIL_VERIFICATION_RESENT":
+        case EMAIL_VERIFICATION_RESENT:
             if (action.payload) {
                 state = {
                     ...state,
@@ -90,7 +71,7 @@ const authentication = (state = initial, action) => {
                 }
             }
             return state
-        case "PASSWORD_RESET_ASK_EMAIL":
+        case PASSWORD_RESET_ASK_EMAIL:
             if (action.payload) {
                 state = {
                     ...state,
@@ -98,7 +79,7 @@ const authentication = (state = initial, action) => {
                 }
             }
             return state
-        case "PASSWORD_RESET_ASK_PASSWORD":
+        case PASSWORD_RESET_ASK_PASSWORD:
             if (action.payload) {
                 state = {
                     ...state,
@@ -106,13 +87,13 @@ const authentication = (state = initial, action) => {
                 }
             }
             return state
-        case "USER_LOGIN_ERROR":
+        case USER_LOGIN_ERROR:
             state = {
                 ...state,
                 loginFailed: true
             }
             return state
-        case "CLEAR_AUTH_ERROR":
+        case CLEAR_AUTH_ERROR:
             state = {
                 ...state,
                 loginFailed: false
@@ -120,7 +101,6 @@ const authentication = (state = initial, action) => {
             return state
 
         case UNI_SERV_SIGNED_URL:
-            console.log("00000000", payload?.url)
             state = {
                 ...state,
                 uniSeviceSignedUrl: payload?.url

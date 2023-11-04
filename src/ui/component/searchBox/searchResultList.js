@@ -6,7 +6,6 @@ import {getImage, universityDefaultImage} from "../../../servers/s3.configs"
 export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
   const [profileImage, setProfileImage] = useState(item?.pictures?.[0] || universityDefaultImage)
 
-  console.log({item})
   return (
     <Link
       to={

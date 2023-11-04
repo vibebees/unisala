@@ -1,35 +1,31 @@
-import { IonIcon, IonItem, IonAvatar, IonLabel, IonButtons } from "@ionic/react"
-import { logOut } from "ionicons/icons"
+import {IonIcon, IonItem, IonAvatar, IonLabel, IonButtons} from "@ionic/react"
+import {logOut} from "ionicons/icons"
 import "./index.css"
-import { Link } from "react-router-dom"
+import {Link} from "react-router-dom"
 import Authentication from "../authentication"
-import { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { Avatar } from "../Avatar"
+import {useEffect} from "react"
+import {useSelector} from "react-redux"
+import {Avatar} from "../Avatar"
 
-export const ProfilePop = ({
-  setPopoverOpen,
-  setActiveNavDrop,
-  activeNavDrop,
-  setActive
-}) => {
-  const { user, loggedIn } = useSelector((state) => state.userProfile)
+export const ProfilePop = ({allProps}) => {
+  const {setPopoverOpen = () => {},
+    setActiveNavDrop = () => {},
+    activeNavDrop = {},
+    setActive = () => {}} = allProps
+  const {user, loggedIn} = useSelector((state) => state.userProfile)
   const profilePic = user?.picture
 
   useEffect(() => {
     if (!loggedIn) {
       setActiveNavDrop({
-        profile: !activeNavDrop.profile
+        profile: !activeNavDrop?.profile
       })
     }
   }, [loggedIn])
 
   if (!loggedIn) {
     return (
-      <Authentication
-        activeNavDrop={activeNavDrop}
-        setActiveNavDrop={setActiveNavDrop}
-      />
+      <Authentication allProps = {allProps} />
     )
   }
 
@@ -65,10 +61,6 @@ export const ProfilePop = ({
       <div className="profile-drop-div">
         <IonButtons
           onClick={() => {
-            // setPopoverOpen(false)
-            // setActiveNavDrop({
-            //   profile: false
-            // })
             localStorage.clear()
             window.location.reload()
           }}

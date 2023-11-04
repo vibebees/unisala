@@ -46,12 +46,25 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo }) => {
     width = useWindowWidth(),
     history = useHistory(),
     location = useLocation(),
-    generateUserGuide = (userProfile) => {
+    [unitId, setUnitId] = useState(userInfo?.getUser?.user?.unitId || undefined),
+    generateUserGuide = (userProfile, schoolData) => {
       const interestedSubjects = userProfile?.interestedSubjects || []
       const interestedUni = userProfile?.interestedUni || []
       const userStatus = userProfile?.userStatus || ""
 
       let userGuide = []
+
+      // If user has subjects of interest.
+      if (interestedUni.length > 0) {
+        userGuide.push({
+            name: schoolData?.name,
+            level: "Review My Universtiy",
+            icon: schoolSharp, // Make sure to have the appropriate icons imported
+            iconSize: 5,
+            routing: true,
+            link: `/university/${schoolData?.name}`
+        })
+    }
 
       // If user has subjects of interest.
       if (interestedSubjects.length > 0) {
@@ -127,6 +140,8 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo }) => {
     history,
     location,
      userInfo,
-     generateUserGuide
+    generateUserGuide,
+    unitId,
+  setUnitId
   }
 }

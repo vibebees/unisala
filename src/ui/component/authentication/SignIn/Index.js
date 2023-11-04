@@ -5,7 +5,7 @@ import AppleAuth from "../AppleAuth"
 import "../auth.css"
 import clsx from "clsx"
 
-export const SignIn = ({ setauth, setActiveNavDrop, auth }) => {
+export const SignIn = ({setauth, setActiveNavDrop, auth, allProps}) => {
   return (
     <div
       className={clsx(
@@ -24,7 +24,7 @@ export const SignIn = ({ setauth, setActiveNavDrop, auth }) => {
             width: "234px"
           }}
         >
-          <GoogleAuth setauth={setauth} />
+          <GoogleAuth setauth={setauth} allProps = {allProps} />
         </div>
       </div>
       <div className="auth-button">
