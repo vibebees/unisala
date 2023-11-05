@@ -176,7 +176,6 @@ function index() {
 
   const handleData = (e, identify) => {
     // indicate that filtered is applied
-    setIsFiltered(true)
     let value
     if (identify === "state") {
       value = e?.label
@@ -199,6 +198,16 @@ function index() {
       // check if it is for grad or undergrad
       if (degree) {
         identify = `${degree}ApplicationFee`
+        let st
+
+        if (value.max === 0) {
+          st = "Free"
+        } else if (value.max === null) {
+          st = "100+"
+        } else {
+          st = `${value.min} - ${value.max}`
+        }
+        setApp(st)
       } else {
         present({
           duration: 3000,
@@ -209,16 +218,7 @@ function index() {
         })
         return
       }
-      let st
 
-      if (value.max === 0) {
-        st = "Free"
-      } else if (value.max === null) {
-        st = "100+"
-      } else {
-        st = `${value.min} - ${value.max}`
-      }
-      setApp(st)
       console.log(value)
     }
 
@@ -233,6 +233,12 @@ function index() {
       if (degree && locationType) {
         identify = `${degree}${locationType}TuitionFee`
         console.log(identify)
+
+        if (value.max === null) {
+          setTuition("20k$+")
+        } else {
+          setTuition(`${value.min} - ${value.max}`)
+        }
       } else {
         present({
           duration: 3000,
@@ -244,17 +250,13 @@ function index() {
         })
         return
       }
-      if (value.max === null) {
-        setTuition("20k$+")
-      } else {
-        setTuition(`${value.min} - ${value.max}`)
-      }
     }
     setQueryData((prev) => ({
       ...prev,
       [identify]: value
     }))
     getScholarship({ variables: { ...queryData, [identify]: value } })
+    setIsFiltered(true)
   }
 
   useEffect(() => {
@@ -362,7 +364,7 @@ function index() {
             </IonRadioGroup>
           </div>
           <div className="search-control z-40">
-            <IonLabel>States</IonLabel>
+            <IonLabel className="mb-2">States</IonLabel>
             <Select
               options={statesArray}
               isSearchable
@@ -374,7 +376,7 @@ function index() {
           </div>
 
           <div className="search-control">
-            <h2 className="search-control__label mb-4">Test scores</h2>
+            <h2 className="search-control__label">Test scores</h2>
             <IonLabel>SAT:</IonLabel>
             <IonSelect
               interface="popover"
@@ -389,7 +391,7 @@ function index() {
               ))}
             </IonSelect>
 
-            <IonLabel>ACT:</IonLabel>
+            <IonLabel className="mt-4">ACT:</IonLabel>
             <IonSelect
               interface="popover"
               placeholder={act}
@@ -416,8 +418,8 @@ function index() {
           </div>
 
           <div className="search-control">
-            <h2 className="search-control__label mb-4">Fees</h2>
-            <IonLabel>Application Fee</IonLabel>
+            <h2 className="search-control__label">Fees</h2>
+            <IonLabel className="mt-4">Application Fee</IonLabel>
             <IonSelect
               interface="popover"
               placeholder={app}
