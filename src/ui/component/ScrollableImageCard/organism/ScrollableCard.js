@@ -4,7 +4,7 @@ import { IonCardContent, IonText, IonGrid, IonIcon } from "@ionic/react"
 import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons"
 import similarCollege from "./similarCollege.css"
 import clsx from "clsx"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const ScrollableCard = ({ allProps }) => {
   const { title, data, className } = allProps
@@ -25,24 +25,28 @@ const ScrollableCard = ({ allProps }) => {
     })
   }
   return (
-    <IonCardContent className="p-0 mt-4">
+    <IonCardContent className="p-0 ion-no-padding mt-4 ion-no-margin w-full ">
       <IonText className="text-lg px-12 h-fit py-0  ">{title}</IonText>
-      <IonGrid className=" flex w-full ">
+      <IonGrid className=" flex ion-no-padding h-full gap-0 ion-no-margin">
         <button
           onClick={handleLeftScrollClick}
-          className="bg-neutral-50 hover:bg-neutral-100 px-2"
+          className="bg-neutral-50 active:bg-neutral-200 duration-200 ease-linear transition-all w-6 flex justify-center items-center hover:bg-neutral-100 "
         >
-          <IonIcon icon={chevronBackOutline} />
+          <IonIcon size="large" icon={chevronBackOutline} />
         </button>
         <div
           className={clsx(
-            " overflow-hidden flex similarcollegeContainer  w-full max-md:w-full overflow-x-auto   ",
+            " overflow-hidden  flex similarcollegeContainer  max-md:w-full overflow-x-auto   ",
             className
           )}
         >
           {data?.map((item, index) => {
             return (
-              <Link to={"/university/" + item?.name} key={index}>
+              <Link
+                to={"/university/" + item?.name}
+                className="block h-full"
+                key={index}
+              >
                 <SingleImageCard key={index} allProps={item} />
               </Link>
             )
@@ -50,9 +54,9 @@ const ScrollableCard = ({ allProps }) => {
         </div>
         <button
           onClick={handleRightScrollClick}
-          className="bg-neutral-50 hover:bg-neutral-100 px-2"
+          className="bg-neutral-50 active:bg-neutral-200 duration-200 ease-linear transition-all w-6 flex justify-center items-center hover:bg-opacity-60 "
         >
-          <IonIcon icon={chevronForwardOutline} />
+          <IonIcon size="large" icon={chevronForwardOutline} />
         </button>
       </IonGrid>
     </IonCardContent>
