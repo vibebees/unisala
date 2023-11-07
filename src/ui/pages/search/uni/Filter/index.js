@@ -140,22 +140,22 @@ function index() {
   const COA = [
     {
       min: 0,
-      max: 5
+      max: 5000
     },
     {
-      min: 5,
-      max: 10
+      min: 5000,
+      max: 10000
     },
     {
-      min: 10,
-      max: 15
+      min: 10000,
+      max: 15000
     },
     {
-      min: 15,
-      max: 20
+      min: 15000,
+      max: 20000
     },
     {
-      min: 20,
+      min: 20000,
       max: null
     }
   ]
@@ -243,25 +243,24 @@ function index() {
         })
       } else {
         if (value.max === null) {
-          setCoa("20k$+")
+          setCoa("20,000$+")
         } else {
           setCoa(`${value.min} - ${value.max}`)
         }
 
         if (accomodation === "OnCampus") {
           identify = `${degree}${accomodation}${locationType}CostOfAttendance`
-
-          console.log(identify)
+        } else if (accomodation === "OffCampus") {
+          identify = `${degree}${accomodation}${family}${locationType}CostOfAttendance`
         }
       }
     }
     if (identify === "tuition") {
       if (degree && locationType) {
         identify = `${degree}${locationType}TuitionFee`
-        console.log(identify)
 
         if (value.max === null) {
-          setTuition("20k$+")
+          setTuition("20,000$+")
         } else {
           setTuition(`${value.min} - ${value.max}`)
         }
@@ -335,6 +334,29 @@ function index() {
     dispatch(searchGetSuccess(data?.searchSchool))
     setIsFiltered(false)
   }
+
+  //  this method is for removing data like level of study, level of tuition and accomodations because if this changes, the query inputs wont align so first remove all then add
+  const handleStaticData = (e, type) => {
+    const val = e.target.value
+    removeFilter()
+    switch (type) {
+      case "degree":
+        setDegree(val)
+        break
+      case "tuition":
+        setLocationType(val)
+        break
+      case "accomodation":
+        setAccomodation(val)
+        break
+      case "family":
+        setFamily(val)
+        break
+      default:
+        return
+    }
+  }
+
   return (
     <>
       <IonCard className="filter-card-wrapper relative">
@@ -358,45 +380,51 @@ function index() {
         )}
         <IonCardContent>
           <div className="search-control ">
-            <IonRadioGroup allowEmptySelection={true}>
+            <IonRadioGroup allowEmptySelection={false}>
               <h2 className="search-control__label">Level of study</h2>
               <br />
 
               <IonText className="mr-3">Undergraduate</IonText>
               <IonRadio
                 className="text-sm"
-                onIonFocus={() => setDegree("undergraduate")}
+                onIonFocus={(e) => {
+                  handleStaticData(e, "degree")
+                }}
                 value="undergraduate"
               ></IonRadio>
 
               <IonText className="mx-3">Graduate</IonText>
               <IonRadio
-                onIonFocus={() => {
-                  setDegree("graduate")
+                onIonFocus={(e) => {
+                  handleStaticData(e, "degree")
                 }}
                 value="graduate"
               ></IonRadio>
             </IonRadioGroup>
 
-            <IonRadioGroup className="mt-4" allowEmptySelection={true}>
+            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
               <h2 className="search-control__label">Level of tuitiion</h2>
               <br />
 
               <IonText className="mr-3">In State</IonText>
               <IonRadio
                 className="text-sm"
-                onIonFocus={() => setLocationType("InState")}
-                value="inState"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "tuition")
+                }}
+                value="InState"
               ></IonRadio>
 
               <IonText className="mx-3">Out State</IonText>
               <IonRadio
-                onIonFocus={() => setLocationType("OutOfState")}
-                value="outState"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "tuition")
+                }}
+                value="OutOfState"
               ></IonRadio>
             </IonRadioGroup>
 
-            <IonRadioGroup className="mt-4" allowEmptySelection={true}>
+            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
               <h2 className="search-control__label">
                 Are you planning to stay
               </h2>
@@ -405,56 +433,53 @@ function index() {
               <IonText className="mr-3">Off Campus</IonText>
               <IonRadio
                 className="text-sm"
-                onIonFocus={() => setAccomodation("OffCampus")}
-                value="offCampus"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "accomodation")
+                }}
+                value="OffCampus"
               ></IonRadio>
 
               <IonText className="mx-3">On Campus</IonText>
               <IonRadio
-                onIonFocus={() => setAccomodation("OnCampus")}
-                value="onCampus"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "accomodation")
+                }}
+                value="OnCampus"
               ></IonRadio>
             </IonRadioGroup>
 
             {showFamily && (
-              <IonRadioGroup className="mt-4" allowEmptySelection={true}>
-                <h2 className="search-control__label">Staying with</h2>
+              <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+                <h2 className="search-control__label">Staying </h2>
                 <br />
 
-                <IonText className="mr-3">With Family</IonText>
+                <IonText className="mr-3">With roommates</IonText>
                 <IonRadio
                   className="text-sm"
-                  onIonFocus={() => setLocationType("WithFamily")}
-                  value="withFamily"
+                  onIonFocus={(e) => {
+                    handleStaticData(e, "family")
+                  }}
+                  value="WithFamily"
                 ></IonRadio>
 
-                <IonText className="mx-3">Without Family</IonText>
+                <IonText className="mx-3">Without roommates</IonText>
                 <IonRadio
-                  onIonFocus={() => setLocationType("NotWithFamily")}
-                  value="outState"
+                  onIonFocus={(e) => {
+                    handleStaticData(e, "family")
+                  }}
+                  value="NotWithFamily"
                 ></IonRadio>
               </IonRadioGroup>
             )}
           </div>
-          <div className="search-control z-40">
-            <IonLabel className="mb-2">States</IonLabel>
-            <Select
-              options={statesArray}
-              isSearchable
-              ref={selectInputRef}
-              placeholder={"Select a state"}
-              onChange={(e) => handleData(e, "state")}
-              styles={customStyles}
-            />
-          </div>
 
-          <div className="search-control">
+          <div className="search-control ">
             <h2 className="search-control__label">Test scores</h2>
             <IonLabel>SAT:</IonLabel>
             <IonSelect
               interface="popover"
               placeholder={sat}
-              className="select-field"
+              className="border border-[gray]"
               onIonChange={(e) => handleData(e, "sat")}
             >
               {SAT_SCORES.map((val, i) => (
@@ -468,12 +493,65 @@ function index() {
             <IonSelect
               interface="popover"
               placeholder={act}
-              className="select-field"
+              className="border border-[gray]"
               onIonChange={(e) => handleData(e, "act")}
             >
               {ACT_SCORE.map((val, i) => (
                 <IonSelectOption key={i} value={val}>
                   {val.min} - {val.max}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </div>
+
+          <div className="search-control">
+            <h2 className="search-control__label">Fees</h2>
+            <IonLabel className="mt-4">Application Fee</IonLabel>
+            <IonSelect
+              interface="popover"
+              placeholder={app}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "applicationFee")}
+            >
+              {APPLICATION_FEES.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === 0
+                    ? "Free"
+                    : val.max === null
+                    ? "100$+"
+                    : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+
+            <IonLabel className="mt-4">Tuition Fees</IonLabel>
+            <IonSelect
+              interface="popover"
+              placeholder={tuition}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "tuition")}
+            >
+              {COA.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === null
+                    ? val.min + "$+"
+                    : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+
+            <IonLabel className="mt-4">Cost of Attendence</IonLabel>
+            <IonSelect
+              interface="popover"
+              placeholder={coa}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "coa")}
+            >
+              {COA.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === null
+                    ? val.min + "$+"
+                    : val.min + "-" + val.max + "$"}
                 </IonSelectOption>
               ))}
             </IonSelect>
@@ -486,61 +564,21 @@ function index() {
               onIonChange={(e) => {
                 handleData(e, "major")
               }}
-              className="select-field"
+              placeholder="Select a major"
+              className="border border-[gray]"
             ></IonInput>
           </div>
 
-          <div className="search-control">
-            <h2 className="search-control__label">Fees</h2>
-            <IonLabel className="mt-4">Application Fee</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={app}
-              className="select-field"
-              onIonChange={(e) => handleData(e, "applicationFee")}
-            >
-              {APPLICATION_FEES.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.max === 0
-                    ? "Free"
-                    : val.max === null
-                    ? "100+"
-                    : val.min + "-" + val.max + "$"}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-
-            <IonLabel className="mt-4">Tuition Fees</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={tuition}
-              className="select-field"
-              onIonChange={(e) => handleData(e, "tuition")}
-            >
-              {COA.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.max === null
-                    ? val.min + "k$+"
-                    : val.min + "-" + val.max + "k$"}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-
-            <IonLabel className="mt-4">Cost of Attendence</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={coa}
-              className="select-field"
-              onIonChange={(e) => handleData(e, "coa")}
-            >
-              {COA.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.max === null
-                    ? val.min + "k$+"
-                    : val.min + "-" + val.max + "k$"}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+          <div className="search-control z-40">
+            <IonLabel className="mb-2">State</IonLabel>
+            <Select
+              options={statesArray}
+              isSearchable
+              ref={selectInputRef}
+              placeholder={"Select a state"}
+              onChange={(e) => handleData(e, "state")}
+              styles={customStyles}
+            />
           </div>
         </IonCardContent>
       </IonCard>
