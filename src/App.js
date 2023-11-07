@@ -19,7 +19,7 @@ import { PageRoute } from "./ui/component/PageRoute"
 import AuthModal from "./ui/component/authentication"
 import useWindowWidth from "./hooks/useWindowWidth"
 import MobileNav from "./ui/component/MobileNav"
-import {getUserProfile} from "store/action/userProfile"
+import { getUserProfile } from "store/action/userProfile"
 import jwtDecode from "jwt-decode"
 import appProps from "./appProps"
 
@@ -33,33 +33,34 @@ lib.R = R
 lib.axios = axios
 setupIonicReact()
 
-
-
-const DesktopView = ({allProps}) => {
-
+const DesktopView = ({ allProps }) => {
   return (
     <div>
-      <Nav allProps ={allProps} />
+      <Nav allProps={allProps} />
       <IonRouterOutlet style={{ marginTop: "65px" }}>
-        <PageRoute allProps ={allProps} />
+        <PageRoute allProps={allProps} />
       </IonRouterOutlet>
     </div>
   )
 }
 
 // src/components/organisms/MobileView.js
-const MobileView = ({allProps}) => {
+const MobileView = ({ allProps }) => {
   return <MobileNav allProps={allProps} />
 }
 
 const App = () => {
   const allProps = appProps(),
-    {accessToken, refreshToken, width, setCreateAPostPopUp, dispatch} = allProps
+    { accessToken, refreshToken, width, setCreateAPostPopUp, dispatch } =
+      allProps
 
   useEffect(() => {
+    console.log("accessToken", accessToken)
     if (accessToken) {
       const decode = jwtDecode(accessToken)
-      dispatch(getUserProfile({user: {...decode}, loggedIn: Boolean(decode)}))
+      dispatch(
+        getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
+      )
     }
   }, [refreshToken, accessToken])
 
@@ -68,9 +69,11 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <IonApp>
           <IonPage>
-          <IonReactRouter>
-              {width >= 768 && (<DesktopView allProps={allProps} />)}
-              {width < 768 && (<MobileView setCreateAPostPopUp={setCreateAPostPopUp} />)}
+            <IonReactRouter>
+              {width >= 768 && <DesktopView allProps={allProps} />}
+              {width < 768 && (
+                <MobileView setCreateAPostPopUp={setCreateAPostPopUp} />
+              )}
             </IonReactRouter>
           </IonPage>
         </IonApp>

@@ -90,9 +90,9 @@ export const Home = ({ allProps }) => {
   )
 
   const renderNewUserView = () => {
-    // if (loggedIn && newUser) {
-    //   return <WelcomeSteps allProps={{ ...allProps, refetch }} />
-    // }
+    if (loggedIn && newUser) {
+      return <WelcomeSteps allProps={{ ...allProps, refetch }} />
+    }
     return null
   }
   return (
