@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react"
+import React, { useState, useContext } from "react"
 import {
   IonGrid,
   IonText,
@@ -12,68 +12,81 @@ import {
   IonButton,
   IonCardSubtitle
 } from "@ionic/react"
-import {WelcomeData} from ".."
-import {universityServer} from "../../../../../servers/endpoints"
+import { WelcomeData } from ".."
+import { universityServer } from "../../../../../servers/endpoints"
 import axios from "axios"
-import {useDebouncedEffect} from "../../../../../hooks/useDebouncedEffect"
-import {useSelector} from "react-redux"
+import { useDebouncedEffect } from "../../../../../hooks/useDebouncedEffect"
+import { useSelector } from "react-redux"
 
-const QuestionTitle = ({title}) => (
+const QuestionTitle = ({ title }) => (
   <IonText color="primary">
     <h1 className="font-semibold text-xl text-neutral-600">{title}</h1>
   </IonText>
 )
 
-const QuestionOption = ({value, label, handleClick}) => {
-
-  return (<IonRow class="gap-2">
-    <IonCheckbox value={value} onClick={handleClick} />
-    <label className="text-sm font-medium text-neutral-600" title={label}>{label}</label>
-  </IonRow>)
+const QuestionOption = ({ value, label, handleClick }) => {
+  return (
+    <IonRow class=" gap-2 items-start  flex-nowrap">
+      <IonCheckbox
+        className="shrink-0 mt-1"
+        value={value}
+        onClick={handleClick}
+      />
+      <label className="text-sm font-medium text-neutral-600" title={label}>
+        {label}
+      </label>
+    </IonRow>
+  )
 }
 
-const SearchInput = ({term, setTerm, isLoading, results, handleClick}) => (
+const SearchInput = ({ term, setTerm, isLoading, results, handleClick }) => (
   <>
     <IonSearchbar
       placeholder=" Criminal Justice ⚖️"
       className="font-medium text-neutral-600 w-full shadow-md rounded-lg"
       value={term}
-      onIonInput={(e) => setTerm(e.target.value)}
+      onIonInput={(e) => {
+        setTerm(e.target.value)
+        console.log(e.target.value)
+      }}
     />
     <div className="mt-4 border rounded-lg overflow-y-auto max-h-60 shadow-inner">
-      <MajorList isLoading={isLoading} results={results} handleClick={handleClick} />
+      <MajorList
+        isLoading={isLoading}
+        results={results}
+        handleClick={handleClick}
+      />
     </div>
   </>
 )
 
-const MajorList = ({isLoading, results, handleClick}) => (
+const MajorList = ({ isLoading, results, handleClick }) => (
   <IonList className="overflow-y-scroll searchlist h-full border rounded-md">
-    {isLoading ? (
-      Array(4)
-        .fill(null)
-        .map((_, idx) => (
-          <div className="border h-12 w-full" key={idx}>
-            <IonThumbnail slot="start" className="w-full">
-              <IonSkeletonText animated={true}></IonSkeletonText>
-            </IonThumbnail>
-          </div>
-        ))
-    ) : (
-      results.map((item, index) => (
-        <IonItem key={index}>
-          <IonCheckbox value={item.id} onClick={handleClick} />
-          <span className="px-2 text-sm font-medium text-neutral-600">
-            {item.name}
-          </span>
-        </IonItem>
-      ))
-    )}
+    {isLoading
+      ? Array(4)
+          .fill(null)
+          .map((_, idx) => (
+            <div className="border h-12 w-full" key={idx}>
+              <IonThumbnail slot="start" className="w-full">
+                <IonSkeletonText animated={true}></IonSkeletonText>
+              </IonThumbnail>
+            </div>
+          ))
+      : results.map((item, index) => (
+          <IonItem key={index}>
+            <IonCheckbox value={item.id} onClick={handleClick} />
+            <span className="px-2 text-sm font-medium text-neutral-600">
+              {item.name}
+            </span>
+          </IonItem>
+        ))}
   </IonList>
 )
 
-const SecondStep = ({question}) => {
+const SecondStep = ({ question }) => {
   const [searchInput, setSearchInput] = useState(false),
-    [searcTerm, setSearchTerm] = useState(""),
+    [searchTerm, setSearchTerm] = useState(""),
+    token = useSelector((state) => state?.auth?.accessToken),
     [isLoading, setIsLoading] = useState(false),
     [results, setResults] = useState([]),
     {
@@ -82,14 +95,21 @@ const SecondStep = ({question}) => {
       welcomeFormdata
     } = useContext(WelcomeData),
     [showOptions, setShowOptions] = useState(true),
-    {text, options, description} = question
+    { text, options, description } = question
+
+  function handleInput() {
+    getMajors()
+  }
+
+  useDebouncedEffect(handleInput, [searchTerm], 2000)
 
   const getMajors = async () => {
-    const token = useSelector((state) => state?.auth?.accessToken)
+    console.log("api called")
+    console.log("token", token)
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/spaces/${searcTerm}/4`,
+        `${universityServer}/keyword/spaces/${searchTerm}/4`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -105,16 +125,12 @@ const SecondStep = ({question}) => {
     }
   }
 
-  const handleInput = () => {
-    getMajors()
-  }
-
   const handleclick = (e) => {
     const data = e.target.value
     if (data) {
       let newdata = [...welcomeFormdata.interestedSubjects, data]
       setWelcomeFormdata((prev) => {
-        return {...prev, interestedSubjects: newdata}
+        return { ...prev, interestedSubjects: newdata }
       })
     } else {
       //remove the existing data from the array
@@ -122,7 +138,7 @@ const SecondStep = ({question}) => {
         (item) => item !== data
       )
       setWelcomeFormdata((prev) => {
-        return {...prev, interestedSubjects: newdata}
+        return { ...prev, interestedSubjects: newdata }
       })
     }
   }
@@ -133,19 +149,17 @@ const SecondStep = ({question}) => {
     setSearchInput(!showOptions)
   }
 
-  useDebouncedEffect(handleInput, [searcTerm], 300)
-
   return (
-      <div>
-        <IonGrid className="!px-12 max-md:!px-5 mt-6 ">
-          <IonGrid>
-            <QuestionTitle title={text} />
+    <div>
+      <IonGrid className="!px-12 max-md:!px-5 mt-6 ">
+        <IonGrid>
+          <QuestionTitle title={text} />
         </IonGrid>
-      <IonCardSubtitle className="text-center">{description}</IonCardSubtitle>
+        <IonCardSubtitle className="text-center">{description}</IonCardSubtitle>
 
-          <IonGrid className="mt-8 grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
-            {showOptions ? (
-              options.map((item, index) => (
+        <IonGrid className="mt-8 grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
+          {showOptions
+            ? options.map((item, index) => (
                 <QuestionOption
                   key={index}
                   value={item.value}
@@ -153,47 +167,47 @@ const SecondStep = ({question}) => {
                   handleClick={handleclick}
                 />
               ))
-            ) : null}
-            <IonRow class="gap-2  ">
-              <IonCheckbox
-                value={searchInput}
-                onClick={(e) => {
-                  setSearchInput(!showOptions) // Toggle the searchInput checkbox
-                  handleOtherClick()
-                }}
+            : null}
+          <IonRow class="gap-2  ">
+            <IonCheckbox
+              value={searchInput}
+              onClick={(e) => {
+                setSearchInput(!showOptions) // Toggle the searchInput checkbox
+                handleOtherClick()
+              }}
+            >
+              Other
+            </IonCheckbox>
+            <label className="text-sm font-medium text-neutral-600">
+              Other
+            </label>
+          </IonRow>
+
+          {!showOptions && (
+            <div>
+              <SearchInput
+                term={searchTerm}
+                setTerm={setSearchTerm}
+                isLoading={isLoading}
+                results={results}
+                handleClick={handleclick}
+              />
+              {/* Optionally, you can add a button to go back to the list of options */}
+
+              <IonButton
+                color="orange"
+                size="small"
+                onClick={handleOtherClick}
+                className="float-right sm text-white"
               >
-                Other
-              </IonCheckbox>
-              <label className="text-sm font-medium text-neutral-600">
-                Other
-              </label>
-            </IonRow>
-
-            {!showOptions && (
-              <div>
-                <SearchInput
-                  term={searcTerm}
-                  setTerm={setSearchTerm}
-                  isLoading={isLoading}
-                  results={results}
-                  handleClick={handleclick}
-                />
-                {/* Optionally, you can add a button to go back to the list of options */}
-
-                <IonButton
-                  color="orange"
-                  size="small"
-                  onClick={handleOtherClick}
-                  className="float-right sm text-white"
-                >
-                  📚 🔙
-                </IonButton>
-              </div>
-            )}
-            <IonGrid />
-          </IonGrid>
+                📚 🔙
+              </IonButton>
+            </div>
+          )}
+          <IonGrid />
         </IonGrid>
-      </div>
+      </IonGrid>
+    </div>
   )
 }
 export default SecondStep

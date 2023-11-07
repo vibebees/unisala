@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
-
+import { useLocation } from "react-router"
 import AuthInput from "../AuthInput"
 import { validateSignup } from "../../../../utils/components/validate"
 import { userServer } from "../../../../servers/endpoints"
@@ -13,6 +13,7 @@ export const SignUpForm = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const [datacheck, setdatacheck] = useState(false)
   const [save, setsave] = useState(false)
+  const location = useLocation()
 
   const [input, setInput] = useState({
     firstName: "",
@@ -118,16 +119,19 @@ export const SignUpForm = ({ setauth }) => {
       >
         {save ? <IonSpinner></IonSpinner> : "Register"}
       </button>
-      <IonRow className="auth-change inline-flex">
-        <p>Already a member?</p>
-        <a
+      {location.pathname !== "/" && (
+        <IonRow
           onClick={() => {
             setauth({ state: "signin" })
           }}
+          className="auth-change mt-7 inline-flex"
         >
-          sign in
-        </a>
-      </IonRow>
+          <p className="text-blue-600 font-medium text-lg">
+            Already a member?{" "}
+            <span className="underline underline-offset-4"> sign in</span>
+          </p>
+        </IonRow>
+      )}
     </form>
   )
 }

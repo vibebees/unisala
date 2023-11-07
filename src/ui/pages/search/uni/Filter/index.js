@@ -196,7 +196,7 @@ function index() {
     if (identify === "sat") {
       setSat(`${value.min} - ${value.max}`)
     }
-    if (identify === "sat") {
+    if (identify === "act") {
       setAct(`${value.min} - ${value.max}`)
     }
 

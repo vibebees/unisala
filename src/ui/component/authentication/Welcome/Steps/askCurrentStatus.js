@@ -1,5 +1,12 @@
 import React, { useContext } from "react"
-import { IonGrid, IonText, IonCheckbox, IonRow, IonInput, IonCardSubtitle } from "@ionic/react"
+import {
+  IonGrid,
+  IonText,
+  IonCheckbox,
+  IonRow,
+  IonInput,
+  IonCardSubtitle
+} from "@ionic/react"
 import { WelcomeData } from ".."
 
 const QuestionTitle = ({ title }) => (
@@ -9,11 +16,16 @@ const QuestionTitle = ({ title }) => (
 )
 
 const StatusOption = ({ value, label, handleClick, isChecked }) => (
-  <IonRow class="gap-2">
-    <IonCheckbox checked={isChecked} value={value} onClick={handleClick}>
+  <IonRow class="gap-2 items-start  flex-nowrap ">
+    <IonCheckbox
+      className="shrink-0 mt-1"
+      checked={isChecked}
+      value={value}
+      onClick={handleClick}
+    >
       {label}
     </IonCheckbox>
-    <label className="text-sm font-medium text-neutral-600">{label}</label>
+    <label className="text-sm  font-medium text-neutral-600">{label}</label>
   </IonRow>
 )
 
@@ -30,10 +42,14 @@ const OtherInput = ({ value, handleInputChange }) => (
   </IonRow>
 )
 
-const AskCurrentStatus = ({question}) => {
-  const { data: QuestionData, setWelcomeFormdata, welcomeFormdata } = useContext(WelcomeData)
+const AskCurrentStatus = ({ question }) => {
+  const {
+    data: QuestionData,
+    setWelcomeFormdata,
+    welcomeFormdata
+  } = useContext(WelcomeData)
 
-  const {text, options, category, description} = question
+  const { text, options, category, description } = question
 
   const handleclick = (e) => {
     const data = e.target.value
@@ -49,8 +65,10 @@ const AskCurrentStatus = ({question}) => {
           <IonGrid>
             <QuestionTitle title={text} />
           </IonGrid>
-      <IonCardSubtitle className="text-center">Select your current or intended academic level of study in the USA</IonCardSubtitle>
-          <IonGrid className="mt-8 grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
+          <IonCardSubtitle className="text-center">
+            Select your current or intended academic level of study in the USA
+          </IonCardSubtitle>
+          <IonGrid className="mt-8  grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
             {options.map((item) => (
               <StatusOption
                 key={item.value}
@@ -63,7 +81,10 @@ const AskCurrentStatus = ({question}) => {
             <OtherInput
               value={welcomeFormdata.userStatus}
               handleInputChange={(e) => {
-                setWelcomeFormdata({ ...welcomeFormdata, userStatus: e.target.value })
+                setWelcomeFormdata({
+                  ...welcomeFormdata,
+                  userStatus: e.target.value
+                })
               }}
             />
             <IonGrid />

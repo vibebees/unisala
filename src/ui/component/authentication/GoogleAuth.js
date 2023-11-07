@@ -1,15 +1,14 @@
-import {useRef} from "react"
-import {useIonToast} from "@ionic/react"
+import { useRef } from "react"
+import { useIonToast } from "@ionic/react"
 
 import "./auth.css"
-import {useScript} from "../../../hooks/useScript"
-import {useDispatch} from "react-redux"
-import {googleAuthAction} from "store/action/authenticationAction"
-import {useHistory} from "react-router"
+import { useScript } from "../../../hooks/useScript"
+import { useDispatch } from "react-redux"
+import { googleAuthAction } from "store/action/authenticationAction"
+import { useHistory } from "react-router"
 
-export const GoogleAuth = ({setauth, allProps}) => {
-
-  const {setPopoverOpen, authFromPopUp} = allProps
+export const GoogleAuth = ({ setauth, allProps = {} }) => {
+  const { setPopoverOpen, authFromPopUp } = allProps
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef(),
     dispatch = useDispatch(),
@@ -20,11 +19,18 @@ export const GoogleAuth = ({setauth, allProps}) => {
       }
     }
 
-
   const onGoogleSignIn = (user) => {
-    const {credential} = user
-    dispatch(googleAuthAction({present, dismiss, credential, setPopoverOpen, authFromPopUp, moveToHome}))
-
+    const { credential } = user
+    dispatch(
+      googleAuthAction({
+        present,
+        dismiss,
+        credential,
+        setPopoverOpen,
+        authFromPopUp,
+        moveToHome
+      })
+    )
   }
 
   useScript("https://accounts.google.com/gsi/client", () => {

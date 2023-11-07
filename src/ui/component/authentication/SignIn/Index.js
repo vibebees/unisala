@@ -5,7 +5,7 @@ import AppleAuth from "../AppleAuth"
 import "../auth.css"
 import clsx from "clsx"
 
-export const SignIn = ({setauth, setActiveNavDrop, auth, allProps}) => {
+export const SignIn = ({ setauth, auth, allProps }) => {
   return (
     <div
       className={clsx(
@@ -16,7 +16,7 @@ export const SignIn = ({setauth, setActiveNavDrop, auth, allProps}) => {
       )}
     >
       <IonText className="auth-start">
-        <h2>Sign in</h2>
+        <h2 className="text-2xl font-semibold">Sign in</h2>
       </IonText>
       <div className="auth-button">
         <div
@@ -24,7 +24,7 @@ export const SignIn = ({setauth, setActiveNavDrop, auth, allProps}) => {
             width: "234px"
           }}
         >
-          <GoogleAuth setauth={setauth} allProps = {allProps} />
+          <GoogleAuth setauth={setauth} allProps={allProps} />
         </div>
       </div>
       <div className="auth-button">
@@ -34,7 +34,7 @@ export const SignIn = ({setauth, setActiveNavDrop, auth, allProps}) => {
       <div className="auth-or">
         <p className="auth-or-p">or Sign in with Email!</p>
       </div>
-      <SignInForm setauth={setauth} setActiveNavDrop={setActiveNavDrop} />
+      <SignInForm setauth={setauth} />
     </div>
   )
 }

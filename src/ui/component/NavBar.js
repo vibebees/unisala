@@ -15,9 +15,9 @@ import {
   personCircle
 } from "ionicons/icons"
 import {Link} from "react-router-dom"
-import SearchBox from "./searchBox"
 import ProfilePop from "./profilePop"
 import {useSelector} from "react-redux"
+import {SearchBar} from "./searchBox"
 
 const Nav = ({allProps}) => {
 
@@ -72,7 +72,7 @@ const Nav = ({allProps}) => {
             />
           </Link>
           <div style={{width: "100%"}}>
-            <SearchBox />
+            <SearchBar />
           </div>
         </div>
         <IonRow style={{display: "inline-flex", gap: "2.5rem"}}>

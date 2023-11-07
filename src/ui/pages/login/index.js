@@ -9,23 +9,22 @@ import ResetPassword from "../../component/authentication/Verification/ForgotPas
 import UserNotVerified from "../../component/authentication/Verification/UserNotVerified"
 import WelcomSteps from "../../component/authentication/Welcome"
 
-export const Login = ({allProps}) => {
+export const Login = ({ allProps }) => {
   const [auth, setauth] = useState({
     state: "signin",
     email: "",
     code: 0
   })
 
-
   return (
-    <IonContent className="auth-pop">
-      <IonGrid>
+    <IonContent className="auth-pop ">
+      <IonGrid className="">
         <IonRow style={{ overflow: "hidden" }}>
           <IonCol>
             {auth.state === "signin" ? (
-              <SignIn auth={auth} setauth={setauth} allProps = {allProps} />
+              <SignIn auth={auth} setauth={setauth} allProps={allProps} />
             ) : auth.state === "signup" ? (
-              <SignUp setauth={setauth} auth={auth} allProps = {allProps} />
+              <SignUp setauth={setauth} auth={auth} allProps={allProps} />
             ) : auth.state === "SignUpVerification" ? (
               <SignUpVerification setauth={setauth} auth={auth} />
             ) : auth.state === "emailVerify" ? (

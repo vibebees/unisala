@@ -19,7 +19,7 @@ import { PageRoute } from "./PageRoute"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 
-export default function MobileNav({ setCreateAPostPopUp }) {
+export default function MobileNav({ setCreateAPostPopUp, allProps }) {
   const { loggedIn } = useSelector((store) => store?.userProfile)
   const [activeTab, setActiveTab] = useState("")
 
@@ -30,7 +30,7 @@ export default function MobileNav({ setCreateAPostPopUp }) {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <PageRoute />
+        <PageRoute allProps={allProps} />
       </IonRouterOutlet>
 
       {loggedIn ? (
