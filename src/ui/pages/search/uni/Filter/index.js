@@ -353,7 +353,7 @@ function index() {
         setFamily(val)
         break
       default:
-        return
+        break
     }
   }
 
