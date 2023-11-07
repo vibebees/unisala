@@ -20,6 +20,7 @@ export const loginUser = ({
       .then((res) => {
         setLoading(false)
         if (res.data.success) {
+          localStorage.setItem("accessToken", res?.data?.accessToken)
           dispatch({
             type: USER_LOGIN,
             payload: res?.data || {}
@@ -125,6 +126,7 @@ export const googleAuthAction = ({
       .post(userServer + `/auth/google`, { token: credential })
       .then((res) => {
         if (res.data.success) {
+          localStorage.setItem("accessToken", res?.data?.accessToken)
           if (res?.data.isFirstLogin) {
             localStorage.setItem("newUser", "true")
           }
