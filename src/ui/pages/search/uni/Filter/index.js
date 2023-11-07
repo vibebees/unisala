@@ -30,6 +30,7 @@ import { statesArray } from "utils/lib/states"
 import Select from "react-select"
 
 import { useLocation } from "react-router"
+
 function index() {
   const SAT_SCORES = [
     {
@@ -128,9 +129,14 @@ function index() {
     undergraduateInStateTuitionFee: null,
     undergraduateOutOfStateTuitionFee: null,
     graduateInStateTuitionFee: null,
-    graduateOutOfStateTuitionFee: null
+    graduateOutOfStateTuitionFee: null,
+    undergraduateOnCampusInStateCostOfAttendance: null,
+    undergraduateOnCampusOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
   }
-
   const COA = [
     {
       min: 0,
@@ -161,6 +167,9 @@ function index() {
   const [tuition, setTuition] = useState("Tuition Fees")
   const [degree, setDegree] = useState(null)
   const [locationType, setLocationType] = useState(null) // in state or out state
+  const [accomodation, setAccomodation] = useState(null)
+  const [family, setFamily] = useState(null)
+  const [showFamily, setShowFamily] = useState(false)
   const selectInputRef = useRef()
   const [isFiltered, setIsFiltered] = useState(false)
   const location = useLocation()
@@ -211,7 +220,7 @@ function index() {
       } else {
         present({
           duration: 3000,
-          message: "Please select the type of your degree.",
+          message: "Please select the level of your degree.",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
@@ -223,10 +232,27 @@ function index() {
     }
 
     if (identify === "coa") {
-      if (value.max === null) {
-        setCoa("20k$+")
+      if (!degree && !accomodation && !locationType) {
+        present({
+          duration: 3000,
+          message:
+            "Please select the level of your degree, preffered location type and mode of accomodation.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
       } else {
-        setCoa(`${value.min} - ${value.max}`)
+        if (value.max === null) {
+          setCoa("20k$+")
+        } else {
+          setCoa(`${value.min} - ${value.max}`)
+        }
+
+        if (accomodation === "OnCampus") {
+          identify = `${degree}${accomodation}${locationType}CostOfAttendance`
+
+          console.log(identify)
+        }
       }
     }
     if (identify === "tuition") {
@@ -243,7 +269,7 @@ function index() {
         present({
           duration: 3000,
           message:
-            "Please select the type of your degree and prefered location type.",
+            "Please select the level of your degree and preffered tuition type.",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
@@ -259,6 +285,13 @@ function index() {
     setIsFiltered(true)
   }
 
+  useEffect(() => {
+    if (accomodation === "OffCampus") {
+      setShowFamily(true)
+    } else {
+      setShowFamily(false)
+    }
+  }, [accomodation])
   useEffect(() => {
     // map the array to align with the data structure of unfiltered universities
     const d = data?.searchUniversity.map((item) => ({
@@ -325,8 +358,8 @@ function index() {
         )}
         <IonCardContent>
           <div className="search-control ">
-            <IonRadioGroup allowEmptySelection={false}>
-              <h2 className="search-control__label">Which describes you?</h2>
+            <IonRadioGroup allowEmptySelection={true}>
+              <h2 className="search-control__label">Level of study</h2>
               <br />
 
               <IonText className="mr-3">Undergraduate</IonText>
@@ -345,8 +378,8 @@ function index() {
               ></IonRadio>
             </IonRadioGroup>
 
-            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
-              <h2 className="search-control__label">Location Type</h2>
+            <IonRadioGroup className="mt-4" allowEmptySelection={true}>
+              <h2 className="search-control__label">Level of tuitiion</h2>
               <br />
 
               <IonText className="mr-3">In State</IonText>
@@ -362,6 +395,46 @@ function index() {
                 value="outState"
               ></IonRadio>
             </IonRadioGroup>
+
+            <IonRadioGroup className="mt-4" allowEmptySelection={true}>
+              <h2 className="search-control__label">
+                Are you planning to stay
+              </h2>
+              <br />
+
+              <IonText className="mr-3">Off Campus</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={() => setAccomodation("OffCampus")}
+                value="offCampus"
+              ></IonRadio>
+
+              <IonText className="mx-3">On Campus</IonText>
+              <IonRadio
+                onIonFocus={() => setAccomodation("OnCampus")}
+                value="onCampus"
+              ></IonRadio>
+            </IonRadioGroup>
+
+            {showFamily && (
+              <IonRadioGroup className="mt-4" allowEmptySelection={true}>
+                <h2 className="search-control__label">Staying with</h2>
+                <br />
+
+                <IonText className="mr-3">With Family</IonText>
+                <IonRadio
+                  className="text-sm"
+                  onIonFocus={() => setLocationType("WithFamily")}
+                  value="withFamily"
+                ></IonRadio>
+
+                <IonText className="mx-3">Without Family</IonText>
+                <IonRadio
+                  onIonFocus={() => setLocationType("NotWithFamily")}
+                  value="outState"
+                ></IonRadio>
+              </IonRadioGroup>
+            )}
           </div>
           <div className="search-control z-40">
             <IonLabel className="mb-2">States</IonLabel>

@@ -422,6 +422,12 @@ export const GetProfessor = gql`
       $graduateOutOfStateTuitionFee: RangeInput
       $undergraduateInStateTuitionFee: RangeInput
       $undergraduateOutOfStateTuitionFee: RangeInput
+      $undergraduateOnCampusInStateCostOfAttendance: RangeInput
+      $undergraduateOnCampusOutOfStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusWithFamilyInStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: RangeInput
       $state: String
     ) {
       searchUniversity(
@@ -435,6 +441,12 @@ export const GetProfessor = gql`
         graduateOutOfStateTuitionFee: $graduateOutOfStateTuitionFee
         undergraduateInStateTuitionFee: $undergraduateInStateTuitionFee
         undergraduateOutOfStateTuitionFee: $undergraduateOutOfStateTuitionFee
+        undergraduateOnCampusInStateCostOfAttendance: $undergraduateOnCampusInStateCostOfAttendance
+        undergraduateOnCampusOutOfStateCostOfAttendance: $undergraduateOnCampusOutOfStateCostOfAttendance
+        undergraduateOffCampusWithFamilyInStateCostOfAttendance: $undergraduateOffCampusWithFamilyInStateCostOfAttendance
+        undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: $undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance
+        undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: $undergraduateOffCampusNotWithFamilyInStateCostOfAttendance
+        undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: $undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance
         state: $state
       ) {
         elevatorInfo {
