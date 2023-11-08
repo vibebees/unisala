@@ -293,7 +293,7 @@ function index() {
   }, [accomodation])
   useEffect(() => {
     // map the array to align with the data structure of unfiltered universities
-    const d = data?.searchUniversity.map((item) => ({
+    const d = data?.searchUniversity?.map((item) => ({
       ...item.elevatorInfo,
       ...item.studentCharges
     }))
