@@ -25,6 +25,7 @@ import { FolderStructure } from "../../component/folderStructure"
 import { UnisalaLandingPage } from "./UnisalaIntro"
 import ScrollableCard from "ui/component/ScrollableImageCard/organism/ScrollableCard"
 import { fetchFamousUniversities } from "graphql/user"
+import FloatingButton from "ui/component/FloatingButton"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -98,6 +99,7 @@ export const Home = ({ allProps }) => {
   }
   return (
     <IonContent color="light">
+      <FloatingButton />
       {width < 768 && views.lessThan768}
       <IonGrid
         style={{
