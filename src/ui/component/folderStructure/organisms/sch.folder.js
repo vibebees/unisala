@@ -39,7 +39,7 @@ export const FolderScholarship = ({item, allProps}) => {
         },
         {
           label: "Scholarship Amount",
-          value: awards[0]?.scholarship_amount?.amount
+          value: awards && awards[0]?.scholarship_amount?.amount
         }
       ]
     }} = allProps
