@@ -11,7 +11,7 @@ import {
 } from "@ionic/react"
 
 import { Link } from "react-router-dom"
-import {SearchBar} from "../../component/searchBox"
+import { SearchBar } from "../../component/searchBox"
 import Authentication from "../../component/authentication"
 
 import { useSelector } from "react-redux"
@@ -135,7 +135,8 @@ export const screenLessThan768 = ({
   activeProfile,
   username,
   loggedIn,
-  ProfilePop
+  ProfilePop,
+  propsall
 }) => {
   return (
     <IonHeader
@@ -175,7 +176,7 @@ export const screenLessThan768 = ({
             />
             {activeProfile.profile && (
               <div className="absolute max-[290px]:-left-44 shadow-md h-32 bg-white z-30 -left-52">
-                <ProfilePop />
+                <ProfilePop allProps={{ propsall }} />
               </div>
             )}
             {/* <Authentication

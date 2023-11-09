@@ -3,8 +3,8 @@ import { Redirect, Route, Switch } from "react-router"
 import ProtectedRoute from "../../utils/lib/protectedRoute"
 
 import PreLoader from "./preloader"
-import {StudyAbroadRoadmap} from "ui/pages/roadmap/visaRoadMap"
-import {UnisalaLandingPage} from "ui/pages/home/UnisalaIntro"
+import { StudyAbroadRoadmap } from "ui/pages/roadmap/visaRoadMap"
+import { UnisalaLandingPage } from "ui/pages/home/UnisalaIntro"
 import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
 const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
@@ -47,13 +47,12 @@ const spaceRoutes = () => (
   </>
 )
 
-export const PageRoute = ({allProps}) => (
+export const PageRoute = ({ allProps }) => (
   <Switch>
     <Suspense fallback={<PreLoader />}>
-    <Route path="/roadmap" exact>
+      <Route path="/roadmap" exact>
         <StudyAbroadRoadmap />
       </Route>
-
 
       <Route path="/myjourney" exact>
         <StudyAbroadRoadmapInput />
@@ -64,7 +63,7 @@ export const PageRoute = ({allProps}) => (
       </Route>
 
       <Route exact path="/">
-         <HomePage />
+        <HomePage propsall={allProps} />
       </Route>
 
       <Route exact path="/university/:id">
@@ -98,10 +97,8 @@ export const PageRoute = ({allProps}) => (
       </Route>
 
       <Route path="/login" exact>
-        <Login allProps = {allProps} />
+        <Login allProps={allProps} />
       </Route>
-
-
 
       <Route path="*" exact>
         <PageNotFound />
