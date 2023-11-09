@@ -69,7 +69,7 @@ const SignUpVerification = ({ auth, setauth }) => {
           duration: 3000,
           message: err.response.data.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "primary",
+          color: "danger",
           mode: "ios"
         })
       })

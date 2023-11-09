@@ -11,25 +11,23 @@ import clsx from "clsx"
 import { informationCircleOutline } from "ionicons/icons"
 
 const FeebackText = ({ allProps }) => {
-  const { feedBack, Setfeedback } = allProps
+  const { feedBack, Setfeedback, handleSubmit } = allProps
   const handleFeedbackTextChange = (e) => {
-    Setfeedback({ ...feedBack, feedbackText: e.detail.value })
+    Setfeedback({ ...feedBack, description: e.detail.value })
   }
 
   const handleEmailChange = (e) => {
     Setfeedback({ ...feedBack, email: e.detail.value })
   }
 
-  const isSubmitDisabled = !feedBack.rating || feedBack.feedbackText.length <= 3
-
-  const buttonClass = clsx("btn mt-2", { "not-disabled": !isSubmitDisabled })
+  const buttonClass = clsx("btn mt-2")
   return (
     <IonCol>
       <div className="feedback">
         <IonTextarea
           placeholder="What can we do to improve?"
           onIonChange={handleFeedbackTextChange}
-          value={feedBack.feedbackText}
+          value={feedBack.description}
           rows={5}
           className="border focus-within:border-neutral-500 border-neutral-300 text-sm rounded-md"
         ></IonTextarea>
@@ -50,7 +48,7 @@ const FeebackText = ({ allProps }) => {
           your feedback if needed.
         </IonText>
 
-        <IonButton className={buttonClass} disabled={isSubmitDisabled}>
+        <IonButton onClick={handleSubmit} className={buttonClass}>
           Send Your Feedback
         </IonButton>
       </div>
