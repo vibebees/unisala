@@ -162,7 +162,7 @@ function Offerings({ allProps }) {
 
         {undergraduateOffering && (
           <IonCol className="ion-no-padding ">
-            <IonLabel className="ion-padding-start font-semibold  font-bold text-blue-500">
+            <IonLabel className="ion-padding-start  font-bold text-blue-500">
               {undergraduateOffering.substring(0, 35)} 📚
             </IonLabel>
           </IonCol>
@@ -222,7 +222,7 @@ function loadingScreen() {
 
 function CourseCard({ allProps }) {
   const { name, ownType, tags, loading = false, schoolDataLoading } = allProps
-  console.log({ courseCard: allProps })
+
   if (loading || schoolDataLoading || name === undefined) {
     return loadingScreen()
   }
