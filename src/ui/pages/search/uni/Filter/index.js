@@ -18,18 +18,17 @@ import {
 import "./index.css"
 import { useEffect, useRef, useState } from "react"
 import { useLazyQuery, useQuery } from "@apollo/client"
-import {
-  UNIVERSITY_SERVICE_GQL,
-  USER_SERVICE_GQL
-} from "../../../../../servers/types"
+import { UNIVERSITY_SERVICE_GQL } from "../../../../../servers/types"
 import { UniFilterResults, UniSearchDataList } from "../../../../../graphql/uni"
 import { searchGetSuccess } from "../../../../../store/action"
 import { useDispatch } from "react-redux"
 import { statesArray } from "utils/lib/states"
+import axios from "axios"
 
 import Select from "react-select"
-
+import AsyncSelect from "react-select/async"
 import { useLocation } from "react-router"
+import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 
 function index() {
   const SAT_SCORES = [
@@ -137,7 +136,7 @@ function index() {
     undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
     undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
   }
-  const COA = [
+  const TUITION = [
     {
       min: 0,
       max: 5000
@@ -159,6 +158,40 @@ function index() {
       max: null
     }
   ]
+  const COA = [
+    {
+      min: 0,
+      max: 5000
+    },
+    {
+      min: 5000,
+      max: 10000
+    },
+    {
+      min: 10000,
+      max: 15000
+    },
+    {
+      min: 15000,
+      max: 20000
+    },
+    {
+      min: 20000,
+      max: 25000
+    },
+    {
+      min: 25000,
+      max: 30000
+    },
+    {
+      min: 30000,
+      max: 35000
+    },
+    {
+      min: 35000,
+      max: null
+    }
+  ]
   const [present, dismiss] = useIonToast()
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
@@ -170,11 +203,14 @@ function index() {
   const [accomodation, setAccomodation] = useState(null)
   const [family, setFamily] = useState(null)
   const [showFamily, setShowFamily] = useState(false)
-  const selectInputRef = useRef()
+  const stateInputRef = useRef()
+  const majorInputRef = useRef()
   const [isFiltered, setIsFiltered] = useState(false)
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
+  const [majors, setMajors] = useState(null)
+  // const [majorQuery, setMajorQuery] = useState(null)
   const [getScholarship, { data, loading, refetch }] = useLazyQuery(
     UniFilterResults,
     {
@@ -184,9 +220,8 @@ function index() {
   const dispatch = useDispatch()
 
   const handleData = (e, identify) => {
-    // indicate that filtered is applied
     let value
-    if (identify === "state") {
+    if (identify === "state" || identify === "major") {
       value = e?.label
       if (!value) return
     } else {
@@ -200,9 +235,6 @@ function index() {
       setAct(`${value.min} - ${value.max}`)
     }
 
-    if (identify === "major") {
-      value = e.currentTarget.value
-    }
     if (identify === "applicationFee") {
       // check if it is for grad or undergrad
       if (degree) {
@@ -228,7 +260,7 @@ function index() {
         return
       }
 
-      console.log(value)
+      console.log({ value })
     }
 
     if (identify === "coa") {
@@ -241,9 +273,10 @@ function index() {
           color: "danger",
           mode: "ios"
         })
+        return
       } else {
         if (value.max === null) {
-          setCoa("20,000$+")
+          setCoa("35000$+")
         } else {
           setCoa(`${value.min} - ${value.max}`)
         }
@@ -326,8 +359,9 @@ function index() {
     setAct("Act Score")
     setApp("Application Fee")
     setCoa("COA")
-    setTuition("Tuition Fee")
-    selectInputRef.current.clearValue()
+    setTuition("Tuition Fees")
+    stateInputRef.current.clearValue()
+    majorInputRef.current.clearValue()
     const searchValue = queryParams.get("q")
     //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
     const { data } = await GetUni({ variables: { name: searchValue } })
@@ -357,6 +391,35 @@ function index() {
     }
   }
 
+  // to fetch majors information
+
+  const fetchModel = async (majorQuery) => {
+    console.log("calling hai taaa")
+    try {
+      const response = await axios.get(
+        `http://test.unisala.com/uni/keyword/majors/${majorQuery}/10`
+      )
+      return response.data.map((i) => ({
+        value: i.name,
+        label: i.name.toUpperCase()
+      }))
+    } catch (error) {
+      console.error("Error fetching data:", error)
+      return []
+    }
+  }
+
+  const loadOptions = (inputVal, callback) => {
+    setTimeout(async () => {
+      try {
+        const options = await fetchModel(inputVal)
+        callback(options)
+      } catch (error) {
+        console.error("Error loading options:", error)
+        callback([])
+      }
+    }, 1000)
+  }
   return (
     <>
       <IonCard className="filter-card-wrapper relative">
@@ -403,7 +466,7 @@ function index() {
             </IonRadioGroup>
 
             <IonRadioGroup className="mt-4" allowEmptySelection={false}>
-              <h2 className="search-control__label">Level of tuitiion</h2>
+              <h2 className="search-control__label">Level of tuition</h2>
               <br />
 
               <IonText className="mr-3">In State</IonText>
@@ -475,37 +538,45 @@ function index() {
 
           <div className="search-control ">
             <h2 className="search-control__label">Test scores</h2>
-            <IonLabel>SAT:</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={sat}
-              className="border border-[gray]"
-              onIonChange={(e) => handleData(e, "sat")}
-            >
-              {SAT_SCORES.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.min} - {val.max}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-
-            <IonLabel className="mt-4">ACT:</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={act}
-              className="border border-[gray]"
-              onIonChange={(e) => handleData(e, "act")}
-            >
-              {ACT_SCORE.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.min} - {val.max}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+            {!queryData?.act && (
+              <>
+                <IonLabel>SAT:</IonLabel>
+                <IonSelect
+                  interface="popover"
+                  placeholder={sat}
+                  className="border border-[gray]"
+                  onIonChange={(e) => handleData(e, "sat")}
+                >
+                  {SAT_SCORES.map((val, i) => (
+                    <IonSelectOption key={i} value={val}>
+                      {val.min} - {val.max}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </>
+            )}
+            {!queryData?.sat && (
+              <>
+                <IonLabel className="mt-4">ACT:</IonLabel>
+                <IonSelect
+                  interface="popover"
+                  placeholder={act}
+                  className="border border-[gray]"
+                  onIonChange={(e) => handleData(e, "act")}
+                >
+                  {ACT_SCORE.map((val, i) => (
+                    <IonSelectOption key={i} value={val}>
+                      {val.min} - {val.max}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </>
+            )}
           </div>
 
           <div className="search-control">
             <h2 className="search-control__label">Fees</h2>
+
             <IonLabel className="mt-4">Application Fee</IonLabel>
             <IonSelect
               interface="popover"
@@ -524,49 +595,71 @@ function index() {
               ))}
             </IonSelect>
 
-            <IonLabel className="mt-4">Tuition Fees</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={tuition}
-              className="border border-[gray]"
-              onIonChange={(e) => handleData(e, "tuition")}
-            >
-              {COA.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.max === null
-                    ? val.min + "$+"
-                    : val.min + "-" + val.max + "$"}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+            {coa === "COA" && (
+              <>
+                <IonLabel className="mt-4">Tuition Fees</IonLabel>
+                <IonSelect
+                  interface="popover"
+                  placeholder={tuition}
+                  className="border border-[gray]"
+                  onIonChange={(e) => handleData(e, "tuition")}
+                >
+                  {TUITION.map((val, i) => (
+                    <IonSelectOption key={i} value={val}>
+                      {val.max === null
+                        ? val.min + "$+"
+                        : val.min + "-" + val.max + "$"}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </>
+            )}
 
-            <IonLabel className="mt-4">Cost of Attendence</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={coa}
-              className="border border-[gray]"
-              onIonChange={(e) => handleData(e, "coa")}
-            >
-              {COA.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.max === null
-                    ? val.min + "$+"
-                    : val.min + "-" + val.max + "$"}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+            {tuition === "Tuition Fees" && (
+              <>
+                <IonLabel className="mt-4">Cost of Attendence</IonLabel>
+                <IonSelect
+                  interface="popover"
+                  placeholder={coa}
+                  className="border border-[gray]"
+                  onIonChange={(e) => handleData(e, "coa")}
+                >
+                  {COA.map((val, i) => (
+                    <IonSelectOption key={i} value={val}>
+                      {val.max === null
+                        ? val.min + "$+"
+                        : val.min + "-" + val.max + "$"}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </>
+            )}
           </div>
 
           <div className="search-control">
             <h2 className="search-control__label mb-4">Major</h2>
 
-            <IonInput
-              onIonChange={(e) => {
-                handleData(e, "major")
+            {/* <Select
+              options={majors}
+              isSearchable
+              ref={majorInputRef}
+              placeholder={"Select a Major"}
+              onInputChange={(e) => {
+                setMajorQuery(e)
               }}
-              placeholder="Select a major"
-              className="border border-[gray]"
-            ></IonInput>
+              onChange={(e) => handleData(e, "major")}
+              styles={customStyles}
+              menuPlacement="top"
+            /> */}
+
+            <AsyncSelect
+              cacheOptions
+              loadOptions={loadOptions}
+              styles={customStyles}
+              menuPlacement="top"
+              ref={majorInputRef}
+              onChange={(e) => handleData(e, "major")}
+            />
           </div>
 
           <div className="search-control z-40">
@@ -574,10 +667,11 @@ function index() {
             <Select
               options={statesArray}
               isSearchable
-              ref={selectInputRef}
+              ref={stateInputRef}
               placeholder={"Select a state"}
               onChange={(e) => handleData(e, "state")}
               styles={customStyles}
+              menuPlacement="top"
             />
           </div>
         </IonCardContent>
