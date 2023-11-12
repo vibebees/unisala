@@ -315,7 +315,7 @@ export const GetProfessor = gql`
             scholarships {
               _id
               university_name
-              uni_id
+              unitId
               scholarship_name
               international_specific
               level
