@@ -26,7 +26,7 @@ import { statesArray } from "utils/lib/states"
 import axios from "axios"
 
 import Select from "react-select"
-
+import AsyncSelect from "react-select/async"
 import { useLocation } from "react-router"
 import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 
@@ -210,7 +210,7 @@ function index() {
   const queryParams = new URLSearchParams(location.search)
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
   const [majors, setMajors] = useState(null)
-  const [majorQuery, setMajorQuery] = useState(null)
+  // const [majorQuery, setMajorQuery] = useState(null)
   const [getScholarship, { data, loading, refetch }] = useLazyQuery(
     UniFilterResults,
     {
@@ -393,18 +393,33 @@ function index() {
 
   // to fetch majors information
 
-  const fetchModel = async () => {
-    console.log("calinng hai taaa")
-    const data = await axios.get(
-      `http://test.unisala.com/uni/keyword/majors/${majorQuery}/10`
-    )
-    data && setMajors(data?.data.map((i) => ({ value: i.name, label: i.name })))
+  const fetchModel = async (majorQuery) => {
+    console.log("calling hai taaa")
+    try {
+      const response = await axios.get(
+        `http://test.unisala.com/uni/keyword/majors/${majorQuery}/10`
+      )
+      return response.data.map((i) => ({
+        value: i.name,
+        label: i.name.toUpperCase()
+      }))
+    } catch (error) {
+      console.error("Error fetching data:", error)
+      return [] // Handle the error appropriately, return an empty array as a fallback.
+    }
   }
 
-  useDebouncedEffect(fetchModel, [majorQuery], 500)
-
-  console.log({ majors })
-
+  const loadOptions = (inputVal, callback) => {
+    setTimeout(async () => {
+      try {
+        const options = await fetchModel(inputVal)
+        callback(options)
+      } catch (error) {
+        console.error("Error loading options:", error)
+        callback([]) // Handle the error appropriately, pass an empty array as a fallback.
+      }
+    }, 1000) // Set your desired timeout value in milliseconds (e.g., 1000 for 1 second)
+  }
   return (
     <>
       <IonCard className="filter-card-wrapper relative">
@@ -624,7 +639,7 @@ function index() {
           <div className="search-control">
             <h2 className="search-control__label mb-4">Major</h2>
 
-            <Select
+            {/* <Select
               options={majors}
               isSearchable
               ref={majorInputRef}
@@ -635,6 +650,15 @@ function index() {
               onChange={(e) => handleData(e, "major")}
               styles={customStyles}
               menuPlacement="top"
+            /> */}
+
+            <AsyncSelect
+              cacheOptions
+              loadOptions={loadOptions}
+              styles={customStyles}
+              menuPlacement="top"
+              ref={majorInputRef}
+              onChange={(e) => handleData(e, "major")}
             />
           </div>
 
