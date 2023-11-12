@@ -24,11 +24,10 @@ export const GetProfessor = gql`
     }
   `,
   getUpdatedSchoolInfo = (unitId, name) =>
-  gql`
-    query getUpdatedSchoolInfo($unitId: Float, $name: String) {
-      getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
-
-   elevatorInfo {
+    gql`
+      query getUpdatedSchoolInfo($unitId: Float, $name: String) {
+        getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
+          elevatorInfo {
             unitId
             name
             address {
@@ -159,7 +158,6 @@ export const GetProfessor = gql`
                 percentile25
                 percentile75
               }
-
             }
             act {
               submitted
@@ -391,14 +389,12 @@ export const GetProfessor = gql`
             levelOfDifficulty
             wouldTakeAgain
           }
+        }
       }
-    }
-  `,
-
-  UniSearchDataList = (name) =>
-    gql`
-    query {
-      searchSchool(name: "${name}") {
+    `,
+  UniSearchDataList = gql`
+    query UniSearchDataList($name: String) {
+      searchSchool(name: $name) {
         name
         unitId
         address {
@@ -414,22 +410,79 @@ export const GetProfessor = gql`
         undergraduateOffering
         pictures
       }
-    }`,
+    }
+  `,
   UniFilterResults = gql`
-    query uniFilterResults {
-      searchScholarship(satScore: { min: 400, max: 1200 }) {
-        status {
-          success
-          message
+    query uniFilterResults(
+      $sat: RangeInput
+      $act: RangeInput
+      $graduateApplicationFee: RangeInput
+      $undergraduateApplicationFee: RangeInput
+      $graduateInStateTuitionFee: RangeInput
+      $graduateOutOfStateTuitionFee: RangeInput
+      $undergraduateInStateTuitionFee: RangeInput
+      $undergraduateOutOfStateTuitionFee: RangeInput
+      $undergraduateOnCampusInStateCostOfAttendance: RangeInput
+      $undergraduateOnCampusOutOfStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusWithFamilyInStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: RangeInput
+      $state: String
+    ) {
+      searchUniversity(
+        pageSize: 10
+        page: 1
+        sat: $sat
+        act: $act
+        graduateApplicationFee: $graduateApplicationFee
+        undergraduateApplicationFee: $undergraduateApplicationFee
+        graduateInStateTuitionFee: $graduateInStateTuitionFee
+        graduateOutOfStateTuitionFee: $graduateOutOfStateTuitionFee
+        undergraduateInStateTuitionFee: $undergraduateInStateTuitionFee
+        undergraduateOutOfStateTuitionFee: $undergraduateOutOfStateTuitionFee
+        undergraduateOnCampusInStateCostOfAttendance: $undergraduateOnCampusInStateCostOfAttendance
+        undergraduateOnCampusOutOfStateCostOfAttendance: $undergraduateOnCampusOutOfStateCostOfAttendance
+        undergraduateOffCampusWithFamilyInStateCostOfAttendance: $undergraduateOffCampusWithFamilyInStateCostOfAttendance
+        undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: $undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance
+        undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: $undergraduateOffCampusNotWithFamilyInStateCostOfAttendance
+        undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: $undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance
+        state: $state
+      ) {
+        elevatorInfo {
+          name
+          unitId
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+          }
+          alias
+          ownType
+          tags
+          missionStatement
+          graduateOffering
+          undergraduateOffering
+          pictures
         }
-        scholarships {
-          level
-          university_name
-          sat {
-            max
-            min
+
+        studentCharges {
+          undergraduateApplicationFee
+          undergraduate {
+            inState {
+              tuition
+            }
+            offCampusWithFamily {
+              costOfAttendance {
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
           }
         }
       }
     }
   `
+

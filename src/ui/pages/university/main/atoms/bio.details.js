@@ -7,18 +7,16 @@ import {
   IonGrid,
   IonIcon,
   IonRow,
-  IonList,
-  IonItem,
-  IonLabel
+  IonList
 } from "@ionic/react"
-import { heart, location, ellipsisVerticalCircleOutline } from "ionicons/icons"
-import { useSelector } from "react-redux"
+import { heart, location } from "ionicons/icons"
 import useRating from "../../../../../hooks/useRating"
-import ModalListcard from "../../sideDetails/atoms/ModalListcard"
-import SeeMoreModal from "../molecules/SeeMoreModal"
+import Modal from "ui/component/Reusable/Modal"
+import SeeMoreButton from "ui/component/Reusable/Buttons/SeeMoreButton"
+import ListItemValue from "ui/component/Reusable/ListValueItem"
 
 export const BioDetails = ({ allProps }) => {
-  const { width, setWidth, uniData, handleResize } = allProps
+  const { width, uniData, handleResize } = allProps
 
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -27,52 +25,41 @@ export const BioDetails = ({ allProps }) => {
     }
   })
 
-  const ModalButton = (
-    <IonIcon
-      style={{
-        fontSize: "22px",
-        alignSelf: "center"
-      }}
-      className="ion-icon"
-      icon={ellipsisVerticalCircleOutline}
-    />
-  )
-
   const ModalData = (
     <div>
       <IonList>
-        <ModalListcard title={"Name"} value={uniData?.elevatorInfo?.name} />
-        <ModalListcard title={"Bio"} value={uniData?.elevatorInfo?.bio} />
-        <ModalListcard
-          title={"Address"}
+        <ListItemValue label={"Name"} value={uniData?.elevatorInfo?.name} />
+        <ListItemValue label={"Bio"} value={uniData?.elevatorInfo?.bio} />
+        <ListItemValue
+          label={"Address"}
           value={uniData?.elevatorInfo?.briefAddress}
         />
-        <ModalListcard
-          title={"Calender System"}
+        <ListItemValue
+          label={"Calender System"}
           value={uniData?.elevatorInfo?.calendar}
         />
-        <ModalListcard
-          title={"Graduate offered"}
+        <ListItemValue
+          label={"Graduate offered"}
           value={uniData?.elevatorInfo?.graduateOffering}
         />
-        <ModalListcard
-          title={"Grants Medical Degree"}
+        <ListItemValue
+          label={"Grants Medical Degree"}
           value={uniData?.elevatorInfo?.grantsMedicalDegree}
         />
-        <ModalListcard
-          title={"Has Hospital"}
+        <ListItemValue
+          label={"Has Hospital"}
           value={uniData?.elevatorInfo?.hasHospital}
         />
-        <ModalListcard
-          title={"Highest Degree Offered"}
+        <ListItemValue
+          label={"Highest Degree Offered"}
           value={uniData?.elevatorInfo?.highestLevelOfOffering}
         />
-        <ModalListcard
-          title={"University Type"}
+        <ListItemValue
+          label={"University Type"}
           value={uniData?.elevatorInfo?.ownType}
         />
-        <ModalListcard
-          title={"Undergraduate offered"}
+        <ListItemValue
+          label={"Undergraduate offered"}
           value={uniData?.elevatorInfo?.undergraduateOffering}
         />
       </IonList>
@@ -129,7 +116,11 @@ export const BioDetails = ({ allProps }) => {
             </IonCardContent>
             <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
               {/* <p style={{ alignSelf: "center" }}>See more </p> */}
-              <SeeMoreModal ModalButton={ModalButton} ModalData={ModalData} />
+              <Modal
+                ModalButton={<SeeMoreButton />}
+                ModalData={ModalData}
+                header="About"
+              />
             </IonCardContent>
           </div>
         </IonCol>

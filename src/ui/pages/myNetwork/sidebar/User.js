@@ -67,7 +67,7 @@ export default function User({ item, setIsOpen, isOpen }) {
   return (
     <IonItem mode="ios" className="mb-1" lines="full">
       <IonAvatar slot="start">
-        <Avatar username={item.user.username} profilePic={item.user.picture} />
+        <Avatar username={item?.user?.username} profilePic={item?.user?.picture} />
       </IonAvatar>
       <IonLabel>
         <div className="flex">
@@ -77,8 +77,8 @@ export default function User({ item, setIsOpen, isOpen }) {
             }}
             // onClick={handleUserProfile}
           >
-            <h2>{item.user.firstName + " " + item.user.lastName}</h2>
-            <p>{item.user.username}</p>
+            <h2>{item?.user?.firstName + " " + item?.user?.lastName}</h2>
+            <p>{item?.user?.username}</p>
           </div>
           <IonButton
             mode="ios"

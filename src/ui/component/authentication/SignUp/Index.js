@@ -4,15 +4,17 @@ import SignUpForm from "./SignUpForm"
 import AppleAuth from "../AppleAuth"
 import "../auth.css"
 
-export const SignUp = ({ setauth }) => {
+export const SignUp = ({ setauth, allProps }) => {
   return (
     <div className="sign-content">
       <IonText className="auth-start">
         <p>Start for free.</p>
       </IonText>
 
-      <IonText>
-        <h4>Create a new account.</h4>
+      <IonText className="mb-1">
+        <h4 className="text-xl font-semibold text-neutral-600">
+          Create a new account.
+        </h4>
       </IonText>
       <div className="auth-button">
         <div
@@ -20,7 +22,7 @@ export const SignUp = ({ setauth }) => {
             width: "234px"
           }}
         >
-          <GoogleAuth />
+          <GoogleAuth setauth={setauth} allProps={allProps} />
         </div>
       </div>
       <div className="auth-button">

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import {
   IonGrid,
   IonRow,
@@ -8,25 +8,26 @@ import {
   IonItem
 } from "@ionic/react"
 import { CreateAPostCard } from "../../component/post/index"
-import { getUserProfile } from "../../../graphql/user"
-import UnisalaIntro from "./UnisalaIntro"
+
 import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
 import useDocTitle from "../../../hooks/useDocTitile"
 import { InfinteFeed } from "./InfiniteScrollFeed"
-import AffliatedUniCard from "../../component/courseCard"
-import { Link } from "react-router-dom"
+
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "../../../graphql/uni"
-import { UNIVERSITY_SERVICE_GQL } from "../../../servers/types"
-import { LikeATag } from "../../component/tags"
-import { UserGuide } from "../../component/userGuide"
+import {
+  UNIVERSITY_SERVICE_GQL,
+  USER_SERVICE_GQL
+} from "../../../servers/types"
+
 import { FolderStructure } from "../../component/folderStructure"
-import { book, schoolOutline, schoolSharp } from "ionicons/icons"
+import { UnisalaLandingPage } from "./UnisalaIntro"
+import ScrollableCard from "ui/component/ScrollableImageCard/organism/ScrollableCard"
+import { fetchFamousUniversities } from "graphql/user"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
-
   const {
     width,
     newUser,
@@ -36,22 +37,65 @@ export const Home = ({ allProps }) => {
     refetch,
     userInfo = {},
     generateUserGuide
-  } = allProps || {},
-    {interestedUni} = userInfo || {},
-    [unitId] = interestedUni || []
+  } = allProps || {}
+
+  const { interestedUni } = userInfo || {}
+  const [unitId] = interestedUni || []
+
   const [userGuide, setUserGuide] = useState([])
+  const [userSchoolData, setUserSchoolData] = useState({})
 
-  const {loading: schoolLoading, data: schoolData} = useQuery(getUpdatedSchoolInfo(({unitId})), {
-    skip: !unitId,
-    fetchPolicy: "cache-and-network",
-    variables: { unitId: unitId },
-    context: { server: UNIVERSITY_SERVICE_GQL }
+  const { loading: schoolLoading, data: schoolData } = useQuery(
+    getUpdatedSchoolInfo(unitId),
+    {
+      variables: { unitId },
+      context: { server: UNIVERSITY_SERVICE_GQL }
+    }
+  )
+  const { data: famousUniversities } = useQuery(fetchFamousUniversities, {
+    variables: { limit: 100, page: 0 },
+    context: { server: USER_SERVICE_GQL }
   })
-  useEffect(() => {
-    const generatedUserGuide = generateUserGuide(userInfo, schoolData?.getUpdatedSchoolInfo?.elevatorInfo)
-      setUserGuide(generatedUserGuide)
-    }, [schoolData])
 
+  const discoverUni = famousUniversities?.getFamousUniversity
+
+  useEffect(() => {
+    const generatedUserGuide = generateUserGuide(
+      userInfo,
+      schoolData?.getUpdatedSchoolInfo?.elevatorInfo
+    )
+    setUserGuide(generatedUserGuide)
+  }, [schoolData])
+
+  const renderLoggedInView = () => (
+    <>
+      <CreateAPostCard allProps={allProps} />
+      <FolderStructure
+        allProps={{
+          ...allProps,
+          folderName: "",
+          data: userGuide,
+          popUp: false
+        }}
+      />
+
+      <ScrollableCard
+        allProps={{
+          data: discoverUni,
+          className: "similarschoolss"
+        }}
+      />
+
+      <InfinteFeed userInfo={user} allProps={allProps} />
+    </>
+  )
+
+  const renderNewUserView = () => {
+    if (loggedIn && newUser) {
+      return <WelcomeSteps allProps={{ ...allProps, refetch }} />
+    }
+    return null
+  }
   return (
     <IonContent color="light">
       {width < 768 && views.lessThan768}
@@ -63,44 +107,22 @@ export const Home = ({ allProps }) => {
         }}
       >
         <IonRow
-          style={{
-            justifyContent: "flex-start",
-            margin: "0 auto"
-          }}
+          style={{ justifyContent: "flex-start", margin: "0 auto" }}
           className="max-width-container"
         >
-          {/* view on the right i.e profile */}
           {width > 768 && views.greaterThan768}
           <IonCol
             style={{
               maxWidth: "700px",
               margin: "auto",
-              minHeight: "calc(90vh)"
+              minHeight: "calc(90vh)",
+              overflow: "hidden"
             }}
           >
-            {loggedIn ? (
-              <>
-                <CreateAPostCard allProps={allProps} />
-                <FolderStructure
-                  allProps={{
-                    ...allProps,
-                    folderName: "",
-                    data: userGuide,
-                    popUp: false
-                  }}
-                />
-
-                <InfinteFeed userInfo={user} allProps={allProps} />
-              </>
-            ) : (
-              <UnisalaIntro />
-            )}
+            {loggedIn ? renderLoggedInView() : UnisalaLandingPage({ allProps })}
           </IonCol>
-          {/* view on the left famous school */}
           {width > 1000 && views.greaterThan1000}
-          {loggedIn && newUser && (
-            <WelcomeSteps allProps={{ ...allProps, refetch }} />
-          )}
+          {renderNewUserView()}
         </IonRow>
       </IonGrid>
     </IonContent>

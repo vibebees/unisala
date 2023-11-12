@@ -30,7 +30,6 @@ export const InterviewScheduler = () => {
       socket.current = callSocket()
       socket?.current?.emit("addUser", { userId: user?._id, user })
       socket?.current?.on("MyBroadCasting", (data) => {
-        console.log("------------>", data)
       })
     }, [])
 

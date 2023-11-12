@@ -1,18 +1,11 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useEffect } from "react"
-import {
-  IonCard,
-  IonCardContent,
-  IonGrid,
-  IonCol,
-  IonRow,
-  IonText
-} from "@ionic/react"
-import { useSelector } from "react-redux"
+import { IonCard } from "@ionic/react"
+import CardHeader from "ui/component/Reusable/cardHeader"
 import { handleResize } from "../../../utils/screen"
 import { RowSection } from "./molecules/rowSection"
 export const Template = ({ allProps }) => {
-  const { testScores, width, setWidth, isSideBar, useIsData } = allProps
+  const { testScores, width, setWidth, isSideBar } = allProps
 
   useEffect(() => {
     window.addEventListener("resize", handleResize({ width, setWidth }))
@@ -29,6 +22,7 @@ export const Template = ({ allProps }) => {
         }}
         className="ion-margin-top"
       >
+        <CardHeader header={"Test Score"} />
         {Object.keys(testScores).map((item, index) => {
           if (["act", "sat"].includes(item) && testScores[item]) {
             return (

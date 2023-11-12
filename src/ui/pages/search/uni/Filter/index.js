@@ -1,307 +1,590 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCheckbox,
+  IonContent,
+  IonInput,
   IonLabel,
+  IonRadio,
+  IonRadioGroup,
   IonRange,
   IonSelect,
-  IonSelectOption
+  IonSelectOption,
+  IonSpinner,
+  IonText,
+  useIonToast
 } from "@ionic/react"
 import "./index.css"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
-import { UniFilterResults } from "../../../../../graphql/uni"
+import {
+  UNIVERSITY_SERVICE_GQL,
+  USER_SERVICE_GQL
+} from "../../../../../servers/types"
+import { UniFilterResults, UniSearchDataList } from "../../../../../graphql/uni"
 import { searchGetSuccess } from "../../../../../store/action"
 import { useDispatch } from "react-redux"
+import { statesArray } from "utils/lib/states"
+
+import Select from "react-select"
+
+import { useLocation } from "react-router"
 
 function index() {
-  const [sat, setSat] = useState(400)
-  const [act, setAct] = useState(1)
-  const [gpa, setGpa] = useState(3)
-  const { data, loading, refetch } = useQuery(UniFilterResults, {
-    context: { server: USER_SERVICE_GQL },
-    fetchPolicy: "network-only"
-  })
-  const dispatch = useDispatch()
-  useEffect(() => {
-    const interval = setTimeout(() => {
-      if (gpa > 3 || sat > 400 || act > 1) {
-        refetch({ page: 1, pagesize: 10, gpa: gpa, act: act })
-        console.log(data?.searchScholarship?.scholarships)
-      }
-    }, 1000)
-
-    return () => clearTimeout(interval)
-  }, [sat, act, gpa])
-
-  useEffect(() => {
-    console.log("updating storee.................")
-    if (data?.searchScholarship?.scholarships?.length > 0) {
-      dispatch(searchGetSuccess(data?.searchScholarship?.scholarships))
+  const SAT_SCORES = [
+    {
+      min: 400,
+      max: 600
+    },
+    {
+      min: 600,
+      max: 800
+    },
+    {
+      min: 800,
+      max: 1000
+    },
+    {
+      min: 1000,
+      max: 1200
+    },
+    {
+      min: 1200,
+      max: 1400
+    },
+    {
+      min: 1400,
+      max: 1600
     }
+  ]
+
+  const ACT_SCORE = [
+    {
+      min: 8,
+      max: 12
+    },
+    {
+      min: 12,
+      max: 16
+    },
+    {
+      min: 16,
+      max: 20
+    },
+    {
+      min: 24,
+      max: 28
+    },
+    {
+      min: 28,
+      max: 32
+    },
+    {
+      min: 32,
+      max: 36
+    }
+  ]
+
+  const APPLICATION_FEES = [
+    {
+      min: 0,
+      max: 0
+    },
+    {
+      min: 0,
+      max: 20
+    },
+    {
+      min: 20,
+      max: 40
+    },
+    {
+      min: 40,
+      max: 60
+    },
+    {
+      min: 60,
+      max: 80
+    },
+    {
+      min: 80,
+      max: 100
+    },
+    {
+      min: 100,
+      max: null
+    }
+  ]
+
+  const INITIAL_QUERY_DATA = {
+    sat: null,
+    act: null,
+    page: 1,
+    pageSize: 10,
+    state: null,
+    major: null,
+    graduateApplicationFee: null,
+    undergraduateApplicationFee: null,
+    undergraduateInStateTuitionFee: null,
+    undergraduateOutOfStateTuitionFee: null,
+    graduateInStateTuitionFee: null,
+    graduateOutOfStateTuitionFee: null,
+    undergraduateOnCampusInStateCostOfAttendance: null,
+    undergraduateOnCampusOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
+  }
+  const COA = [
+    {
+      min: 0,
+      max: 5000
+    },
+    {
+      min: 5000,
+      max: 10000
+    },
+    {
+      min: 10000,
+      max: 15000
+    },
+    {
+      min: 15000,
+      max: 20000
+    },
+    {
+      min: 20000,
+      max: null
+    }
+  ]
+  const [present, dismiss] = useIonToast()
+  const [sat, setSat] = useState("Sat Score")
+  const [act, setAct] = useState("Act Score")
+  const [app, setApp] = useState("Application Fee")
+  const [coa, setCoa] = useState("COA")
+  const [tuition, setTuition] = useState("Tuition Fees")
+  const [degree, setDegree] = useState(null)
+  const [locationType, setLocationType] = useState(null) // in state or out state
+  const [accomodation, setAccomodation] = useState(null)
+  const [family, setFamily] = useState(null)
+  const [showFamily, setShowFamily] = useState(false)
+  const selectInputRef = useRef()
+  const [isFiltered, setIsFiltered] = useState(false)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
+  const [getScholarship, { data, loading, refetch }] = useLazyQuery(
+    UniFilterResults,
+    {
+      context: { server: UNIVERSITY_SERVICE_GQL }
+    }
+  )
+  const dispatch = useDispatch()
+
+  const handleData = (e, identify) => {
+    // indicate that filtered is applied
+    let value
+    if (identify === "state") {
+      value = e?.label
+      if (!value) return
+    } else {
+      value = e.detail.value
+    }
+
+    if (identify === "sat") {
+      setSat(`${value.min} - ${value.max}`)
+    }
+    if (identify === "act") {
+      setAct(`${value.min} - ${value.max}`)
+    }
+
+    if (identify === "major") {
+      value = e.currentTarget.value
+    }
+    if (identify === "applicationFee") {
+      // check if it is for grad or undergrad
+      if (degree) {
+        identify = `${degree}ApplicationFee`
+        let st
+
+        if (value.max === 0) {
+          st = "Free"
+        } else if (value.max === null) {
+          st = "100+"
+        } else {
+          st = `${value.min} - ${value.max}`
+        }
+        setApp(st)
+      } else {
+        present({
+          duration: 3000,
+          message: "Please select the level of your degree.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+        return
+      }
+
+      console.log(value)
+    }
+
+    if (identify === "coa") {
+      if (!degree && !accomodation && !locationType) {
+        present({
+          duration: 3000,
+          message:
+            "Please select the level of your degree, preffered location type and mode of accomodation.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      } else {
+        if (value.max === null) {
+          setCoa("20,000$+")
+        } else {
+          setCoa(`${value.min} - ${value.max}`)
+        }
+
+        if (accomodation === "OnCampus") {
+          identify = `${degree}${accomodation}${locationType}CostOfAttendance`
+        } else if (accomodation === "OffCampus") {
+          identify = `${degree}${accomodation}${family}${locationType}CostOfAttendance`
+        }
+      }
+    }
+    if (identify === "tuition") {
+      if (degree && locationType) {
+        identify = `${degree}${locationType}TuitionFee`
+
+        if (value.max === null) {
+          setTuition("20,000$+")
+        } else {
+          setTuition(`${value.min} - ${value.max}`)
+        }
+      } else {
+        present({
+          duration: 3000,
+          message:
+            "Please select the level of your degree and preffered tuition type.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+        return
+      }
+    }
+    setQueryData((prev) => ({
+      ...prev,
+      [identify]: value
+    }))
+    getScholarship({ variables: { ...queryData, [identify]: value } })
+    setIsFiltered(true)
+  }
+
+  useEffect(() => {
+    if (accomodation === "OffCampus") {
+      setShowFamily(true)
+    } else {
+      setShowFamily(false)
+    }
+  }, [accomodation])
+  useEffect(() => {
+    // map the array to align with the data structure of unfiltered universities
+    const d = data?.searchUniversity?.map((item) => ({
+      ...item.elevatorInfo,
+      ...item.studentCharges
+    }))
+    dispatch(searchGetSuccess(d))
   }, [data])
 
-  console.log({ data: data?.searchScholarship?.scholarships })
+  const customStyles = {
+    menuList: (styles) => ({
+      ...styles
+    }),
+    option: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      background: isFocused ? "#eeeee" : isSelected ? "#90EE90" : undefined,
+      zIndex: 1
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 100
+    })
+  }
+
+  const [GetUni] = useLazyQuery(UniSearchDataList, {
+    context: { server: UNIVERSITY_SERVICE_GQL },
+    skip: true
+  })
+
+  const removeFilter = async () => {
+    setQueryData(INITIAL_QUERY_DATA)
+    setSat("Sat Score")
+    setAct("Act Score")
+    setApp("Application Fee")
+    setCoa("COA")
+    setTuition("Tuition Fee")
+    selectInputRef.current.clearValue()
+    const searchValue = queryParams.get("q")
+    //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
+    const { data } = await GetUni({ variables: { name: searchValue } })
+    dispatch(searchGetSuccess(data?.searchSchool))
+    setIsFiltered(false)
+  }
+
+  //  this method is for removing data like level of study, level of tuition and accomodations because if this changes, the query inputs wont align so first remove all then add
+  const handleStaticData = (e, type) => {
+    const val = e.target.value
+    removeFilter()
+    switch (type) {
+      case "degree":
+        setDegree(val)
+        break
+      case "tuition":
+        setLocationType(val)
+        break
+      case "accomodation":
+        setAccomodation(val)
+        break
+      case "family":
+        setFamily(val)
+        break
+      default:
+        break
+    }
+  }
+
   return (
-    <IonCard className="filter-card-wrapper">
-      <IonCardContent>
-        <div className="search-control">
-          <h2 className="search-control__label">College Type</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>4 Year</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Private</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Public</IonLabel>
+    <>
+      <IonCard className="filter-card-wrapper relative">
+        {isFiltered ? (
+          loading ? (
+            <IonSpinner name="crescent"></IonSpinner>
+          ) : (
+            <IonButton
+              className=" relative right-0 text-right"
+              size="small"
+              fill="outline"
+              onClick={removeFilter}
+            >
+              Remove Filters
+            </IonButton>
+          )
+        ) : (
+          <IonText className="p-2 text-lg" color={"primary"}>
+            Showing results for: {queryParams.get("q")}
+          </IonText>
+        )}
+        <IonCardContent>
+          <div className="search-control ">
+            <IonRadioGroup allowEmptySelection={false}>
+              <h2 className="search-control__label">Level of study</h2>
+              <br />
+
+              <IonText className="mr-3">Undergraduate</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "degree")
+                }}
+                value="undergraduate"
+              ></IonRadio>
+
+              <IonText className="mx-3">Graduate</IonText>
+              <IonRadio
+                onIonFocus={(e) => {
+                  handleStaticData(e, "degree")
+                }}
+                value="graduate"
+              ></IonRadio>
+            </IonRadioGroup>
+
+            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+              <h2 className="search-control__label">Level of tuitiion</h2>
+              <br />
+
+              <IonText className="mr-3">In State</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "tuition")
+                }}
+                value="InState"
+              ></IonRadio>
+
+              <IonText className="mx-3">Out State</IonText>
+              <IonRadio
+                onIonFocus={(e) => {
+                  handleStaticData(e, "tuition")
+                }}
+                value="OutOfState"
+              ></IonRadio>
+            </IonRadioGroup>
+
+            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+              <h2 className="search-control__label">
+                Are you planning to stay
+              </h2>
+              <br />
+
+              <IonText className="mr-3">Off Campus</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "accomodation")
+                }}
+                value="OffCampus"
+              ></IonRadio>
+
+              <IonText className="mx-3">On Campus</IonText>
+              <IonRadio
+                onIonFocus={(e) => {
+                  handleStaticData(e, "accomodation")
+                }}
+                value="OnCampus"
+              ></IonRadio>
+            </IonRadioGroup>
+
+            {showFamily && (
+              <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+                <h2 className="search-control__label">Staying </h2>
+                <br />
+
+                <IonText className="mr-3">With roommates</IonText>
+                <IonRadio
+                  className="text-sm"
+                  onIonFocus={(e) => {
+                    handleStaticData(e, "family")
+                  }}
+                  value="WithFamily"
+                ></IonRadio>
+
+                <IonText className="mx-3">Without roommates</IonText>
+                <IonRadio
+                  onIonFocus={(e) => {
+                    handleStaticData(e, "family")
+                  }}
+                  value="NotWithFamily"
+                ></IonRadio>
+              </IonRadioGroup>
+            )}
           </div>
 
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>2 Year</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Community</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Trade/career</IonLabel>
-          </div>
-          <div className="field search-field__indented">
-            <IonCheckbox slot="start" />
-            <IonLabel>Other</IonLabel>
-          </div>
-        </div>
-
-        <div className="search-control">
-          <h2 className="search-control__label">Majors</h2>
-          <div className="field search-field">
+          <div className="search-control ">
+            <h2 className="search-control__label">Test scores</h2>
+            <IonLabel>SAT:</IonLabel>
             <IonSelect
               interface="popover"
-              placeholder="Any"
-              className="select-field"
+              placeholder={sat}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "sat")}
             >
-              <IonSelectOption value="Any">Any</IonSelectOption>
-              <IonSelectOption value="Agricultural Science">
-                Agricultural Science
-              </IonSelectOption>
-              <IonSelectOption value="Art">Art</IonSelectOption>
-              <IonSelectOption value="Architecture">
-                Architecture
-              </IonSelectOption>
+              {SAT_SCORES.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.min} - {val.max}
+                </IonSelectOption>
+              ))}
             </IonSelect>
-          </div>
-        </div>
 
-        {/* <div className="search-control">
-          <h2 className="search-control__label">Online friendliness</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Fully online</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Large online program</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Some online degrees</IonLabel>
-          </div>
-        </div> */}
-
-        <div className="search-control">
-          <h2 className="search-control__label">Cost (net price)</h2>
-          <IonLabel>Select a value</IonLabel>
-          <IonRange pin={true} pinFormatter={(value) => `${value}%`}></IonRange>
-        </div>
-
-        {/* <div className="search-control">
-          <h2 className="search-control__label">Student body size</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Small</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Medium</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Large</IonLabel>
-          </div>
-        </div> */}
-
-        {/* <div className="search-control">
-          <h2 className="search-control__label">Specialty</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Liberal arts</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>All-women</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>All-men</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>HBCU</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Hispanic-serving institutions</IonLabel>
-          </div>
-        </div> */}
-
-        <div className="search-control">
-          <h2 className="search-control__label">Test scores</h2>
-          <IonLabel>SAT:</IonLabel>
-          <IonRange
-            pin={true}
-            min={400}
-            max={1600}
-            pinFormatter={(value) => {
-              setSat(value)
-              return value
-            }}
-          ></IonRange>
-          <IonLabel>ACT:</IonLabel>
-          <IonRange
-            pin={true}
-            min={1}
-            max={36}
-            pinFormatter={(value) => {
-              setAct(value)
-              return value
-            }}
-          ></IonRange>
-        </div>
-
-        <div className="search-control">
-          <h2 className="search-control__label">Admission process</h2>
-          <div className="field search-field">
+            <IonLabel className="mt-4">ACT:</IonLabel>
             <IonSelect
               interface="popover"
-              placeholder="Any"
-              className="select-field"
+              placeholder={act}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "act")}
             >
-              <IonSelectOption value="any">Any</IonSelectOption>
-              <IonSelectOption value="No Application Fee">
-                No Application Fee
-              </IonSelectOption>
-              <IonSelectOption value="Accepts Common App">
-                Accepts Common App
-              </IonSelectOption>
-              <IonSelectOption value="Test-Optional">
-                Test-Optional
-              </IonSelectOption>
-              <IonSelectOption value="Offers Early Decision">
-                Offers Early Decision
-              </IonSelectOption>
-              <IonSelectOption value="Offers Early Action">
-                Offers Early Action
-              </IonSelectOption>
-              <IonSelectOption value="Rolling Admission">
-                Rolling Admission
-              </IonSelectOption>
+              {ACT_SCORE.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.min} - {val.max}
+                </IonSelectOption>
+              ))}
             </IonSelect>
           </div>
-        </div>
 
-        <div className="search-control">
-          <h2 className="search-control__label">Selectivity</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Extremely selective</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Very selective</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Selective</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Average</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Not selective</IonLabel>
-          </div>
-        </div>
-
-        {/* <div className="search-control">
-          <h2 className="search-control__label">Religious affiliation</h2>
-          <div className="field search-field">
+          <div className="search-control">
+            <h2 className="search-control__label">Fees</h2>
+            <IonLabel className="mt-4">Application Fee</IonLabel>
             <IonSelect
               interface="popover"
-              placeholder="Any"
-              className="select-field"
+              placeholder={app}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "applicationFee")}
             >
-              <IonSelectOption value="any">Any</IonSelectOption>
-              <IonSelectOption value="catholic">Catholid</IonSelectOption>
-              <IonSelectOption value="christian">Christian</IonSelectOption>
-              <IonSelectOption value="jewish">Jewish</IonSelectOption>
+              {APPLICATION_FEES.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === 0
+                    ? "Free"
+                    : val.max === null
+                    ? "100$+"
+                    : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
             </IonSelect>
-          </div>
-        </div> */}
 
-        {/* <div className="search-control">
-          <h2 className="search-control__label">Good for</h2>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Veterans</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>International students</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Adult learners</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Low-income students</IonLabel>
-          </div>
-          <div className="field search-field">
-            <IonCheckbox slot="start" />
-            <IonLabel>Middle-class students</IonLabel>
-          </div>
-        </div> */}
-
-        {/* <div className="search-control">
-          <h2 className="search-control__label">
-            Starting salary after graduation
-          </h2>
-          <div className="field search-field">
+            <IonLabel className="mt-4">Tuition Fees</IonLabel>
             <IonSelect
               interface="popover"
-              placeholder="Any"
-              className="select-field"
+              placeholder={tuition}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "tuition")}
             >
-              <IonSelectOption value="any">Any</IonSelectOption>
-              <IonSelectOption value="$65,000+">$65,000+</IonSelectOption>
-              <IonSelectOption value="$55,000+">$55,000+</IonSelectOption>
-              <IonSelectOption value="$45,000+">$45,000+</IonSelectOption>
-              <IonSelectOption value="$35,000+">$35,000+</IonSelectOption>
-              <IonSelectOption value="$25,000+">$25,000+</IonSelectOption>
+              {COA.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === null
+                    ? val.min + "$+"
+                    : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+
+            <IonLabel className="mt-4">Cost of Attendence</IonLabel>
+            <IonSelect
+              interface="popover"
+              placeholder={coa}
+              className="border border-[gray]"
+              onIonChange={(e) => handleData(e, "coa")}
+            >
+              {COA.map((val, i) => (
+                <IonSelectOption key={i} value={val}>
+                  {val.max === null
+                    ? val.min + "$+"
+                    : val.min + "-" + val.max + "$"}
+                </IonSelectOption>
+              ))}
             </IonSelect>
           </div>
-        </div> */}
-      </IonCardContent>
-    </IonCard>
+
+          <div className="search-control">
+            <h2 className="search-control__label mb-4">Major</h2>
+
+            <IonInput
+              onIonChange={(e) => {
+                handleData(e, "major")
+              }}
+              placeholder="Select a major"
+              className="border border-[gray]"
+            ></IonInput>
+          </div>
+
+          <div className="search-control z-40">
+            <IonLabel className="mb-2">State</IonLabel>
+            <Select
+              options={statesArray}
+              isSearchable
+              ref={selectInputRef}
+              placeholder={"Select a state"}
+              onChange={(e) => handleData(e, "state")}
+              styles={customStyles}
+            />
+          </div>
+        </IonCardContent>
+      </IonCard>
+    </>
   )
 }
 
 export default index
+

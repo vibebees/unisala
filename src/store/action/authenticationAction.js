@@ -1,17 +1,5 @@
 import axios from "axios"
-import {
-  BEFORE_AUTH_TRACK_PATH,
-  CLEAR_AUTH_ERROR,
-  EMAIL_VERIFICATION_RESENT,
-  LOGOUT,
-  OAUTH,
-  PASSWORD_RESET_ASK_EMAIL,
-  PASSWORD_RESET_ASK_PASSWORD,
-  SHOW_ALERT,
-  USER_LOGIN,
-  USER_LOGIN_ERROR,
-  USER_REGISTRATION
-} from "./types"
+import { LOGIN, USER_LOGIN, USER_LOGIN_ERROR, USER_REGISTRATION } from "./types"
 import { universityServer, userServer } from "../../servers/endpoints"
 import {
   UNI_SERV_SIGNED_URL,
@@ -19,12 +7,12 @@ import {
 } from "../types/userActivity"
 
 export const loginUser = ({
-  userServer,
   input,
   setLoading,
   present,
   dismiss,
-  setauth
+  setauth,
+  history
 }) => {
   return (dispatch) => {
     axios
@@ -32,13 +20,12 @@ export const loginUser = ({
       .then((res) => {
         setLoading(false)
         if (res.data.success) {
+          localStorage.setItem("accessToken", res?.data?.accessToken)
           dispatch({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          window.innerWidth < 768
-            ? window.location.replace("/home")
-            : window.location.reload()
+          window.location.replace("/home")
         }
 
         if (!res.data.success) {
@@ -70,30 +57,24 @@ export const loginUser = ({
   }
 }
 
-export const registerUser = ({
-  userServer,
-  input,
-  setdatacheck,
-  setauth,
-  setsave,
-  present,
-  dismiss
-}) => {
-  return (dispatch) =>
+export const registerUser =
+  ({ input, setsave, setdatacheck, setauth, present, dismiss }) =>
+  (dispatch) => {
+    setsave(true) // Assuming this is meant to indicate loading
+
     axios
       .post(userServer + `/register`, input)
       .then((res) => {
-        setsave(false)
+        setsave(false) // Stop loading indication
         if (res.data.success === true) {
-          setdatacheck(false)
-          console.log(input)
+          setdatacheck(false) // Reset data check if successful
           setauth({ state: "SignUpVerification", email: input.email })
           dispatch({
             type: USER_REGISTRATION,
-            payload: res
+            payload: res.data // Usually you only need the data, not the entire response
           })
-        }
-        if (res.data.success === false) {
+        } else if (res.data.success === false) {
+          // Handle case where success is explicitly false
           present({
             duration: 3000,
             message: res.data.message,
@@ -103,17 +84,91 @@ export const registerUser = ({
           })
         }
       })
-      .catch(() => {
-        setsave(false)
-        present({
-          duration: 3000,
-          message: "Something went wrong: 500",
-          buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "primary",
-          mode: "ios"
-        })
-        setdatacheck(false)
+      .catch((err) => {
+        setsave(false) // Stop loading indication
+        setdatacheck(false) // Reset data check on error
+
+        // Check if the error response has the expected format
+        if (err.response && err.response.data.errors) {
+          // Example action dispatch on error
+
+          // Present the first error message to the user
+          const firstError = err.response.data.errors[0]
+          if (firstError) {
+            present({
+              duration: 3000,
+              message: firstError.msg,
+              buttons: [{ text: "X", handler: () => dismiss() }],
+              color: "danger",
+              mode: "ios"
+            })
+          }
+        } else {
+          // Handle unexpected errors
+          console.error("An unexpected error occurred", err)
+          // Optionally dispatch another action or show a different message
+        }
       })
+  }
+
+// USAGE
+// dispatch(registerUser(input, setsave, setdatacheck, setauth, present, dismiss));
+
+export const googleAuthAction = ({
+  present,
+  dismiss,
+  credential,
+  setPopoverOpen,
+  moveToHome
+}) => {
+  return (dispatch) =>
+    axios
+      .post(userServer + `/auth/google`, { token: credential })
+      .then((res) => {
+        if (res.data.success) {
+          localStorage.setItem("accessToken", res?.data?.accessToken)
+          if (res?.data.isFirstLogin) {
+            localStorage.setItem("newUser", "true")
+          }
+          dispatch({
+            type: USER_LOGIN,
+            payload: res.data
+          })
+          dispatch({
+            type: LOGIN,
+            payload: res.data
+          })
+
+          dismiss()
+          setPopoverOpen(false)
+          moveToHome()
+        }
+        if (!res.data.success) {
+          dispatch({
+            type: USER_LOGIN_ERROR,
+            payload: res.data
+          })
+          present({
+            duration: 3000,
+            message: res.data.message,
+            buttons: [{ text: "X", handler: () => dismiss() }],
+            color: "primary",
+            mode: "ios"
+          })
+        }
+      })
+}
+
+const getNewRefreshToken = (refreshToken) => {
+  return (dispatch) =>
+    axios.post(userServer + `/refreshToken`, { refreshToken }).then((res) => {
+      if (res.data.success) {
+        dispatch({
+          type: USER_LOGIN,
+          payload: res.data
+        })
+      }
+    })
 }
 
 // export const isLoggedIn = (user) => {

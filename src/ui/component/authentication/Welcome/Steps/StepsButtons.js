@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState } from "react"
-import { IonButton, useIonToast } from "@ionic/react"
+import { IonButton, useIonToast, IonContent, IonCard } from "@ionic/react"
 import clsx from "clsx"
 import { WelcomeData } from ".."
-import { useDispatch, Provider } from "react-redux"
+import { useDispatch, Provider, useSelector } from "react-redux"
 import { useMutation, useQuery } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 
-const StepsButtons = ({allProps}) => {
+const StepsButtons = ({ allProps }) => {
   const { welcomeFormdata } = useContext(WelcomeData),
     dispatch = useDispatch(),
     [present, dismiss] = useIonToast(),
-    accessToken = localStorage.getItem("accessToken"),
+    { accessToken } = useSelector((state) => state?.auth),
     decode = jwtDecode(accessToken),
     [users, setUsers] = useState({
       email: decode.email,
@@ -163,7 +163,7 @@ const StepsButtons = ({allProps}) => {
     setCurrentStep(currentStep + 1)
   }
   return (
-    <div className="w-full left-0 flex bottom-0 mb-16 px-6 absolute z-50 pad tp-16">
+    <IonCard className="w-full ion-no-margin ion-no-padding shadow-none  flex justify-between h-12">
       <IonButton
         fill="clear"
         className={clsx(
@@ -182,9 +182,8 @@ const StepsButtons = ({allProps}) => {
       >
         {currentStep === 5 ? "Submit" : "Next"}
       </IonButton>
-    </div>
+    </IonCard>
   )
-
 }
 
 export default StepsButtons

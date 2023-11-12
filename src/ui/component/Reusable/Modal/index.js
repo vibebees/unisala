@@ -6,11 +6,10 @@ import {
   IonHeader,
   IonContent,
   IonToolbar,
-  IonTitle,
-  IonPage
+  IonTitle
 } from "@ionic/react"
 
-const index = ({ ModalButton, ModalData = "No Data" }) => {
+const index = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
@@ -21,7 +20,7 @@ const index = ({ ModalButton, ModalData = "No Data" }) => {
         <IonModal isOpen={isOpen}>
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Modal</IonTitle>
+              <IonTitle>{header}</IonTitle>
               <IonButtons slot="end">
                 <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
               </IonButtons>

@@ -75,6 +75,7 @@ export const InfinteFeed = ({ allProps }) => {
 
   const transformedData = transformAndStylePostData(originalData)
 
+
 return (
     <div>
     {Posts?.map((item, index) => {
@@ -82,7 +83,6 @@ return (
        if (item.section === "elevatorInfo") {
         newData = transformAndStylePostData(item)
        }
-      console.log(item.name)
       if (item.type === "uni" && item.section === "elevatorInfo") {
         return (
 

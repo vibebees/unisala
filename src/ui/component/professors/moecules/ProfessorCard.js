@@ -1,7 +1,9 @@
 import React from "react"
 import { IonCol, IonCard, IonText, IonAvatar, IonIcon } from "@ionic/react"
-import { Avatar } from "../../../../component/Avatar"
+import { Avatar } from "../../Avatar"
 import { star, starOutline } from "ionicons/icons"
+import StarRating from "../atoms/StarRating"
+import ProfessorAvatar from "../atoms/ProfessorAvatar"
 
 const ProfessorCard = ({ data }) => {
   const emoji = {
@@ -16,43 +18,12 @@ const ProfessorCard = ({ data }) => {
     <>
       <IonCol size={"6"}>
         <IonCard>
-          <div className="professor-profile">
-            <div>
-              <IonAvatar
-                style={{
-                  width: "60px",
-                  height: "60px"
-                }}
-              >
-                <IonAvatar>
-                  <Avatar username={data.professorName} />
-                </IonAvatar>
-              </IonAvatar>
-            </div>
-          </div>
+          <ProfessorAvatar professorName={data.professorName} />
           <div className="professor-profile-details">
-            <IonText
-              className="flex"
-              color="dark"
-              style={{ whiteSpace: "nowrap" }}
-            >
-              <h3>{data.professorName}</h3>
-              <div>
-                {[1, 2, 3, 4, 5].map((index) => (
-                  <IonIcon
-                    key={index}
-                    style={{
-                      color: "#F8B64C",
-                      margin: "0 3px",
-                      padding: "0",
-                      fontWeight: "bold",
-                      fontSize: "25px"
-                    }}
-                    icon={index <= data.overallRating ? star : starOutline}
-                  />
-                ))}
-              </div>
-            </IonText>
+            <StarRating
+              overallRating={data.overallRating}
+              professorName={data.professorName}
+            />
             <IonText color="medium" className="flex">
               <p>{data.subject}</p>
               <div className="flex justify-content-center">

@@ -1,7 +1,8 @@
-import { IonCard, IonCardContent, IonButton, IonText } from "@ionic/react"
+import { IonCard, IonCardContent, IonButton, IonText, IonIcon } from "@ionic/react"
 import roadmap from "./../../../assets/roadmap.png"
+import {lockOpenOutline} from "ionicons/icons"
 
-function UnisalaIntro() {
+export const UnisalaLandingPage = ({allProps}) => {
   return (
     <div style={{margin: "27px 0px 0px 0px"}}>
       <IonCard className="mb-1">
@@ -21,6 +22,30 @@ function UnisalaIntro() {
         </IonCardContent>
       </IonCard>
 
+
+      <IonCard className="mb-1 !">
+        <IonCardContent className="p-0 relative flex-column text-center">
+        <img src={roadmap} alt="roadmap" />
+          <div className="absolute w-full top-6 -right-7">
+            <h1 className="pt-1 !font-bold !text-neutral-700 !text-3xl pb-05 black-text">
+              Unlock Your Access to Amazing Features!
+            </h1>
+            <br />
+            <div className="flex gap-4 w-full pr-28 justify-end ">
+              <button
+                className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
+                onClick={() => window.location.replace("/login")} // Replace '/login' with your login URL
+              >
+                <IonIcon icon={lockOpenOutline} />
+                &nbsp; Log In Now
+                <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
+              </button>
+            </div>
+          </div>
+        </IonCardContent>
+      </IonCard>
+
+
       <IonCard className="mb-1 !">
         <IonCardContent className="p-0 relative flex-column text-center">
           <img src={roadmap} alt="roadmap" />
@@ -32,9 +57,9 @@ function UnisalaIntro() {
             <div className="flex gap-4 w-full pr-28 justify-end ">
               <button
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-                onClick={() => window.open("https://unisala.com/roadmap", "_blank")}
+                onClick={() => window.open("/roadmap", "_blank")}
               >
-                starts here
+               VISA ROADMAP
                 <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
               </button>
 
@@ -153,5 +178,3 @@ function UnisalaIntro() {
     </div>
   )
 }
-
-export default UnisalaIntro

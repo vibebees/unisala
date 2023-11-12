@@ -30,8 +30,8 @@ export const SideNavigator = ({ allProps }) => {
     financialAidEmpty,
     financialAid,
     statisticsEmpty,
-    adminssionEmpty,
-    adminssion
+    admissionEmpty,
+    admission
   } = allProps
 
   return (
@@ -58,8 +58,8 @@ export const SideNavigator = ({ allProps }) => {
         financialAidEmpty,
         financialAid,
         statisticsEmpty,
-        adminssionEmpty,
-        adminssion
+        admissionEmpty,
+        admission
       }}
       admissionAnimate={AdmisionAnimate}
       grantAnimate={GrantAnimate}

@@ -1,14 +1,17 @@
 import { useState } from "react"
 import { useIonToast } from "@ionic/react"
 import axios from "axios"
-
+import { useDispatch } from "react-redux"
 import "../auth.css"
 import VerificationCode from "./VerificationCode"
 import { userServer } from "../../../../servers/endpoints"
+import { loginUser } from "store/action/authenticationAction"
+import { USER_LOGIN } from "store/action/types"
 
 const SignUpVerification = ({ auth, setauth }) => {
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   const [input, setInput] = useState({
     verificationCode: ""
@@ -44,9 +47,16 @@ const SignUpVerification = ({ auth, setauth }) => {
       .then((res) => {
         setLoading(false)
         if (res.data.success === true) {
-          localStorage.setItem("accessToken", res?.data.accessToken)
-          localStorage.setItem("refreshToken", res?.data.refreshToken)
+          localStorage.setItem("accessToken", res?.data?.accessToken)
+          dispatch({
+            type: USER_LOGIN,
+            payload: {
+              accessToken: res?.data?.accessToken,
+              refreshToken: res?.data?.refreshToken
+            }
+          })
           localStorage.setItem("newUser", "true")
+
           window.innerWidth < 768
             ? window.location.replace("/home")
             : window.location.reload()
