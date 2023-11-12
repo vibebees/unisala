@@ -639,19 +639,6 @@ function index() {
           <div className="search-control">
             <h2 className="search-control__label mb-4">Major</h2>
 
-            {/* <Select
-              options={majors}
-              isSearchable
-              ref={majorInputRef}
-              placeholder={"Select a Major"}
-              onInputChange={(e) => {
-                setMajorQuery(e)
-              }}
-              onChange={(e) => handleData(e, "major")}
-              styles={customStyles}
-              menuPlacement="top"
-            /> */}
-
             <AsyncSelect
               cacheOptions
               loadOptions={loadOptions}
