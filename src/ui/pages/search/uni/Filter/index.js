@@ -416,7 +416,6 @@ function index() {
         callback(options)
       } catch (error) {
         console.error("Error loading options:", error)
-        callback([])
       }
     }, 1000)
   }
