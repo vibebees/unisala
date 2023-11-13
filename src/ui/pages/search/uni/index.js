@@ -1,5 +1,16 @@
 import { useEffect } from "react"
-import { IonCol, IonRow } from "@ionic/react"
+import {
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonHeader,
+  IonMenu,
+  IonMenuButton,
+  IonPage,
+  IonRow,
+  IonTitle,
+  IonToolbar
+} from "@ionic/react"
 import Filter from "./Filter"
 import SearchResults from "./SearchResults"
 import { useDispatch } from "react-redux"
@@ -23,10 +34,32 @@ function index({ query }) {
   return (
     <>
       <IonRow>
-        {windowWidth > 768 && (
+        {windowWidth > 768 ? (
           <IonCol className="filter-col">
             <Filter />
           </IonCol>
+        ) : (
+          <>
+            <IonMenu className="" contentId="main-content">
+              <IonHeader>
+                <IonToolbar>
+                  <IonTitle>Filters</IonTitle>
+                </IonToolbar>
+              </IonHeader>
+              <IonCol className="max-h-max">
+                <Filter />
+              </IonCol>
+            </IonMenu>
+            <IonPage id="main-content">
+              <IonHeader>
+                <IonToolbar>
+                  <IonButtons slot="start">
+                    <IonMenuButton></IonMenuButton>
+                  </IonButtons>
+                </IonToolbar>
+              </IonHeader>
+            </IonPage>
+          </>
         )}
 
         <IonCol className="results-col">
