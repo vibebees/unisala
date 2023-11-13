@@ -315,7 +315,7 @@ export const GetProfessor = gql`
             scholarships {
               _id
               university_name
-              uni_id
+              unitId
               scholarship_name
               international_specific
               level
@@ -414,27 +414,43 @@ export const GetProfessor = gql`
   `,
   UniFilterResults = gql`
     query uniFilterResults(
+      $pageSize: Int
+      $page: Int
       $sat: RangeInput
       $act: RangeInput
+      $major: String
       $graduateApplicationFee: RangeInput
       $undergraduateApplicationFee: RangeInput
       $graduateInStateTuitionFee: RangeInput
       $graduateOutOfStateTuitionFee: RangeInput
       $undergraduateInStateTuitionFee: RangeInput
       $undergraduateOutOfStateTuitionFee: RangeInput
+      $undergraduateOnCampusInStateCostOfAttendance: RangeInput
+      $undergraduateOnCampusOutOfStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusWithFamilyInStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: RangeInput
+      $undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: RangeInput
       $state: String
     ) {
       searchUniversity(
-        pageSize: 10
-        page: 1
+        pageSize: $pageSize
+        page: $page
         sat: $sat
         act: $act
+        major: $major
         graduateApplicationFee: $graduateApplicationFee
         undergraduateApplicationFee: $undergraduateApplicationFee
         graduateInStateTuitionFee: $graduateInStateTuitionFee
         graduateOutOfStateTuitionFee: $graduateOutOfStateTuitionFee
         undergraduateInStateTuitionFee: $undergraduateInStateTuitionFee
         undergraduateOutOfStateTuitionFee: $undergraduateOutOfStateTuitionFee
+        undergraduateOnCampusInStateCostOfAttendance: $undergraduateOnCampusInStateCostOfAttendance
+        undergraduateOnCampusOutOfStateCostOfAttendance: $undergraduateOnCampusOutOfStateCostOfAttendance
+        undergraduateOffCampusWithFamilyInStateCostOfAttendance: $undergraduateOffCampusWithFamilyInStateCostOfAttendance
+        undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: $undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance
+        undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: $undergraduateOffCampusNotWithFamilyInStateCostOfAttendance
+        undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: $undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance
         state: $state
       ) {
         elevatorInfo {
