@@ -90,7 +90,7 @@ function CardImage({ allProps }) {
         </IonSlides>
       ) : (
         <div style={imageContainerStyle}>
-          {pictures.map((picture, index) => (
+          {pictures?.map((picture, index) => (
             <IonImg
               key={index}
               src={picture || images?.[0] || universityDefaultImage}
