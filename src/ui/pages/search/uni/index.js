@@ -1,11 +1,14 @@
 import { useEffect } from "react"
 import {
+  IonButton,
   IonButtons,
   IonCol,
   IonContent,
   IonHeader,
+  IonIcon,
   IonMenu,
   IonMenuButton,
+  IonMenuToggle,
   IonPage,
   IonRow,
   IonTitle,
@@ -19,6 +22,7 @@ import { searchGetSuccess } from "../../../../store/action/index"
 import { useQuery } from "@apollo/client"
 import { UniSearchDataList } from "../../../../graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "../../../../servers/types"
+import { closeOutline } from "ionicons/icons"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -44,6 +48,11 @@ function index({ query }) {
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
+                  <IonMenuToggle slot="end">
+                    <IonButton fill="clear">
+                      <IonIcon icon={closeOutline} />
+                    </IonButton>
+                  </IonMenuToggle>
                 </IonToolbar>
               </IonHeader>
               <IonCol className="max-h-max">
