@@ -17,7 +17,7 @@ import {
 } from "@ionic/react"
 import "./index.css"
 import { useEffect, useRef, useState } from "react"
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "../../../../../servers/types"
 import { UniFilterResults, UniSearchDataList } from "../../../../../graphql/uni"
 import { searchGetSuccess } from "../../../../../store/action"
@@ -28,7 +28,6 @@ import axios from "axios"
 import Select from "react-select"
 import AsyncSelect from "react-select/async"
 import { useLocation } from "react-router"
-import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 
 function index() {
   const SAT_SCORES = [
@@ -667,4 +666,3 @@ function index() {
 }
 
 export default index
-
