@@ -70,7 +70,6 @@ export const SearchTemplate = () => {
       params === "user" ||
       params === "post"
     ) {
-      console.log("settinhhhhhhhhh")
       setTab(params)
     } else {
       setTab("all")
@@ -80,7 +79,6 @@ export const SearchTemplate = () => {
   useEffect(() => {
     // history.push(`?q=${query}&tab=${tab}`)
 
-    console.log({ tab })
     searchParams.set("tab", tab)
     history.push({ search: searchParams.toString() })
   }, [tab])
