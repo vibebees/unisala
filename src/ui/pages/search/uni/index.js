@@ -46,7 +46,7 @@ function index({ query }) {
                   <IonTitle>Filters</IonTitle>
                 </IonToolbar>
               </IonHeader>
-              <IonCol className="max-h-max">
+              <IonCol className="max-h-max filter-col">
                 <Filter />
               </IonCol>
             </IonMenu>
@@ -62,7 +62,7 @@ function index({ query }) {
           </>
         )}
 
-        <IonCol className="results-col">
+        <IonCol className="results-col ">
           <SearchResults />
         </IonCol>
       </IonRow>
@@ -71,4 +71,3 @@ function index({ query }) {
 }
 
 export default index
-

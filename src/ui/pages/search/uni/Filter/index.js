@@ -265,11 +265,12 @@ function index() {
 
     if (identify === "coa") {
       console.log({ location })
-      if (!degree && !accomodation && !locationType) {
+      console.log(!degree || !accomodation || !locationType)
+      if (!degree || !accomodation || !locationType) {
         present({
           duration: 3000,
           message:
-            "Please select if you are staying with roomates or without roommates.",
+            "Please select the level of your degree, preffered location type and mode of accomodation.",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
@@ -279,7 +280,7 @@ function index() {
         present({
           duration: 3000,
           message:
-            "Please select the level of your degree, preffered location type and mode of accomodation.",
+            "Please select if you are staying with roomates or without roommates.",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
