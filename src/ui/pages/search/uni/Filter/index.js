@@ -17,7 +17,7 @@ import {
 } from "@ionic/react"
 import "./index.css"
 import { useEffect, useRef, useState } from "react"
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "../../../../../servers/types"
 import { UniFilterResults, UniSearchDataList } from "../../../../../graphql/uni"
 import { searchGetSuccess } from "../../../../../store/action"
@@ -28,7 +28,6 @@ import axios from "axios"
 import Select from "react-select"
 import AsyncSelect from "react-select/async"
 import { useLocation } from "react-router"
-import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 
 function index() {
   const SAT_SCORES = [
@@ -214,12 +213,14 @@ function index() {
   const [getScholarship, { data, loading, refetch }] = useLazyQuery(
     UniFilterResults,
     {
-      context: { server: UNIVERSITY_SERVICE_GQL }
+      context: { server: UNIVERSITY_SERVICE_GQL },
+      fetchPolicy: "no-cache"
     }
   )
   const dispatch = useDispatch()
 
   const handleData = (e, identify) => {
+    console.log("entered hande data")
     let value
     if (identify === "state" || identify === "major") {
       value = e?.label
@@ -238,6 +239,7 @@ function index() {
     if (identify === "applicationFee") {
       // check if it is for grad or undergrad
       if (degree) {
+        console.log({ degree })
         identify = `${degree}ApplicationFee`
         let st
 
@@ -257,14 +259,16 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
+        return false
       }
 
       console.log({ value })
     }
 
     if (identify === "coa") {
-      if (!degree && !accomodation && !locationType) {
+      console.log({ location })
+      console.log(!degree || !accomodation || !locationType)
+      if (!degree || !accomodation || !locationType) {
         present({
           duration: 3000,
           message:
@@ -273,7 +277,17 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
+        return false
+      } else if (accomodation === "OffCampus" && !family) {
+        present({
+          duration: 3000,
+          message:
+            "Please select if you are staying with roomates or without roommates.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+        return false
       } else {
         if (value.max === null) {
           setCoa("35000$+")
@@ -309,11 +323,15 @@ function index() {
         return
       }
     }
+    console.log("updating query state")
     setQueryData((prev) => ({
       ...prev,
       [identify]: value
     }))
+    console.log({ queryData })
+    console.log("fetching from db")
     getScholarship({ variables: { ...queryData, [identify]: value } })
+    console.log("data hereeeee")
     setIsFiltered(true)
   }
 
@@ -667,4 +685,3 @@ function index() {
 }
 
 export default index
-
