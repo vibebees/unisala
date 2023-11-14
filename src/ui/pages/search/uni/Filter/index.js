@@ -237,6 +237,7 @@ function index() {
     if (identify === "applicationFee") {
       // check if it is for grad or undergrad
       if (degree) {
+        console.log({ degree })
         identify = `${degree}ApplicationFee`
         let st
 
@@ -256,14 +257,25 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
+        return false
       }
 
       console.log({ value })
     }
 
     if (identify === "coa") {
+      console.log({ location })
       if (!degree && !accomodation && !locationType) {
+        present({
+          duration: 3000,
+          message:
+            "Please select if you are staying with roomates or without roommates.",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+        return false
+      } else if (accomodation === "OffCampus" && !family) {
         present({
           duration: 3000,
           message:
@@ -272,7 +284,7 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
+        return false
       } else {
         if (value.max === null) {
           setCoa("35000$+")
