@@ -29,7 +29,7 @@ function index() {
     <IonCard style={{ textAlign: "center" }}>
       <img alt="unisala: no results found" src={noResultsFound} />
       <IonCardHeader>
-        <IonCardTitle>Sorrsy! No result found &#9785;</IonCardTitle>
+        <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>
         <IonCardSubtitle>
           There were not any saved views, recent queries, or source matching
           your search.
@@ -40,4 +40,3 @@ function index() {
 }
 
 export default index
-
