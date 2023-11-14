@@ -21,7 +21,7 @@ import UserCard from "../../component/userCard"
 import CourseCard from "../../component/courseCard"
 import UserSearchResult from "./user"
 import UniSearchResult from "./uni"
-import {SearchBar} from "ui/component/searchBox"
+import { SearchBar } from "ui/component/searchBox"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")
@@ -31,8 +31,8 @@ export const SearchTemplate = () => {
   useDocTitle("Search ᛫ " + query)
 
   const history = useHistory()
-  const {data: unidata} = useQuery(UniSearchDataList, {
-    variables: {name: query},
+  const { data: unidata } = useQuery(UniSearchDataList, {
+    variables: { name: query },
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
   const { data: searchUser } = useQuery(userSearch(query), {
@@ -62,6 +62,7 @@ export const SearchTemplate = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search).get("tab")
+
     // check if gotten params is actually valid or not
     if (
       params === "all" ||
@@ -69,6 +70,7 @@ export const SearchTemplate = () => {
       params === "user" ||
       params === "post"
     ) {
+      console.log("settinhhhhhhhhh")
       setTab(params)
     } else {
       setTab("all")
@@ -76,7 +78,11 @@ export const SearchTemplate = () => {
   }, [])
 
   useEffect(() => {
-    history.push(`?q=${query}&tab=${tab}`)
+    // history.push(`?q=${query}&tab=${tab}`)
+
+    console.log({ tab })
+    searchParams.set("tab", tab)
+    history.push({ search: searchParams.toString() })
   }, [tab])
 
   return (
@@ -175,10 +181,7 @@ export const SearchTemplate = () => {
                     unidata?.searchSchool.length ? (
                       unidata?.searchSchool.map((data, index) => {
                         return (
-                          <Link
-                            to={`/university/${data?.name}`}
-                            key={index}
-                          >
+                          <Link to={`/university/${data?.name}`} key={index}>
                             <CourseCard allProps={data} />
                           </Link>
                         )
