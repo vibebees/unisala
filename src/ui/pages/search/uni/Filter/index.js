@@ -213,12 +213,14 @@ function index() {
   const [getScholarship, { data, loading, refetch }] = useLazyQuery(
     UniFilterResults,
     {
-      context: { server: UNIVERSITY_SERVICE_GQL }
+      context: { server: UNIVERSITY_SERVICE_GQL },
+      fetchPolicy: "no-cache"
     }
   )
   const dispatch = useDispatch()
 
   const handleData = (e, identify) => {
+    console.log("entered hande data")
     let value
     if (identify === "state" || identify === "major") {
       value = e?.label
@@ -321,11 +323,15 @@ function index() {
         return
       }
     }
+    console.log("updating query state")
     setQueryData((prev) => ({
       ...prev,
       [identify]: value
     }))
+    console.log({ queryData })
+    console.log("fetching from db")
     getScholarship({ variables: { ...queryData, [identify]: value } })
+    console.log("data hereeeee")
     setIsFiltered(true)
   }
 
