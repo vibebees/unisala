@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import {
+  IonButton,
   IonButtons,
   IonCol,
   IonContent,
   IonHeader,
+  IonIcon,
   IonMenu,
   IonMenuButton,
+  IonMenuToggle,
   IonPage,
   IonRow,
   IonTitle,
@@ -22,6 +25,7 @@ import { UNIVERSITY_SERVICE_GQL } from "../../../../servers/types"
 import { LoadingScreen } from "ui/component/courseCard"
 import { ThreadSkeleton } from "ui/component/skeleton/threadSkeleton"
 import { useHistory, useLocation } from "react-router"
+import { closeOutline } from "ionicons/icons"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -48,11 +52,17 @@ function index({ query }) {
             <Filter setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
+          // this is for smaller screens
           <>
             <IonMenu className="" contentId="main-content">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
+                  <IonMenuToggle slot="end">
+                    <IonButton fill="clear">
+                      <IonIcon icon={closeOutline} />
+                    </IonButton>
+                  </IonMenuToggle>
                 </IonToolbar>
               </IonHeader>
               <IonCol className="max-h-max filter-col">
