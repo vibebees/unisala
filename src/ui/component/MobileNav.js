@@ -13,7 +13,8 @@ import {
   chatbubble,
   notifications,
   addCircleOutline,
-  personCircle
+  personCircle,
+  navigateCircle
 } from "ionicons/icons"
 import { PageRoute } from "./PageRoute"
 import { useSelector } from "react-redux"
@@ -95,6 +96,25 @@ export default function MobileNav({ setCreateAPostPopUp, allProps }) {
           </IonTabButton>
 
           <IonTabButton
+            tab="explore"
+            href="search?tab=uni"
+            onClick={() => {
+              setActiveTab("messages")
+            }}
+            style={{
+              color: activeTab === "explore" ? "#3880ff" : "#999999"
+            }}
+          >
+            <IonIcon icon={navigateCircle} />
+            <IonLabel
+              style={{
+                fontSize: "10px"
+              }}
+            >
+              Explore Universities
+            </IonLabel>
+          </IonTabButton>
+          <IonTabButton
             tab="messages"
             href="/messages"
             onClick={() => {
@@ -115,7 +135,7 @@ export default function MobileNav({ setCreateAPostPopUp, allProps }) {
             <IonBadge>3</IonBadge>
           </IonTabButton>
 
-          <IonTabButton
+          {/* <IonTabButton
             tab="notifications"
             href="/notifications"
             onClick={() => {
@@ -134,7 +154,7 @@ export default function MobileNav({ setCreateAPostPopUp, allProps }) {
               Notifications
             </IonLabel>
             <IonBadge>6</IonBadge>
-          </IonTabButton>
+          </IonTabButton> */}
         </IonTabBar>
       ) : (
         <IonTabBar slot="bottom">
