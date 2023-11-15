@@ -33,15 +33,13 @@ function index({ query }) {
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const [isLoading, setIsLoading] = useState(false)
-  const [getUni, { data, loading }] = useLazyQuery(UniSearchDataList, {
-    context: { server: UNIVERSITY_SERVICE_GQL }
+  const { data, loading } = useQuery(UniSearchDataList, {
+    context: { server: UNIVERSITY_SERVICE_GQL },
+    variables: { name: query },
+    skip: searchParams.size > 2
   })
   useEffect(() => {
-    // if there are less than 2 queryParams (which are q and tab) that means there is not filter related query
-    if (searchParams.size < 2) {
-      getUni({ variables: { name: query } })
-      dispatch(searchGetSuccess(data?.searchSchool))
-    }
+    dispatch(searchGetSuccess(data?.searchSchool))
   }, [data])
 
   return (
