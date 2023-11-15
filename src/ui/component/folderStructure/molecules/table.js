@@ -28,7 +28,7 @@ export const Table = ({awards}) => {
                 </tr>
               </thead>
               <tbody>
-                {awards.map((award, index) => (
+                {awards?.map((award, index) => (
                   <tr key={index}>
                     <td className="border text-center py-2 text-sm px-2">
                       {award.award_name}

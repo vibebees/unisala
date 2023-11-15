@@ -894,7 +894,7 @@ export const AddComment = gql`
         }
         scholarships {
           university_name
-          uni_id
+          unitId
           scholarship_name
           international_specific
           level
@@ -948,6 +948,14 @@ export const AddComment = gql`
             votes
           }
         }
+
+        unitId
+        applied_level
+        status
+        attempt
+        university
+        conversation
+        major
       }
     }
   `,
@@ -963,7 +971,7 @@ export const AddComment = gql`
           message
         }
         interviewExperience {
-          uni_id
+          unitId
           applied_level
           status
           attempt

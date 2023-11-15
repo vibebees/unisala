@@ -315,7 +315,7 @@ export const GetProfessor = gql`
             scholarships {
               _id
               university_name
-              uni_id
+              unitId
               scholarship_name
               international_specific
               level
@@ -414,8 +414,11 @@ export const GetProfessor = gql`
   `,
   UniFilterResults = gql`
     query uniFilterResults(
+      $pageSize: Int
+      $page: Int
       $sat: RangeInput
       $act: RangeInput
+      $major: String
       $graduateApplicationFee: RangeInput
       $undergraduateApplicationFee: RangeInput
       $graduateInStateTuitionFee: RangeInput
@@ -431,10 +434,11 @@ export const GetProfessor = gql`
       $state: String
     ) {
       searchUniversity(
-        pageSize: 10
-        page: 1
+        pageSize: $pageSize
+        page: $page
         sat: $sat
         act: $act
+        major: $major
         graduateApplicationFee: $graduateApplicationFee
         undergraduateApplicationFee: $undergraduateApplicationFee
         graduateInStateTuitionFee: $graduateInStateTuitionFee

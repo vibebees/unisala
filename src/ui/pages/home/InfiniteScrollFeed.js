@@ -9,6 +9,7 @@ import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { FeedSkeleton } from "../../component/skeleton/feedSkeleton"
 import {UniFeed} from "../../component/uniFeed"
+import { InterviewExperienceCard } from "../university/sideDetails/Interview"
 
 export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
@@ -94,6 +95,25 @@ return (
           >
             <Thread thread={transformAndStylePostData(item)} id={item._id} allProps={allProps} key={item._id + index} />
           </div>
+          {/* <Link key={item._id} to={`/university/${item?.elevatorInfo?.name}`}>
+                  <UniFeed key={index} data={item} />
+
+          </Link> */}
+          </>
+        )
+      }
+
+      if (item.type === "interview") {
+        return (
+
+          <>
+
+            <div
+            style={{width: "100%", marginTop: "10px", borderTop: "1px solid #e0e0e0"}}
+            key={item._id + index}
+          >
+            <InterviewExperienceCard data = {item} />
+            </div>
           {/* <Link key={item._id} to={`/university/${item?.elevatorInfo?.name}`}>
                   <UniFeed key={index} data={item} />
 
