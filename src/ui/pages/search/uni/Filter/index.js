@@ -80,12 +80,13 @@ function index({ setIsLoading }) {
     }
 
     // only make query if user  comes with filter related url
-
-    if (Object.entries(queryObject).length > 0) {
+    console.log({ queryObject })
+    if (Object.keys(queryObject).length > 0) {
       setIsFiltered(true)
       setChips(Object.keys(queryObject))
+      console.log(chips)
       setQueryData((prev) => ({ ...prev, ...queryObject }))
-      console.log({ queryData, queryObject })
+
       getScholarship({
         variables: {
           ...queryData,
@@ -132,7 +133,6 @@ function index({ setIsLoading }) {
 
   // query when individual chips get changed
   useEffect(() => {
-    console.log({ chips })
     //  if there are more chips left it means there is still applied filters
     const fetch = async () => {
       console.log("fetcjingggggggggg")
@@ -140,12 +140,14 @@ function index({ setIsLoading }) {
         const { data } = await getScholarship({
           variables: queryData
         })
+        setIsFiltered(true)
         console.log(data, "hehhhehhehehehheh")
       } else {
         const searchValue = searchParam.get("q")
         const { data } = await GetUni({
           variables: { name: searchValue || "" }
         })
+        console.log("hihihihihihi")
         dispatch(searchGetSuccess(data?.searchSchool))
         setIsFiltered(false)
       }
