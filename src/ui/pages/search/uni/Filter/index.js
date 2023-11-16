@@ -2,13 +2,9 @@ import {
   IonButton,
   IonCard,
   IonCardContent,
-  IonCheckbox,
-  IonContent,
-  IonInput,
   IonLabel,
   IonRadio,
   IonRadioGroup,
-  IonRange,
   IonSelect,
   IonSelectOption,
   IonSpinner,
@@ -27,170 +23,18 @@ import axios from "axios"
 
 import Select from "react-select"
 import AsyncSelect from "react-select/async"
-import { useLocation } from "react-router"
+import { useHistory, useLocation } from "react-router-dom"
+import Chip from "./Chip"
+import {
+  ACT_SCORE,
+  APPLICATION_FEES,
+  COA,
+  INITIAL_QUERY_DATA,
+  SAT_SCORES,
+  TUITION
+} from "./constants"
 
-function index() {
-  const SAT_SCORES = [
-    {
-      min: 400,
-      max: 600
-    },
-    {
-      min: 600,
-      max: 800
-    },
-    {
-      min: 800,
-      max: 1000
-    },
-    {
-      min: 1000,
-      max: 1200
-    },
-    {
-      min: 1200,
-      max: 1400
-    },
-    {
-      min: 1400,
-      max: 1600
-    }
-  ]
-
-  const ACT_SCORE = [
-    {
-      min: 8,
-      max: 12
-    },
-    {
-      min: 12,
-      max: 16
-    },
-    {
-      min: 16,
-      max: 20
-    },
-    {
-      min: 24,
-      max: 28
-    },
-    {
-      min: 28,
-      max: 32
-    },
-    {
-      min: 32,
-      max: 36
-    }
-  ]
-
-  const APPLICATION_FEES = [
-    {
-      min: 0,
-      max: 0
-    },
-    {
-      min: 0,
-      max: 20
-    },
-    {
-      min: 20,
-      max: 40
-    },
-    {
-      min: 40,
-      max: 60
-    },
-    {
-      min: 60,
-      max: 80
-    },
-    {
-      min: 80,
-      max: 100
-    },
-    {
-      min: 100,
-      max: null
-    }
-  ]
-
-  const INITIAL_QUERY_DATA = {
-    sat: null,
-    act: null,
-    page: 1,
-    pageSize: 10,
-    state: null,
-    major: null,
-    graduateApplicationFee: null,
-    undergraduateApplicationFee: null,
-    undergraduateInStateTuitionFee: null,
-    undergraduateOutOfStateTuitionFee: null,
-    graduateInStateTuitionFee: null,
-    graduateOutOfStateTuitionFee: null,
-    undergraduateOnCampusInStateCostOfAttendance: null,
-    undergraduateOnCampusOutOfStateCostOfAttendance: null,
-    undergraduateOffCampusWithFamilyInStateCostOfAttendance: null,
-    undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: null,
-    undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
-    undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
-  }
-  const TUITION = [
-    {
-      min: 0,
-      max: 5000
-    },
-    {
-      min: 5000,
-      max: 10000
-    },
-    {
-      min: 10000,
-      max: 15000
-    },
-    {
-      min: 15000,
-      max: 20000
-    },
-    {
-      min: 20000,
-      max: null
-    }
-  ]
-  const COA = [
-    {
-      min: 0,
-      max: 5000
-    },
-    {
-      min: 5000,
-      max: 10000
-    },
-    {
-      min: 10000,
-      max: 15000
-    },
-    {
-      min: 15000,
-      max: 20000
-    },
-    {
-      min: 20000,
-      max: 25000
-    },
-    {
-      min: 25000,
-      max: 30000
-    },
-    {
-      min: 30000,
-      max: 35000
-    },
-    {
-      min: 35000,
-      max: null
-    }
-  ]
+function index({ setIsLoading }) {
   const [present, dismiss] = useIonToast()
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
@@ -206,10 +50,14 @@ function index() {
   const majorInputRef = useRef()
   const [isFiltered, setIsFiltered] = useState(false)
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
+
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
-  const [majors, setMajors] = useState(null)
-  // const [majorQuery, setMajorQuery] = useState(null)
+  const [chips, setChips] = useState([])
+  const locate = useLocation()
+  const searchParam = new URLSearchParams(locate.search)
+  const history = useHistory()
+  const dispatch = useDispatch()
+
   const [getScholarship, { data, loading, refetch }] = useLazyQuery(
     UniFilterResults,
     {
@@ -217,7 +65,93 @@ function index() {
       fetchPolicy: "no-cache"
     }
   )
-  const dispatch = useDispatch()
+
+  // to show skeleton text when filter related data are loading
+  useEffect(() => {
+    setIsLoading(loading)
+  }, [loading])
+
+  useEffect(() => {
+    const queryObject = {}
+    for (const [key, value] of searchParam) {
+      if (key !== "tab" && key !== "q") {
+        queryObject[key] = JSON.parse(value)
+      }
+    }
+
+    // only make query if user  comes with filter related url
+
+    if (Object.entries(queryObject).length > 0) {
+      setIsFiltered(true)
+      setChips(Object.keys(queryObject))
+      setQueryData((prev) => ({ ...prev, ...queryObject }))
+      console.log({ queryData, queryObject })
+      getScholarship({
+        variables: {
+          ...queryData,
+          ...queryObject
+        }
+      })
+    }
+  }, [])
+
+  //  this function is to add query params when new filter is added
+  const setQueryParams = (key, value) => {
+    searchParam.set(key, JSON.stringify(value))
+    console.log({ value })
+    history.push({ search: searchParam.toString() })
+  }
+
+  const removeAllQueryParams = () => {
+    const deleteKeys = []
+    searchParam.forEach((value, key) => {
+      if (key !== "tab" && key !== "q") {
+        deleteKeys.push(key)
+      }
+    })
+    console.log(deleteKeys)
+    deleteKeys.forEach((key) => {
+      console.log(key)
+      searchParam.delete(key)
+    })
+    history.push({ search: searchParam.toString() })
+  }
+
+  const removeOneQueryParam = (key) => {
+    searchParam.delete(key)
+    history.push({ search: searchParam.toString() })
+  }
+
+  // this function is trigger when cross icon on a chip is pressed
+  const removeSpeceficFilter = (chip) => {
+    removeOneQueryParam(chip)
+    const filteredChips = chips.filter((c) => c !== chip)
+    setChips(filteredChips)
+    setQueryData((prev) => ({ ...prev, [chip]: null }))
+  }
+
+  // query when individual chips get changed
+  useEffect(() => {
+    console.log({ chips })
+    //  if there are more chips left it means there is still applied filters
+    const fetch = async () => {
+      console.log("fetcjingggggggggg")
+      if (chips.length > 0) {
+        const { data } = await getScholarship({
+          variables: queryData
+        })
+        console.log(data, "hehhhehhehehehheh")
+      } else {
+        const searchValue = searchParam.get("q")
+        const { data } = await GetUni({
+          variables: { name: searchValue || "" }
+        })
+        dispatch(searchGetSuccess(data?.searchSchool))
+        setIsFiltered(false)
+      }
+    }
+    fetch()
+  }, [chips])
 
   const handleData = (e, identify) => {
     console.log("entered hande data")
@@ -328,11 +262,16 @@ function index() {
       ...prev,
       [identify]: value
     }))
-    console.log({ queryData })
-    console.log("fetching from db")
     getScholarship({ variables: { ...queryData, [identify]: value } })
-    console.log("data hereeeee")
     setIsFiltered(true)
+    setChips((prev) => {
+      if (!prev.includes(identify)) {
+        return [...prev, identify]
+      } else {
+        return [...prev]
+      }
+    })
+    setQueryParams(identify, value)
   }
 
   useEffect(() => {
@@ -372,6 +311,7 @@ function index() {
   })
 
   const removeFilter = async () => {
+    removeAllQueryParams()
     setQueryData(INITIAL_QUERY_DATA)
     setSat("Sat Score")
     setAct("Act Score")
@@ -380,9 +320,9 @@ function index() {
     setTuition("Tuition Fees")
     stateInputRef.current.clearValue()
     majorInputRef.current.clearValue()
-    const searchValue = queryParams.get("q")
+    const searchValue = searchParam.get("q")
     //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
-    const { data } = await GetUni({ variables: { name: searchValue } })
+    const { data } = await GetUni({ variables: { name: searchValue || "" } })
     dispatch(searchGetSuccess(data?.searchSchool))
     setIsFiltered(false)
   }
@@ -440,24 +380,31 @@ function index() {
   return (
     <>
       <IonCard className="filter-card-wrapper relative">
-        {isFiltered ? (
-          loading ? (
+        {isFiltered &&
+          (loading ? (
             <IonSpinner name="crescent"></IonSpinner>
           ) : (
-            <IonButton
-              className=" relative right-0 text-right"
-              size="small"
-              fill="outline"
-              onClick={removeFilter}
-            >
-              Remove Filters
-            </IonButton>
-          )
-        ) : (
-          <IonText className="p-2 text-lg" color={"primary"}>
-            Showing results for: {queryParams.get("q")}
-          </IonText>
-        )}
+            <>
+              <IonButton
+                className=" relative right-0 text-right"
+                size="small"
+                fill="outline"
+                onClick={removeFilter}
+              >
+                Remove Filters
+              </IonButton>
+
+              <div>
+                {chips.map((chip, key) => (
+                  <Chip
+                    key={key}
+                    label={chip}
+                    removeSpeceficFilter={removeSpeceficFilter}
+                  />
+                ))}
+              </div>
+            </>
+          ))}
         <IonCardContent>
           <div className="search-control ">
             <IonRadioGroup allowEmptySelection={false}>

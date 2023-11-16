@@ -190,42 +190,66 @@ function Grade({ allProps }) {
   )
 }
 
-function loadingScreen() {
+export function LoadingScreen() {
   return (
-    <IonItem>
-      <IonThumbnail slot="start">
-        <IonSkeletonText animated={true}></IonSkeletonText>
-      </IonThumbnail>
-      <IonLabel>
-        <h3>
-          <IonSkeletonText
-            animated={true}
-            style={{ width: "80%" }}
-          ></IonSkeletonText>
-        </h3>
-        <p>
-          <IonSkeletonText
-            animated={true}
-            style={{ width: "60%" }}
-          ></IonSkeletonText>
-        </p>
-        <p>
-          <IonSkeletonText
-            animated={true}
-            style={{ width: "30%" }}
-          ></IonSkeletonText>
-        </p>
-      </IonLabel>
-    </IonItem>
+    <IonCard>
+      <IonGrid>
+        <IonRow>
+          <IonCol style={{ margin: "auto" }} size={"auto"}>
+            <IonSkeletonText
+              animated={true}
+              style={{ width: "80%" }}
+            ></IonSkeletonText>
+          </IonCol>
+          <IonCol>
+            <IonRow>
+              <IonCol>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ width: "80%" }}
+                ></IonSkeletonText>
+                <IonText color="dark">
+                  <IonSkeletonText
+                    animated={true}
+                    style={{ width: "80%" }}
+                  ></IonSkeletonText>
+                </IonText>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ width: "80%" }}
+                ></IonSkeletonText>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ width: "80%" }}
+                ></IonSkeletonText>
+                <IonSkeletonText
+                  animated={true}
+                  style={{ width: "80%" }}
+                ></IonSkeletonText>
+                {/* {tags?.map((tag, index) => <LikeATag colorTitle="blue" colorValue="yellow" title="Tags:" value={tag} key={index} />)} */}
+                <IonSkeletonText
+                  animated={true}
+                  style={{ width: "80%" }}
+                ></IonSkeletonText>
+
+                {/* <IonRow>
+                <IonCol>
+                  <h4>Mission Statement:</h4>
+                  <p>{missionStatement}</p>
+                </IonCol>
+              </IonRow> */}
+                {/* Other columns go here */}
+              </IonCol>
+            </IonRow>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonCard>
   )
 }
 
 function CourseCard({ allProps }) {
-  const { name, ownType, tags, loading = false, schoolDataLoading } = allProps
-
-  if (loading || schoolDataLoading || name === undefined) {
-    return loadingScreen()
-  }
+  const { name, ownType, tags, loading, schoolDataLoading } = allProps
 
   return (
     <IonCard>
@@ -282,4 +306,3 @@ function CourseCard({ allProps }) {
 }
 
 export default CourseCard
-
