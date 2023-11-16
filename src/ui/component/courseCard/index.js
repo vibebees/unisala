@@ -250,7 +250,6 @@ export function LoadingScreen() {
 
 function CourseCard({ allProps }) {
   const { name, ownType, tags, loading, schoolDataLoading } = allProps
-  console.log(loading)
 
   return (
     <IonCard>

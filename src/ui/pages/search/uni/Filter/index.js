@@ -50,8 +50,9 @@ function index({ setIsLoading }) {
   const majorInputRef = useRef()
   const [isFiltered, setIsFiltered] = useState(false)
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
+
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
+  const [chips, setChips] = useState([])
   const locate = useLocation()
   const searchParam = new URLSearchParams(locate.search)
   const history = useHistory()
@@ -65,6 +66,7 @@ function index({ setIsLoading }) {
     }
   )
 
+  // to show skeleton text when filter related data are loading
   useEffect(() => {
     setIsLoading(loading)
   }, [loading])
@@ -80,6 +82,8 @@ function index({ setIsLoading }) {
     // only make query if user  comes with filter related url
 
     if (Object.entries(queryObject).length > 0) {
+      setIsFiltered(true)
+      setChips(Object.keys(queryObject))
       setQueryData((prev) => ({ ...prev, ...queryObject }))
       console.log({ queryData, queryObject })
       getScholarship({
@@ -91,11 +95,63 @@ function index({ setIsLoading }) {
     }
   }, [])
 
+  //  this function is to add query params when new filter is added
   const setQueryParams = (key, value) => {
     searchParam.set(key, JSON.stringify(value))
     console.log({ value })
     history.push({ search: searchParam.toString() })
   }
+
+  const removeAllQueryParams = () => {
+    const deleteKeys = []
+    searchParam.forEach((value, key) => {
+      if (key !== "tab" && key !== "q") {
+        deleteKeys.push(key)
+      }
+    })
+    console.log(deleteKeys)
+    deleteKeys.forEach((key) => {
+      console.log(key)
+      searchParam.delete(key)
+    })
+    history.push({ search: searchParam.toString() })
+  }
+
+  const removeOneQueryParam = (key) => {
+    searchParam.delete(key)
+    history.push({ search: searchParam.toString() })
+  }
+
+  // this function is trigger when cross icon on a chip is pressed
+  const removeSpeceficFilter = (chip) => {
+    removeOneQueryParam(chip)
+    const filteredChips = chips.filter((c) => c !== chip)
+    setChips(filteredChips)
+    setQueryData((prev) => ({ ...prev, [chip]: null }))
+  }
+
+  // query when individual chips get changed
+  useEffect(() => {
+    console.log({ chips })
+    //  if there are more chips left it means there is still applied filters
+    const fetch = async () => {
+      console.log("fetcjingggggggggg")
+      if (chips.length > 0) {
+        const { data } = await getScholarship({
+          variables: queryData
+        })
+        console.log(data, "hehhhehhehehehheh")
+      } else {
+        const searchValue = searchParam.get("q")
+        const { data } = await GetUni({
+          variables: { name: searchValue || "" }
+        })
+        dispatch(searchGetSuccess(data?.searchSchool))
+        setIsFiltered(false)
+      }
+    }
+    fetch()
+  }, [chips])
 
   const handleData = (e, identify) => {
     console.log("entered hande data")
@@ -208,6 +264,13 @@ function index({ setIsLoading }) {
     }))
     getScholarship({ variables: { ...queryData, [identify]: value } })
     setIsFiltered(true)
+    setChips((prev) => {
+      if (!prev.includes(identify)) {
+        return [...prev, identify]
+      } else {
+        return [...prev]
+      }
+    })
     setQueryParams(identify, value)
   }
 
@@ -248,6 +311,7 @@ function index({ setIsLoading }) {
   })
 
   const removeFilter = async () => {
+    removeAllQueryParams()
     setQueryData(INITIAL_QUERY_DATA)
     setSat("Sat Score")
     setAct("Act Score")
@@ -256,9 +320,9 @@ function index({ setIsLoading }) {
     setTuition("Tuition Fees")
     stateInputRef.current.clearValue()
     majorInputRef.current.clearValue()
-    const searchValue = queryParams.get("q")
+    const searchValue = searchParam.get("q")
     //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
-    const { data } = await GetUni({ variables: { name: searchValue } })
+    const { data } = await GetUni({ variables: { name: searchValue || "" } })
     dispatch(searchGetSuccess(data?.searchSchool))
     setIsFiltered(false)
   }
@@ -331,7 +395,13 @@ function index({ setIsLoading }) {
               </IonButton>
 
               <div>
-                <Chip />
+                {chips.map((chip, key) => (
+                  <Chip
+                    key={key}
+                    label={chip}
+                    removeSpeceficFilter={removeSpeceficFilter}
+                  />
+                ))}
               </div>
             </>
           ))}

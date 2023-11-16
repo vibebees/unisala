@@ -35,7 +35,7 @@ function index({ query }) {
   const [isLoading, setIsLoading] = useState(false)
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
-    variables: { name: query },
+    variables: { name: query || "" },
     skip: searchParams.size > 2
   })
   useEffect(() => {
