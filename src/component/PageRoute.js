@@ -16,7 +16,7 @@ const Search = lazy(() => import("../pages/search"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 const SpacePage = lazy(() => import("../ui/pages/space"))
-const SingleThread = lazy(() => import("../ui/pages/thread"))
+const ThreadDetail = lazy(() => import("../ui/pages/thread"))
 
 
 */
@@ -31,6 +31,9 @@ import SpacePage from "../pages/space"
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
+
+const ThreadDetail = lazy(() => import("../pages/thread.detail"))
+
 // const ProfilePage = () => lazy(() => import("../pages/user.profile"))
 // const Messages = () => lazy(() => import("../pages/message"))
 // const MyNetwork = () => "MyNetwork"
@@ -40,7 +43,7 @@ const UniversityPage = () => "UniversityPage"
 const PageNotFound = () => "PageNotFound"
 const Login = () => "Login"
 // const SpacePage = () => "SpacePage"
-const SingleThread = () => "SingleThread"
+// const ThreadDetail = () => "ThreadDetail"
 
 const messagingRoutes = () => (
   <>
@@ -93,7 +96,7 @@ export const PageRoute = ({ allProps }) => (
       </Route>
 
       <Route exact path="/thread/:id">
-        <SingleThread />
+        <ThreadDetail />
       </Route>
 
       <Route path="/@/:username" exact>
