@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
 
 import { useDispatch } from "react-redux"
-import { getUniData } from "../../../../../store/action"
-import PreLoader from "../../../../component/preloader"
-import { isSideBar } from "../../../../../store/action/University"
+import { getUniData } from "store/action"
+import PreLoader from "component/preloader"
+import { isSideBar } from "store/action/University"
 
-import useDocTitle from "../../../../../hooks/useDocTitile"
+import useDocTitle from "hooks/useDocTitile"
 import { NoDataDefaultCard } from "../organisms/noDataCard"
 import { UniversityBuild } from "../organisms/university"
 

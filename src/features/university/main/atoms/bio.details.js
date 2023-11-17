@@ -10,10 +10,10 @@ import {
   IonList
 } from "@ionic/react"
 import { heart, location } from "ionicons/icons"
-import useRating from "../../../../../hooks/useRating"
-import Modal from "ui/component/Reusable/Modal"
-import SeeMoreButton from "ui/component/Reusable/Buttons/SeeMoreButton"
-import ListItemValue from "ui/component/Reusable/ListValueItem"
+import useRating from "hooks/useRating"
+import Modal from "component/Reusable/Modal"
+import SeeMoreButton from "component/Reusable/Buttons/SeeMoreButton"
+import ListItemValue from "component/Reusable/ListValueItem"
 
 export const BioDetails = ({ allProps }) => {
   const { width, uniData, handleResize } = allProps

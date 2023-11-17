@@ -1,5 +1,5 @@
 import React from "react"
-import Table from "../../../../../component/TableCard/template/Table"
+import Table from "component/TableCard/template/Table"
 
 const ChargeTable = ({ allProps }) => {
   const { level } = allProps

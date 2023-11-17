@@ -1,5 +1,5 @@
 import React from "react"
-import useIsData from "../../../../hooks/useIsData"
+import useIsData from "hooks/useIsData"
 
 const TableData = ({ data = -1 }) => {
   return (

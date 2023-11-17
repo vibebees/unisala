@@ -1,6 +1,6 @@
 import React from "react"
-import CardBody from "ui/component/RectangularCardGrid/atoms/CardBody"
-import CardTitle from "ui/component/RectangularCardGrid/atoms/CardTitle"
+import CardBody from "component/RectangularCardGrid/atoms/CardBody"
+import CardTitle from "component/RectangularCardGrid/atoms/CardTitle"
 import { IonCard, IonGrid, IonRow } from "@ionic/react"
 
 const SingleCard = ({ allProps }) => {

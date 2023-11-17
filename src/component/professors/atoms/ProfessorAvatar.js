@@ -1,6 +1,6 @@
 import React from "react"
 import { IonAvatar } from "@ionic/react"
-import { Avatar } from "ui/component/Avatar"
+import { Avatar } from "component/Avatar"
 
 const ProfessorAvatar = ({ professorName }) => {
   return (

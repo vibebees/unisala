@@ -1,6 +1,6 @@
 import React from "react"
-import useIsData from "../../../../hooks/useIsData"
-import useCountConverter from "../../../../hooks/useCountConverter"
+import useIsData from "hooks/useIsData"
+import useCountConverter from "hooks/useCountConverter"
 import { IonCard, IonLabel, IonText } from "@ionic/react"
 
 const Card = ({ image, value, title }) => {

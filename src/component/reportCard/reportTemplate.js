@@ -3,7 +3,7 @@ import React, { useEffect } from "react"
 import { IonCard, IonGrid } from "@ionic/react"
 
 import "./Report.css"
-import { handleResize } from "../../../utils/screen"
+import { handleResize } from "utils/screen"
 
 import { ReportAverage } from "./organisms/reportAverage"
 import { ReportBody } from "./organisms/reportBody"

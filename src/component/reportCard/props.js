@@ -1,7 +1,7 @@
 import {useMemo, useRef, useState} from "react"
-import {handleResize} from "../../../utils/screen"
-import useGrade from "../../../hooks/useGrade"
-import useGradeColor from "../../../hooks/useGradeColor"
+import {handleResize} from "utils/screen"
+import useGrade from "hooks/useGrade"
+import useGradeColor from "hooks/useGradeColor"
 
 export const getAllProps = ({dataSource, parentProps}) => {
 

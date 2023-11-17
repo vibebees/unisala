@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { IonAvatar, IonCard, IonButton } from "@ionic/react"
+import { IonCard, IonButton } from "@ionic/react"
 import { useQuery } from "@apollo/client"
-import { GetInterviewExperience } from "../../../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import { GetInterviewExperience } from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
 import {CardHeader} from "component/Reusable/cardHeader"
-import {InterviewExperienceCard} from "../../../../../component/interviewExperienceCard"
+import {InterviewExperienceCard} from "component/interviewExperienceCard"
 
 
 export default function index({ unitId }) {

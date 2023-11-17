@@ -21,7 +21,7 @@ import {SearchBar} from "./searchBox"
 
 const Nav = ({allProps}) => {
 
-  const {setActive, setPopoverOpen, popover, decode, navigation, activeNavDrop, active, popoverOpen, setActiveNavDrop} = allProps
+  const {setActive, setPopoverOpen = () => {}, popover, decode, navigation, activeNavDrop, active, popoverOpen, setActiveNavDrop} = allProps
 
   const openPopover = (e) => {
     popover.current.event = e

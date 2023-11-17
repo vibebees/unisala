@@ -1,8 +1,8 @@
 import React from "react"
-import Chart from "ui/component/BarChart/atoms/Chart"
+import Chart from "component/BarChart/atoms/Chart"
 import { useSelector } from "react-redux"
 import statistics from "./statistics.css"
-import CircularCardTemplate from "ui/component/circularCardImage/template/CircularCardTemplate"
+import CircularCardTemplate from "component/circularCardImage/template/CircularCardTemplate"
 import { IonCard, IonText } from "@ionic/react"
 import {CardHeader} from "component/Reusable/cardHeader"
 

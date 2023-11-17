@@ -6,7 +6,7 @@ import {
 } from "@ionic/react"
 import { Query } from "@apollo/client/react/components"
 import Thread from "../../../component/thread"
-import { GetUserPost } from "../../../../graphql/user"
+import { GetUserPost } from "../../../graphql/user"
 
 export default function Review({ uniId }) {
   return (

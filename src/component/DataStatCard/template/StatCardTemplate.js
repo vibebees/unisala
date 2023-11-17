@@ -3,7 +3,7 @@ import { IonCard } from "@ionic/react"
 import SeeMoreModal from "../../Reusable/Modal"
 import StatCard from "../organism/StatCard"
 import ModalData from "../molecules/ModalData"
-import SeeMoreButton from "ui/component/Reusable/Buttons/SeeMoreButton"
+import SeeMoreButton from "component/Reusable/Buttons/SeeMoreButton"
 import {CardHeader} from "component/Reusable/cardHeader"
 
 const StatCardTemplate = ({ allProps }) => {

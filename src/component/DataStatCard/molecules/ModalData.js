@@ -1,5 +1,5 @@
 import React from "react"
-import ListValueItems from "ui/component/Reusable/ListValueItem/index.js"
+import ListValueItems from "component/Reusable/ListValueItem/index.js"
 import { IonList } from "@ionic/react"
 import { useSelector } from "react-redux"
 

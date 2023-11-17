@@ -28,22 +28,22 @@ import Notifications from "../pages/notification"
 import {StudyAbroadRoadmapInput} from "features/roadmap/template"
 import Search from "../pages/search"
 import SpacePage from "../pages/space"
+import UniversityPage from "../features/university/index"
+import Login from "../pages/login"
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
-
 const ThreadDetail = lazy(() => import("../pages/thread.detail"))
+const PageNotFound = lazy(() => import("./PageNotFound"))
 
 // const ProfilePage = () => lazy(() => import("../pages/user.profile"))
 // const Messages = () => lazy(() => import("../pages/message"))
 // const MyNetwork = () => "MyNetwork"
 // const Notifications = () => "Notifications"
-const UniversityPage = () => "UniversityPage"
+// const UniversityPage = () => "UniversityPage"
 // const Search = () => lazy(() => import("../pages/search"))
-const PageNotFound = () => "PageNotFound"
-const Login = () => "Login"
-// const SpacePage = () => "SpacePage"
-// const ThreadDetail = () => "ThreadDetail"
+// const Login = lazy(() => import("../pages/login"))
+
 
 const messagingRoutes = () => (
   <>

@@ -23,19 +23,19 @@ import {
 } from "ionicons/icons"
 
 import VisitWebsite from "./visitWebsite"
-import Professors from "../../../component/professors/template/Professor"
+import Professors from "component/professors/template/Professor"
 import Interview from "./Interview"
-import { ReportCard } from "../../../component/reportCard"
-import { PollCard } from "../../../component/pollCard"
-import { CardWithCircularGrid } from "../../../component/cardWithCircularGrid"
+import { ReportCard } from "component/reportCard"
+import { PollCard } from "component/pollCard"
+import { CardWithCircularGrid } from "component/cardWithCircularGrid"
 import StudentCharges from "./studentCharges"
 import Statstics from "./statistics"
 import Ranking from "./Ranking/template"
-import { FolderStructure } from "../../../component/folderStructure"
-import StatCardTemplate from "ui/component/DataStatCard/template/StatCardTemplate"
-import StatCardTemplateTwo from "ui/component/DataStatCard/template/StatCardTemplateTwo"
-import RectangularCard from "ui/component/RectangularCardGrid/template/RectangularCard"
-import ImageCard from "ui/component/ScrollableImageCard/template/ImageCard"
+import { FolderStructure } from "component/folderStructure"
+import StatCardTemplate from "component/DataStatCard/template/StatCardTemplate"
+import StatCardTemplateTwo from "component/DataStatCard/template/StatCardTemplateTwo"
+import RectangularCard from "component/RectangularCardGrid/template/RectangularCard"
+import ImageCard from "component/ScrollableImageCard/template/ImageCard"
 
 const SideDetails = ({
   activeTab,
