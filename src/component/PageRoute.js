@@ -4,24 +4,6 @@ import { Redirect, Route, Switch } from "react-router"
 import PreLoader from "./preloader"
  import ProtectedRoute from "utils/lib/protectedRoute"
 
-/*
-const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
-const HomePage = lazy(() => import("../pages/home"))
-const ProfilePage = lazy(() => import("../pages/profilePage"))
-const Messages = lazy(() => import("../pages/messages"))
-const MyNetwork = lazy(() => import("../pages/myNetwork"))
-const Notifications = lazy(() => import("../pages/notifications"))
-const UniversityPage = lazy(() => import("../pages/university"))
-const Search = lazy(() => import("../pages/search"))
-const PageNotFound = lazy(() => import("./PageNotFound"))
-const Login = lazy(() => import("../pages/login"))
-const SpacePage = lazy(() => import("../ui/pages/space"))
-const ThreadDetail = lazy(() => import("../ui/pages/thread"))
-
-
-*/
-
-
 const ProfilePage = lazy(() => import("../pages/user.profile"))
 const Messages = lazy(() => import("../pages/message"))
 const MyNetwork = lazy(() => import("../pages/network"))
