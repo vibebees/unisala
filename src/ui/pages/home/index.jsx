@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react"
-import { callSocket } from "../../../servers/endpoints"
-import { Home } from "./template"
+ import { Home } from "./template"
 import { getAllPropsHome } from "./getAllProps"
 import { useSelector } from "react-redux"
-import { getUserProfile } from "../../../graphql/user"
-import { useQuery } from "@apollo/client"
-import { USER_SERVICE_GQL } from "../../../servers/types"
+ import { useQuery } from "@apollo/client"
+import {USER_SERVICE_GQL} from "servers/types"
+import {getUserProfile} from "graphql/user"
+import {callSocket} from "servers/endpoints"
 
 export default function HomePage({ propsall }) {
   const socket = useRef(null)

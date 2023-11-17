@@ -26,7 +26,7 @@ import {
 } from "ionicons/icons"
 import { motion, AnimatePresence } from "framer-motion"
 import ProgressReport from "./progressReport"
-import StepInput from "../../component/roadmap/StepInput"
+// import StepInput from "../../component/roadmap/StepInput"
 import { roadmapSteps } from "./roadmap"
 import "./styles.css"
 import { createAvatar } from "@dicebear/core"
@@ -69,7 +69,7 @@ export const StudyAbroadRoadmapInput = () => {
             <h4 className="font-semibold pl-4">Your next steps</h4>
             <div className="h-full mt-4 px-4 bg-neutral-100 border border-neutral-400 border-opacity-20 rounded-md py-6">
               <div className="flex items-center  w-full">
-                <StepInput
+                {/* <StepInput
                   currentstep={"1/10"}
                   label={"Enter your ILETS Test Result"}
                   placeholder={"Enter score"}
@@ -78,7 +78,7 @@ export const StudyAbroadRoadmapInput = () => {
                   name={"stepOne"}
                   inputValue={data.stepOne}
                   key={1}
-                />
+                /> */}
               </div>
 
               <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">

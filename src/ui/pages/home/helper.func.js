@@ -12,19 +12,14 @@ import {
 
 import { Link } from "react-router-dom"
 import { SearchBar } from "../../component/searchBox"
-import Authentication from "../../component/authentication"
-
 import { useSelector } from "react-redux"
 import { Avatar } from "../../component/Avatar"
-import BadgesTab from "./BadgeTab"
-import { imageAccess } from "../../../servers/endpoints"
-import { useEffect, useState } from "react"
-import { getImage } from "../../../servers/s3.configs"
+import { useState } from "react"
 import { useLocation } from "react-router"
 import TopSpaces from "../../component/TopSpaces/TopSpaces"
 import { fetchFamousUniversities } from "../../../graphql/user"
 import { useQuery } from "@apollo/client"
-import { USER_SERVICE_GQL } from "../../../servers/types"
+import {USER_SERVICE_GQL} from "servers/types"
 
 export const screenGreaterThan1000 = () => {
   const { data: famousUniversities } = useQuery(fetchFamousUniversities, {

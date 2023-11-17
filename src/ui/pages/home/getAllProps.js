@@ -15,9 +15,9 @@ import {
   starSharp
 } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
-import { USER_SERVICE_GQL } from "../../../servers/types"
-import { useHistory, useLocation } from "react-router"
-import ProfilePop from "../../component/profilePop"
+ import { useHistory, useLocation } from "react-router"
+import ProfilePop from "../../../component/profilePop"
+import {USER_SERVICE_GQL} from "servers/types"
 
 export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
   const [activeProfile, setActiveProfile] = useState({ profile: false }),

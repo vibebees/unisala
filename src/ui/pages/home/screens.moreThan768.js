@@ -9,14 +9,11 @@ import {
 } from "@ionic/react"
 import { useSelector } from "react-redux"
 import { Avatar } from "../../component/Avatar"
-import BadgesTab from "./BadgeTab"
-import { imageAccess } from "../../../servers/endpoints"
-import { useEffect, useState } from "react"
-import { getImage } from "../../../servers/s3.configs"
+import { useState } from "react"
 import { useLocation } from "react-router"
 import TopSpaces from "../../component/TopSpaces/TopSpaces"
 import { Link } from "react-router-dom"
-import CreateSpace from "../../component/createSpace/CreateSpace"
+import CreateSpace from "../../../component/createSpace/CreateSpace"
 export const screensMoreThan768 = ({
   activeTab,
   setActiveTab,
