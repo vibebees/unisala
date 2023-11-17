@@ -10,7 +10,7 @@ import {
   IonCardTitle,
   IonCardSubtitle
 } from "@ionic/react"
-import useWindowWidth from "../../../hooks/useWindowWidth"
+import useWindowWidth from "hooks/useWindowWidth"
 import ProfileHeader from "./profileHeader"
 import ProfileBody from "./profileBody"
 import Threads from "./threads"
@@ -18,10 +18,10 @@ import Guestbook from "./guestbook"
 import Saved from "./saved"
 import jwtDecode from "jwt-decode"
 import { useQuery } from "@apollo/client"
-import { getUserGql } from "../../../graphql/user"
-import useDocTitle from "../../../hooks/useDocTitile"
-import noResultsFound from "../../../assets/no-results.jpg"
-import { USER_SERVICE_GQL } from "../../../servers/types"
+import { getUserGql } from "graphql/user"
+import useDocTitle from "hooks/useDocTitile"
+import noResultsFound from "assets/no-results.jpg"
+import { USER_SERVICE_GQL } from "servers/types"
 import { useSelector } from "react-redux"
 import { screenGreaterThan1000 } from "../home/helper.func"
 

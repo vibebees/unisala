@@ -15,8 +15,8 @@ import {
   AddEducation,
   EditEducation,
   getUserGql
-} from "../../../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
 
 const EducationPop = ({
   isOpen,

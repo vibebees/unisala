@@ -7,13 +7,13 @@ import {
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { Query } from "@apollo/client/react/components"
-import StateMessage from "../../../component/stateMessage"
-import emptyState from "../../../../assets/emptyState.png"
-import { GetSavedList } from "../../../../graphql/user/"
-import Thread from "../../../component/thread"
-import CourseCard from "../../../component/courseCard"
-import {ThreadSkeleton} from "../../../component/skeleton/threadSkeleton"
-import { USER_SERVICE_GQL } from "../../../../servers/types"
+import StateMessage from "component/stateMessage"
+import emptyState from "assets/emptyState.png"
+import { GetSavedList } from "graphql/user/"
+import Thread from "component/thread"
+import CourseCard from "component/courseCard"
+import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
+import { USER_SERVICE_GQL } from "servers/types"
 
 function index({ userId, firstName }) {
   return (

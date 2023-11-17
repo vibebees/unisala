@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react"
 import { IonCard } from "@ionic/react"
-import StateMessage from "../../../component/stateMessage"
-import emptyState from "../../../../assets/emptyState.png"
-import locked from "../../../../assets/private.png"
+import StateMessage from "component/stateMessage"
+import emptyState from "assets/emptyState.png"
+import locked from "assets/private.png"
 
 function index() {
     const threads = []

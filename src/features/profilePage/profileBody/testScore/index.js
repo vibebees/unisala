@@ -13,9 +13,9 @@ import {
 } from "@ionic/react"
 import { eyeOff, eye, add } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import { getUserGql, ToggleView } from "../../../../../graphql/user/"
+import { getUserGql, ToggleView } from "graphql/user/"
 import EditTestScore from "./editTestScore"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import { USER_SERVICE_GQL } from "servers/types"
 
 const TestScore = ({ testScore, myProfile, username }) => {
   const [isOpen, setIsOpen] = useState(false)

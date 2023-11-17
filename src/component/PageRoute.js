@@ -23,10 +23,10 @@ const SingleThread = lazy(() => import("../ui/pages/thread"))
 
 */
 
-
+import ProfilePage from "../pages/user.profile"
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
-const ProfilePage = () => "ProfilePage"
+// const ProfilePage = () => lazy(() => import("../pages/user.profile"))
 const Messages = () => "Messages"
 const MyNetwork = () => "MyNetwork"
 const Notifications = () => "Notifications"

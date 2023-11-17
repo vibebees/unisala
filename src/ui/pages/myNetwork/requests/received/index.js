@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client"
-import { ReceivedConnectionList } from "../../../../../graphql/user/"
-import UserCard from "../../../../component/userCard"
+import { ReceivedConnectionList } from "graphql/user/"
+import UserCard from "component/userCard"
 import RequestReceivedButton from "./RequestReceivedButton"
-import StateMessage from "../../../../component/stateMessage"
-import emptyState from "../../../../../assets/emptyState.png"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import StateMessage from "component/stateMessage"
+import emptyState from "assets/emptyState.png"
+import { USER_SERVICE_GQL } from "servers/types"
 
 function index() {
   const { data: receivedConnectionList } = useQuery(ReceivedConnectionList, {

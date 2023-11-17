@@ -1,5 +1,5 @@
-import userProfile from "../features/user.profile"
+import UserProfile from "../features/profilePage"
 const UserProfilePage = () => {
-    return <userProfile />
+    return <UserProfile />
 }
 export default UserProfilePage

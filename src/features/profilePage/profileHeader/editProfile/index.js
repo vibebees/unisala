@@ -14,13 +14,13 @@ import {
 } from "@ionic/react"
 import { create } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import { EditProfile, getUserGql } from "../../../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
-import useWindowWidth from "../../../../../hooks/useWindowWidth"
-import { awsBucket, bucketName } from "../../../../../servers/s3.configs"
+import { EditProfile, getUserGql } from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import useWindowWidth from "hooks/useWindowWidth"
+import { awsBucket, bucketName } from "servers/s3.configs"
 import "./index.css"
 import { useDispatch } from "react-redux"
-import { updateUserProfile } from "../../../../../store/action/userProfile"
+import { updateUserProfile } from "store/action/userProfile"
 import { useHistory } from "react-router-dom"
 function index({ profileHeader }) {
   // for autocomplete location

@@ -17,8 +17,8 @@ import {
   ToggleView,
   DeleteEducation,
   getUserGql
-} from "../../../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
 
 function Education({ education, myProfile, username }) {
   const [isOpen, setIsOpen] = useState(false)

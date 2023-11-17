@@ -16,8 +16,8 @@ import {
   IonSpinner
 } from "@ionic/react"
 import { useMutation } from "@apollo/client"
-import { EditAbout, ToggleView, getUserGql } from "../../../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import { EditAbout, ToggleView, getUserGql } from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
 
 function AboutUser({ about, myProfile, username }) {
   const [isOpen, setIsOpen] = useState(false)

@@ -5,11 +5,11 @@ import { useMutation } from "@apollo/client"
 import {
   SendConnectRequest,
   AcceptConnectRequest
-} from "../../../../../graphql/user/"
-import useWindowWidth from "../../../../../hooks/useWindowWidth"
+} from "graphql/user/"
+import useWindowWidth from "hooks/useWindowWidth"
 import EditProfile from "../editProfile"
 import "./UserCtaBtns.css"
-import { USER_SERVICE_GQL } from "../../../../../servers/types"
+import { USER_SERVICE_GQL } from "servers/types"
 
 function UserCtaBtns({ profileHeader, setProfileHeader, myProfile }) {
   let windowWidth = useWindowWidth()

@@ -14,10 +14,10 @@ import {
 } from "ionicons/icons"
 import UserCtaBtns from "./userCtaBtns/UserCtaBtns"
 import { Avatar } from "../../../component/Avatar"
-import useWindowWidth from "../../../../hooks/useWindowWidth"
+import useWindowWidth from "hooks/useWindowWidth"
 import "./index.css"
 import { useEffect, useState } from "react"
-import { getImage } from "../../../../servers/s3.configs"
+import { getImage } from "servers/s3.configs"
 
 const ProfileHeader = ({ tab, setTab, data }) => {
   const [coverImage, setCoverImage] = useState("")
