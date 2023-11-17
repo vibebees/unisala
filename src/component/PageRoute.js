@@ -26,8 +26,7 @@ import ProfilePage from "../pages/user.profile"
 import Messages from "../pages/message"
 import MyNetwork from "../pages/network"
 import Notifications from "../pages/notification"
-import StudyAbroadRoadmap from "../pages/roadmap"
-
+const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
 // const ProfilePage = () => lazy(() => import("../pages/user.profile"))
