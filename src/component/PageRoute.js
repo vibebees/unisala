@@ -21,28 +21,23 @@ const ThreadDetail = lazy(() => import("../ui/pages/thread"))
 
 */
 
-import ProfilePage from "../pages/user.profile"
-import Messages from "../pages/message"
-import MyNetwork from "../pages/network"
-import Notifications from "../pages/notification"
-import {StudyAbroadRoadmapInput} from "features/roadmap/template"
-import Search from "../pages/search"
-import SpacePage from "../pages/space"
-import UniversityPage from "../features/university/index"
-import Login from "../pages/login"
+
+const ProfilePage = lazy(() => import("../pages/user.profile"))
+const Messages = lazy(() => import("../pages/message"))
+const MyNetwork = lazy(() => import("../pages/network"))
+const Notifications = lazy(() => import("../pages/notification"))
+// Assuming StudyAbroadRoadmapInput is a component, if it's not, you can't lazy load it
+const StudyAbroadRoadmapInput = lazy(() => import("features/roadmap/template"))
+const Search = lazy(() => import("../pages/search"))
+const SpacePage = lazy(() => import("../pages/space"))
+const UniversityPage = lazy(() => import("../features/university/index"))
+const Login = lazy(() => import("../pages/login"))
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
-const SpaceIndex = () => "SpaceIndex"
+const SpaceIndex = lazy(() => () => "SpaceIndex") // If SpaceIndex is a component, otherwise keep as it is
 const HomePage = lazy(() => import("../pages/home"))
 const ThreadDetail = lazy(() => import("../pages/thread.detail"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
 
-// const ProfilePage = () => lazy(() => import("../pages/user.profile"))
-// const Messages = () => lazy(() => import("../pages/message"))
-// const MyNetwork = () => "MyNetwork"
-// const Notifications = () => "Notifications"
-// const UniversityPage = () => "UniversityPage"
-// const Search = () => lazy(() => import("../pages/search"))
-// const Login = lazy(() => import("../pages/login"))
 
 
 const messagingRoutes = () => (
