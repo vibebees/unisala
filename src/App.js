@@ -53,7 +53,6 @@ const App = () => {
       allProps
 
   useEffect(() => {
-    console.log("accessToken", accessToken)
     if (accessToken) {
       const decode = jwtDecode(accessToken)
       dispatch(

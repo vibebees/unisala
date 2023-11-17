@@ -12,22 +12,9 @@ import {
   IonInput,
   IonItem
 } from "@ionic/react"
-import {
-  checkmarkCircle,
-  chevronDownOutline,
-  chevronUpOutline,
-  removeCircleOutline,
-  addCircleOutline,
-  schoolOutline,
-  bookOutline,
-  calendarOutline,
-  clipboardOutline,
-  checkmarkCircleOutline
-} from "ionicons/icons"
-import { motion, AnimatePresence } from "framer-motion"
+
 import ProgressReport from "./progressReport"
 // import StepInput from "../../component/roadmap/StepInput"
-import { roadmapSteps } from "./roadmap"
 import "./styles.css"
 import { createAvatar } from "@dicebear/core"
 import { thumbs } from "@dicebear/collection"

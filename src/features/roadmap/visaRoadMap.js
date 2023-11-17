@@ -1,17 +1,12 @@
 import React, { useState } from "react"
 import { IonContent, IonCard, IonCardContent, IonIcon, IonGrid, IonRow, IonCol } from "@ionic/react"
 import {
-    checkmarkCircle,
     chevronDownOutline,
-    chevronUpOutline,
-    removeCircleOutline,
-    addCircleOutline
+    chevronUpOutline
 } from "ionicons/icons"
 import { motion, AnimatePresence } from "framer-motion"
-import { roadmapSteps } from "./roadmap"
-import "./styles.css"
-import { createAvatar } from "@dicebear/core"
-import { thumbs } from "@dicebear/collection"
+ import "./styles.css"
+import {roadmapSteps} from "data/roadmap"
 
 export const StudyAbroadRoadmap = () => {
     const [expandedStep, setExpandedStep] = useState(null)
