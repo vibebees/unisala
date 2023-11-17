@@ -17,9 +17,9 @@ import { Avatar } from "../../component/Avatar"
 import { useState } from "react"
 import { useLocation } from "react-router"
 import TopSpaces from "../../component/TopSpaces/TopSpaces"
-import { fetchFamousUniversities } from "../../../graphql/user"
-import { useQuery } from "@apollo/client"
+ import { useQuery } from "@apollo/client"
 import {USER_SERVICE_GQL} from "servers/types"
+import {fetchFamousUniversities} from "graphql/user"
 
 export const screenGreaterThan1000 = () => {
   const { data: famousUniversities } = useQuery(fetchFamousUniversities, {

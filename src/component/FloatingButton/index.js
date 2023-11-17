@@ -1,7 +1,7 @@
 import React from "react"
 import { IonFab, IonFabButton, IonIcon } from "@ionic/react"
 import { helpOutline } from "ionicons/icons"
-import Modal from "ui/component/Reusable/Modal"
+import Modal from "../Reusable/Modal"
 import Feedback from "./organism/Feedback"
 
 function index() {

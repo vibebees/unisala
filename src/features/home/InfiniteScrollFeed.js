@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react"
 import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
-import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useQuery } from "@apollo/client"
-import { getNewsFeed } from "../../../graphql/user"
- import CourseCard from "../../component/courseCard"
 import Thread from "../../component/thread"
 import { FeedSkeleton } from "../../component/skeleton/feedSkeleton"
-import {UniFeed} from "../../component/uniFeed"
-import { InterviewExperienceCard } from "../university/sideDetails/Interview"
-import {USER_SERVICE_GQL} from "servers/types"
+ import {USER_SERVICE_GQL} from "servers/types"
+import {getNewsFeed} from "graphql/user"
+import {InterviewExperienceCard} from "../../component/interviewExperienceCard"
 
 export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)

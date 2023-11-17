@@ -1,4 +1,5 @@
 import Home from "../features/home"
-export const PageHome = () => {
+ const PageHome = () => {
     return <Home />
 }
+export default PageHome

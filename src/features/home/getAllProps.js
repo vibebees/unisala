@@ -1,13 +1,11 @@
 import { useState } from "react"
-import unisalaImg from "../../../assets/unisala-intro.png"
+import unisalaImg from "assets/unisala-intro.png"
 import {
   screenGreaterThan1000,
   screenLessThan768,
   screensMoreThan768
 } from "./helper.func"
-import useWindowWidth from "../../../hooks/useWindowWidth"
-import { GetTopActiveSpaces } from "../../../graphql/user"
-import {
+ import {
   book,
   helpCircleSharp,
   personCircle,
@@ -16,8 +14,10 @@ import {
 } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
  import { useHistory, useLocation } from "react-router"
-import ProfilePop from "../../../component/profilePop"
+import ProfilePop from "component/profilePop"
 import {USER_SERVICE_GQL} from "servers/types"
+import {GetTopActiveSpaces} from "graphql/user"
+import useWindowWidth from "hooks/useWindowWidth"
 
 export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
   const [activeProfile, setActiveProfile] = useState({ profile: false }),

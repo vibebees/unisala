@@ -1,90 +1,12 @@
 import { useEffect, useState } from "react"
 import { IonAvatar, IonCard, IonButton } from "@ionic/react"
-import { Avatar } from "../../../../component/Avatar"
 import { useQuery } from "@apollo/client"
 import { GetInterviewExperience } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
 import {CardHeader} from "component/Reusable/cardHeader"
+import {InterviewExperienceCard} from "../../../../../component/interviewExperienceCard"
 
-export const InterviewExperienceCard = ({data}) => {
-  return (
-    <div key={index} className="interview">
-    <IonCard
-      style={{
-        padding: "10px 20px 10px 20px"
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          borderBottom: "1px solid #C4C4C4",
-          fontSize: "20px",
-          marginBottom: "15px"
-        }}
-      >
-        {data.university && (
-          <p>
-            University: <b>{data?.university}</b>
-          </p>
-        )}
-        {data?.major && (
-          <p>
-            Major: <b>{data?.major}</b>
-          </p>
-        )}
-        {data?.attempt && (
-          <p>
-            Attemp: <b>{data?.attempt}</b>
-          </p>
-        )}
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          maxWidth: "600px"
-        }}
-      >
-        {data?.conversation?.split(/me\s*:|vo\s*:|me\s+:|vo\s+-/i)
-          .map((item, key) => {
-            if (!item || item.trim() === "") return null
-            return (
-              <div
-                key={key}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "10px"
-                }}
-              >
-                <IonAvatar
-                  style={{
-                    width: "30px",
-                    height: "30px"
-                  }}
-                >
-                  <Avatar
-                    username={key % 2 === 0 ? "VO" : "ME"}
-                  />
-                </IonAvatar>
-                <p
-                  style={{
-                    width: "fit-content"
-                  }}
-                >
-                  {item}
-                </p>
-              </div>
-            )
-          })}
-      </div>
-    </IonCard>
-  </div>
-  )
-}
 export default function index({ unitId }) {
   const [page, setPage] = useState(1)
   const { data, loading, fetchMore } = useQuery(GetInterviewExperience, {

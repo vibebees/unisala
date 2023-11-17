@@ -3,7 +3,7 @@ import useDocTitle from "../../../hooks/useDocTitile"
 import {screenGreaterThan1000} from "./screens.greater.1000"
 import {screensMoreThan768} from "./screens.moreThan768"
 import {screenLessThan768} from "./screens.lessThan768"
-import unisalaImg from "../../../assets/unisala-intro.png"
+import unisalaImg from "assets/unisala-intro.png"
 import {useParams} from "react-router"
 import {personCircle, arrowUpOutline} from "ionicons/icons"
 

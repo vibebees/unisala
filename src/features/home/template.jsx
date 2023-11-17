@@ -11,21 +11,18 @@ import { CreateAPostCard } from "../../component/post/index"
 
 import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
-import useDocTitle from "../../../hooks/useDocTitile"
-import { InfinteFeed } from "./InfiniteScrollFeed"
+ import { InfinteFeed } from "./InfiniteScrollFeed"
 
 import { useQuery } from "@apollo/client"
-import { getUpdatedSchoolInfo } from "../../../graphql/uni"
-import {
-  UNIVERSITY_SERVICE_GQL,
-  USER_SERVICE_GQL
-} from "../../../servers/types"
+import { getUpdatedSchoolInfo } from "graphql/uni"
 
 import { FolderStructure } from "../../component/folderStructure"
 import { UnisalaLandingPage } from "./UnisalaIntro"
-import ScrollableCard from "ui/component/ScrollableImageCard/organism/ScrollableCard"
+import ScrollableCard from "../../component/ScrollableImageCard/organism/ScrollableCard"
 import { fetchFamousUniversities } from "graphql/user"
-import FloatingButton from "ui/component/FloatingButton"
+import FloatingButton from "../../component/FloatingButton"
+import useDocTitle from "hooks/useDocTitile"
+import {UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL} from "servers/types"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")

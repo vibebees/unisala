@@ -5,9 +5,9 @@ import {
   IonText,
   IonIcon
 } from "@ionic/react"
-import roadmap from "./../../../assets/roadmap.png"
+import roadmap from "assets/roadmap.png"
 import { lockOpenOutline } from "ionicons/icons"
-import ExploreUniversities from "../../../assets/ExploreUniversity.png"
+import ExploreUniversities from "assets/ExploreUniversity.png"
 
 export const UnisalaLandingPage = ({ allProps }) => {
   return (

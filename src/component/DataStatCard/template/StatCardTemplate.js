@@ -1,6 +1,6 @@
 import React from "react"
 import { IonCard } from "@ionic/react"
-import SeeMoreModal from "ui/component/Reusable/Modal"
+import SeeMoreModal from "../../Reusable/Modal"
 import StatCard from "../organism/StatCard"
 import ModalData from "../molecules/ModalData"
 import SeeMoreButton from "ui/component/Reusable/Buttons/SeeMoreButton"
