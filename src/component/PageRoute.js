@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
-import ProtectedRoute from "../../utils/lib/protectedRoute"
 
 import PreLoader from "./preloader"
 import { StudyAbroadRoadmap } from "ui/pages/roadmap/visaRoadMap"
 import { UnisalaLandingPage } from "ui/pages/home/UnisalaIntro"
 import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
+import ProtectedRoute from "utils/lib/protectedRoute"
 const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
 const HomePage = lazy(() => import("../pages/home"))
