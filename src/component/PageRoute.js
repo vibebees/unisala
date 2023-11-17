@@ -2,8 +2,7 @@ import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
 
 import PreLoader from "./preloader"
- import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
-import ProtectedRoute from "utils/lib/protectedRoute"
+ import ProtectedRoute from "utils/lib/protectedRoute"
 
 /*
 const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
@@ -26,6 +25,9 @@ import ProfilePage from "../pages/user.profile"
 import Messages from "../pages/message"
 import MyNetwork from "../pages/network"
 import Notifications from "../pages/notification"
+import {StudyAbroadRoadmapInput} from "features/roadmap/template"
+import Search from "../pages/search"
+
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
@@ -34,7 +36,7 @@ const HomePage = lazy(() => import("../pages/home"))
 // const MyNetwork = () => "MyNetwork"
 // const Notifications = () => "Notifications"
 const UniversityPage = () => "UniversityPage"
-const Search = () => "Search"
+// const Search = () => lazy(() => import("../pages/search"))
 const PageNotFound = () => "PageNotFound"
 const Login = () => "Login"
 const SpacePage = () => "SpacePage"
@@ -75,7 +77,7 @@ export const PageRoute = ({ allProps }) => (
       </Route>
 
       <Route path="/myjourney" exact>
-        <StudyAbroadRoadmapInput />
+        <StudyAbroadRoadmapInput/>
       </Route>
 
       <Route exact path="/home">

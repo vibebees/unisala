@@ -9,19 +9,19 @@ import {
   IonCardTitle
 } from "@ionic/react"
 import { useLocation, Link, useHistory } from "react-router-dom"
-import { UniSearchDataList } from "../../../graphql/uni"
-import { userSearch } from "../../../graphql/user"
-import useDocTitle from "../../../hooks/useDocTitile"
+import { UniSearchDataList } from "graphql/uni"
+import { userSearch } from "graphql/user"
+import useDocTitle from "hooks/useDocTitile"
 import { useQuery } from "@apollo/client"
 import {
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
-} from "../../../servers/types"
-import UserCard from "../../component/userCard"
-import CourseCard from "../../component/courseCard"
+} from "servers/types"
+import UserCard from "component/userCard"
+import CourseCard from "component/courseCard"
 import UserSearchResult from "./user"
 import UniSearchResult from "./uni"
-import { SearchBar } from "ui/component/searchBox"
+import { SearchBar } from "component/searchBox"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")

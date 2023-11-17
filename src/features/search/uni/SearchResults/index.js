@@ -6,8 +6,8 @@ import {
 } from "@ionic/react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import CourseCard from "../../../../component/courseCard"
-import noResultsFound from "../../../../../assets/no-results.jpg"
+import CourseCard from "component/courseCard"
+import noResultsFound from "assets/no-results.jpg"
 import "./index.css"
 
 function index() {
