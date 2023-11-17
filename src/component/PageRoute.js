@@ -3,11 +3,11 @@ import { Redirect, Route, Switch } from "react-router"
 
 import PreLoader from "./preloader"
 import { StudyAbroadRoadmap } from "ui/pages/roadmap/visaRoadMap"
-import { UnisalaLandingPage } from "ui/pages/home/UnisalaIntro"
 import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
 import ProtectedRoute from "utils/lib/protectedRoute"
-const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 
+/*
+const SpaceIndex = lazy(() => import("../pages/space/SpaceIndex/SpaceIndex"))
 const HomePage = lazy(() => import("../pages/home"))
 const ProfilePage = lazy(() => import("../pages/profilePage"))
 const Messages = lazy(() => import("../pages/messages"))
@@ -19,6 +19,23 @@ const PageNotFound = lazy(() => import("./PageNotFound"))
 const Login = lazy(() => import("../pages/login"))
 const SpacePage = lazy(() => import("../ui/pages/space"))
 const SingleThread = lazy(() => import("../ui/pages/thread"))
+
+
+*/
+
+
+const SpaceIndex = () => "SpaceIndex"
+const HomePage = () => "HomePage"
+const ProfilePage = () => "ProfilePage"
+const Messages = () => "Messages"
+const MyNetwork = () => "MyNetwork"
+const Notifications = () => "Notifications"
+const UniversityPage = () => "UniversityPage"
+const Search = () => "Search"
+const PageNotFound = () => "PageNotFound"
+const Login = () => "Login"
+const SpacePage = () => "SpacePage"
+const SingleThread = () => "SingleThread"
 
 const messagingRoutes = () => (
   <>

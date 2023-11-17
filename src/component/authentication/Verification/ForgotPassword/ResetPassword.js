@@ -3,9 +3,9 @@ import { IonButton, IonText, IonSpinner, useIonToast } from "@ionic/react"
 import axios from "axios"
 import AuthInput from "../../AuthInput"
 
-import { validateSignup } from "../../../../../utils/components/validate"
-import "../../auth.css"
+ import "../../auth.css"
 import {userServer} from "servers/endpoints"
+import {validateSignup} from "utils/components/validate"
 
 export const ResetPassword = ({ setauth, auth }) => {
   const { code, email } = auth
