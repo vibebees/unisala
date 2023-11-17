@@ -4,7 +4,7 @@ import { Avatar } from "../../../../component/Avatar"
 import { useQuery } from "@apollo/client"
 import { GetInterviewExperience } from "../../../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../../../servers/types"
-import CardHeader from "ui/component/Reusable/cardHeader"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 export const InterviewExperienceCard = ({data}) => {
   return (

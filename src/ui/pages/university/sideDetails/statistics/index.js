@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import statistics from "./statistics.css"
 import CircularCardTemplate from "ui/component/circularCardImage/template/CircularCardTemplate"
 import { IonCard, IonText } from "@ionic/react"
-import CardHeader from "ui/component/Reusable/cardHeader"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 const index = () => {
   const { uniData } = useSelector((store) => store?.university)

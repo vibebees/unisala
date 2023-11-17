@@ -14,7 +14,7 @@ import {
 } from "@ionic/react"
 import { WelcomeData } from ".."
 import axios from "axios"
- import Noimagefound from "./../../../../../assets/no_image_found.png"
+ import Noimagefound from "../../../../assets/no_image_found.png"
 import clsx from "clsx"
 import { useSelector } from "react-redux"
 import {useDebouncedEffect} from "hooks/useDebouncedEffect"

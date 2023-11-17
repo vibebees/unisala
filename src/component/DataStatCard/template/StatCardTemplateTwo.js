@@ -1,7 +1,7 @@
 import React from "react"
 import { IonCard } from "@ionic/react"
-import CardHeader from "ui/component/Reusable/cardHeader"
-import StatCard from "../organism/StatCard"
+ import StatCard from "../organism/StatCard"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 const StatCardTemplateTwo = ({ allProps }) => {
   const { data, bodyTitle = "" } = allProps

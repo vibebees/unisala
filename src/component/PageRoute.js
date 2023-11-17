@@ -25,7 +25,7 @@ const SingleThread = lazy(() => import("../ui/pages/thread"))
 
 
 const SpaceIndex = () => "SpaceIndex"
-const HomePage = () => "HomePage"
+const HomePage = lazy(() => import("../pages/home"))
 const ProfilePage = () => "ProfilePage"
 const Messages = () => "Messages"
 const MyNetwork = () => "MyNetwork"

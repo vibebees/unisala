@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useEffect } from "react"
 import { IonCard } from "@ionic/react"
-import CardHeader from "ui/component/Reusable/cardHeader"
-import { handleResize } from "../../../utils/screen"
+ import { handleResize } from "../../../utils/screen"
 import { RowSection } from "./molecules/rowSection"
+import {CardHeader} from "component/Reusable/cardHeader"
 export const Template = ({ allProps }) => {
   const { testScores, width, setWidth, isSideBar } = allProps
 

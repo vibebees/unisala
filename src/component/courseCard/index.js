@@ -26,11 +26,11 @@ import {
   shareOutline,
   schoolOutline
 } from "ionicons/icons"
-import useGradeColor from "../../../hooks/useGradeColor"
-import useGrade from "../../../hooks/useGrade"
+ import useGrade from "hooks/useGrade"
 
 import { LikeATag } from "../tags"
 import {universityDefaultImage} from "servers/s3.configs"
+import useGradeColor from "hooks/useGradeColor"
 
 function ImageModal({ isOpen, imageSrc, onClose }) {
   return (

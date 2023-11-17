@@ -4,10 +4,10 @@ import { IonCard, IonGrid } from "@ionic/react"
 
 import "./Report.css"
 import { handleResize } from "../../../utils/screen"
-import CardHeader from "ui/component/Reusable/cardHeader"
 
 import { ReportAverage } from "./organisms/reportAverage"
 import { ReportBody } from "./organisms/reportBody"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 export const ReportTemplate = ({ allProps }) => {
   const { width, more, report, setRecords, isSideBar } = allProps

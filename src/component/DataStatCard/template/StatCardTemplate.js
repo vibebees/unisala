@@ -4,7 +4,7 @@ import SeeMoreModal from "ui/component/Reusable/Modal"
 import StatCard from "../organism/StatCard"
 import ModalData from "../molecules/ModalData"
 import SeeMoreButton from "ui/component/Reusable/Buttons/SeeMoreButton"
-import CardHeader from "ui/component/Reusable/cardHeader"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 const StatCardTemplate = ({ allProps }) => {
   const { data, bodyTitle = "" } = allProps

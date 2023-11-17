@@ -1,7 +1,7 @@
 import React from "react"
 import { IonCard } from "@ionic/react"
-import CardHeader from "ui/component/Reusable/cardHeader"
-import ScrollableCard from "../organism/ScrollableCard"
+ import ScrollableCard from "../organism/ScrollableCard"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 const ImageCard = ({ allProps }) => {
   const { data, header } = allProps

@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { IonCard, IonRow, IonSearchbar } from "@ionic/react"
-import CardHeader from "ui/component/Reusable/cardHeader"
-import ProfessorCard from "../moecules/ProfessorCard"
+ import ProfessorCard from "../moecules/ProfessorCard"
 import "./professors.css"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 const Professor = ({ allProps }) => {
   const [majorSearch, setMajorSearch] = useState("")

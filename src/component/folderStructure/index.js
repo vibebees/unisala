@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { IonCard, IonCardContent, IonCol, IonGrid, IonRow } from "@ionic/react"
 import { FolderScholarship } from "./organisms/sch.folder"
 import { Link } from "react-router-dom"
-import CardHeader from "ui/component/Reusable/cardHeader"
-import { FolderGeneral } from "./organisms/folder"
+ import { FolderGeneral } from "./organisms/folder"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 // Create a function to render a folder based on conditions
 const RenderFolder = ({ item, allProps, customStyles, popUp }) => {

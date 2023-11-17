@@ -1,7 +1,7 @@
 import React from "react"
 import { IonCard, IonGrid, IonText } from "@ionic/react"
-import CardHeader from "ui/component/Reusable/cardHeader/index"
-import SingleCard from "../molecules/SingleCard"
+ import SingleCard from "../molecules/SingleCard"
+import {CardHeader} from "component/Reusable/cardHeader"
 
 const RectangularCard = ({ allProps }) => {
   const { data, year } = allProps
