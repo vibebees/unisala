@@ -2,8 +2,7 @@ import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
 
 import PreLoader from "./preloader"
-import { StudyAbroadRoadmap } from "ui/pages/roadmap/visaRoadMap"
-import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
+ import { StudyAbroadRoadmapInput } from "ui/pages/roadmap"
 import ProtectedRoute from "utils/lib/protectedRoute"
 
 /*
@@ -27,7 +26,7 @@ import ProfilePage from "../pages/user.profile"
 import Messages from "../pages/message"
 import MyNetwork from "../pages/network"
 import Notifications from "../pages/notification"
-
+import StudyAbroadRoadmap from "../pages/roadmap"
 
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
