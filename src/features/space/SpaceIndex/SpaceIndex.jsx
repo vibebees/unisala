@@ -9,16 +9,13 @@ import {
   GetOwnSpace,
   GetTopActiveSpaces,
   GetUserPost
-} from "../../../../graphql/user"
-import emptyState from "../../../../assets/emptyState.png"
+} from "graphql/user"
 import UnisalaIntro from "../UnisalaIntro"
 import { screenLessThan768 } from "../screens.lessThan768"
 import { screenGreaterThan1000 } from "../screens.greater.1000"
-import { USER_SERVICE_GQL } from "../../../../servers/types"
-import { SpaceFeed } from "../SpaceFeed"
+import { USER_SERVICE_GQL } from "servers/types"
 import SpaceIndexLeftBar from "./SpaceIndexLeftBar"
 import SpaceIndexFeed from "./SpaceIndexFeed"
-import StateMessage from "../../../component/stateMessage/index"
 
 const SpaceIndex = () => {
   const { user, loggedIn } = useSelector((store) => store?.userProfile)

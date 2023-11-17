@@ -1,5 +1,5 @@
 import {useState} from "react"
-import useDocTitle from "../../../hooks/useDocTitile"
+import useDocTitle from "hooks/useDocTitile"
 import {screenGreaterThan1000} from "./screens.greater.1000"
 import {screensMoreThan768} from "./screens.moreThan768"
 import {screenLessThan768} from "./screens.lessThan768"

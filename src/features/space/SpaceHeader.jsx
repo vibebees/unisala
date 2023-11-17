@@ -15,13 +15,13 @@ import {
 } from "@ionic/react"
 import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import { useSelector } from "react-redux"
-import { DeleteSpace } from "../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../servers/types"
+import { DeleteSpace } from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
 import { useMutation } from "@apollo/client"
 import { useHistory } from "react-router"
 import { useState } from "react"
-import UpdateSpaceForm from "../../component/updateSpace/UpdateSpaceForm"
-import SpaceHeaderImg from "../../../assets/space-header.jpg"
+import UpdateSpaceForm from "component/updateSpace/UpdateSpaceForm"
+import SpaceHeaderImg from "assets/space-header.jpg"
 const linearGradientStyle = {
   background: "linear-gradient(90deg, rgba(0,0,0) 20%, rgba(99,96,96,1) 62%)"
 }

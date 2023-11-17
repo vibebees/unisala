@@ -27,7 +27,7 @@ import MyNetwork from "../pages/network"
 import Notifications from "../pages/notification"
 import {StudyAbroadRoadmapInput} from "features/roadmap/template"
 import Search from "../pages/search"
-
+import SpacePage from "../pages/space"
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 const SpaceIndex = () => "SpaceIndex"
 const HomePage = lazy(() => import("../pages/home"))
@@ -39,7 +39,7 @@ const UniversityPage = () => "UniversityPage"
 // const Search = () => lazy(() => import("../pages/search"))
 const PageNotFound = () => "PageNotFound"
 const Login = () => "Login"
-const SpacePage = () => "SpacePage"
+// const SpacePage = () => "SpacePage"
 const SingleThread = () => "SingleThread"
 
 const messagingRoutes = () => (

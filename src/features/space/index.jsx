@@ -1,13 +1,13 @@
 import {useQuery} from "@apollo/client"
 import { Spaces } from "./template"
-import {USER_SERVICE_GQL} from "../../../servers/types"
+import {USER_SERVICE_GQL} from "servers/types"
 import { getAllProps } from "./getAllProps"
 import {useSelector} from "react-redux"
 
 import { getUserProfile,
   GetSpaceCategory,
   GetTopActiveSpaces
-} from "../../../graphql/user"
+} from "graphql/user"
 import {useParams} from "react-router"
 
 export default function SpacePage({allPropssetPopup}) {

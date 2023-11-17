@@ -5,18 +5,18 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent
 } from "@ionic/react"
-import CourseCard from "../../component/courseCard"
-import Thread from "../../component/thread"
+import CourseCard from "component/courseCard"
+import Thread from "component/thread"
 import { Link } from "react-router-dom"
-import {ThreadSkeleton} from "../../component/skeleton/threadSkeleton"
+import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { GetAllPostBySpaceCategoryID, GetUserPost } from "../../../graphql/user"
-import { userServer } from "../../../servers/endpoints"
-import emptyState from "../../../assets/emptyState.png"
+import { GetAllPostBySpaceCategoryID, GetUserPost } from "graphql/user"
+import { userServer } from "servers/endpoints"
+import emptyState from "assets/emptyState.png"
 import clsx from "clsx"
 
-import { USER_SERVICE_GQL } from "../../../servers/types"
-import StateMessage from "../../component/stateMessage/index"
+import { USER_SERVICE_GQL } from "servers/types"
+import StateMessage from "component/stateMessage/index"
 export const SpaceFeed = ({ userInfo, spaceId }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
