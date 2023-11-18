@@ -29,6 +29,7 @@ import Select from "react-select"
 import AsyncSelect from "react-select/async"
 import { useLocation } from "react-router"
 import { useDebouncedEffect } from "hooks/useDebouncedEffect"
+import { universityServer } from "servers/endpoints"
 
 function index() {
   const SAT_SCORES = [
@@ -223,7 +224,6 @@ function index() {
     let value
     if (identify === "state" || identify === "major") {
       value = e?.label
-      if (!value) return
     } else {
       value = e.detail.value
     }
@@ -257,7 +257,6 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
       }
 
       console.log({ value })
@@ -273,7 +272,6 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
       } else {
         if (value.max === null) {
           setCoa("35000$+")
@@ -306,7 +304,6 @@ function index() {
           color: "danger",
           mode: "ios"
         })
-        return
       }
     }
     setQueryData((prev) => ({
@@ -397,7 +394,7 @@ function index() {
     console.log("calling hai taaa")
     try {
       const response = await axios.get(
-        `http://test.unisala.com/uni/keyword/majors/${majorQuery}/10`
+        universityServer + `/keyword/majors/${majorQuery}/10`
       )
       return response.data.map((i) => ({
         value: i.name,
