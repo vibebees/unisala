@@ -1,0 +1,29 @@
+.search-results-wrapper {
+  width: calc(100% - 350px);
+}
+
+.filter-col {
+  max-width: 320px;
+  padding-inline: unset;
+  height: max-content !important;
+}
+
+.filter-col-container {
+  position: sticky;
+  top: 20px;
+}
+
+.results-col {
+  width: calc(100% - 320px);
+  padding-inline: unset;
+}
+
+.results-header-card {
+  margin-inline: auto;
+}
+
+@media screen and (max-width: 720px) {
+  .results-col {
+    margin-top: 48px;
+  }
+}

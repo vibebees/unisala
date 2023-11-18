@@ -118,7 +118,7 @@ export const googleAuthAction = ({
   present,
   dismiss,
   credential,
-  setPopoverOpen,
+  setPopoverOpen = () => {},
   moveToHome
 }) => {
   return (dispatch) =>
