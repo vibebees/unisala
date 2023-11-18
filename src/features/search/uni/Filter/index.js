@@ -381,7 +381,7 @@ function index({ setIsLoading }) {
   }
   return (
     <>
-      <IonCard className="filter-card-wrapper relative">
+      <IonCard className="filter-card-wrapper  relative">
         {isFiltered &&
           (loading ? (
             <IonSpinner name="crescent"></IonSpinner>
@@ -431,7 +431,7 @@ function index({ setIsLoading }) {
               ></IonRadio>
             </IonRadioGroup>
 
-            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+            <IonRadioGroup className="mt-7" allowEmptySelection={false}>
               <h2 className="search-control__label">Level of tuition</h2>
               <br />
 
@@ -453,7 +453,7 @@ function index({ setIsLoading }) {
               ></IonRadio>
             </IonRadioGroup>
 
-            <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+            <IonRadioGroup className="mt-7" allowEmptySelection={false}>
               <h2 className="search-control__label">
                 Are you planning to stay
               </h2>
@@ -478,7 +478,7 @@ function index({ setIsLoading }) {
             </IonRadioGroup>
 
             {showFamily && (
-              <IonRadioGroup className="mt-4" allowEmptySelection={false}>
+              <IonRadioGroup className="mt-7" allowEmptySelection={false}>
                 <h2 className="search-control__label">Staying </h2>
                 <br />
 
@@ -493,6 +493,7 @@ function index({ setIsLoading }) {
 
                 <IonText className="mx-3">Without roommates</IonText>
                 <IonRadio
+                  className="text-sm"
                   onIonFocus={(e) => {
                     handleStaticData(e, "family")
                   }}
@@ -505,7 +506,7 @@ function index({ setIsLoading }) {
           <div className="search-control ">
             <h2 className="search-control__label">Test scores</h2>
             {!queryData?.act && (
-              <>
+              <div className="mt-4">
                 <IonLabel>SAT:</IonLabel>
                 <IonSelect
                   interface="popover"
@@ -519,10 +520,10 @@ function index({ setIsLoading }) {
                     </IonSelectOption>
                   ))}
                 </IonSelect>
-              </>
+              </div>
             )}
             {!queryData?.sat && (
-              <>
+              <div className="mt-4">
                 <IonLabel className="mt-4">ACT:</IonLabel>
                 <IonSelect
                   interface="popover"
@@ -536,7 +537,7 @@ function index({ setIsLoading }) {
                     </IonSelectOption>
                   ))}
                 </IonSelect>
-              </>
+              </div>
             )}
           </div>
 
@@ -612,6 +613,7 @@ function index({ setIsLoading }) {
               menuPlacement="top"
               ref={majorInputRef}
               onChange={(e) => handleData(e, "major")}
+              className="mt-2"
             />
           </div>
 

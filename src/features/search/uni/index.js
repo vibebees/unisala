@@ -62,7 +62,7 @@ function index({ query }) {
                   </IonMenuToggle>
                 </IonToolbar>
               </IonHeader>
-              <IonCol className="filter-col">
+              <IonCol className="filter-col absolute top-10 z-[1000]">
                 <Filter setIsLoading={setIsLoading} />
               </IonCol>
             </IonMenu>
