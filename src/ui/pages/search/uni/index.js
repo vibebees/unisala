@@ -44,7 +44,7 @@ function index({ query }) {
 
   return (
     <>
-      <IonRow>
+      <IonRow className="">
         {windowWidth > 768 ? (
           <IonCol className="filter-col">
             <Filter setIsLoading={setIsLoading} />
@@ -52,7 +52,7 @@ function index({ query }) {
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="" contentId="main-content">
+            <IonMenu className="w-full h-[1196px]" contentId="main-content">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
@@ -63,7 +63,7 @@ function index({ query }) {
                   </IonMenuToggle>
                 </IonToolbar>
               </IonHeader>
-              <IonCol className="max-h-max filter-col">
+              <IonCol className="filter-col">
                 <Filter setIsLoading={setIsLoading} />
               </IonCol>
             </IonMenu>
