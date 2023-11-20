@@ -33,6 +33,7 @@ import {
   SAT_SCORES,
   TUITION
 } from "./constants"
+import { universityServer } from "servers/endpoints"
 
 function index({ setIsLoading }) {
   const [present, dismiss] = useIonToast()
@@ -357,7 +358,7 @@ function index({ setIsLoading }) {
     console.log("calling hai taaa")
     try {
       const response = await axios.get(
-        `http://test.unisala.com/uni/keyword/majors/${majorQuery}/10`
+        `${universityServer}/keyword/spaces/${majorQuery}/5`
       )
       return response.data.map((i) => ({
         value: i.name,
