@@ -83,26 +83,6 @@ export const APPLICATION_FEES = [
   }
 ]
 
-export const INITIAL_QUERY_DATA = {
-  sat: null,
-  act: null,
-  page: 1,
-  pageSize: 10,
-  state: null,
-  major: null,
-  graduateApplicationFee: null,
-  undergraduateApplicationFee: null,
-  undergraduateInStateTuitionFee: null,
-  undergraduateOutOfStateTuitionFee: null,
-  graduateInStateTuitionFee: null,
-  graduateOutOfStateTuitionFee: null,
-  undergraduateOnCampusInStateCostOfAttendance: null,
-  undergraduateOnCampusOutOfStateCostOfAttendance: null,
-  undergraduateOffCampusWithFamilyInStateCostOfAttendance: null,
-  undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: null,
-  undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
-  undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
-}
 export const TUITION = [
   {
     min: 0,
