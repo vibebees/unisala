@@ -19,6 +19,7 @@ import ProfilePop from "./profilePop"
 import { useSelector } from "react-redux"
 import { SearchBar } from "./searchBox"
 import CustomTrackingLink from "features/analytics/LinkTrack"
+import { ButtonTrack } from "features/analytics/ButtonTrack"
 
 const Nav = ({ allProps }) => {
   const {
@@ -36,6 +37,13 @@ const Nav = ({ allProps }) => {
   const openPopover = (e) => {
       popover.current.event = e
       setPopoverOpen(true)
+      let data = {
+        from: window.location.pathname,
+        timeStamp: new Date().toISOString(),
+        description: "Profile button clicked",
+        to: "/profile"
+      }
+      ButtonTrack(data)
     },
     unreadMessagesCount =
       0 || useSelector((state) => state?.userProfile?.unreadMessages?.length)
