@@ -5,6 +5,7 @@ import {
   IonLabel,
   IonRadio,
   IonRadioGroup,
+  IonRow,
   IonSelect,
   IonSelectOption,
   IonSpinner,
@@ -480,28 +481,28 @@ function index({ setIsLoading }) {
 
             {showFamily && (
               <IonRadioGroup className="mt-7" allowEmptySelection={false}>
-                <h2 className="search-control__label">Staying </h2>
-                <br />
+                <h2 className="search-control__label">Staying</h2>
 
-                <IonText className="mr-3">With roommates</IonText>
-                <IonRadio
-                  className="text-sm"
-                  onIonFocus={(e) => {
-                    handleStaticData(e, "family")
-                  }}
-                  value="WithFamily"
-                ></IonRadio>
+                <IonRow>
+                  <IonText className="mr-3">With roommates</IonText>
+                  <IonRadio
+                    className="text-sm"
+                    onIonFocus={(e) => handleStaticData(e, "family")}
+                    value="WithFamily"
+                  />
+                </IonRow>
 
-                <IonText className="mx-3">Without roommates</IonText>
-                <IonRadio
-                  className="text-sm"
-                  onIonFocus={(e) => {
-                    handleStaticData(e, "family")
-                  }}
-                  value="NotWithFamily"
-                ></IonRadio>
+                <IonRow>
+                  <IonText className="mr-3">Without roommates</IonText>
+                  <IonRadio
+                    className="text-sm"
+                    onIonFocus={(e) => handleStaticData(e, "family")}
+                    value="NotWithFamily"
+                  />
+                </IonRow>
               </IonRadioGroup>
             )}
+
           </div>
 
           <div className="search-control ">
