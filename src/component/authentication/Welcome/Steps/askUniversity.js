@@ -71,7 +71,7 @@ const AskUniversity = ({ question }) => {
       setWelcomeFormdata,
       welcomeFormdata
     } = useContext(WelcomeData),
-    [searcTerm, setSearchTerm] = useState(""),
+    [searcTerm, setSearchTerm] = useState(" "),
     token = useSelector((state) => state?.auth?.accessToken),
     [isLoading, setIsLoading] = useState(false),
     { text, description } = question,

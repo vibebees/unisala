@@ -61,7 +61,7 @@ const Index = ({ allProps }) => {
     )
   }
   return (
-    <IonModal ref={modalRef} isOpen={newUser}>
+    <IonModal ref={modalRef} >
       <WelcomeData.Provider
         value={{ data, welcomeFormdata, setWelcomeFormdata }}
       >

@@ -355,7 +355,7 @@ function index({ setIsLoading }) {
 
   // to fetch majors information
 
-  const fetchModel = async (majorQuery) => {
+  const fetchModel = async (majorQuery = " ") => {
     console.log("calling hai taaa")
     try {
       const response = await axios.get(
