@@ -1,4 +1,4 @@
-import {useState, useRef, useEffect} from "react"
+import { useState, useRef, useEffect } from "react"
 import {
   IonGrid,
   IonRow,
@@ -14,21 +14,31 @@ import {
   people,
   personCircle
 } from "ionicons/icons"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import ProfilePop from "./profilePop"
-import {useSelector} from "react-redux"
-import {SearchBar} from "./searchBox"
+import { useSelector } from "react-redux"
+import { SearchBar } from "./searchBox"
+import CustomTrackingLink from "features/analytics/LinkTrack"
 
-const Nav = ({allProps}) => {
-
-  const {setActive, setPopoverOpen = () => {}, popover, decode, navigation, activeNavDrop, active, popoverOpen, setActiveNavDrop} = allProps
+const Nav = ({ allProps }) => {
+  const {
+    setActive,
+    setPopoverOpen = () => {},
+    popover,
+    decode,
+    navigation,
+    activeNavDrop,
+    active,
+    popoverOpen,
+    setActiveNavDrop
+  } = allProps
 
   const openPopover = (e) => {
-    popover.current.event = e
-    setPopoverOpen(true)
-  },
-    unreadMessagesCount = 0 || useSelector((state) => state?.userProfile?.unreadMessages?.length)
-
+      popover.current.event = e
+      setPopoverOpen(true)
+    },
+    unreadMessagesCount =
+      0 || useSelector((state) => state?.userProfile?.unreadMessages?.length)
 
   useEffect(() => {
     setActive(window.location.pathname)
@@ -71,18 +81,21 @@ const Nav = ({allProps}) => {
               }}
             />
           </Link>
-          <div style={{width: "100%"}}>
+          <div style={{ width: "100%" }}>
             <SearchBar />
           </div>
         </div>
-        <IonRow style={{display: "inline-flex", gap: "2.5rem"}}>
+        <IonRow style={{ display: "inline-flex", gap: "2.5rem" }}>
           {decode &&
             navigation.map((item, index) => {
               return (
-                <div key={index} style={{cursor: "pointer"}} className="flex">
-                  <Link
+                <div key={index} style={{ cursor: "pointer" }} className="flex">
+                  <CustomTrackingLink
                     to={item?.link}
-                    onClick={() => setActive(`${item?.link}`)}
+                    destination={item?.link}
+                    customFunction={() => {
+                      setActive(`${item?.link}`)
+                    }}
                   >
                     <div
                       style={{
@@ -93,7 +106,7 @@ const Nav = ({allProps}) => {
                         gap: "3px"
                       }}
                     >
-                      <div style={{display: "flex", alignItems: "center"}}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
                         <IonIcon
                           style={{
                             fontSize: "25px"
@@ -117,7 +130,7 @@ const Nav = ({allProps}) => {
                         </p>
                       </IonText>
                     </div>
-                  </Link>
+                  </CustomTrackingLink>
                 </div>
               )
             })}
@@ -135,13 +148,13 @@ const Nav = ({allProps}) => {
             }}
           >
             <IonIcon
-              style={{fontSize: "25px"}}
+              style={{ fontSize: "25px" }}
               color={active?.includes("@") ? "dark" : "medium"}
               icon={personCircle}
             />
 
             <IonText color={activeNavDrop.profile ? "dark" : "medium"}>
-              <p style={{margin: 0, fontSize: "14px"}}>My profile</p>
+              <p style={{ margin: 0, fontSize: "14px" }}>My profile</p>
             </IonText>
           </div>
           <IonPopover
@@ -151,9 +164,7 @@ const Nav = ({allProps}) => {
               setPopoverOpen(false)
             }}
           >
-            <ProfilePop
-              allProps={{...allProps, authFromPopUp: true}}
-            />
+            <ProfilePop allProps={{ ...allProps, authFromPopUp: true }} />
           </IonPopover>
         </IonRow>
       </IonRow>
