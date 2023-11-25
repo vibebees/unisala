@@ -1,5 +1,6 @@
 import React from "react"
 import { useHistory, useLocation } from "react-router-dom"
+import ReactGA from "react-ga4"
 const CustomTrackingLink = ({
   to,
   children,
@@ -13,14 +14,13 @@ const CustomTrackingLink = ({
   const trackDestination = () => {
     let currentPath = location.pathname
     customFunction && customFunction()
-    let data = {
+    ReactGA.send({
+      hitType: "pageview",
+      page: destination,
+      title: description,
       from: currentPath,
-      timeStamp: new Date().toISOString(),
-      description: description,
-      to: destination
-    }
-
-    console.log(data)
+      timeStamp: new Date()
+    })
 
     history.push(to)
   }
