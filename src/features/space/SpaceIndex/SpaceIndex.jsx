@@ -7,8 +7,7 @@ import { useSelector } from "react-redux"
 import {
   GenerateSpaceNewsFeed,
   GetOwnSpace,
-  GetTopActiveSpaces,
-  GetUserPost
+  GetTopActiveSpaces
 } from "graphql/user"
 import UnisalaIntro from "../UnisalaIntro"
 import { screenLessThan768 } from "../screens.lessThan768"
