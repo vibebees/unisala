@@ -15,7 +15,8 @@ const SpacePage = lazy(() => import("../pages/space"))
 const UniversityPage = lazy(() => import("../features/university/index"))
 const Login = lazy(() => import("../pages/login"))
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
-const SpaceIndex = lazy(() => () => "SpaceIndex") // If SpaceIndex is a component, otherwise keep as it is
+const SpaceIndex = lazy(() => import("../pages/space"))
+
 const HomePage = lazy(() => import("../pages/home"))
 const ThreadDetail = lazy(() => import("../pages/thread.detail"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
