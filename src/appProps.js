@@ -22,7 +22,7 @@ export default function AppProps() {
       {
         name: "Explore Universities",
         icon: navigateCircle,
-        link: "search?tab=uni"
+        link: "/search?tab=uni"
       },
       {
         name: "My Network",

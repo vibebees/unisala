@@ -1,18 +1,21 @@
-import {IonIcon, IonItem, IonAvatar, IonLabel, IonButtons} from "@ionic/react"
-import {logOut} from "ionicons/icons"
+import { IonIcon, IonItem, IonAvatar, IonLabel, IonButtons } from "@ionic/react"
+import { logOut } from "ionicons/icons"
 import "./index.css"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import Authentication from "../authentication"
-import {useEffect} from "react"
-import {useSelector} from "react-redux"
-import {Avatar} from "../Avatar"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Avatar } from "../Avatar"
+import CustomTrackingLink from "features/analytics/LinkTrack"
 
-export const ProfilePop = ({allProps}) => {
-  const {setPopoverOpen = () => {},
+export const ProfilePop = ({ allProps }) => {
+  const {
+    setPopoverOpen = () => {},
     setActiveNavDrop = () => {},
     activeNavDrop = {},
-    setActive = () => {}} = allProps
-  const {user, loggedIn} = useSelector((state) => state.userProfile)
+    setActive = () => {}
+  } = allProps
+  const { user, loggedIn } = useSelector((state) => state.userProfile)
   const profilePic = user?.picture
 
   useEffect(() => {
@@ -24,14 +27,16 @@ export const ProfilePop = ({allProps}) => {
   }, [loggedIn])
 
   if (!loggedIn) {
-    return (
-      <Authentication allProps = {allProps} />
-    )
+    return <Authentication allProps={allProps} />
   }
 
   return (
     <>
-      <Link to={`/@/${user?.username}`}>
+      <CustomTrackingLink
+        to={`/@/${user?.username}`}
+        destination={user?.name}
+        description="Navigating to profile page"
+      >
         <IonItem
           button
           detail={false}
@@ -57,7 +62,7 @@ export const ProfilePop = ({allProps}) => {
             </h2>
           </IonLabel>
         </IonItem>
-      </Link>
+      </CustomTrackingLink>
       <div className="profile-drop-div">
         <IonButtons
           onClick={() => {

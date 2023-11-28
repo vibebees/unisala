@@ -14,11 +14,11 @@ import {
 } from "@ionic/react"
 import { WelcomeData } from ".."
 import axios from "axios"
- import Noimagefound from "../../../../assets/no_image_found.png"
+import Noimagefound from "../../../../assets/no_image_found.png"
 import clsx from "clsx"
 import { useSelector } from "react-redux"
-import {useDebouncedEffect} from "hooks/useDebouncedEffect"
-import {universityServer} from "servers/endpoints"
+import { useDebouncedEffect } from "hooks/useDebouncedEffect"
+import { universityServer } from "servers/endpoints"
 
 const QuestionHeader = ({ text }) => (
   <>
@@ -71,7 +71,7 @@ const AskUniversity = ({ question }) => {
       setWelcomeFormdata,
       welcomeFormdata
     } = useContext(WelcomeData),
-    [searcTerm, setSearchTerm] = useState(""),
+    [searcTerm, setSearchTerm] = useState("uni"),
     token = useSelector((state) => state?.auth?.accessToken),
     [isLoading, setIsLoading] = useState(false),
     { text, description } = question,
@@ -98,7 +98,7 @@ const AskUniversity = ({ question }) => {
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/schoolname/${searcTerm}/5`,
+        `${universityServer}/keyword/schoolname/${searcTerm.trim()}/5`,
         {
           headers: {
             Authorization: `Bearer ${token}`
