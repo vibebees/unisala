@@ -1,3 +1,5 @@
+// chips change bhayes use effect run bhayera fetch bhairaxa
+
 import {
   IonButton,
   IonCard,
@@ -36,7 +38,27 @@ import {
 } from "./constants"
 import { universityServer } from "servers/endpoints"
 
-function index({ setIsLoading }) {
+function index({ setIsLoading, filterPage }) {
+  const INITIAL_QUERY_DATA = {
+    sat: null,
+    act: null,
+    page: filterPage,
+    pageSize: 10,
+    state: null,
+    major: null,
+    graduateApplicationFee: null,
+    undergraduateApplicationFee: null,
+    undergraduateInStateTuitionFee: null,
+    undergraduateOutOfStateTuitionFee: null,
+    graduateInStateTuitionFee: null,
+    graduateOutOfStateTuitionFee: null,
+    undergraduateOnCampusInStateCostOfAttendance: null,
+    undergraduateOnCampusOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
+  }
   const [present, dismiss] = useIonToast()
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
@@ -60,13 +82,39 @@ function index({ setIsLoading }) {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const [getScholarship, { data, loading, refetch }] = useLazyQuery(
+  const [getScholarship, { data, loading, fetchMore }] = useLazyQuery(
     UniFilterResults,
     {
       context: { server: UNIVERSITY_SERVICE_GQL },
-      fetchPolicy: "no-cache"
+      fetchPolicy: "network-only"
     }
   )
+
+  // fetch data when page is changed
+  useEffect(() => {
+    if (filterPage > 1 && isFiltered) {
+      fetchMore({
+        variables: {
+          page: filterPage
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          console.log({ prev, fetchMoreResult })
+          if (!fetchMoreResult) return prev
+          return {
+            searchUniversity: [
+              ...prev.searchUniversity,
+              ...fetchMoreResult.searchUniversity
+            ]
+          }
+        }
+      })
+
+      setQueryData((prev) => ({
+        ...prev,
+        page: filterPage
+      }))
+    }
+  }, [filterPage])
 
   // to show skeleton text when filter related data are loading
   useEffect(() => {
@@ -80,7 +128,6 @@ function index({ setIsLoading }) {
         queryObject[key] = JSON.parse(value)
       }
     }
-
     // only make query if user  comes with filter related url
     console.log({ queryObject })
     if (Object.keys(queryObject).length > 0) {
@@ -112,7 +159,7 @@ function index({ setIsLoading }) {
         deleteKeys.push(key)
       }
     })
-    console.log(deleteKeys)
+
     deleteKeys.forEach((key) => {
       console.log(key)
       searchParam.delete(key)
@@ -126,39 +173,50 @@ function index({ setIsLoading }) {
   }
 
   // this function is trigger when cross icon on a chip is pressed
-  const removeSpeceficFilter = (chip) => {
+  const removeSpeceficFilter = async (chip) => {
     removeOneQueryParam(chip)
     const filteredChips = chips.filter((c) => c !== chip)
     setChips(filteredChips)
     setQueryData((prev) => ({ ...prev, [chip]: null }))
+
+    if (filteredChips.length > 0) {
+      getScholarship({
+        variables: { ...queryData, [chip]: null }
+      })
+      setIsFiltered(true)
+    } else {
+      const searchValue = searchParam.get("q")
+      const { data } = await GetUni({
+        variables: { name: searchValue || "" }
+      })
+
+      dispatch(searchGetSuccess(data?.searchSchool))
+      setIsFiltered(false)
+    }
   }
 
-  // query when individual chips get changed
-  useEffect(() => {
-    //  if there are more chips left it means there is still applied filters
-    const fetch = async () => {
-      console.log("fetcjingggggggggg")
-      if (chips.length > 0) {
-        const { data } = await getScholarship({
-          variables: queryData
-        })
-        setIsFiltered(true)
-        console.log(data, "hehhhehhehehehheh")
-      } else {
-        const searchValue = searchParam.get("q")
-        const { data } = await GetUni({
-          variables: { name: searchValue || "" }
-        })
-        console.log("hihihihihihi")
-        dispatch(searchGetSuccess(data?.searchSchool))
-        setIsFiltered(false)
-      }
-    }
-    fetch()
-  }, [chips])
+  // useEffect(() => {
+  //   //  if there are more chips left it means there is still applied filters
+  //   const fetch = async () => {
+  //     if (chips.length > 0) {
+  //       const { data } = await getScholarship({
+  //         variables: queryData
+  //       })
+  //       setIsFiltered(true)
+  //     } else {
+  //       const searchValue = searchParam.get("q")
+  //       const { data } = await GetUni({
+  //         variables: { name: searchValue || "" }
+  //       })
+
+  //       dispatch(searchGetSuccess(data?.searchSchool))
+  //       setIsFiltered(false)
+  //     }
+  //   }
+  //   fetch()
+  // }, [])
 
   const handleData = (e, identify) => {
-    console.log("entered hande data")
     let value
     if (identify === "state" || identify === "major") {
       value = e?.label
@@ -266,7 +324,7 @@ function index({ setIsLoading }) {
       ...prev,
       [identify]: value
     }))
-    getScholarship({ variables: { ...queryData, [identify]: value } })
+    // getScholarship({ variables: { ...queryData, [identify]: value } })
     setIsFiltered(true)
     setChips((prev) => {
       if (!prev.includes(identify)) {
@@ -383,7 +441,7 @@ function index({ setIsLoading }) {
   }
   return (
     <>
-      <IonCard className="filter-card-wrapper  relative">
+      <IonCard className="filter-card-wrapper  sticky top-0 left-0">
         {isFiltered &&
           (loading ? (
             <IonSpinner name="crescent"></IonSpinner>
@@ -632,6 +690,16 @@ function index({ setIsLoading }) {
             />
           </div>
         </IonCardContent>
+
+        <IonButton
+          onClick={() =>
+            getScholarship({
+              variables: queryData
+            })
+          }
+        >
+          Filter
+        </IonButton>
       </IonCard>
     </>
   )

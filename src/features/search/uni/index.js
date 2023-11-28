@@ -41,12 +41,14 @@ function index({ query }) {
     dispatch(searchGetSuccess(data?.searchSchool))
   }, [data])
 
+  const [filterPage, setFilterPage] = useState(1)
+
   return (
     <>
       <IonRow className="">
         {windowWidth > 768 ? (
           <IonCol className="filter-col">
-            <Filter setIsLoading={setIsLoading} />
+            <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
           // this is for smaller screens
@@ -63,7 +65,7 @@ function index({ query }) {
                 </IonToolbar>
               </IonHeader>
               <IonCol className="filter-col absolute top-10 z-[1000]">
-                <Filter setIsLoading={setIsLoading} />
+                <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
               </IonCol>
             </IonMenu>
             <IonPage id="main-content">
@@ -82,7 +84,10 @@ function index({ query }) {
           {loading || isLoading ? (
             Array.from({ length: 3 }).map((_, i) => <ThreadSkeleton key={i} />)
           ) : (
-            <SearchResults />
+            <SearchResults
+              filterPage={filterPage}
+              setFilterPage={setFilterPage}
+            />
           )}
         </IonCol>
       </IonRow>
