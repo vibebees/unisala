@@ -1,3 +1,5 @@
+// chips change bhayes use effect run bhayera fetch bhairaxa
+
 import {
   IonButton,
   IonCard,
@@ -78,7 +80,7 @@ function index({ setIsLoading, filterPage }) {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const [getScholarship, { data, loading, refetch, fetchMore }] = useLazyQuery(
+  const [getScholarship, { data, loading, fetchMore }] = useLazyQuery(
     UniFilterResults,
     {
       context: { server: UNIVERSITY_SERVICE_GQL },
@@ -124,7 +126,6 @@ function index({ setIsLoading, filterPage }) {
         queryObject[key] = JSON.parse(value)
       }
     }
-
     // only make query if user  comes with filter related url
     console.log({ queryObject })
     if (Object.keys(queryObject).length > 0) {
@@ -156,7 +157,7 @@ function index({ setIsLoading, filterPage }) {
         deleteKeys.push(key)
       }
     })
-    console.log(deleteKeys)
+
     deleteKeys.forEach((key) => {
       console.log(key)
       searchParam.delete(key)
@@ -170,39 +171,50 @@ function index({ setIsLoading, filterPage }) {
   }
 
   // this function is trigger when cross icon on a chip is pressed
-  const removeSpeceficFilter = (chip) => {
+  const removeSpeceficFilter = async (chip) => {
     removeOneQueryParam(chip)
     const filteredChips = chips.filter((c) => c !== chip)
     setChips(filteredChips)
     setQueryData((prev) => ({ ...prev, [chip]: null }))
+
+    if (filteredChips.length > 0) {
+      getScholarship({
+        variables: { ...queryData, [chip]: null }
+      })
+      setIsFiltered(true)
+    } else {
+      const searchValue = searchParam.get("q")
+      const { data } = await GetUni({
+        variables: { name: searchValue || "" }
+      })
+
+      dispatch(searchGetSuccess(data?.searchSchool))
+      setIsFiltered(false)
+    }
   }
 
-  // query when individual chips get changed
-  useEffect(() => {
-    //  if there are more chips left it means there is still applied filters
-    const fetch = async () => {
-      console.log("fetcjingggggggggg", queryData)
-      if (chips.length > 0) {
-        const { data } = await getScholarship({
-          variables: queryData
-        })
-        setIsFiltered(true)
-        console.log(data, "hehhhehhehehehheh")
-      } else {
-        const searchValue = searchParam.get("q")
-        const { data } = await GetUni({
-          variables: { name: searchValue || "" }
-        })
-        console.log("hihihihihihi")
-        dispatch(searchGetSuccess(data?.searchSchool))
-        setIsFiltered(false)
-      }
-    }
-    fetch()
-  }, [chips])
+  // useEffect(() => {
+  //   //  if there are more chips left it means there is still applied filters
+  //   const fetch = async () => {
+  //     if (chips.length > 0) {
+  //       const { data } = await getScholarship({
+  //         variables: queryData
+  //       })
+  //       setIsFiltered(true)
+  //     } else {
+  //       const searchValue = searchParam.get("q")
+  //       const { data } = await GetUni({
+  //         variables: { name: searchValue || "" }
+  //       })
+
+  //       dispatch(searchGetSuccess(data?.searchSchool))
+  //       setIsFiltered(false)
+  //     }
+  //   }
+  //   fetch()
+  // }, [])
 
   const handleData = (e, identify) => {
-    console.log("entered hande data")
     let value
     if (identify === "state" || identify === "major") {
       value = e?.label
@@ -310,7 +322,7 @@ function index({ setIsLoading, filterPage }) {
       ...prev,
       [identify]: value
     }))
-    getScholarship({ variables: { ...queryData, [identify]: value } })
+    // getScholarship({ variables: { ...queryData, [identify]: value } })
     setIsFiltered(true)
     setChips((prev) => {
       if (!prev.includes(identify)) {
@@ -676,6 +688,16 @@ function index({ setIsLoading, filterPage }) {
             />
           </div>
         </IonCardContent>
+
+        <IonButton
+          onClick={() =>
+            getScholarship({
+              variables: queryData
+            })
+          }
+        >
+          Filter
+        </IonButton>
       </IonCard>
     </>
   )
