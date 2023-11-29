@@ -356,10 +356,9 @@ function index({ setIsLoading }) {
   // to fetch majors information
 
   const fetchModel = async (majorQuery = " ") => {
-    console.log("calling hai taaa")
     try {
       const response = await axios.get(
-        `${universityServer}/keyword/spaces/${majorQuery}/5`
+        `${universityServer}/keyword/majors/${majorQuery}/5`
       )
       return response.data.map((i) => ({
         value: i.name,
