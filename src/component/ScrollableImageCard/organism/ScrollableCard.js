@@ -4,7 +4,7 @@ import { IonCardContent, IonText, IonGrid, IonIcon } from "@ionic/react"
 import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons"
 import similarCollege from "./similarCollege.css"
 import clsx from "clsx"
-import { Link } from "react-router-dom"
+import CustomTrackingLink from "features/analytics/LinkTrack"
 
 const ScrollableCard = ({ allProps }) => {
   const { title, data, className } = allProps
@@ -42,13 +42,14 @@ const ScrollableCard = ({ allProps }) => {
         >
           {data?.map((item, index) => {
             return (
-              <Link
+              <CustomTrackingLink
                 to={"/university/" + item?.name}
-                className="block h-full"
                 key={index}
+                destination={"/university"}
+                description={"clicked on university card"}
               >
                 <SingleImageCard key={index} allProps={item} />
-              </Link>
+              </CustomTrackingLink>
             )
           })}
         </div>

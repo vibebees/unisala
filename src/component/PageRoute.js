@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react"
 import { Redirect, Route, Switch } from "react-router"
 
 import PreLoader from "./preloader"
- import ProtectedRoute from "utils/lib/protectedRoute"
+import ProtectedRoute from "utils/lib/protectedRoute"
 
 const ProfilePage = lazy(() => import("../pages/user.profile"))
 const Messages = lazy(() => import("../pages/message"))
@@ -20,8 +20,6 @@ const SpaceIndex = lazy(() => import("../pages/space"))
 const HomePage = lazy(() => import("../pages/home"))
 const ThreadDetail = lazy(() => import("../pages/thread.detail"))
 const PageNotFound = lazy(() => import("./PageNotFound"))
-
-
 
 const messagingRoutes = () => (
   <>
@@ -58,7 +56,7 @@ export const PageRoute = ({ allProps }) => (
       </Route>
 
       <Route path="/myjourney" exact>
-        <StudyAbroadRoadmapInput/>
+        <StudyAbroadRoadmapInput />
       </Route>
 
       <Route exact path="/home">
