@@ -5,7 +5,9 @@ import React from "react"
 const Chip = ({ label, removeSpeceficFilter }) => {
   return (
     <IonChip>
-      <IonLabel className="text-xs text-black font-medium">{label}</IonLabel>
+      <IonLabel className="text-xs text-black font-medium text-">
+        {label.length > 30 ? label.substring(0, 30) + "..." : label}
+      </IonLabel>
       <IonIcon
         onClick={() => removeSpeceficFilter(label)}
         icon={closeOutline}

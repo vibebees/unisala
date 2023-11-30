@@ -39,7 +39,7 @@ function index({ query }) {
   })
   useEffect(() => {
     dispatch(searchGetSuccess(data?.searchSchool))
-  }, [data])
+  }, [])
 
   const [filterPage, setFilterPage] = useState(1)
 

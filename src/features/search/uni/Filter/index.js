@@ -123,7 +123,11 @@ function index({ setIsLoading, filterPage }) {
     const queryObject = {}
     for (const [key, value] of searchParam) {
       if (key !== "tab" && key !== "q") {
-        queryObject[key] = JSON.parse(value)
+        try {
+          queryObject[key] = JSON.parse(value)
+        } catch (error) {
+          return
+        }
       }
     }
     // only make query if user  comes with filter related url
@@ -131,7 +135,6 @@ function index({ setIsLoading, filterPage }) {
     if (Object.keys(queryObject).length > 0) {
       setIsFiltered(true)
       setChips(Object.keys(queryObject))
-      console.log(chips)
       setQueryData((prev) => ({ ...prev, ...queryObject }))
 
       getScholarship({
@@ -193,27 +196,6 @@ function index({ setIsLoading, filterPage }) {
     }
   }
 
-  // useEffect(() => {
-  //   //  if there are more chips left it means there is still applied filters
-  //   const fetch = async () => {
-  //     if (chips.length > 0) {
-  //       const { data } = await getScholarship({
-  //         variables: queryData
-  //       })
-  //       setIsFiltered(true)
-  //     } else {
-  //       const searchValue = searchParam.get("q")
-  //       const { data } = await GetUni({
-  //         variables: { name: searchValue || "" }
-  //       })
-
-  //       dispatch(searchGetSuccess(data?.searchSchool))
-  //       setIsFiltered(false)
-  //     }
-  //   }
-  //   fetch()
-  // }, [])
-
   const handleData = (e, identify) => {
     let value
     if (identify === "state" || identify === "major") {
@@ -255,8 +237,6 @@ function index({ setIsLoading, filterPage }) {
         })
         return false
       }
-
-      console.log({ value })
     }
 
     if (identify === "coa") {
@@ -317,7 +297,6 @@ function index({ setIsLoading, filterPage }) {
         return
       }
     }
-    console.log("updating query state")
     setQueryData((prev) => ({
       ...prev,
       [identify]: value
@@ -341,12 +320,14 @@ function index({ setIsLoading, filterPage }) {
       setShowFamily(false)
     }
   }, [accomodation])
+
   useEffect(() => {
     // map the array to align with the data structure of unfiltered universities
     const d = data?.searchUniversity?.map((item) => ({
       ...item.elevatorInfo,
       ...item.studentCharges
     }))
+    console.log("data changedffffffff")
     dispatch(searchGetSuccess(d))
   }, [data])
 
