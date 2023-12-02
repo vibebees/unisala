@@ -23,14 +23,16 @@ import { useLazyQuery, useQuery } from "@apollo/client"
 import { UniSearchDataList } from "graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
-import { useHistory, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import { closeOutline } from "ionicons/icons"
+import { INITIAL_QUERY_DATA } from "./Filter/constants"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+  const [filtered, setFiltered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
@@ -43,17 +45,27 @@ function index({ query }) {
 
   const [filterPage, setFilterPage] = useState(1)
 
+  useEffect(() => {
+    for (const [key, value] of searchParams) {
+      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
+        setFiltered(true)
+      } else {
+        setFiltered(false)
+      }
+    }
+  }, [searchParams])
+
   return (
     <>
-      <IonRow className="">
+      <div className={`${filtered ? "flex" : "block"}`}>
         {windowWidth > 768 ? (
-          <IonCol className="filter-col">
+          <IonCol className="filter-col ">
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="w-full h-[1196px]" contentId="main-content">
+            <IonMenu className="w-full h-[1196px" contentId="main-content">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
@@ -90,7 +102,7 @@ function index({ query }) {
             />
           )}
         </IonCol>
-      </IonRow>
+      </div>
     </>
   )
 }

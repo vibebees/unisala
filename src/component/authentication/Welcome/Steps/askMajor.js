@@ -109,7 +109,7 @@ const SecondStep = ({ question }) => {
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/spaces/${searchTerm}/4`,
+        `${universityServer}/keyword/majors/${searchTerm}/4`,
         {
           headers: {
             Authorization: `Bearer ${token}`
