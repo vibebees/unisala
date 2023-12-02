@@ -141,6 +141,7 @@ function index({ setIsLoading }) {
   const removeSpeceficFilter = (chip) => {
     removeOneQueryParam(chip)
     const filteredChips = chips.filter((c) => c !== chip)
+
     setChips(filteredChips)
     setQueryData((prev) => ({ ...prev, [chip]: null }))
   }
@@ -345,7 +346,7 @@ function index({ setIsLoading }) {
   //  this method is for removing data like level of study, level of tuition and accomodations because if this changes, the query inputs wont align so first remove all then add
   const handleStaticData = (e, type) => {
     const val = e.target.value
-    removeFilter()
+
     switch (type) {
       case "degree":
         setDegree(val)
