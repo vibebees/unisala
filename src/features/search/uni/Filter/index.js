@@ -38,9 +38,29 @@ import {
 import { universityServer } from "servers/endpoints"
 import useWindowWidth from "hooks/useWindowWidth"
 
-function index({ setIsLoading }) {
+function index({ setIsLoading, filterPage }) {
   const windowWidth = useWindowWidth()
 
+  const INITIAL_QUERY_DATA = {
+    sat: null,
+    act: null,
+    page: filterPage,
+    pageSize: 10,
+    state: null,
+    major: null,
+    graduateApplicationFee: null,
+    undergraduateApplicationFee: null,
+    undergraduateInStateTuitionFee: null,
+    undergraduateOutOfStateTuitionFee: null,
+    graduateInStateTuitionFee: null,
+    graduateOutOfStateTuitionFee: null,
+    undergraduateOnCampusInStateCostOfAttendance: null,
+    undergraduateOnCampusOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusWithFamilyOutOfStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyInStateCostOfAttendance: null,
+    undergraduateOffCampusNotWithFamilyOutOfStateCostOfAttendance: null
+  }
   const [present, dismiss] = useIonToast()
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
@@ -65,13 +85,39 @@ function index({ setIsLoading }) {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const [getScholarship, { data, loading, refetch }] = useLazyQuery(
+  const [getScholarship, { data, loading, refetch, fetchMore }] = useLazyQuery(
     UniFilterResults,
     {
       context: { server: UNIVERSITY_SERVICE_GQL },
-      fetchPolicy: "no-cache"
+      fetchPolicy: "network-only"
     }
   )
+
+  // fetch data when page is changed
+  useEffect(() => {
+    if (filterPage > 1 && isFiltered) {
+      fetchMore({
+        variables: {
+          page: filterPage
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          console.log({ prev, fetchMoreResult })
+          if (!fetchMoreResult) return prev
+          return {
+            searchUniversity: [
+              ...prev.searchUniversity,
+              ...fetchMoreResult.searchUniversity
+            ]
+          }
+        }
+      })
+
+      setQueryData((prev) => ({
+        ...prev,
+        page: filterPage
+      }))
+    }
+  }, [filterPage])
 
   // to show skeleton text when filter related data are loading
   useEffect(() => {
@@ -394,7 +440,7 @@ function index({ setIsLoading }) {
 
   return (
     <>
-      <IonCard className="filter-card-wrapper  relative">
+      <IonCard className="filter-card-wrapper">
         {isFiltered &&
           (loading ? (
             <IonSpinner name="crescent"></IonSpinner>
