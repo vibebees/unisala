@@ -86,12 +86,18 @@ function index({ setIsLoading }) {
   useEffect(() => {
     const queryObject = {}
     for (const [key, value] of searchParam) {
-      if (key !== "tab" && key !== "q") {
-        queryObject[key] = JSON.parse(value)
+      // if (key !== "tab" && key !== "q") {
+      //   queryObject[key] = JSON.parse(value)
+      // }
+      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
+        try {
+          queryObject[key] = JSON.parse(value)
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
     // only make query if user  comes with filter related url
-    console.log({ queryObject })
     if (Object.keys(queryObject).length > 0) {
       setIsFiltered(true)
       setChips(Object.keys(queryObject))
@@ -106,6 +112,8 @@ function index({ setIsLoading }) {
       })
     }
   }, [])
+
+  console.log(isFiltered)
 
   //  this function is to add query params when new filter is added
   const setQueryParams = (key, value) => {
@@ -158,9 +166,8 @@ function index({ setIsLoading }) {
         const { data } = await GetUni({
           variables: { name: searchValue || "" }
         })
-        console.log("hihihihihihi")
+
         dispatch(searchGetSuccess(data?.searchSchool))
-        setIsFiltered(false)
       }
     }
     fetch()
@@ -389,6 +396,8 @@ function index({ setIsLoading }) {
       }
     }, 1000)
   }
+
+  console.log(chips)
   return (
     <>
       <IonCard className="filter-card-wrapper  relative">
@@ -407,13 +416,14 @@ function index({ setIsLoading }) {
               </IonButton>
 
               <div>
-                {chips.map((chip, key) => (
-                  <Chip
-                    key={key}
-                    label={chip}
-                    removeSpeceficFilter={removeSpeceficFilter}
-                  />
-                ))}
+                {Array.isArray(chips) &&
+                  chips.map((chip, key) => (
+                    <Chip
+                      key={key}
+                      label={chip}
+                      removeSpeceficFilter={removeSpeceficFilter}
+                    />
+                  ))}
               </div>
             </>
           ))}
