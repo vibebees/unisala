@@ -20,12 +20,15 @@ import MobileNav from "./component/MobileNav"
 import { getUserProfile } from "store/action/userProfile"
 import jwtDecode from "jwt-decode"
 import appProps from "./appProps"
+import ReactGA from "react-ga4"
 
 /* Theme variables */
 
 const R = require("ramda")
 const axios = require("axios")
 const lib = {}
+const TrackingId = "G-KDJCCKHWYC"
+ReactGA.initialize(TrackingId)
 
 lib.R = R
 lib.axios = axios

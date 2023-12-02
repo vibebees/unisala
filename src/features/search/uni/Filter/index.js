@@ -4,9 +4,11 @@ import {
   IonButton,
   IonCard,
   IonCardContent,
+  IonCol,
   IonLabel,
   IonRadio,
   IonRadioGroup,
+  IonRow,
   IonSelect,
   IonSelectOption,
   IonSpinner,
@@ -35,8 +37,12 @@ import {
   SAT_SCORES,
   TUITION
 } from "./constants"
+import { universityServer } from "servers/endpoints"
+import useWindowWidth from "hooks/useWindowWidth"
 
 function index({ setIsLoading, filterPage }) {
+  const windowWidth = useWindowWidth()
+
   const INITIAL_QUERY_DATA = {
     sat: null,
     act: null,
@@ -68,9 +74,10 @@ function index({ setIsLoading, filterPage }) {
   const [accomodation, setAccomodation] = useState(null)
   const [family, setFamily] = useState(null)
   const [showFamily, setShowFamily] = useState(false)
+  const [isFiltered, setIsFiltered] = useState(false)
   const stateInputRef = useRef()
   const majorInputRef = useRef()
-  const [isFiltered, setIsFiltered] = useState(false)
+
   const location = useLocation()
 
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
@@ -122,19 +129,22 @@ function index({ setIsLoading, filterPage }) {
   useEffect(() => {
     const queryObject = {}
     for (const [key, value] of searchParam) {
-      if (key !== "tab" && key !== "q") {
+      // if (key !== "tab" && key !== "q") {
+      //   queryObject[key] = JSON.parse(value)
+      // }
+      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
         try {
           queryObject[key] = JSON.parse(value)
         } catch (error) {
-          return
+          console.log(error)
         }
       }
     }
     // only make query if user  comes with filter related url
-    console.log({ queryObject })
     if (Object.keys(queryObject).length > 0) {
       setIsFiltered(true)
       setChips(Object.keys(queryObject))
+
       setQueryData((prev) => ({ ...prev, ...queryObject }))
 
       getScholarship({
@@ -145,6 +155,8 @@ function index({ setIsLoading, filterPage }) {
       })
     }
   }, [])
+
+  console.log(isFiltered)
 
   //  this function is to add query params when new filter is added
   const setQueryParams = (key, value) => {
@@ -177,24 +189,32 @@ function index({ setIsLoading, filterPage }) {
   const removeSpeceficFilter = async (chip) => {
     removeOneQueryParam(chip)
     const filteredChips = chips.filter((c) => c !== chip)
+
     setChips(filteredChips)
     setQueryData((prev) => ({ ...prev, [chip]: null }))
-
-    if (filteredChips.length > 0) {
-      getScholarship({
-        variables: { ...queryData, [chip]: null }
-      })
-      setIsFiltered(true)
-    } else {
-      const searchValue = searchParam.get("q")
-      const { data } = await GetUni({
-        variables: { name: searchValue || "" }
-      })
-
-      dispatch(searchGetSuccess(data?.searchSchool))
-      setIsFiltered(false)
-    }
   }
+
+  // query when individual chips get changed
+  useEffect(() => {
+    //  if there are more chips left it means there is still applied filters
+    const fetch = async () => {
+      if (chips.length > 0) {
+        const { data } = await getScholarship({
+          variables: queryData
+        })
+        setIsFiltered(true)
+        console.log(data, "hehhhehhehehehheh")
+      } else {
+        const searchValue = searchParam.get("q")
+        const { data } = await GetUni({
+          variables: { name: searchValue || "" }
+        })
+        setIsFiltered(false)
+        dispatch(searchGetSuccess(data?.searchSchool))
+      }
+    }
+    fetch()
+  }, [chips])
 
   const handleData = (e, identify) => {
     let value
@@ -371,7 +391,7 @@ function index({ setIsLoading, filterPage }) {
   //  this method is for removing data like level of study, level of tuition and accomodations because if this changes, the query inputs wont align so first remove all then add
   const handleStaticData = (e, type) => {
     const val = e.target.value
-    removeFilter()
+
     switch (type) {
       case "degree":
         setDegree(val)
@@ -392,11 +412,10 @@ function index({ setIsLoading, filterPage }) {
 
   // to fetch majors information
 
-  const fetchModel = async (majorQuery) => {
-    console.log("calling hai taaa")
+  const fetchModel = async (majorQuery = " ") => {
     try {
       const response = await axios.get(
-        `http://test.unisala.com/uni/keyword/majors/${majorQuery}/10`
+        `${universityServer}/keyword/majors/${majorQuery}/5`
       )
       return response.data.map((i) => ({
         value: i.name,
@@ -418,6 +437,7 @@ function index({ setIsLoading, filterPage }) {
       }
     }, 1000)
   }
+
   return (
     <>
       <IonCard className="filter-card-wrapper  sticky top-0 left-0">
@@ -436,18 +456,25 @@ function index({ setIsLoading, filterPage }) {
               </IonButton>
 
               <div>
-                {chips.map((chip, key) => (
-                  <Chip
-                    key={key}
-                    label={chip}
-                    removeSpeceficFilter={removeSpeceficFilter}
-                  />
-                ))}
+                {Array.isArray(chips) &&
+                  chips.map((chip, key) => (
+                    <Chip
+                      key={key}
+                      label={chip}
+                      removeSpeceficFilter={removeSpeceficFilter}
+                    />
+                  ))}
               </div>
             </>
           ))}
         <IonCardContent>
-          <div className="search-control ">
+          <div
+            className={`grid ${
+              isFiltered || windowWidth < 768
+                ? "grid-cols-1 gap-5"
+                : "grid-cols-4"
+            }`}
+          >
             <IonRadioGroup allowEmptySelection={false}>
               <h2 className="search-control__label">Level of study</h2>
               <br />
@@ -468,9 +495,8 @@ function index({ setIsLoading, filterPage }) {
                 }}
                 value="graduate"
               ></IonRadio>
-            </IonRadioGroup>
-
-            <IonRadioGroup className="mt-7" allowEmptySelection={false}>
+            </IonRadioGroup>{" "}
+            <IonRadioGroup className="" allowEmptySelection={false}>
               <h2 className="search-control__label">Level of tuition</h2>
               <br />
 
@@ -491,8 +517,7 @@ function index({ setIsLoading, filterPage }) {
                 value="OutOfState"
               ></IonRadio>
             </IonRadioGroup>
-
-            <IonRadioGroup className="mt-7" allowEmptySelection={false}>
+            <IonRadioGroup className="" allowEmptySelection={false}>
               <h2 className="search-control__label">
                 Are you planning to stay
               </h2>
@@ -515,158 +540,162 @@ function index({ setIsLoading, filterPage }) {
                 value="OnCampus"
               ></IonRadio>
             </IonRadioGroup>
-
             {showFamily && (
-              <IonRadioGroup className="mt-7" allowEmptySelection={false}>
-                <h2 className="search-control__label">Staying </h2>
-                <br />
+              <IonRadioGroup className="" allowEmptySelection={false}>
+                <h2 className="search-control__label">Staying</h2>
 
-                <IonText className="mr-3">With roommates</IonText>
-                <IonRadio
-                  className="text-sm"
-                  onIonFocus={(e) => {
-                    handleStaticData(e, "family")
-                  }}
-                  value="WithFamily"
-                ></IonRadio>
+                <IonRow>
+                  <IonText className="mr-3">With roommates</IonText>
+                  <IonRadio
+                    className="text-sm"
+                    onIonFocus={(e) => handleStaticData(e, "family")}
+                    value="WithFamily"
+                  />
+                </IonRow>
 
-                <IonText className="mx-3">Without roommates</IonText>
-                <IonRadio
-                  className="text-sm"
-                  onIonFocus={(e) => {
-                    handleStaticData(e, "family")
-                  }}
-                  value="NotWithFamily"
-                ></IonRadio>
+                <IonRow>
+                  <IonText className="mr-3">Without roommates</IonText>
+                  <IonRadio
+                    className="text-sm"
+                    onIonFocus={(e) => handleStaticData(e, "family")}
+                    value="NotWithFamily"
+                  />
+                </IonRow>
               </IonRadioGroup>
             )}
           </div>
 
-          <div className="search-control ">
-            <h2 className="search-control__label">Test scores</h2>
-            {!queryData?.act && (
-              <div className="mt-4">
-                <IonLabel>SAT:</IonLabel>
-                <IonSelect
-                  interface="popover"
-                  placeholder={sat}
-                  className="border border-[gray]"
-                  onIonChange={(e) => handleData(e, "sat")}
-                >
-                  {SAT_SCORES.map((val, i) => (
-                    <IonSelectOption key={i} value={val}>
-                      {val.min} - {val.max}
-                    </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </div>
-            )}
-            {!queryData?.sat && (
-              <div className="mt-4">
-                <IonLabel className="mt-4">ACT:</IonLabel>
-                <IonSelect
-                  interface="popover"
-                  placeholder={act}
-                  className="border border-[gray]"
-                  onIonChange={(e) => handleData(e, "act")}
-                >
-                  {ACT_SCORE.map((val, i) => (
-                    <IonSelectOption key={i} value={val}>
-                      {val.min} - {val.max}
-                    </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </div>
-            )}
-          </div>
+          <div
+            className={`mt-8 grid gap-5 ${
+              isFiltered || windowWidth < 768 ? "grid-cols-1" : "grid-cols-4"
+            }`}
+          >
+            <div className="search-control ">
+              <h2 className="search-control__label">Test scores</h2>
+              {!queryData?.act && (
+                <div className="mt-4">
+                  <IonLabel>SAT:</IonLabel>
+                  <IonSelect
+                    interface="popover"
+                    placeholder={sat}
+                    className="border border-[gray]"
+                    onIonChange={(e) => handleData(e, "sat")}
+                  >
+                    {SAT_SCORES.map((val, i) => (
+                      <IonSelectOption key={i} value={val}>
+                        {val.min} - {val.max}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </div>
+              )}
+              {!queryData?.sat && (
+                <div className="mt-4">
+                  <IonLabel className="mt-4">ACT:</IonLabel>
+                  <IonSelect
+                    interface="popover"
+                    placeholder={act}
+                    className="border border-[gray]"
+                    onIonChange={(e) => handleData(e, "act")}
+                  >
+                    {ACT_SCORE.map((val, i) => (
+                      <IonSelectOption key={i} value={val}>
+                        {val.min} - {val.max}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </div>
+              )}
+            </div>
 
-          <div className="search-control">
-            <h2 className="search-control__label">Fees</h2>
+            <div className="search-control">
+              <h2 className="search-control__label">Fees</h2>
 
-            <IonLabel className="mt-4">Application Fee</IonLabel>
-            <IonSelect
-              interface="popover"
-              placeholder={app}
-              className="border border-[gray]"
-              onIonChange={(e) => handleData(e, "applicationFee")}
-            >
-              {APPLICATION_FEES.map((val, i) => (
-                <IonSelectOption key={i} value={val}>
-                  {val.max === 0
-                    ? "Free"
-                    : val.max === null
-                    ? "100$+"
-                    : val.min + "-" + val.max + "$"}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+              <IonLabel className="mt-4">Application Fee</IonLabel>
+              <IonSelect
+                interface="popover"
+                placeholder={app}
+                className="border border-[gray]"
+                onIonChange={(e) => handleData(e, "applicationFee")}
+              >
+                {APPLICATION_FEES.map((val, i) => (
+                  <IonSelectOption key={i} value={val}>
+                    {val.max === 0
+                      ? "Free"
+                      : val.max === null
+                      ? "100$+"
+                      : val.min + "-" + val.max + "$"}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
 
-            {coa === "COA" && (
-              <>
-                <IonLabel className="mt-4">Tuition Fees</IonLabel>
-                <IonSelect
-                  interface="popover"
-                  placeholder={tuition}
-                  className="border border-[gray]"
-                  onIonChange={(e) => handleData(e, "tuition")}
-                >
-                  {TUITION.map((val, i) => (
-                    <IonSelectOption key={i} value={val}>
-                      {val.max === null
-                        ? val.min + "$+"
-                        : val.min + "-" + val.max + "$"}
-                    </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </>
-            )}
+              {coa === "COA" && (
+                <>
+                  <IonLabel className="mt-4">Tuition Fees</IonLabel>
+                  <IonSelect
+                    interface="popover"
+                    placeholder={tuition}
+                    className="border border-[gray]"
+                    onIonChange={(e) => handleData(e, "tuition")}
+                  >
+                    {TUITION.map((val, i) => (
+                      <IonSelectOption key={i} value={val}>
+                        {val.max === null
+                          ? val.min + "$+"
+                          : val.min + "-" + val.max + "$"}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </>
+              )}
 
-            {tuition === "Tuition Fees" && (
-              <>
-                <IonLabel className="mt-4">Cost of Attendence</IonLabel>
-                <IonSelect
-                  interface="popover"
-                  placeholder={coa}
-                  className="border border-[gray]"
-                  onIonChange={(e) => handleData(e, "coa")}
-                >
-                  {COA.map((val, i) => (
-                    <IonSelectOption key={i} value={val}>
-                      {val.max === null
-                        ? val.min + "$+"
-                        : val.min + "-" + val.max + "$"}
-                    </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </>
-            )}
-          </div>
+              {tuition === "Tuition Fees" && (
+                <>
+                  <IonLabel className="mt-4">Cost of Attendence</IonLabel>
+                  <IonSelect
+                    interface="popover"
+                    placeholder={coa}
+                    className="border border-[gray]"
+                    onIonChange={(e) => handleData(e, "coa")}
+                  >
+                    {COA.map((val, i) => (
+                      <IonSelectOption key={i} value={val}>
+                        {val.max === null
+                          ? val.min + "$+"
+                          : val.min + "-" + val.max + "$"}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </>
+              )}
+            </div>
 
-          <div className="search-control">
-            <h2 className="search-control__label mb-4">Major</h2>
+            <div className="search-control">
+              <h2 className="search-control__label mb-4">Major</h2>
 
-            <AsyncSelect
-              cacheOptions
-              loadOptions={loadOptions}
-              styles={customStyles}
-              menuPlacement="top"
-              ref={majorInputRef}
-              onChange={(e) => handleData(e, "major")}
-              className="mt-2"
-            />
-          </div>
+              <AsyncSelect
+                cacheOptions
+                loadOptions={loadOptions}
+                styles={customStyles}
+                menuPlacement="top"
+                ref={majorInputRef}
+                onChange={(e) => handleData(e, "major")}
+                className="mt-2"
+              />
+            </div>
 
-          <div className="search-control z-40">
-            <IonLabel className="mb-2">State</IonLabel>
-            <Select
-              options={statesArray}
-              isSearchable
-              ref={stateInputRef}
-              placeholder={"Select a state"}
-              onChange={(e) => handleData(e, "state")}
-              styles={customStyles}
-              menuPlacement="top"
-            />
+            <div className="search-control z-40">
+              <IonLabel className="mb-2">State</IonLabel>
+              <Select
+                options={statesArray}
+                isSearchable
+                ref={stateInputRef}
+                placeholder={"Select a state"}
+                onChange={(e) => handleData(e, "state")}
+                styles={customStyles}
+                menuPlacement="top"
+              />
+            </div>
           </div>
         </IonCardContent>
 

@@ -23,7 +23,7 @@ export
   removeSeenEye = (seenBy) => (dispatch) => {
     dispatch({type: REMOVE_SEEN_MESSAGE, payload: seenBy})
   },
-  searchUniFromBar = (uniName = "", numberOfSuggestion = 5, setResult, token) => {
+  searchUniFromBar = (uniName = " ", numberOfSuggestion = 5, setResult, token) => {
 
     return async (dispatch) => {
       uniName.length > 0 && await axios

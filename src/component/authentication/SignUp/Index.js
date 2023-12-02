@@ -25,9 +25,9 @@ export const SignUp = ({ setauth, allProps }) => {
           <GoogleAuth setauth={setauth} allProps={allProps} />
         </div>
       </div>
-      <div className="auth-button">
+      {/* <div className="auth-button">
         <AppleAuth />
-      </div>
+      </div> */}
       <div className="auth-or">
         <p className="auth-or-p">OR</p>
       </div>

@@ -27,9 +27,9 @@ export const SignIn = ({ setauth, auth, allProps }) => {
           <GoogleAuth setauth={setauth} allProps={allProps} />
         </div>
       </div>
-      <div className="auth-button">
+      {/* <div className="auth-button">
         <AppleAuth setauth={setauth} />
-      </div>
+      </div> */}
 
       <div className="auth-or">
         <p className="auth-or-p">or Sign in with Email!</p>

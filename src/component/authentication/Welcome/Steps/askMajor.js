@@ -85,7 +85,7 @@ const MajorList = ({ isLoading, results, handleClick }) => (
 
 const SecondStep = ({ question }) => {
   const [searchInput, setSearchInput] = useState(false),
-    [searchTerm, setSearchTerm] = useState(""),
+    [searchTerm, setSearchTerm] = useState(" "),
     token = useSelector((state) => state?.auth?.accessToken),
     [isLoading, setIsLoading] = useState(false),
     [results, setResults] = useState([]),
@@ -105,11 +105,11 @@ const SecondStep = ({ question }) => {
 
   const getMajors = async () => {
     console.log("api called")
-    console.log("token", token)
+    console.log("searchTerm", searchTerm)
     setIsLoading(true)
     try {
       const res = await axios.get(
-        `${universityServer}/keyword/spaces/${searchTerm}/4`,
+        `${universityServer}/keyword/majors/${searchTerm}/4`,
         {
           headers: {
             Authorization: `Bearer ${token}`

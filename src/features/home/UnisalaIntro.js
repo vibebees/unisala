@@ -56,11 +56,13 @@ export const UnisalaLandingPage = ({ allProps }) => {
           <div className="absolute w-full bottom-20  -right-7">
             <br />
             <div className="flex gap-4 w-full pr-28 justify-start ">
+
               <button
                 className="capitalize font-semibold  text-black flex items-center px-3 py-2 bg-neutral-100 hover:text-blue-600 rounded-3xl"
                 onClick={() => window.open("/search?tab=uni", "_blank")}
               >
-                Explore Universities
+                  Explore Universities
+                <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
               </button>
             </div>
           </div>
@@ -87,7 +89,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
         </IonCardContent>
       </IonCard>
 
-      <IonCard className="mb-1">
+      {/* <IonCard className="mb-1">
         <IonCardContent className="flex-column text-left">
           <h1 className="pt-1 pb-05 black-text">
             Linkedin like Platform for Aspiring, Current, and Alumni Students
@@ -99,9 +101,9 @@ export const UnisalaLandingPage = ({ allProps }) => {
             in this journey!
           </p>
         </IonCardContent>
-      </IonCard>
+      </IonCard> */}
 
-      <IonCard className="mb-1">
+      {/* <IonCard className="mb-1">
         <IonCardContent className="flex-column text-center">
           <h1 className="pt-1 pb-05 black-text">
             Decide your Academic & Career journey with Data-Driven Insights.
@@ -154,9 +156,9 @@ export const UnisalaLandingPage = ({ allProps }) => {
             alt="Community of Aspirants"
           />
         </IonCardContent>
-      </IonCard>
+      </IonCard> */}
 
-      <IonCard className="mb-1">
+      {/* <IonCard className="mb-1">
         <IonCardContent
           className={
             window.innerWidth <= 768
@@ -182,8 +184,8 @@ export const UnisalaLandingPage = ({ allProps }) => {
             </p>
           </div>
         </IonCardContent>
-      </IonCard>
-
+      </IonCard> */}
+{/*
       <IonCard className="mb-1">
         <IonCardContent
           className={
@@ -203,7 +205,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
             </p>
           </div>
         </IonCardContent>
-      </IonCard>
+      </IonCard> */}
     </div>
   )
 }

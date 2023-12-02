@@ -22,11 +22,11 @@ import AskLevelofStudy from "./Steps/askLevelOfStudy"
 import Indicators from "./Steps/Indicators"
 import StepsButtons from "./Steps/StepsButtons"
 import { useQuery } from "@apollo/client"
- import clsx from "clsx"
+import clsx from "clsx"
 import PreLoader from "../../preloader"
 import "./index.css"
-import {USER_SERVICE_GQL} from "servers/types"
-import {GetAllQuestions} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { GetAllQuestions } from "graphql/user"
 
 export const WelcomeData = createContext()
 

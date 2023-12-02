@@ -3,10 +3,10 @@ import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
 import { useLocation } from "react-router"
 import AuthInput from "../AuthInput"
 import { useDispatch } from "react-redux"
- import "../auth.css"
-import {userServer} from "servers/endpoints"
-import {registerUser} from "store/action/authenticationAction"
-import {validateSignup} from "utils/components/validate"
+import "../auth.css"
+import { userServer } from "servers/endpoints"
+import { registerUser } from "store/action/authenticationAction"
+import { validateSignup } from "utils/components/validate"
 
 export const SignUpForm = ({ setauth }) => {
   const [errors, seterrors] = useState({})
@@ -119,7 +119,7 @@ export const SignUpForm = ({ setauth }) => {
       >
         {save ? <IonSpinner></IonSpinner> : "Register"}
       </button>
-      {location.pathname !== "/" && (
+      {location.pathname === "/login" && (
         <IonRow
           onClick={() => {
             setauth({ state: "signin" })
