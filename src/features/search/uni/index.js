@@ -31,6 +31,7 @@ function index({ query }) {
   const dispatch = useDispatch()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+  const filtered = Boolean(searchParams.get("filter"))
   const [isLoading, setIsLoading] = useState(false)
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
@@ -43,7 +44,7 @@ function index({ query }) {
 
   return (
     <>
-      <IonRow className="">
+      <div className="flex-col">
         {windowWidth > 768 ? (
           <IonCol className="filter-col">
             <Filter setIsLoading={setIsLoading} />
@@ -85,7 +86,7 @@ function index({ query }) {
             <SearchResults />
           )}
         </IonCol>
-      </IonRow>
+      </div>
     </>
   )
 }
