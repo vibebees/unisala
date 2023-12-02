@@ -150,7 +150,6 @@ function index({ setIsLoading }) {
   useEffect(() => {
     //  if there are more chips left it means there is still applied filters
     const fetch = async () => {
-      console.log("fetcjingggggggggg")
       if (chips.length > 0) {
         const { data } = await getScholarship({
           variables: queryData
@@ -162,7 +161,7 @@ function index({ setIsLoading }) {
         const { data } = await GetUni({
           variables: { name: searchValue || "" }
         })
-
+        setIsFiltered(false)
         dispatch(searchGetSuccess(data?.searchSchool))
       }
     }
