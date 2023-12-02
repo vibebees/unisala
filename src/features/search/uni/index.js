@@ -34,6 +34,7 @@ function index({ query }) {
   const searchParams = new URLSearchParams(location.search)
   const [filtered, setFiltered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [filterPage, setFilterPage] = useState(1)
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
     variables: { name: query || "" },
@@ -57,7 +58,7 @@ function index({ query }) {
     <>
       <div className={`${filtered ? "flex" : "block"}`}>
         {windowWidth > 768 ? (
-          <IonCol className="filter-col sticky top-0 left-0">
+          <IonCol className="filter-col ">
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
