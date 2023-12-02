@@ -57,13 +57,13 @@ function index({ query }) {
     <>
       <div className={`${filtered ? "flex" : "block"}`}>
         {windowWidth > 768 ? (
-          <IonCol className="filter-col">
+          <IonCol className="filter-col sticky top-0 left-0">
             <Filter setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="w-full h-[1196px]" contentId="main-content">
+            <IonMenu className="w-full h-[1196px" contentId="main-content">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
