@@ -24,12 +24,15 @@ import {
   saveOutline,
   location,
   shareOutline,
-  schoolOutline
+  schoolOutline,
+  cashOutline,
+  star,
+  starHalf
 } from "ionicons/icons"
- import useGrade from "hooks/useGrade"
+import useGrade from "hooks/useGrade"
 
 import { LikeATag } from "../tags"
-import {universityDefaultImage} from "servers/s3.configs"
+import { universityDefaultImage } from "servers/s3.configs"
 import useGradeColor from "hooks/useGradeColor"
 
 function ImageModal({ isOpen, imageSrc, onClose }) {
@@ -132,44 +135,60 @@ function Location({ allProps }) {
   const formattedAddress = `${city}, ${stateAbbreviation}, ${streetAddressOrPOBox}`
 
   return (
-    <IonItem className="ion-no-padding">
-      <IonIcon className="ion-icon text-primary" icon={location} />
-      <IonLabel className="ion-padding-start">
+    <IonRow
+      className="ion-no-padding gap-1 items-center h-fit mt-2"
+      lines="none"
+    >
+      <IonIcon
+        className="ion-icon leading-none mt-0 text-primar text-lg"
+        icon={location}
+      />
+      <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
+        {formattedAddress}
+      </IonText>
+    </IonRow>
+  )
+}
+function ApplicationCharges({ undergraduateApplicationFee = null }) {
+  if (undergraduateApplicationFee === null) return null
+  return (
+    <IonRow className="ion-no-padding pl-1 mt-1">
+      <IonIcon className="ion-icon text-primar text-lg" icon={cashOutline} />
+      <IonLabel className="pl-2">
         <IonText className="text-sm font-semibold text-gray-600">
-          {formattedAddress}
+          Application Charges : ${undergraduateApplicationFee}
         </IonText>
       </IonLabel>
-    </IonItem>
+    </IonRow>
   )
 }
 
 function Offerings({ allProps }) {
   const { graduateOffering, undergraduateOffering } = allProps
   return (
-    <IonItem>
-      <IonRow>
+    <IonRow className="ion-no-padding pl-1 mt-2 h-fit ">
+      <IonRow className="ion-no-padding justify-start h-fit">
         <IonIcon
-          className="ion-icon"
+          className="ion-icon text-primar text-lg"
           icon={schoolOutline}
-          style={{ color: "var(--ion-color-primary)", fontSize: "24px" }}
         />
         {graduateOffering && (
-          <IonCol className="ion-no-padding ">
-            <IonLabel className="ion-padding-start font-semibold  text-red-500">
+          <IonCol size="auto" className="ion-no-padding ml-2 w-fit p-0 h-fit">
+            <IonLabel className="ion-padding-start p-0 font-semibold  text-red-500">
               {graduateOffering.substring(0, 30)}
             </IonLabel>
           </IonCol>
         )}
 
         {undergraduateOffering && (
-          <IonCol className="ion-no-padding ">
+          <IonCol size="auto" className="ion-no-padding h-fit ">
             <IonLabel className="ion-padding-start  font-bold text-blue-500">
               {undergraduateOffering.substring(0, 35)} 📚
             </IonLabel>
           </IonCol>
         )}
       </IonRow>
-    </IonItem>
+    </IonRow>
   )
 }
 
@@ -249,27 +268,98 @@ export function LoadingScreen() {
   )
 }
 
+export function RatingCard({ allProps }) {
+  const { average, width, showGrade } = allProps
+
+  return (
+    <IonRow className=" justify-end items-start  m-0 h-fit">
+      <IonCol size="auto m-0">
+        <IonRow className="items-center m-0">
+          <IonText className="text-2xl m-0 font-semibold text-neutral-900">
+            4.5
+          </IonText>
+          <IonCol className="items-end flex mt-1  gap-1 py-px px-2  h-fit ion-no-padding">
+            <IonIcon
+              style={{ fontSize: "18px" }}
+              icon={star}
+              className="text-yellow-500"
+            />
+
+            <IonIcon
+              style={{ fontSize: "18px" }}
+              icon={star}
+              className="text-yellow-500"
+            />
+
+            <IonIcon
+              style={{ fontSize: "18px" }}
+              icon={star}
+              className="text-yellow-500"
+            />
+
+            <IonIcon
+              style={{ fontSize: "18px" }}
+              icon={star}
+              className="text-yellow-500"
+            />
+
+            <IonIcon
+              style={{ fontSize: "18px" }}
+              icon={starHalf}
+              className="text-yellow-500"
+            />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonText>
+            <IonCardSubtitle className="text-sm font-semibold text-gray-600">
+              1,000 Reviews
+            </IonCardSubtitle>
+          </IonText>
+        </IonRow>
+      </IonCol>
+    </IonRow>
+  )
+}
+
 function CourseCard({ allProps }) {
-  const { name, ownType, tags, loading, schoolDataLoading } = allProps
+  const {
+    name,
+    ownType,
+    tags,
+    loading,
+    schoolDataLoading,
+    undergraduateApplicationFee
+  } = allProps
 
   return (
     <IonCard>
       <IonGrid>
         <IonRow>
           <IonCol style={{ margin: "auto" }} size={"auto"}>
-            <CardImage allProps={allProps} />
+            {/* <CardImage allProps={allProps} /> */}
           </IonCol>
           <IonCol>
             <IonRow>
               <IonCol>
-                <div style={{ display: "flex", float: "right" }}>
-                  <CardActions allProps={allProps} />
-                </div>
-                <IonText color="dark">
-                  <IonCardTitle>{name}</IonCardTitle>
-                </IonText>
-                <Location allProps={allProps} />
+                <IonRow className="ion-no-padding m-0  items-center  h-fit">
+                  <IonCol size="auto h-fit">
+                    <div style={{ display: "flex", float: "right" }}>
+                      <CardActions allProps={allProps} />
+                    </div>
+                    <IonText color="dark">
+                      <IonCardTitle>{name}</IonCardTitle>
+                    </IonText>
+                    <Location allProps={allProps} />
+                  </IonCol>
+                  <IonCol className="h-fit">
+                    <RatingCard allProps={allProps} />
+                  </IonCol>
+                </IonRow>
                 <Offerings allProps={allProps} />
+                <ApplicationCharges
+                  undergraduateApplicationFee={undergraduateApplicationFee}
+                />
 
                 {ownType?.length > 0 && (
                   <LikeATag

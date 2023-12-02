@@ -12,7 +12,7 @@ import "./index.css"
 
 function index() {
   const { searchData } = useSelector((store) => store?.university || [])
-  console.log({ searchData })
+  console.log("Search", searchData)
 
   return searchData?.length ? (
     <>

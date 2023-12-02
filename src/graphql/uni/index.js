@@ -489,4 +489,3 @@ export const GetProfessor = gql`
       }
     }
   `
-
