@@ -36,8 +36,11 @@ import {
   TUITION
 } from "./constants"
 import { universityServer } from "servers/endpoints"
+import useWindowWidth from "hooks/useWindowWidth"
 
 function index({ setIsLoading }) {
+  const windowWidth = useWindowWidth()
+
   const [present, dismiss] = useIonToast()
   const [sat, setSat] = useState("Sat Score")
   const [act, setAct] = useState("Act Score")
@@ -49,9 +52,10 @@ function index({ setIsLoading }) {
   const [accomodation, setAccomodation] = useState(null)
   const [family, setFamily] = useState(null)
   const [showFamily, setShowFamily] = useState(false)
+  const [isFiltered, setIsFiltered] = useState(false)
   const stateInputRef = useRef()
   const majorInputRef = useRef()
-  const [isFiltered, setIsFiltered] = useState(false)
+
   const location = useLocation()
 
   const [queryData, setQueryData] = useState(INITIAL_QUERY_DATA)
@@ -68,15 +72,6 @@ function index({ setIsLoading }) {
       fetchPolicy: "no-cache"
     }
   )
-
-  // indicate if filter is applied or not
-
-  // useEffect(() => {
-  //   searchParam.set("filter", isFiltered)
-  //   history.push({
-  //     search: searchParam.toString()
-  //   })
-  // }, [isFiltered])
 
   // to show skeleton text when filter related data are loading
   useEffect(() => {
@@ -397,7 +392,6 @@ function index({ setIsLoading }) {
     }, 1000)
   }
 
-  console.log(chips)
   return (
     <>
       <IonCard className="filter-card-wrapper  relative">
@@ -428,86 +422,80 @@ function index({ setIsLoading }) {
             </>
           ))}
         <IonCardContent>
-          <div className="search-control ">
-            <IonRow className="relative">
-              <IonCol>
-                <IonRadioGroup allowEmptySelection={false}>
-                  <h2 className="search-control__label">Level of study</h2>
-                  <br />
+          <div
+            className={`grid ${
+              isFiltered || windowWidth < 768
+                ? "grid-cols-1 gap-5"
+                : "grid-cols-4"
+            }`}
+          >
+            <IonRadioGroup allowEmptySelection={false}>
+              <h2 className="search-control__label">Level of study</h2>
+              <br />
 
-                  <IonText className="mr-3">Undergraduate</IonText>
-                  <IonRadio
-                    className="text-sm"
-                    onIonFocus={(e) => {
-                      handleStaticData(e, "degree")
-                    }}
-                    value="undergraduate"
-                  ></IonRadio>
+              <IonText className="mr-3">Undergraduate</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "degree")
+                }}
+                value="undergraduate"
+              ></IonRadio>
 
-                  <IonText className="mx-3">Graduate</IonText>
-                  <IonRadio
-                    onIonFocus={(e) => {
-                      handleStaticData(e, "degree")
-                    }}
-                    value="graduate"
-                  ></IonRadio>
-                </IonRadioGroup>
-              </IonCol>
+              <IonText className="mx-3">Graduate</IonText>
+              <IonRadio
+                onIonFocus={(e) => {
+                  handleStaticData(e, "degree")
+                }}
+                value="graduate"
+              ></IonRadio>
+            </IonRadioGroup>{" "}
+            <IonRadioGroup className="" allowEmptySelection={false}>
+              <h2 className="search-control__label">Level of tuition</h2>
+              <br />
 
-              <IonCol>
-                {" "}
-                <IonRadioGroup className="mt-7" allowEmptySelection={false}>
-                  <h2 className="search-control__label">Level of tuition</h2>
-                  <br />
+              <IonText className="mr-3">In State</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "tuition")
+                }}
+                value="InState"
+              ></IonRadio>
 
-                  <IonText className="mr-3">In State</IonText>
-                  <IonRadio
-                    className="text-sm"
-                    onIonFocus={(e) => {
-                      handleStaticData(e, "tuition")
-                    }}
-                    value="InState"
-                  ></IonRadio>
+              <IonText className="mx-3">Out State</IonText>
+              <IonRadio
+                onIonFocus={(e) => {
+                  handleStaticData(e, "tuition")
+                }}
+                value="OutOfState"
+              ></IonRadio>
+            </IonRadioGroup>
+            <IonRadioGroup className="" allowEmptySelection={false}>
+              <h2 className="search-control__label">
+                Are you planning to stay
+              </h2>
+              <br />
 
-                  <IonText className="mx-3">Out State</IonText>
-                  <IonRadio
-                    onIonFocus={(e) => {
-                      handleStaticData(e, "tuition")
-                    }}
-                    value="OutOfState"
-                  ></IonRadio>
-                </IonRadioGroup>
-              </IonCol>
+              <IonText className="mr-3">Off Campus</IonText>
+              <IonRadio
+                className="text-sm"
+                onIonFocus={(e) => {
+                  handleStaticData(e, "accomodation")
+                }}
+                value="OffCampus"
+              ></IonRadio>
 
-              <IonCol>
-                <IonRadioGroup className="mt-7" allowEmptySelection={false}>
-                  <h2 className="search-control__label">
-                    Are you planning to stay
-                  </h2>
-                  <br />
-
-                  <IonText className="mr-3">Off Campus</IonText>
-                  <IonRadio
-                    className="text-sm"
-                    onIonFocus={(e) => {
-                      handleStaticData(e, "accomodation")
-                    }}
-                    value="OffCampus"
-                  ></IonRadio>
-
-                  <IonText className="mx-3">On Campus</IonText>
-                  <IonRadio
-                    onIonFocus={(e) => {
-                      handleStaticData(e, "accomodation")
-                    }}
-                    value="OnCampus"
-                  ></IonRadio>
-                </IonRadioGroup>
-              </IonCol>
-            </IonRow>
-
+              <IonText className="mx-3">On Campus</IonText>
+              <IonRadio
+                onIonFocus={(e) => {
+                  handleStaticData(e, "accomodation")
+                }}
+                value="OnCampus"
+              ></IonRadio>
+            </IonRadioGroup>
             {showFamily && (
-              <IonRadioGroup className="mt-7" allowEmptySelection={false}>
+              <IonRadioGroup className="" allowEmptySelection={false}>
                 <h2 className="search-control__label">Staying</h2>
 
                 <IonRow>
@@ -531,7 +519,11 @@ function index({ setIsLoading }) {
             )}
           </div>
 
-          <div className="grid grid-cols-4 gap-5">
+          <div
+            className={`mt-8 grid gap-5 ${
+              isFiltered || windowWidth < 768 ? "grid-cols-1" : "grid-cols-4"
+            }`}
+          >
             <div className="search-control ">
               <h2 className="search-control__label">Test scores</h2>
               {!queryData?.act && (

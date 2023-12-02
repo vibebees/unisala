@@ -23,15 +23,16 @@ import { useLazyQuery, useQuery } from "@apollo/client"
 import { UniSearchDataList } from "graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
-import { useHistory, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import { closeOutline } from "ionicons/icons"
+import { INITIAL_QUERY_DATA } from "./Filter/constants"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
-  const filtered = Boolean(searchParams.get("filter"))
+  const [filtered, setFiltered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
@@ -42,9 +43,19 @@ function index({ query }) {
     dispatch(searchGetSuccess(data?.searchSchool))
   }, [data])
 
+  useEffect(() => {
+    for (const [key, value] of searchParams) {
+      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
+        setFiltered(true)
+      } else {
+        setFiltered(false)
+      }
+    }
+  }, [searchParams])
+
   return (
     <>
-      <div className="flex-col">
+      <div className={`${filtered ? "flex" : "block"}`}>
         {windowWidth > 768 ? (
           <IonCol className="filter-col">
             <Filter setIsLoading={setIsLoading} />
