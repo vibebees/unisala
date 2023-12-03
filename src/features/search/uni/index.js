@@ -29,7 +29,7 @@ import { INITIAL_QUERY_DATA } from "./Filter/constants"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
-  const dispatch = useDispatch()
+
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const [filtered, setFiltered] = useState(false)
@@ -37,15 +37,15 @@ function index({ query }) {
 
   const [filterPage, setFilterPage] = useState(1)
 
-  useEffect(() => {
-    for (const [key, value] of searchParams) {
-      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
-        setFiltered(true)
-      } else {
-        setFiltered(false)
-      }
-    }
-  }, [searchParams])
+  // useEffect(() => {
+  //   for (const [key, value] of searchParams) {
+  //     if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
+  //       setFiltered(true)
+  //     } else {
+  //       setFiltered(false)
+  //     }
+  //   }
+  // }, [searchParams])
 
   return (
     <>

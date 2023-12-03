@@ -127,9 +127,6 @@ function index({ setIsLoading, filterPage }) {
   useEffect(() => {
     const queryObject = {}
     for (const [key, value] of searchParam) {
-      // if (key !== "tab" && key !== "q") {
-      //   queryObject[key] = JSON.parse(value)
-      // }
       if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
         try {
           queryObject[key] = JSON.parse(value)
@@ -142,9 +139,7 @@ function index({ setIsLoading, filterPage }) {
     if (Object.keys(queryObject).length > 0) {
       setIsFiltered(true)
       setChips(Object.keys(queryObject))
-
       setQueryData((prev) => ({ ...prev, ...queryObject }))
-
       getScholarship({
         variables: {
           ...queryData,
@@ -153,8 +148,6 @@ function index({ setIsLoading, filterPage }) {
       })
     }
   }, [])
-
-  console.log(isFiltered)
 
   //  this function is to add query params when new filter is added
   const setQueryParams = (key, value) => {
@@ -192,28 +185,7 @@ function index({ setIsLoading, filterPage }) {
     setQueryData((prev) => ({ ...prev, [chip]: null }))
   }
 
-  // query when individual chips get changed
-  useEffect(() => {
-    //  if there are more chips left it means there is still applied filters
-    const fetch = async () => {
-      if (chips.length > 0) {
-        const { data } = await getScholarship({
-          variables: queryData
-        })
-        setIsFiltered(true)
-        console.log(data, "hehhhehhehehehheh")
-      } else {
-        const searchValue = searchParam.get("q")
-
-        setIsFiltered(false)
-        dispatch(searchGetSuccess([]))
-      }
-    }
-    fetch()
-  }, [chips])
-
   const handleData = (e, identify) => {
-    console.log("entered hande data")
     let value
     if (identify === "state" || identify === "major") {
       value = e?.label
@@ -254,8 +226,6 @@ function index({ setIsLoading, filterPage }) {
         })
         return false
       }
-
-      console.log({ value })
     }
 
     if (identify === "coa") {
@@ -316,13 +286,13 @@ function index({ setIsLoading, filterPage }) {
         return
       }
     }
-    console.log("updating query state")
+
     setQueryData((prev) => ({
       ...prev,
       [identify]: value
     }))
-    getScholarship({ variables: { ...queryData, [identify]: value } })
-    setIsFiltered(true)
+    // getScholarship({ variables: { ...queryData, [identify]: value } })
+
     setChips((prev) => {
       if (!prev.includes(identify)) {
         return [...prev, identify]
@@ -333,13 +303,12 @@ function index({ setIsLoading, filterPage }) {
     setQueryParams(identify, value)
   }
 
-  useEffect(() => {
-    if (accomodation === "OffCampus") {
-      setShowFamily(true)
-    } else {
-      setShowFamily(false)
-    }
-  }, [accomodation])
+  const applyFilter = () => {
+    getScholarship({
+      variables: queryData
+    })
+  }
+
   useEffect(() => {
     // map the array to align with the data structure of unfiltered universities
     const d = data?.searchUniversity?.map((item) => ({
@@ -348,6 +317,14 @@ function index({ setIsLoading, filterPage }) {
     }))
     dispatch(searchGetSuccess(d))
   }, [data])
+
+  useEffect(() => {
+    if (accomodation === "OffCampus") {
+      setShowFamily(true)
+    } else {
+      setShowFamily(false)
+    }
+  }, [accomodation])
 
   const customStyles = {
     menuList: (styles) => ({
@@ -688,6 +665,9 @@ function index({ setIsLoading, filterPage }) {
               />
             </div>
           </div>
+          <IonButton disabled={chips.length == 0} onClick={applyFilter}>
+            Apply Filters
+          </IonButton>
         </IonCardContent>
       </IonCard>
     </>
