@@ -204,11 +204,9 @@ function index({ setIsLoading, filterPage }) {
         console.log(data, "hehhhehhehehehheh")
       } else {
         const searchValue = searchParam.get("q")
-        const { data } = await GetUni({
-          variables: { name: searchValue || "" }
-        })
+
         setIsFiltered(false)
-        dispatch(searchGetSuccess(data?.searchSchool))
+        dispatch(searchGetSuccess([]))
       }
     }
     fetch()
@@ -366,11 +364,6 @@ function index({ setIsLoading, filterPage }) {
     })
   }
 
-  const [GetUni] = useLazyQuery(UniSearchDataList, {
-    context: { server: UNIVERSITY_SERVICE_GQL },
-    skip: true
-  })
-
   const removeFilter = async () => {
     removeAllQueryParams()
     setQueryData(INITIAL_QUERY_DATA)
@@ -381,10 +374,8 @@ function index({ setIsLoading, filterPage }) {
     setTuition("Tuition Fees")
     stateInputRef.current.clearValue()
     majorInputRef.current.clearValue()
-    const searchValue = searchParam.get("q")
-    //todo: BETTER IF WE COULD READ FROM THE CACHE(POSSIBLE), THAT WILL ERADICATE NEED OF BELOW QUERY
-    const { data } = await GetUni({ variables: { name: searchValue || "" } })
-    dispatch(searchGetSuccess(data?.searchSchool))
+
+    dispatch(searchGetSuccess([]))
     setIsFiltered(false)
   }
 

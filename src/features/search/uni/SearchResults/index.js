@@ -45,23 +45,16 @@ function index({ filterPage, setFilterPage }) {
           {filterPage > 1 && <h1 className="text-[#488AFF]">Loading.....</h1>}
         </IonInfiniteScrollContent>
       </IonInfiniteScroll>
-
-      {/* <IonButton
-        className="fixed right-8 bottom-8 w-12 h-12 animate-bounce"
-        shape="round"
-      >
-        <IonIcon
-          icon={arrowUpOutline}
-          color="black"
-          className="text-black absolute"
-        />
-      </IonButton> */}
     </div>
   ) : (
-    <IonCard style={{ textAlign: "center" }}>
-      <img alt="unisala: no results found" src={noResultsFound} />
-      <IonCardHeader>
-        <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>
+    <IonCard className="flex items-center justify-center space-x-12">
+      <img
+        alt="unisala: no results found"
+        className="w-fit"
+        src={noResultsFound}
+      />
+      <IonCardHeader className="">
+        <IonCardTitle>Apply filters to search universities</IonCardTitle>
         <IonCardSubtitle>
           There were not any saved views, recent queries, or source matching
           your search.

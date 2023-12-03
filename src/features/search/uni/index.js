@@ -34,14 +34,6 @@ function index({ query }) {
   const searchParams = new URLSearchParams(location.search)
   const [filtered, setFiltered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { data, loading } = useQuery(UniSearchDataList, {
-    context: { server: UNIVERSITY_SERVICE_GQL },
-    variables: { name: query || "" },
-    skip: searchParams.size > 2
-  })
-  useEffect(() => {
-    dispatch(searchGetSuccess(data?.searchSchool))
-  }, [data])
 
   const [filterPage, setFilterPage] = useState(1)
 
@@ -57,9 +49,13 @@ function index({ query }) {
 
   return (
     <>
-      <div className={`${filtered ? "flex" : "block"}`}>
+      <div className={`${filtered ? "flex " : "block"}`}>
         {windowWidth > 768 ? (
-          <IonCol className="filter-col ">
+          <IonCol
+            className={`filter-col ${
+              filtered ? "sticky top-0 left-0" : "static"
+            }`}
+          >
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
@@ -93,7 +89,7 @@ function index({ query }) {
         )}
 
         <IonCol className="results-col ">
-          {loading || isLoading ? (
+          {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => <ThreadSkeleton key={i} />)
           ) : (
             <SearchResults
