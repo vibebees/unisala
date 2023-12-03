@@ -58,8 +58,8 @@ function CardImage({ allProps }) {
   const [selectedImage, setSelectedImage] = useState("")
 
   const imageContainerStyle = {
-    display: "flex",
-    flexWrap: "wrap"
+    display: "inline-flex",
+    flexWrap: "nowrap"
   }
   const imageStyle = {
     width: "150px",
@@ -73,7 +73,7 @@ function CardImage({ allProps }) {
     setModalOpen(true)
   }
   return (
-    <div className="card-image">
+    <div className="card-image - overflow-hidden mr-2">
       {onSearch ? (
         <IonSlides
           options={{
@@ -152,11 +152,21 @@ function Location({ allProps }) {
 function ApplicationCharges({ undergraduateApplicationFee = null }) {
   if (undergraduateApplicationFee === null) return null
   return (
-    <IonRow className="ion-no-padding pl-1 mt-1">
+    <IonRow className="ion-no-padding pl-1 mt-3 ">
       <IonIcon className="ion-icon text-primar text-lg" icon={cashOutline} />
       <IonLabel className="pl-2">
         <IonText className="text-sm font-semibold text-gray-600">
           Application Charges : ${undergraduateApplicationFee}
+        </IonText>
+      </IonLabel>
+      <IonLabel className="pl-2">
+        <IonText className="text-sm before:bottom-0 before:top-[9px] before:-left-4 ml-4 before:rounded-full before:absolute relative before:content-[''] before:w-1 before:h-1 before:bg-neutral-400 font-semibold text-gray-600">
+          Tution Fee : ${undergraduateApplicationFee}
+        </IonText>
+      </IonLabel>
+      <IonLabel className="pl-2">
+        <IonText className="text-sm before:bottom-0 before:top-[9px] before:-left-4 ml-4 before:rounded-full before:absolute relative before:content-[''] before:w-1 before:h-1 before:bg-neutral-400 font-semibold text-gray-600">
+          Cost of Attendence : ${undergraduateApplicationFee}
         </IonText>
       </IonLabel>
     </IonRow>
@@ -336,8 +346,12 @@ function CourseCard({ allProps }) {
     <IonCard>
       <IonGrid>
         <IonRow>
-          <IonCol style={{ margin: "auto" }} size={"auto"}>
-            {/* <CardImage allProps={allProps} /> */}
+          <IonCol
+            style={{ margin: "auto" }}
+            className="overflow-hidden "
+            size={"auto"}
+          >
+            <CardImage allProps={allProps} />
           </IonCol>
           <IonCol>
             <IonRow>

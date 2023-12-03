@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import {
   IonButton,
   IonCard,
@@ -501,7 +502,6 @@ function index({ setIsLoading }) {
                 </IonRow>
               </IonRadioGroup>
             )}
-
           </div>
 
           <div className="search-control ">

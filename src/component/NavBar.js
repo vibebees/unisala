@@ -104,6 +104,7 @@ const Nav = ({ allProps }) => {
                     customFunction={() => {
                       setActive(`${item?.link}`)
                     }}
+                    title={`Clicked on ${item?.name} nav link`}
                   >
                     <div
                       style={{
