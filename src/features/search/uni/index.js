@@ -61,7 +61,7 @@ function index({ query }) {
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="w-full h-[1196px" contentId="main-content">
+            <IonMenu className="w-full h-[1196px]" contentId="main-content">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
