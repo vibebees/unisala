@@ -32,31 +32,35 @@ function index({ query }) {
 
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
-  const [filtered, setFiltered] = useState(false)
+  const [shiftMenu, setShiftMenu] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const [filterPage, setFilterPage] = useState(1)
 
-  // useEffect(() => {
-  //   for (const [key, value] of searchParams) {
-  //     if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
-  //       setFiltered(true)
-  //     } else {
-  //       setFiltered(false)
-  //     }
-  //   }
-  // }, [searchParams])
+  useEffect(() => {
+    for (const [key, value] of searchParams) {
+      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
+        setShiftMenu(true)
+      } else {
+        setShiftMenu(false)
+      }
+    }
+  }, [])
 
   return (
     <>
-      <div className={`${filtered ? "flex " : "block"}`}>
+      <div className={`${shiftMenu ? "flex " : "block"}`}>
         {windowWidth > 768 ? (
           <IonCol
             className={`filter-col ${
-              filtered ? "sticky top-0 left-0" : "static"
+              shiftMenu ? "sticky top-0 left-0" : "static"
             }`}
           >
-            <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
+            <Filter
+              filterPage={filterPage}
+              setIsLoading={setIsLoading}
+              setShiftMenu={setShiftMenu}
+            />
           </IonCol>
         ) : (
           // this is for smaller screens
@@ -73,7 +77,11 @@ function index({ query }) {
                 </IonToolbar>
               </IonHeader>
               <IonCol className="filter-col absolute top-10 z-[1000]">
-                <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
+                <Filter
+                  filterPage={filterPage}
+                  setIsLoading={setIsLoading}
+                  setShiftMenu={setShiftMenu}
+                />
               </IonCol>
             </IonMenu>
             <IonPage id="main-content">

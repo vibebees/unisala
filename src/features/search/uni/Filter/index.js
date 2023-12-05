@@ -38,7 +38,7 @@ import {
 import { universityServer } from "servers/endpoints"
 import useWindowWidth from "hooks/useWindowWidth"
 
-function index({ setIsLoading, filterPage }) {
+function index({ setIsLoading, filterPage, setShiftMenu }) {
   const windowWidth = useWindowWidth()
 
   const INITIAL_QUERY_DATA = {
@@ -152,7 +152,7 @@ function index({ setIsLoading, filterPage }) {
   //  this function is to add query params when new filter is added
   const setQueryParams = (key, value) => {
     searchParam.set(key, JSON.stringify(value))
-    console.log({ value })
+
     history.push({ search: searchParam.toString() })
   }
 
@@ -163,12 +163,13 @@ function index({ setIsLoading, filterPage }) {
         deleteKeys.push(key)
       }
     })
-    console.log(deleteKeys)
     deleteKeys.forEach((key) => {
       console.log(key)
       searchParam.delete(key)
     })
     history.push({ search: searchParam.toString() })
+    setShiftMenu(false)
+    setIsFiltered(false)
   }
 
   const removeOneQueryParam = (key) => {
@@ -180,9 +181,19 @@ function index({ setIsLoading, filterPage }) {
   const removeSpeceficFilter = (chip) => {
     removeOneQueryParam(chip)
     const filteredChips = chips.filter((c) => c !== chip)
-
     setChips(filteredChips)
     setQueryData((prev) => ({ ...prev, [chip]: null }))
+
+    // check if any chips remain, if yes query with remaining chips else, the filter is no longer applied
+    if (filteredChips.length > 0) {
+      getScholarship({
+        variables: { ...queryData, [chip]: null }
+      })
+    } else {
+      setIsFiltered(false)
+      setShiftMenu(false)
+      dispatch(searchGetSuccess([]))
+    }
   }
 
   const handleData = (e, identify) => {
@@ -291,7 +302,10 @@ function index({ setIsLoading, filterPage }) {
       ...prev,
       [identify]: value
     }))
-    // getScholarship({ variables: { ...queryData, [identify]: value } })
+    //  side ma aayesi chai filter bhaisakeko xa bhani sidhai query handine
+    if (isFiltered) {
+      getScholarship({ variables: { ...queryData, [identify]: value } })
+    }
 
     setChips((prev) => {
       if (!prev.includes(identify)) {
@@ -307,6 +321,8 @@ function index({ setIsLoading, filterPage }) {
     getScholarship({
       variables: queryData
     })
+    setShiftMenu(true)
+    setIsFiltered(true)
   }
 
   useEffect(() => {
@@ -408,7 +424,7 @@ function index({ setIsLoading, filterPage }) {
 
   return (
     <>
-      <IonCard className="filter-card-wrapper">
+      <IonCard className="filter-card-wrapper relative">
         {isFiltered &&
           (loading ? (
             <IonSpinner name="crescent"></IonSpinner>
@@ -444,7 +460,9 @@ function index({ setIsLoading, filterPage }) {
             }`}
           >
             <IonRadioGroup allowEmptySelection={false}>
-              <h2 className="search-control__label">Level of study</h2>
+              <h2 className="search-control__label">
+                Level of study <span className="text-[red]">*</span>
+              </h2>
               <br />
 
               <IonText className="mr-3">Undergraduate</IonText>
@@ -465,7 +483,10 @@ function index({ setIsLoading, filterPage }) {
               ></IonRadio>
             </IonRadioGroup>{" "}
             <IonRadioGroup className="" allowEmptySelection={false}>
-              <h2 className="search-control__label">Level of tuition</h2>
+              <h2 className="search-control__label">
+                Level of tuition
+                <span className="text-[red]">*</span>
+              </h2>
               <br />
 
               <IonText className="mr-3">In State</IonText>
@@ -488,6 +509,7 @@ function index({ setIsLoading, filterPage }) {
             <IonRadioGroup className="" allowEmptySelection={false}>
               <h2 className="search-control__label">
                 Are you planning to stay
+                <span className="text-[red]">*</span>
               </h2>
               <br />
 
@@ -510,7 +532,10 @@ function index({ setIsLoading, filterPage }) {
             </IonRadioGroup>
             {showFamily && (
               <IonRadioGroup className="" allowEmptySelection={false}>
-                <h2 className="search-control__label">Staying</h2>
+                <h2 className="search-control__label">
+                  Staying
+                  <span className="text-[red]">*</span>
+                </h2>
 
                 <IonRow>
                   <IonText className="mr-3">With roommates</IonText>
@@ -665,7 +690,7 @@ function index({ setIsLoading, filterPage }) {
               />
             </div>
           </div>
-          <IonButton disabled={chips.length == 0} onClick={applyFilter}>
+          <IonButton disabled={searchParam.size < 2} onClick={applyFilter}>
             Apply Filters
           </IonButton>
         </IonCardContent>
