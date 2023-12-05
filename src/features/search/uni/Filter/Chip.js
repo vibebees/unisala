@@ -3,7 +3,6 @@ import { closeOutline } from "ionicons/icons"
 import React from "react"
 
 const Chip = ({ label, removeSpeceficFilter }) => {
-  console.log({ label })
   return (
     <IonChip>
       <IonLabel className="text-xs text-black font-medium">{label}</IonLabel>

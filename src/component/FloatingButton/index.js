@@ -17,12 +17,7 @@ function index() {
         ModalButton={
           <IonFabButton
             onclick={() => {
-              ButtonTrack({
-                from: window.location.pathname,
-                timeStamp: new Date().toISOString(),
-                description: "Feedback button clicked",
-                to: "feedback modal"
-              })
+              ButtonTrack("Feedback button clicked")
             }}
             size="small"
           >

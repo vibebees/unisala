@@ -43,7 +43,7 @@ const Nav = ({ allProps }) => {
         description: "Profile button clicked",
         to: "/profile"
       }
-      ButtonTrack(data)
+      ButtonTrack("Profile button clicked")
     },
     unreadMessagesCount =
       0 || useSelector((state) => state?.userProfile?.unreadMessages?.length)
