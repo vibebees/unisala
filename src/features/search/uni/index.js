@@ -51,11 +51,7 @@ function index({ query }) {
     <>
       <div className={`${shiftMenu ? "flex " : "block"}`}>
         {windowWidth > 768 ? (
-          <IonCol
-            className={`filter-col ${
-              shiftMenu ? "sticky top-0 left-0" : "static"
-            }`}
-          >
+          <IonCol className={`filter-col h-fit`}>
             <Filter
               filterPage={filterPage}
               setIsLoading={setIsLoading}
