@@ -26,6 +26,7 @@ import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 import { useLocation } from "react-router"
 import { closeOutline } from "ionicons/icons"
 import { INITIAL_QUERY_DATA } from "./Filter/constants"
+import SearchTab from "../atoms/SearchTab"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -57,9 +58,9 @@ function index({ query }) {
 
   return (
     <>
-      <div className={`${filtered ? "flex" : "block"}`}>
+      <IonRow>
         {windowWidth > 768 ? (
-          <IonCol className="filter-col ">
+          <IonCol className="filter-col sticky top-0">
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
@@ -93,6 +94,7 @@ function index({ query }) {
         )}
 
         <IonCol className="results-col ">
+          <SearchTab />
           {loading || isLoading ? (
             Array.from({ length: 3 }).map((_, i) => <ThreadSkeleton key={i} />)
           ) : (
@@ -102,7 +104,7 @@ function index({ query }) {
             />
           )}
         </IonCol>
-      </div>
+      </IonRow>
     </>
   )
 }

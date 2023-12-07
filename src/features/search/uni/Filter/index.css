@@ -12,6 +12,12 @@
   color: black !important;
 }
 
+.select-placeholder {
+  opacity: 1 !important;
+}
+
+
+
 .field {
   display: inline-flex;
   gap: 1rem;

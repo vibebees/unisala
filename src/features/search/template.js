@@ -13,15 +13,13 @@ import { UniSearchDataList } from "graphql/uni"
 import { userSearch } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
 import { useQuery } from "@apollo/client"
-import {
-  UNIVERSITY_SERVICE_GQL,
-  USER_SERVICE_GQL
-} from "servers/types"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
 import UserCard from "component/userCard"
 import CourseCard from "component/courseCard"
 import UserSearchResult from "./user"
 import UniSearchResult from "./uni"
 import { SearchBar } from "component/searchBox"
+import SearchTab from "./atoms/SearchTab"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")
@@ -38,27 +36,6 @@ export const SearchTemplate = () => {
   const { data: searchUser } = useQuery(userSearch(query), {
     context: { server: USER_SERVICE_GQL }
   })
-
-  const tabs = useMemo(() => {
-    return [
-      {
-        name: "All",
-        value: "all"
-      },
-      {
-        name: "Universities",
-        value: "uni"
-      },
-      {
-        name: "Users",
-        value: "user"
-      },
-      {
-        name: "Posts",
-        value: "post"
-      }
-    ]
-  }, [])
 
   useEffect(() => {
     const params = new URLSearchParams(location.search).get("tab")
@@ -86,10 +63,10 @@ export const SearchTemplate = () => {
   return (
     <IonContent>
       <IonGrid className="max-width-container">
-        <IonCard>
+        {/* <IonCard>
           <SearchBar />
-        </IonCard>
-        <IonCard>
+        </IonCard> */}
+        {/* <IonCard>
           <IonCardContent>
             {query.length > 0 && <h1>Search Result For {`"${query}"`}: </h1>}
             <div
@@ -116,10 +93,11 @@ export const SearchTemplate = () => {
               ))}
             </div>
           </IonCardContent>
-        </IonCard>
+        </IonCard> */}
 
         <IonRow>
           <IonCol className="result-col">
+            {/* <SearchTab /> */}
             {tab === "all" && (
               <div
                 style={{
