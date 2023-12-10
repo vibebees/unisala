@@ -3,9 +3,14 @@
 }
 
 .filter-col {
-  max-width: 350px;
+  max-width: 366px;
   padding-inline: unset;
-  height: max-content !important;
+  /* height: max-content !important; */
+}
+
+
+.filter-col::-webkit-scrollbar {
+  width: 0px;
 }
 
 .filter-col-container {

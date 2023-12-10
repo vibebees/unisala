@@ -27,6 +27,7 @@ import { useLocation } from "react-router"
 import { closeOutline } from "ionicons/icons"
 import { INITIAL_QUERY_DATA } from "./Filter/constants"
 import SearchTab from "../atoms/SearchTab"
+import { ChipsTab } from "../orgamism/ChipsTab"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -58,9 +59,9 @@ function index({ query }) {
 
   return (
     <>
-      <IonRow>
+      <IonRow className="overflow-hidden">
         {windowWidth > 768 ? (
-          <IonCol className="filter-col sticky top-0">
+          <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
@@ -93,8 +94,9 @@ function index({ query }) {
           </>
         )}
 
-        <IonCol className="results-col ">
+        <IonCol className="results-col !pl-[360px]">
           <SearchTab />
+          <ChipsTab />
           {loading || isLoading ? (
             Array.from({ length: 3 }).map((_, i) => <ThreadSkeleton key={i} />)
           ) : (

@@ -1,5 +1,11 @@
 import React, { useEffect } from "react"
-import { IonCol, IonLabel, IonSelect, IonSelectOption } from "@ionic/react"
+import {
+  IonCol,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+  useIonToast
+} from "@ionic/react"
 import { URLgetter, URLupdate } from "utils/lib/URLupdate"
 import { useHistory } from "react-router"
 
@@ -11,8 +17,50 @@ const RangeSelect = ({
   showDollarSign = false
 }) => {
   const [selected, setSelected] = React.useState("")
+  const [present, dismiss] = useIonToast()
   const history = useHistory()
   const handleChanges = (e) => {
+    const degree = URLgetter("deg")
+    const levelOfStudy = URLgetter("loc")
+    const accomadation = URLgetter("acc")
+    const family = URLgetter("fam")
+    if (urlKey === "af") {
+      if (!degree) {
+        return present({
+          duration: 3000,
+          message: "Please select a degree level first",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
+    }
+
+    if (urlKey === "tf") {
+      if (!levelOfStudy || !degree) {
+        return present({
+          duration: 3000,
+          message: "Please select a level of tution  and a degree level",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
+    }
+
+    if (urlKey === "coa") {
+      if (!levelOfStudy || !degree || !accomadation || !family) {
+        return present({
+          duration: 3000,
+          message:
+            "Please select a level of study , Level of tution, planning to say  and staying first ",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
+    }
+
     let min = e.target.value.min
     let max = e.target.value.max
     let urlformat = min + "-" + max
@@ -30,6 +78,8 @@ const RangeSelect = ({
       let obj = { min: min, max: max }
 
       setSelected(obj)
+    } else {
+      setSelected("")
     }
   }, [history.location.search])
 

@@ -16,3 +16,10 @@ export const URLgetter = (key) => {
   const params = new URLSearchParams(url.search)
   return params.get(key)
 }
+
+export const URLdelete = (key) => {
+  const url = new URL(window.location.href)
+  const params = new URLSearchParams(url.search)
+  params.delete(key)
+  return params.toString()
+}

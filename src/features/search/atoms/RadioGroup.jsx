@@ -1,6 +1,12 @@
 /* eslint-disable no-unneeded-ternary */
 import React, { useEffect } from "react"
-import { IonRadioGroup, IonRow, IonText, IonRadio } from "@ionic/react"
+import {
+  IonRadioGroup,
+  IonRow,
+  IonText,
+  IonRadio,
+  useIonToast
+} from "@ionic/react"
 import Label from "./Label"
 import { useLocation, useHistory } from "react-router"
 import { URLupdate, URLgetter } from "utils/lib/URLupdate"
@@ -15,12 +21,14 @@ const RadioGroup = ({
 }) => {
   const history = useHistory()
   const [selected, setSelected] = React.useState("")
+  const [present, dismiss] = useIonToast()
   const handleChange = (e) => {
     const data = URLupdate(urlKey, e.target.value[0])
     history.push({ search: data.toString() })
   }
 
   useEffect(() => {
+    console.log("getting radio group data")
     const data = URLgetter(urlKey)
     if (data) {
       if (data === value1[0]) {
@@ -30,8 +38,10 @@ const RadioGroup = ({
       } else {
         setSelected("")
       }
+    } else {
+      setSelected("")
     }
-  })
+  }, [history.location.search])
 
   return (
     <IonRadioGroup allowEmptySelection={false} value={selected}>

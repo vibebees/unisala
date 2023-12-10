@@ -32,6 +32,8 @@ const MulitiSelect = ({ options, Label = "", URLkey }) => {
     const data = URLgetter(URLkey)
     if (data) {
       setSelected(data)
+    } else {
+      setSelected("Select a state")
     }
   }, [history.location.search])
 
