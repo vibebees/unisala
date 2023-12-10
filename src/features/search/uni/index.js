@@ -3,7 +3,6 @@ import {
   IonButton,
   IonButtons,
   IonCol,
-  IonContent,
   IonHeader,
   IonIcon,
   IonMenu,
@@ -19,7 +18,7 @@ import SearchResults from "./SearchResults"
 import { useDispatch } from "react-redux"
 import useWindowWidth from "hooks/useWindowWidth"
 import { searchGetSuccess } from "store/action/index"
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { UniSearchDataList } from "graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
@@ -44,6 +43,8 @@ function index({ query }) {
   useEffect(() => {
     dispatch(searchGetSuccess(data?.searchSchool))
   }, [data])
+  // ...item?.totalPeopleVoted,
+  // ...item?.overallRating,
 
   const [filterPage, setFilterPage] = useState(1)
 
@@ -94,11 +95,11 @@ function index({ query }) {
           </>
         )}
 
-        <IonCol className="results-col !pl-[360px]">
+        <IonCol className="results-col pl-[360px] max-md:pl-0">
           <SearchTab />
           <ChipsTab />
           {loading || isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => <ThreadSkeleton key={i} />)
+            Array.from({ length: 12 }).map((_, i) => <ThreadSkeleton key={i} />)
           ) : (
             <SearchResults
               filterPage={filterPage}

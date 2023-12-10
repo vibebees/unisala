@@ -2,17 +2,16 @@ import React, { useState, useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
 import { IonInput, IonIcon } from "@ionic/react"
 import { search } from "ionicons/icons"
- import { useLazyQuery } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "graphql/uni"
-
 
 import { SearchBarResultList } from "./searchResultList"
 import "./index.css"
 import { searchUniFromBar } from "store/action/userActivity"
 import { useSelector } from "react-redux"
-import {UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL} from "servers/types"
-import {userSearch} from "graphql/user"
-import {useDebouncedEffect} from "hooks/useDebouncedEffect"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
+import { userSearch } from "graphql/user"
+import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
@@ -58,7 +57,7 @@ export const SearchBar = () => {
 
   return (
     <>
-      <div className="search-box">
+      <div className="search-box max-md:block hidden">
         <IonInput
           type="text"
           placeholder="Search universities, people..."

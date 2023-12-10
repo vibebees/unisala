@@ -4,21 +4,16 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonInfiniteScroll,
-  IonInfiniteScrollContent,
-  IonButton,
-  IonIcon
+  IonInfiniteScrollContent
 } from "@ionic/react"
 import { useSelector } from "react-redux"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import CourseCard from "component/courseCard"
 import noResultsFound from "assets/no-results.jpg"
 import "./index.css"
-import { arrowUpOutline } from "ionicons/icons"
 
 function index({ filterPage, setFilterPage }) {
   const { searchData } = useSelector((store) => store?.university || [])
-  const location = useLocation()
-  const searchParams = new URLSearchParams(location.search)
 
   return searchData?.length ? (
     <div className="relative">
@@ -45,17 +40,6 @@ function index({ filterPage, setFilterPage }) {
           {filterPage > 1 && <h1 className="text-[#488AFF]">Loading.....</h1>}
         </IonInfiniteScrollContent>
       </IonInfiniteScroll>
-
-      {/* <IonButton
-        className="fixed right-8 bottom-8 w-12 h-12 animate-bounce"
-        shape="round"
-      >
-        <IonIcon
-          icon={arrowUpOutline}
-          color="black"
-          className="text-black absolute"
-        />
-      </IonButton> */}
     </div>
   ) : (
     <IonCard style={{ textAlign: "center" }}>

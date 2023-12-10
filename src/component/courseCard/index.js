@@ -6,11 +6,7 @@ import {
   IonCol,
   IonIcon,
   IonText,
-  IonItem,
-  IonLabel,
-  IonCardSubtitle,
   IonCardTitle,
-  IonThumbnail,
   IonSkeletonText,
   IonSlides,
   IonSlide,
@@ -19,21 +15,14 @@ import {
   IonContent,
   IonImg
 } from "@ionic/react"
-import {
-  heart,
-  saveOutline,
-  location,
-  shareOutline,
-  schoolOutline,
-  cashOutline,
-  star,
-  starHalf
-} from "ionicons/icons"
-import useGrade from "hooks/useGrade"
-
+import { saveOutline, shareOutline } from "ionicons/icons"
 import { LikeATag } from "../tags"
 import { universityDefaultImage } from "servers/s3.configs"
-import useGradeColor from "hooks/useGradeColor"
+import Location from "./../../features/search/atoms/CardLocation"
+import ApplicationCharges from "./../../features/search/atoms/ApplicationCharges"
+import Offerings from "./../../features/search/atoms/Offerings"
+import RatingCard from "./../../features/search/atoms/RatingCard"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
 function ImageModal({ isOpen, imageSrc, onClose }) {
   return (
@@ -95,12 +84,11 @@ function CardImage({ allProps }) {
       ) : (
         <div style={imageContainerStyle}>
           {pictures?.map((picture, index) => (
-            <IonImg
+            <ImageWithLoader
               key={index}
               src={picture || images?.[0] || universityDefaultImage}
-              alt={`University Image ${index + 1}`}
               style={imageStyle}
-              onClick={() => handleImageClick(picture)}
+              alt={`University Image ${index + 1}`}
             />
           ))}
         </div>
@@ -125,97 +113,6 @@ function CardActions({ allProps }) {
         <IonIcon style={{ fontSize: "25px" }} icon={shareOutline} />
       )}
       {showSave && <IonIcon style={{ fontSize: "25px" }} icon={saveOutline} />}
-    </div>
-  )
-}
-
-function Location({ allProps }) {
-  const { address = {} } = allProps
-  const { city, stateAbbreviation, streetAddressOrPOBox } = address || {}
-  const formattedAddress = `${city}, ${stateAbbreviation}, ${streetAddressOrPOBox}`
-
-  return (
-    <IonRow
-      className="ion-no-padding gap-1 items-center h-fit mt-2"
-      lines="none"
-    >
-      <IonIcon
-        className="ion-icon leading-none mt-0 text-primar text-lg"
-        icon={location}
-      />
-      <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
-        {formattedAddress}
-      </IonText>
-    </IonRow>
-  )
-}
-function ApplicationCharges({ undergraduateApplicationFee = null }) {
-  if (undergraduateApplicationFee === null) return null
-  return (
-    <IonRow className="ion-no-padding pl-1 mt-3 ">
-      <IonIcon className="ion-icon text-primar text-lg" icon={cashOutline} />
-      <IonLabel className="pl-2">
-        <IonText className="text-sm font-semibold text-gray-600">
-          Application Charges : ${undergraduateApplicationFee}
-        </IonText>
-      </IonLabel>
-      <IonLabel className="pl-2">
-        <IonText className="text-sm before:bottom-0 before:top-[9px] before:-left-4 ml-4 before:rounded-full before:absolute relative before:content-[''] before:w-1 before:h-1 before:bg-neutral-400 font-semibold text-gray-600">
-          Tution Fee : ${undergraduateApplicationFee}
-        </IonText>
-      </IonLabel>
-      <IonLabel className="pl-2">
-        <IonText className="text-sm before:bottom-0 before:top-[9px] before:-left-4 ml-4 before:rounded-full before:absolute relative before:content-[''] before:w-1 before:h-1 before:bg-neutral-400 font-semibold text-gray-600">
-          Cost of Attendence : ${undergraduateApplicationFee}
-        </IonText>
-      </IonLabel>
-    </IonRow>
-  )
-}
-
-function Offerings({ allProps }) {
-  const { graduateOffering, undergraduateOffering } = allProps
-  return (
-    <IonRow className="ion-no-padding pl-1 mt-2 h-fit ">
-      <IonRow className="ion-no-padding justify-start h-fit">
-        <IonIcon
-          className="ion-icon text-primar text-lg"
-          icon={schoolOutline}
-        />
-        {graduateOffering && (
-          <IonCol size="auto" className="ion-no-padding ml-2 w-fit p-0 h-fit">
-            <IonLabel className="ion-padding-start p-0 font-semibold  text-red-500">
-              {graduateOffering.substring(0, 30)}
-            </IonLabel>
-          </IonCol>
-        )}
-
-        {undergraduateOffering && (
-          <IonCol size="auto" className="ion-no-padding h-fit ">
-            <IonLabel className="ion-padding-start  font-bold text-blue-500">
-              {undergraduateOffering.substring(0, 35)} 📚
-            </IonLabel>
-          </IonCol>
-        )}
-      </IonRow>
-    </IonRow>
-  )
-}
-
-function Grade({ allProps }) {
-  const { average, width, showGrade } = allProps
-
-  return (
-    <div
-      style={{
-        background: useGradeColor(average),
-        margin: "auto"
-      }}
-      className="card-report"
-    >
-      <h6 style={{ fontSize: width > 800 ? "14px" : "12px", margin: "0" }}>
-        {useGrade(average)}
-      </h6>
     </div>
   )
 }
@@ -278,68 +175,15 @@ export function LoadingScreen() {
   )
 }
 
-export function RatingCard({ allProps }) {
-  const { average, width, showGrade } = allProps
-
-  return (
-    <IonRow className=" justify-end items-start  m-0 h-fit">
-      <IonCol size="auto m-0">
-        <IonRow className="items-center m-0">
-          <IonText className="text-2xl m-0 font-semibold text-neutral-900">
-            4.5
-          </IonText>
-          <IonCol className="items-end flex mt-1  gap-1 py-px px-2  h-fit ion-no-padding">
-            <IonIcon
-              style={{ fontSize: "18px" }}
-              icon={star}
-              className="text-yellow-500"
-            />
-
-            <IonIcon
-              style={{ fontSize: "18px" }}
-              icon={star}
-              className="text-yellow-500"
-            />
-
-            <IonIcon
-              style={{ fontSize: "18px" }}
-              icon={star}
-              className="text-yellow-500"
-            />
-
-            <IonIcon
-              style={{ fontSize: "18px" }}
-              icon={star}
-              className="text-yellow-500"
-            />
-
-            <IonIcon
-              style={{ fontSize: "18px" }}
-              icon={starHalf}
-              className="text-yellow-500"
-            />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonText>
-            <IonCardSubtitle className="text-sm font-semibold text-gray-600">
-              1,000 Reviews
-            </IonCardSubtitle>
-          </IonText>
-        </IonRow>
-      </IonCol>
-    </IonRow>
-  )
-}
-
 function CourseCard({ allProps }) {
   const {
     name,
     ownType,
     tags,
-    loading,
-    schoolDataLoading,
-    undergraduateApplicationFee
+
+    undergraduateApplicationFee,
+    totalPeopleVoted,
+    overallRating
   } = allProps
 
   return (
@@ -367,7 +211,9 @@ function CourseCard({ allProps }) {
                     <Location allProps={allProps} />
                   </IonCol>
                   <IonCol className="h-fit">
-                    <RatingCard allProps={allProps} />
+                    <RatingCard
+                      allProps={{ overallRating, totalPeopleVoted }}
+                    />
                   </IonCol>
                 </IonRow>
                 <Offerings allProps={allProps} />

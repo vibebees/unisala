@@ -83,7 +83,6 @@ const StepInput = ({
             placeholder={placeholder}
             name={name}
             onChange={(e) => {
-              console.log(e.target.value)
               setInput((prev) => {
                 return { ...prev, [e.target.name]: e.target.value }
               })

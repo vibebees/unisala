@@ -1,16 +1,10 @@
 /* eslint-disable complexity */
-import {
-  IonCard,
-  IonCardContent,
-  IonCol,
-  IonRow,
-  IonSpinner
-} from "@ionic/react"
+import { IonCard, IonCardContent, IonCol, IonRow } from "@ionic/react"
 import "./index.css"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { useLazyQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
-import { UniFilterResults, UniSearchDataList } from "graphql/uni"
+import { UniFilterResults } from "graphql/uni"
 import { searchGetSuccess } from "store/action"
 import { useDispatch } from "react-redux"
 import { statesArray } from "utils/lib/states"
@@ -19,8 +13,7 @@ import RadioGroup from "features/search/atoms/RadioGroup"
 import RangeSelect from "features/search/atoms/RangeSelect"
 import MulitiSelect from "features/search/atoms/MulitiSelect"
 import AsyncSelect from "react-select/async"
-import { useHistory, useLocation } from "react-router-dom"
-import Chip from "../../atoms/Chip"
+import { useHistory } from "react-router-dom"
 import {
   ACT_SCORE,
   APPLICATION_FEES,
@@ -29,16 +22,14 @@ import {
   TUITION
 } from "./constants"
 import { universityServer } from "servers/endpoints"
-import useWindowWidth from "hooks/useWindowWidth"
 import { URLgetter, URLupdate } from "utils/lib/URLupdate"
 
 function index({ setIsLoading, filterPage }) {
-  const windowWidth = useWindowWidth()
   const [isFiltered, setIsFiltered] = useState(false)
   const [selectedMajor, setSelectedMajor] = useState("")
   const history = useHistory()
   const dispatch = useDispatch()
-  const [getScholarship, { data, loading, refetch, fetchMore }] = useLazyQuery(
+  const [getScholarship, { data, loading, fetchMore }] = useLazyQuery(
     UniFilterResults,
     {
       context: { server: UNIVERSITY_SERVICE_GQL },
@@ -176,6 +167,10 @@ function index({ setIsLoading, filterPage }) {
       queryObject.state = state
     }
 
+    if (major) {
+      queryObject.major = major
+    }
+
     return queryObject
   }
 
@@ -185,7 +180,6 @@ function index({ setIsLoading, filterPage }) {
 
   useEffect(() => {
     setIsFiltered(true)
-    // setChips(Object.keys(queryObject))
     const queryObject = getAllQueryParams(10)
     getScholarship({
       variables: {
@@ -196,6 +190,8 @@ function index({ setIsLoading, filterPage }) {
 
   useEffect(() => {
     const d = data?.searchUniversity?.map((item) => ({
+      overallRating: item.overallRating,
+      totalPeopleVoted: item.totalPeopleVoted,
       ...item.elevatorInfo,
       ...item.studentCharges
     }))
@@ -203,9 +199,9 @@ function index({ setIsLoading, filterPage }) {
   }, [data])
 
   useLayoutEffect(() => {
-    const data = URLgetter("major")
-    if (data) {
-      setSelectedMajor(data)
+    const majordata = URLgetter("major")
+    if (majordata) {
+      setSelectedMajor(majordata)
     } else {
       setSelectedMajor("Search Major")
     }
@@ -255,21 +251,6 @@ function index({ setIsLoading, filterPage }) {
   return (
     <>
       <IonCard className="filter-card-wrapper mx-1 ion-no-margin">
-        {/* {isFiltered &&
-          (loading ? (
-            <IonSpinner name="crescent"></IonSpinner>
-          ) : (
-            <>
-              {/* <IonButton
-                className=" relative right-0 text-right"
-                size="small"
-                fill="outline"
-                onClick={removeFilter}
-              >
-                Remove Filters
-              </IonButton> */}
-        {/* </>
-          ))} */}
         <IonCardContent>
           <div className="grid grid-cols-1 gap-5">
             <RadioGroup

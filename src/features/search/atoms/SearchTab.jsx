@@ -1,9 +1,12 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { IonCard, IonCardContent } from "@ionic/react"
+import { useHistory } from "react-router"
+import { URLgetter, URLupdate } from "utils/lib/URLupdate"
 
 const SearchTab = () => {
   const [tab, setTab] = useState("all")
-  const searchParams = new URLSearchParams(location.search)
+  const history = useHistory()
+  const searchParams = new URLSearchParams(history.location.search)
   const query = searchParams.get("q") || ""
 
   const tabs = useMemo(() => {
@@ -27,6 +30,15 @@ const SearchTab = () => {
     ]
   }, [])
 
+  useEffect(() => {
+    const getTab = URLgetter("tab")
+    if (getTab) {
+      setTab(getTab)
+    } else {
+      setTab("all")
+    }
+  }, [history.location.search])
+
   return (
     <IonCard className=" sticky -top-14 z-20">
       <IonCardContent>
@@ -42,7 +54,10 @@ const SearchTab = () => {
           {tabs.map((t, index) => (
             <p
               key={index}
-              onClick={() => setTab(t.value)}
+              onClick={() => {
+                const urldata = URLupdate("tab", t.value)
+                history.push({ search: urldata })
+              }}
               style={{
                 cursor: "pointer",
                 fontSize: "1.2rem",
