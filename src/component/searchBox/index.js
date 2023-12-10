@@ -57,7 +57,7 @@ export const SearchBar = () => {
 
   return (
     <>
-      <div className="search-box max-md:block hidden">
+      <div className="search-box ">
         <IonInput
           type="text"
           placeholder="Search universities, people..."
