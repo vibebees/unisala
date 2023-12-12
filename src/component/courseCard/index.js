@@ -6,11 +6,7 @@ import {
   IonCol,
   IonIcon,
   IonText,
-  IonItem,
-  IonLabel,
-  IonCardSubtitle,
   IonCardTitle,
-  IonThumbnail,
   IonSkeletonText,
   IonSlides,
   IonSlide,
@@ -19,18 +15,14 @@ import {
   IonContent,
   IonImg
 } from "@ionic/react"
-import {
-  heart,
-  saveOutline,
-  location,
-  shareOutline,
-  schoolOutline
-} from "ionicons/icons"
- import useGrade from "hooks/useGrade"
-
+import { saveOutline, shareOutline } from "ionicons/icons"
 import { LikeATag } from "../tags"
-import {universityDefaultImage} from "servers/s3.configs"
-import useGradeColor from "hooks/useGradeColor"
+import { universityDefaultImage } from "servers/s3.configs"
+import Location from "./../../features/search/atoms/CardLocation"
+import ApplicationCharges from "./../../features/search/atoms/ApplicationCharges"
+import Offerings from "./../../features/search/atoms/Offerings"
+import RatingCard from "./../../features/search/atoms/RatingCard"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
 function ImageModal({ isOpen, imageSrc, onClose }) {
   return (
@@ -55,8 +47,8 @@ function CardImage({ allProps }) {
   const [selectedImage, setSelectedImage] = useState("")
 
   const imageContainerStyle = {
-    display: "flex",
-    flexWrap: "wrap"
+    display: "inline-flex",
+    flexWrap: "nowrap"
   }
   const imageStyle = {
     width: "150px",
@@ -70,7 +62,7 @@ function CardImage({ allProps }) {
     setModalOpen(true)
   }
   return (
-    <div className="card-image">
+    <div className="card-image - overflow-hidden mr-2">
       {onSearch ? (
         <IonSlides
           options={{
@@ -92,12 +84,11 @@ function CardImage({ allProps }) {
       ) : (
         <div style={imageContainerStyle}>
           {pictures?.map((picture, index) => (
-            <IonImg
+            <ImageWithLoader
               key={index}
               src={picture || images?.[0] || universityDefaultImage}
-              alt={`University Image ${index + 1}`}
               style={imageStyle}
-              onClick={() => handleImageClick(picture)}
+              alt={`University Image ${index + 1}`}
             />
           ))}
         </div>
@@ -122,71 +113,6 @@ function CardActions({ allProps }) {
         <IonIcon style={{ fontSize: "25px" }} icon={shareOutline} />
       )}
       {showSave && <IonIcon style={{ fontSize: "25px" }} icon={saveOutline} />}
-    </div>
-  )
-}
-
-function Location({ allProps }) {
-  const { address = {} } = allProps
-  const { city, stateAbbreviation, streetAddressOrPOBox } = address || {}
-  const formattedAddress = `${city}, ${stateAbbreviation}, ${streetAddressOrPOBox}`
-
-  return (
-    <IonItem className="ion-no-padding">
-      <IonIcon className="ion-icon text-primary" icon={location} />
-      <IonLabel className="ion-padding-start">
-        <IonText className="text-sm font-semibold text-gray-600">
-          {formattedAddress}
-        </IonText>
-      </IonLabel>
-    </IonItem>
-  )
-}
-
-function Offerings({ allProps }) {
-  const { graduateOffering, undergraduateOffering } = allProps
-  return (
-    <IonItem>
-      <IonRow>
-        <IonIcon
-          className="ion-icon"
-          icon={schoolOutline}
-          style={{ color: "var(--ion-color-primary)", fontSize: "24px" }}
-        />
-        {graduateOffering && (
-          <IonCol className="ion-no-padding ">
-            <IonLabel className="ion-padding-start font-semibold  text-red-500">
-              {graduateOffering.substring(0, 30)}
-            </IonLabel>
-          </IonCol>
-        )}
-
-        {undergraduateOffering && (
-          <IonCol className="ion-no-padding ">
-            <IonLabel className="ion-padding-start  font-bold text-blue-500">
-              {undergraduateOffering.substring(0, 35)} 📚
-            </IonLabel>
-          </IonCol>
-        )}
-      </IonRow>
-    </IonItem>
-  )
-}
-
-function Grade({ allProps }) {
-  const { average, width, showGrade } = allProps
-
-  return (
-    <div
-      style={{
-        background: useGradeColor(average),
-        margin: "auto"
-      }}
-      className="card-report"
-    >
-      <h6 style={{ fontSize: width > 800 ? "14px" : "12px", margin: "0" }}>
-        {useGrade(average)}
-      </h6>
     </div>
   )
 }
@@ -250,26 +176,50 @@ export function LoadingScreen() {
 }
 
 function CourseCard({ allProps }) {
-  const { name, ownType, tags, loading, schoolDataLoading } = allProps
+  const {
+    name,
+    ownType,
+    tags,
+
+    undergraduateApplicationFee,
+    totalPeopleVoted,
+    overallRating
+  } = allProps
 
   return (
     <IonCard>
       <IonGrid>
         <IonRow>
-          <IonCol style={{ margin: "auto" }} size={"auto"}>
+          <IonCol
+            style={{ margin: "auto" }}
+            className="overflow-hidden "
+            size={"auto"}
+          >
             <CardImage allProps={allProps} />
           </IonCol>
           <IonCol>
             <IonRow>
               <IonCol>
-                <div style={{ display: "flex", float: "right" }}>
-                  <CardActions allProps={allProps} />
-                </div>
-                <IonText color="dark">
-                  <IonCardTitle>{name}</IonCardTitle>
-                </IonText>
-                <Location allProps={allProps} />
+                <IonRow className="ion-no-padding m-0  items-center  h-fit">
+                  <IonCol size="auto h-fit">
+                    <div style={{ display: "flex", float: "right" }}>
+                      <CardActions allProps={allProps} />
+                    </div>
+                    <IonText color="dark">
+                      <IonCardTitle>{name}</IonCardTitle>
+                    </IonText>
+                    <Location allProps={allProps} />
+                  </IonCol>
+                  <IonCol className="h-fit">
+                    <RatingCard
+                      allProps={{ overallRating, totalPeopleVoted }}
+                    />
+                  </IonCol>
+                </IonRow>
                 <Offerings allProps={allProps} />
+                <ApplicationCharges
+                  undergraduateApplicationFee={undergraduateApplicationFee}
+                />
 
                 {ownType?.length > 0 && (
                   <LikeATag

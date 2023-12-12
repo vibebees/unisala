@@ -3,7 +3,6 @@ import {
   IonButton,
   IonButtons,
   IonCol,
-  IonContent,
   IonHeader,
   IonIcon,
   IonMenu,
@@ -19,18 +18,22 @@ import SearchResults from "./SearchResults"
 import { useDispatch } from "react-redux"
 import useWindowWidth from "hooks/useWindowWidth"
 import { searchGetSuccess } from "store/action/index"
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { UniSearchDataList } from "graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
-import { useHistory, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import { closeOutline } from "ionicons/icons"
+import { INITIAL_QUERY_DATA } from "./Filter/constants"
+import SearchTab from "../atoms/SearchTab"
+import { ChipsTab } from "../orgamism/ChipsTab"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+  const [filtered, setFiltered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
@@ -40,18 +43,32 @@ function index({ query }) {
   useEffect(() => {
     dispatch(searchGetSuccess(data?.searchSchool))
   }, [data])
+  // ...item?.totalPeopleVoted,
+  // ...item?.overallRating,
+
+  const [filterPage, setFilterPage] = useState(1)
+
+  useEffect(() => {
+    for (const [key, value] of searchParams) {
+      if (Object.keys(INITIAL_QUERY_DATA).includes(key)) {
+        setFiltered(true)
+      } else {
+        setFiltered(false)
+      }
+    }
+  }, [searchParams])
 
   return (
     <>
-      <IonRow className="">
+      <IonRow className="overflow-hidden">
         {windowWidth > 768 ? (
-          <IonCol className="filter-col">
-            <Filter setIsLoading={setIsLoading} />
+          <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
+            <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
           </IonCol>
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="w-full h-[1196px]" contentId="main-content">
+            <IonMenu className="w-full h-[1196px" contentId="main-content">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
@@ -63,7 +80,7 @@ function index({ query }) {
                 </IonToolbar>
               </IonHeader>
               <IonCol className="filter-col absolute top-10 z-[1000]">
-                <Filter setIsLoading={setIsLoading} />
+                <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
               </IonCol>
             </IonMenu>
             <IonPage id="main-content">
@@ -78,11 +95,16 @@ function index({ query }) {
           </>
         )}
 
-        <IonCol className="results-col ">
+        <IonCol className="results-col pl-[360px] max-md:pl-0">
+          <SearchTab />
+          <ChipsTab />
           {loading || isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => <ThreadSkeleton key={i} />)
+            Array.from({ length: 12 }).map((_, i) => <ThreadSkeleton key={i} />)
           ) : (
-            <SearchResults />
+            <SearchResults
+              filterPage={filterPage}
+              setFilterPage={setFilterPage}
+            />
           )}
         </IonCol>
       </IonRow>

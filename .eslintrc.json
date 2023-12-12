@@ -153,6 +153,7 @@
     "no-console": "warn",
     "no-continue": "off",
     "no-div-regex": "error",
+   " no-case-declarations": "off",
     // "no-duplicate-imports": "error",
     "no-else-return": "off",
     "no-empty-function": "off",

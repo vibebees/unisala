@@ -18,18 +18,17 @@ import {
 } from "@ionic/react"
 import { closeOutline, imageOutline } from "ionicons/icons"
 
-
 import "../index.css"
 
 import "react-quill/dist/quill.snow.css"
 import TextEditor from "utils/components/TextEditor"
 import axios from "axios"
 import clsx from "clsx"
-import {USER_SERVICE_GQL} from "servers/types"
-import {AddPost, GetAllPostBySpaceCategoryID, getNewsFeed} from "graphql/user"
-import {userServer} from "servers/endpoints"
+import { USER_SERVICE_GQL } from "servers/types"
+import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
+import { userServer } from "servers/endpoints"
 import TextChecker from "utils/components/TextChecker"
-import {Avatar} from "component/Avatar"
+import { Avatar } from "component/Avatar"
 
 export const PostModalOnClick = ({ allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -125,7 +124,6 @@ export const PostModalOnClick = ({ allProps }) => {
             }),
             fields: {
               postText(existingImages = []) {
-                console.log(existingImages)
                 return [...existingImages, ...imageLinks]
               }
             }

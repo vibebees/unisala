@@ -1,27 +1,18 @@
-import { useEffect, useMemo, useState } from "react"
-import {
-  IonCard,
-  IonCardContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonContent,
-  IonCardTitle
-} from "@ionic/react"
+import { useEffect, useState } from "react"
+import { IonGrid, IonRow, IonCol, IonContent, IonCardTitle } from "@ionic/react"
 import { useLocation, Link, useHistory } from "react-router-dom"
 import { UniSearchDataList } from "graphql/uni"
 import { userSearch } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
 import { useQuery } from "@apollo/client"
-import {
-  UNIVERSITY_SERVICE_GQL,
-  USER_SERVICE_GQL
-} from "servers/types"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
 import UserCard from "component/userCard"
 import CourseCard from "component/courseCard"
 import UserSearchResult from "./user"
 import UniSearchResult from "./uni"
 import { SearchBar } from "component/searchBox"
+import SearchTab from "./atoms/SearchTab"
+import { URLgetter } from "utils/lib/URLupdate"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")
@@ -39,84 +30,23 @@ export const SearchTemplate = () => {
     context: { server: USER_SERVICE_GQL }
   })
 
-  const tabs = useMemo(() => {
-    return [
-      {
-        name: "All",
-        value: "all"
-      },
-      {
-        name: "Universities",
-        value: "uni"
-      },
-      {
-        name: "Users",
-        value: "user"
-      },
-      {
-        name: "Posts",
-        value: "post"
-      }
-    ]
-  }, [])
-
   useEffect(() => {
-    const params = new URLSearchParams(location.search).get("tab")
-
-    // check if gotten params is actually valid or not
-    if (
-      params === "all" ||
-      params === "uni" ||
-      params === "user" ||
-      params === "post"
-    ) {
-      setTab(params)
+    const getTab = URLgetter("tab")
+    if (getTab) {
+      setTab(getTab)
     } else {
       setTab("all")
     }
-  }, [])
-
-  useEffect(() => {
-    // history.push(`?q=${query}&tab=${tab}`)
-
-    searchParams.set("tab", tab)
-    history.push({ search: searchParams.toString() })
-  }, [tab])
+  }, [history.location.search])
 
   return (
     <IonContent>
       <IonGrid className="max-width-container">
-        <IonCard>
+        <IonCol className="max-md:block hidden">
           <SearchBar />
-        </IonCard>
-        <IonCard>
-          <IonCardContent>
-            {query.length > 0 && <h1>Search Result For {`"${query}"`}: </h1>}
-            <div
-              style={{
-                display: "inline-flex",
-                gap: "1rem",
-                marginTop: "1.5rem",
-                overflow: "auto"
-              }}
-            >
-              {tabs.map((t, index) => (
-                <p
-                  key={index}
-                  onClick={() => setTab(t.value)}
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "1.2rem",
-                    color: t.value === tab ? "#3171e0" : "",
-                    borderBottom: t.value === tab ? "2px solid #3171e0" : ""
-                  }}
-                >
-                  {t.name}
-                </p>
-              ))}
-            </div>
-          </IonCardContent>
-        </IonCard>
+        </IonCol>
+
+        {tab !== "uni" && <SearchTab />}
 
         <IonRow>
           <IonCol className="result-col">

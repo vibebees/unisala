@@ -86,7 +86,7 @@ export const screenGreaterThan1000 = () => {
             <CustomTrackingLink
               to={`/university/${item?.name}`}
               destination={"/university"}
-              description="Clicked on famous university List card"
+              title="Clicked on famous university List card"
               key={index}
             >
               <IonItem

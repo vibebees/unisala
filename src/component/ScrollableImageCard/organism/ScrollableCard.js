@@ -46,7 +46,7 @@ const ScrollableCard = ({ allProps }) => {
                 to={"/university/" + item?.name}
                 key={index}
                 destination={"/university"}
-                description={"clicked on university card"}
+                title={"clicked on university card"}
               >
                 <SingleImageCard key={index} allProps={item} />
               </CustomTrackingLink>
