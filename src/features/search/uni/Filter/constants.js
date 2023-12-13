@@ -143,7 +143,7 @@ export const COA = [
 export const INITIAL_QUERY_DATA = {
   sat: null,
   act: null,
-  page: 10,
+  page: 1,
   pageSize: 10,
   state: null,
   major: null,
