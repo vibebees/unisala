@@ -20,9 +20,8 @@ export const SearchTemplate = () => {
   const searchParams = new URLSearchParams(location.search)
   const query = searchParams.get("q") || ""
   useDocTitle("Search ᛫ " + query)
-
   const history = useHistory()
-  const { data: unidata } = useQuery(UniSearchDataList, {
+  const { data: unidata, loading } = useQuery(UniSearchDataList, {
     variables: { name: query },
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
@@ -90,7 +89,7 @@ export const SearchTemplate = () => {
                         color: "#898989"
                       }}
                     >
-                      Sorry! No result found &#9785;
+                      {loading ? "Loading..." : "Sorry! No result found"}
                     </IonCardTitle>
                   )}
                 </div>
@@ -121,7 +120,7 @@ export const SearchTemplate = () => {
                           color: "#898989"
                         }}
                       >
-                        Sorry! No result found &#9785;
+                        {!loading && " Sorry! No result found."}
                       </IonCardTitle>
                     )}
                   </div>

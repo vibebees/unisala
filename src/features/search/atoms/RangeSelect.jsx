@@ -49,7 +49,7 @@ const RangeSelect = ({
     }
 
     if (urlKey === "coa") {
-      if (!levelOfStudy || !degree || !accomadation || !family) {
+      if (!levelOfStudy || !degree) {
         return present({
           duration: 3000,
           message:
