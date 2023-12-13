@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 import CourseCard from "component/courseCard"
 import noResultsFound from "assets/no-results.jpg"
 import "./index.css"
+import CustomTrackingLink from "features/analytics/LinkTrack"
 
 function index({ filterPage, setFilterPage }) {
   const { searchData } = useSelector((store) => store?.university || [])
@@ -20,9 +21,14 @@ function index({ filterPage, setFilterPage }) {
       {Array.isArray(searchData) &&
         searchData.map((data, index) => {
           return (
-            <Link to={`/university/${data?.name}`} key={index}>
+            <CustomTrackingLink
+              title={`${data?.name} clicked on university result filter `}
+              to={`/university/${data?.name}`}
+              key={index}
+              destination={`/university/${data?.name}`}
+            >
               <CourseCard allProps={data} />
-            </Link>
+            </CustomTrackingLink>
           )
         })}
       <IonInfiniteScroll

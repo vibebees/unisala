@@ -21,6 +21,7 @@ export const loginUser = ({
         setLoading(false)
         if (res.data.success) {
           localStorage.setItem("accessToken", res?.data?.accessToken)
+          localStorage.setItem("refreshToken", res?.data?.refreshToken)
           dispatch({
             type: USER_LOGIN,
             payload: res?.data || {}
@@ -127,6 +128,7 @@ export const googleAuthAction = ({
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem("accessToken", res?.data?.accessToken)
+          localStorage.setItem("refreshToken", res?.data?.refreshToken)
           if (res?.data.isFirstLogin) {
             localStorage.setItem("newUser", "true")
           }

@@ -37,6 +37,7 @@ const config = require("./config"),
         localStorage.setItem("refreshToken", data?.refreshToken || "")
       data?.accessToken &&
         localStorage.setItem("accessToken", data?.accessToken || "")
+      window.location.reload()
       return data.accessToken
     } catch (error) {
       console.log(error)
@@ -50,6 +51,26 @@ const config = require("./config"),
         )
       )
     }
+    let status = JSON.parse(graphQLErrors?.[0]?.message)
+
+    if (status?.statusCode === 401) {
+      localStorage.removeItem("accessToken")
+      fromPromise(getNewToken().catch((error) => error))
+        .filter((value) => Boolean(value))
+        .flatMap((accessToken) => {
+          const oldHeaders = operation.getContext().headers
+          localStorage.setItem("accessToken", accessToken)
+
+          operation.setContext({
+            headers: {
+              ...oldHeaders,
+              authorization: `${accessToken}`
+            }
+          })
+          return forward(operation)
+        })
+    }
+
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
         switch (err.message) {
