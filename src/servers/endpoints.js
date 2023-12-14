@@ -15,6 +15,7 @@ import {
   USER_SERVICE_GQL
 } from "./types"
 import { io } from "socket.io-client"
+import { getNewToken } from "api/authentication"
 
 const config = require("./config"),
   {
@@ -24,25 +25,6 @@ const config = require("./config"),
     userServiceAddress,
     callSocketAddress
   } = urls,
-  getNewToken = async () => {
-    try {
-      const { data } = await axios.post(userServiceAddress + "/refreshToken", {
-        refreshToken: localStorage.getItem("refreshToken")
-      })
-      if (!data.success) {
-        localStorage.removeItem("refreshToken")
-        localStorage.removeItem("accessToken")
-      }
-      data?.refreshToken &&
-        localStorage.setItem("refreshToken", data?.refreshToken || "")
-      data?.accessToken &&
-        localStorage.setItem("accessToken", data?.accessToken || "")
-      window.location.reload()
-      return data.accessToken
-    } catch (error) {
-      console.log(error)
-    }
-  },
   errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) =>
@@ -73,20 +55,30 @@ const config = require("./config"),
 
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
-        switch (err.message) {
-          case "UNAUTHORIZED":
-            return fromPromise(getNewToken().catch((error) => error))
-              .filter((value) => Boolean(value))
+        const { message, path } = err || {}
+        const { statusCode } = JSON.parse(message) || {}
+        switch (statusCode) {
+          // case 400:
+          case 401:
+            return fromPromise(
+              getNewToken().catch((error) => {
+                return error // Consider whether you should be returning 'error' here
+              })
+            )
+              .filter((value) => {
+                return Boolean(value)
+              })
               .flatMap((accessToken) => {
                 const oldHeaders = operation.getContext().headers
                 operation.setContext({
                   headers: {
                     ...oldHeaders,
-                    authorization: `${accessToken}`
+                    authorization: `Bearer ${accessToken}`
                   }
                 })
                 return forward(operation)
               })
+
           default:
         }
       }

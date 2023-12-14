@@ -6,11 +6,28 @@ import "./CoverImg.css"
 export const CoverImg = ({allProps}) => {
 
     const {uniData, width, setWidth} = allProps
+    const images = uniData?.elevatorInfo?.pictures || []
+    const getRandomImage = (arr, exclude = "") => {
+        if (arr.length === 0) return universityDefaultImage
+        const filteredArray = exclude ? arr.filter((img) => img !== exclude) : arr
+        if (filteredArray.length === 0) return exclude // Return exclude if no other options
+        const randomIndex = Math.floor(Math.random() * filteredArray.length)
+        return filteredArray[randomIndex]
+    }
 
-    const [images, setImages] = useState(uniData?.images || [])
+    // Setting initial state for coverImage and profileImage
+    const [coverImage, setCoverImage] = useState(getRandomImage(images))
+    const [profileImage, setProfileImage] = useState(getRandomImage(images, coverImage))
 
-    const [coverImage, setCoverImage] = useState(images[0] || universityDefaultImage)
-    const [profileImage, setProfileImage] = useState(images[1] || universityDefaultImage)
+    // Effect to update profileImage if coverImage changes, ensuring they are not the same
+    useEffect(() => {
+        setProfileImage((prevProfileImage) => {
+            if (prevProfileImage === coverImage) {
+                return getRandomImage(images, coverImage)
+            }
+            return prevProfileImage
+        })
+    }, [coverImage, images])
 
     const handleResize = () => {
         const {innerWidth} = window

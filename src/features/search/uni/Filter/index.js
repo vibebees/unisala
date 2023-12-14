@@ -180,7 +180,7 @@ function index({ setIsLoading, filterPage }) {
 
   useEffect(() => {
     setIsFiltered(true)
-    const queryObject = getAllQueryParams(10)
+    const queryObject = getAllQueryParams(1)
     getScholarship({
       variables: {
         ...queryObject
