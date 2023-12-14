@@ -20,12 +20,15 @@ export const loginUser = ({
       .then((res) => {
         setLoading(false)
         if (res.data.success) {
-          localStorage.setItem("accessToken", res?.data?.accessToken)
+
+          res?.data?.accessToken && localStorage.setItem("accessToken", res?.data?.accessToken)
+          res?.data?.refreshToken && localStorage.setItem("refreshToken", res?.data?.refreshToken)
+
           dispatch({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          window.location.replace("/home")
+          history.push("/home")
         }
 
         if (!res.data.success) {
@@ -40,6 +43,7 @@ export const loginUser = ({
             setauth({ state: "userNotVerified", email: input.email })
           }
         }
+        return res
       })
       .catch((error) => {
         setLoading(false)
@@ -127,6 +131,8 @@ export const googleAuthAction = ({
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem("accessToken", res?.data?.accessToken)
+          localStorage.setItem("refreshToken", res?.data?.refreshToken)
+
           if (res?.data.isFirstLogin) {
             localStorage.setItem("newUser", "true")
           }

@@ -1,20 +1,23 @@
 import axios from "axios"
-import {getUserProfile} from "graphql/user"
  import jwtDecode from "jwt-decode"
 import {userServer} from "servers/endpoints"
+import {getUserProfile} from "store/action/userProfile"
 
-export const getNewToken = async (dispatch) => {
+export const getNewToken = async (dispatch = () => {}) => {
     if (!localStorage.getItem("refreshToken")) {
-      dispatch(getUserProfile({ user: {}, loggedIn: false }))
-      return
+      window.location.assign("/login")
     }
     try {
       const { data } = await axios.post(userServer + "/refreshToken", {
         refreshToken: localStorage.getItem("refreshToken")
       })
       if (!data.success) {
-        localStorage.removeItem("refreshToken")
-        localStorage.removeItem("accessToken")
+        const {error} = data || {}
+        if (error?.name === "TokenExpiredError") {
+          localStorage.removeItem("refreshToken")
+          localStorage.removeItem("accessToken")
+          window.location.assign("/login")
+        }
         dispatch(getUserProfile({ user: {}, loggedIn: false }))
       }
       data?.refreshToken &&
@@ -23,10 +26,10 @@ export const getNewToken = async (dispatch) => {
         localStorage.setItem("accessToken", data?.accessToken || "")
       const decode = jwtDecode(data?.accessToken)
 
-      dispatch(
-        getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
-      )
+      dispatch(getUserProfile({user: {...decode}, loggedIn: Boolean(decode)}))
+      return data?.accessToken
     } catch (error) {
+
       console.log(error)
     }
   }
