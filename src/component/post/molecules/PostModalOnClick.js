@@ -18,18 +18,17 @@ import {
 } from "@ionic/react"
 import { closeOutline, imageOutline } from "ionicons/icons"
 
-
 import "../index.css"
 
 import "react-quill/dist/quill.snow.css"
 import TextEditor from "utils/components/TextEditor"
 import axios from "axios"
 import clsx from "clsx"
-import {USER_SERVICE_GQL} from "servers/types"
-import {AddPost, GetAllPostBySpaceCategoryID, getNewsFeed} from "graphql/user"
-import {userServer} from "servers/endpoints"
+import { USER_SERVICE_GQL } from "servers/types"
+import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
+import { userServer } from "servers/endpoints"
 import TextChecker from "utils/components/TextChecker"
-import {Avatar} from "component/Avatar"
+import { Avatar } from "component/Avatar"
 
 export const PostModalOnClick = ({ allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -152,6 +151,293 @@ export const PostModalOnClick = ({ allProps }) => {
     }
   })
 
+  const metaData = {
+    suggestMeUniversity: {
+      id: "suggestMeUniversity",
+      name: "Suggest me University",
+      type: "tag",
+      options: null,
+      api: false,
+      validation: null,
+      edges: [
+        {
+          id: "levelOfStudy",
+          name: "Level of Study",
+          type: "select",
+          options: ["Undergraduate", "Graduate", "PhD"],
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {
+            Undergraduate: [
+              {
+                id: "testScores",
+                name: "Test Scores",
+                type: "select",
+                options: ["SAT", "ACT", "GRE", "GMAT"],
+                api: false,
+                validation: null,
+                edges: [],
+                conditionalEdges: {}
+              }
+            ],
+            Graduate: [
+              {
+                id: "testScores",
+                name: "Test Scores",
+                type: "select",
+                options: ["SAT", "ACT", "GRE", "GMAT"],
+                api: false,
+                validation: null,
+                edges: [],
+                conditionalEdges: {}
+              }
+            ]
+          }
+        },
+        {
+          id: "major",
+          name: "Major",
+          type: "input",
+          options: null,
+          api: true,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "gpa",
+          name: "GPA",
+          type: "input",
+          options: null,
+          api: false,
+          validation: {
+            min: 0,
+            max: 4
+          },
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "testScores",
+          name: "Test Scores",
+          type: "select",
+          options: ["SAT", "ACT", "GRE", "GMAT"],
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "preferredLocation",
+          name: "Preferred Location",
+          type: "input",
+          options: null,
+          api: true,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "additionalDescriptionQuestion",
+          name: "Additional Description",
+          type: "textarea",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        }
+      ],
+      conditionalEdges: {}
+    },
+    questionAboutUniversity: {
+      id: "questionAboutUniversity",
+      name: "I Have a Question About a University",
+      type: "tag",
+      options: null,
+      api: false,
+      validation: null,
+      edges: [
+        {
+          id: "levelOfStudy",
+          name: "Level of Study",
+          type: "select",
+          options: ["Undergraduate", "Graduate", "PhD"],
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {
+            Undergraduate: [
+              {
+                id: "testScores",
+                name: "Test Scores",
+                type: "select",
+                options: ["SAT", "ACT", "GRE", "GMAT"],
+                api: false,
+                validation: null,
+                edges: [],
+                conditionalEdges: {}
+              }
+            ],
+            Graduate: [
+              {
+                id: "testScores",
+                name: "Test Scores",
+                type: "select",
+                options: ["SAT", "ACT", "GRE", "GMAT"],
+                api: false,
+                validation: null,
+                edges: [],
+                conditionalEdges: {}
+              }
+            ]
+          }
+        },
+        {
+          id: "universitySearch",
+          name: "University Search Field",
+          type: "input",
+          options: null,
+          api: true,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "relationToMajor",
+          name: "Relation to Major/Field of Study",
+          type: "checkbox",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "reviewSubCategories",
+          name: "Related Tags",
+          type: "tag",
+          options: [
+            "Admissions & Applications",
+            "Financial Aid & Scholarships",
+            "Academic Programs & Department",
+            "Student Life & Services",
+            "Career & Alumni Resources",
+            "Athletics & Recreation",
+            "Cultural & Arts Activities",
+            "Sustainability & Campus Initiatives"
+          ],
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "additionalDescriptionQuestion",
+          name: "Additional Description",
+          type: "textarea",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        }
+      ],
+      conditionalEdges: {}
+    },
+    reviewUniversity: {
+      id: "reviewUniversity",
+      name: "Review University",
+      type: "tag",
+      options: null,
+      api: false,
+      validation: null,
+      edges: [
+        {
+          id: "universitySearch",
+          name: "University Search Field",
+          type: "input",
+          options: null,
+          api: true,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "relationToMajor",
+          name: "Relation to Major/Field of Study",
+          type: "checkbox",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "reviewSubCategories",
+          name: "Related Tags",
+          type: "tag",
+          options: [
+            "Admissions & Applications",
+            "Financial Aid & Scholarships",
+            "Academic Programs & Department",
+            "Student Life & Services",
+            "Career & Alumni Resources",
+            "Athletics & Recreation",
+            "Cultural & Arts Activities",
+            "Sustainability & Campus Initiatives"
+          ],
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "userRating",
+          name: "Your Ratings",
+          type: "select",
+          options: ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"],
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "additionalDescriptionQuestion",
+          name: "Additional Description",
+          type: "textarea",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "anonymityOption",
+          name: "Anonymity Option",
+          type: "checkbox",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        },
+        {
+          id: "guidelinesReminder",
+          name: "Guidelines Reminder",
+          type: "label",
+          options: null,
+          api: false,
+          validation: null,
+          edges: [],
+          conditionalEdges: {}
+        }
+      ],
+      conditionalEdges: {}
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -207,8 +493,11 @@ export const PostModalOnClick = ({ allProps }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form onSubmit={handleSubmit} className="overflow-y-scroll threadScroll">
-        <div className="post-preview">
+      <form
+        onSubmit={handleSubmit}
+        className="overflow-y-scroll threadScroll px-1 h-full "
+      >
+        {/* <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
               <Avatar username={user.username} profilePic={profilePic} />
@@ -271,9 +560,9 @@ export const PostModalOnClick = ({ allProps }) => {
               />
             </div>
           )}
-        </div>
+        </div> */}
 
-        <IonButton
+        {/* <IonButton
           className="post-pop-button mt-5"
           type="submit"
           expand="full"
@@ -281,7 +570,41 @@ export const PostModalOnClick = ({ allProps }) => {
           shape="round"
         >
           Post
-        </IonButton>
+        </IonButton> */}
+
+        {/* <IonText className="">
+          <h1 className="text-black text-center mt-2 text-2xl">
+            Tell us whats on your mind
+          </h1>
+        </IonText> */}
+
+        {/* <div className="grid place-items-center gap-y-8 mt-24 ">
+          {Object.keys(metaData).map((item, i) => (
+            <>
+              <IonButton className="mt-0 hover:scale-95 transition-all ease-in">
+                {metaData[item].name}
+              </IonButton>
+            </>
+          ))}
+        </div> */}
+
+        <div className="mt-2 grid grid-cols-3">
+          {Object.keys(metaData).map((item, i) => (
+            <>
+              <IonButton
+                size="small"
+                className="text-xs p-0 mt-0 hover:scale-95 transition-all ease-in underline"
+                fill="clear"
+              >
+                {metaData[item].name}
+              </IonButton>
+            </>
+          ))}
+        </div>
+        <h1 className="text-black text-center  w-full mt-16">
+          this will be section for "other" catergory here we will directly show
+          text area for user to post content
+        </h1>
       </form>
     </IonModal>
   )
