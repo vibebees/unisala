@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react"
- import { Home } from "./template"
-import { getAllPropsHome } from "./getAllProps"
+import { Home } from "./template"
+import { HomeContextProvider, getAllPropsHome } from "./HomePageContext"
 import { useSelector } from "react-redux"
- import { useQuery } from "@apollo/client"
-import {USER_SERVICE_GQL} from "servers/types"
-import {getUserProfile} from "graphql/user"
-import {callSocket} from "servers/endpoints"
+import { useQuery } from "@apollo/client"
+import { USER_SERVICE_GQL } from "servers/types"
+import { getUserProfile } from "graphql/user"
+import { callSocket } from "servers/endpoints"
 
 export default function HomePage({ propsall }) {
   const socket = useRef(null)
@@ -18,9 +18,8 @@ export default function HomePage({ propsall }) {
       },
       skip: !loggedIn || !user?.username
     }),
-    userInfo = data?.getUser?.user,
-    allProps = getAllPropsHome({ user, loggedIn, userInfo, refetch, propsall })
-
+    userInfo = data?.getUser?.user
+  // allProps = getAllPropsHome({ user, loggedIn, userInfo, refetch, propsall })
   useEffect(() => {
     socket.current = callSocket()
 
@@ -34,5 +33,9 @@ export default function HomePage({ propsall }) {
     }
   }, [])
 
-  return <Home allProps={{ ...allProps, refetch }} />
+  return (
+    <HomeContextProvider>
+      <Home />
+    </HomeContextProvider>
+  )
 }

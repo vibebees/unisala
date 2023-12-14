@@ -3,7 +3,8 @@ import React, {
   createContext,
   useMemo,
   useEffect,
-  useRef
+  useRef,
+  useContext
 } from "react"
 import {
   IonGrid,
@@ -27,10 +28,12 @@ import PreLoader from "../../preloader"
 import "./index.css"
 import { USER_SERVICE_GQL } from "servers/types"
 import { GetAllQuestions } from "graphql/user"
+import { HomePageContext } from "features/home/HomePageContext"
 
 export const WelcomeData = createContext()
 
-const Index = ({ allProps }) => {
+const Index = () => {
+  const { allProps } = useContext(HomePageContext)
   const [currentStep, setCurrentStep] = useState(1)
   const [welcomeFormdata, setWelcomeFormdata] = useState({
       interestedSubjects: [],

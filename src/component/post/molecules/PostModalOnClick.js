@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useContext } from "react"
 import { useMutation, useApolloClient, gql } from "@apollo/client"
 import { useSelector } from "react-redux"
 
@@ -29,8 +29,11 @@ import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
 import { userServer } from "servers/endpoints"
 import TextChecker from "utils/components/TextChecker"
 import { Avatar } from "component/Avatar"
+import { HomePageContext } from "features/home/HomePageContext"
 
-export const PostModalOnClick = ({ allProps }) => {
+export const PostModalOnClick = () => {
+  const { allProps } = useContext(HomePageContext)
+
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [present, dismiss] = useIonToast()

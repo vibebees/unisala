@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState, createContext } from "react"
 import unisalaImg from "assets/unisala-intro.png"
 import {
   screenGreaterThan1000,
   screenLessThan768,
   screensMoreThan768
 } from "./helper.func"
- import {
+import {
   book,
   helpCircleSharp,
   personCircle,
@@ -13,13 +13,24 @@ import {
   starSharp
 } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
- import { useHistory, useLocation } from "react-router"
+import { useHistory, useLocation } from "react-router"
 import ProfilePop from "component/profilePop"
-import {USER_SERVICE_GQL} from "servers/types"
-import {GetTopActiveSpaces} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { GetTopActiveSpaces, getUserProfile } from "graphql/user"
 import useWindowWidth from "hooks/useWindowWidth"
+import { useSelector } from "react-redux"
 
-export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
+export const HomePageContext = createContext({})
+export const HomeContextProvider = ({ children }) => {
+  const { user, loggedIn } = useSelector((store) => store?.userProfile || {})
+  const { loading, error, data, refetch } = useQuery(getUserProfile, {
+      context: { server: USER_SERVICE_GQL },
+      variables: {
+        username: user?.username
+      },
+      skip: !loggedIn || !user?.username
+    }),
+    userInfo = data?.getUser?.user
   const [activeProfile, setActiveProfile] = useState({ profile: false }),
     [activeTab, setActiveTab] = useState(0),
     [newUser, setNewUser] = useState(localStorage.getItem("newUser") || false),
@@ -43,8 +54,8 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
         activeProfile,
         loggedIn,
         username: user.username,
-        ProfilePop,
-        propsall
+        ProfilePop
+        // propsall
       })
     },
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
@@ -127,7 +138,7 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
       return userGuide
     }
 
-  return {
+  const allProps = {
     unisalaImg,
     activeTab,
     setActiveTab,
@@ -153,4 +164,10 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
     unitId,
     setUnitId
   }
+
+  return (
+    <HomePageContext.Provider value={{ allProps }}>
+      {children}
+    </HomePageContext.Provider>
+  )
 }

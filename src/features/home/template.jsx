@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import {
   IonGrid,
   IonRow,
@@ -11,7 +11,7 @@ import { CreateAPostCard } from "../../component/post/index"
 
 import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
- import { InfinteFeed } from "./InfiniteScrollFeed"
+import { InfinteFeed } from "./InfiniteScrollFeed"
 
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "graphql/uni"
@@ -22,10 +22,13 @@ import ScrollableCard from "../../component/ScrollableImageCard/organism/Scrolla
 import { fetchFamousUniversities } from "graphql/user"
 import FloatingButton from "../../component/FloatingButton"
 import useDocTitle from "hooks/useDocTitile"
-import {UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL} from "servers/types"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
+import { HomePageContext } from "./HomePageContext"
 
-export const Home = ({ allProps }) => {
+export const Home = () => {
   useDocTitle("Unisala")
+  const { allProps } = useContext(HomePageContext)
+
   const {
     width,
     newUser,
@@ -67,7 +70,7 @@ export const Home = ({ allProps }) => {
 
   const renderLoggedInView = () => (
     <>
-      <CreateAPostCard allProps={allProps} />
+      <CreateAPostCard />
       <FolderStructure
         allProps={{
           ...allProps,
@@ -84,13 +87,13 @@ export const Home = ({ allProps }) => {
         }}
       />
 
-      <InfinteFeed userInfo={user} allProps={allProps} />
+      <InfinteFeed />
     </>
   )
 
   const renderNewUserView = () => {
     if (loggedIn && newUser) {
-      return <WelcomeSteps allProps={{ ...allProps, refetch }} />
+      return <WelcomeSteps />
     }
     return null
   }
@@ -118,7 +121,7 @@ export const Home = ({ allProps }) => {
               overflow: "hidden"
             }}
           >
-            {loggedIn ? renderLoggedInView() : UnisalaLandingPage({ allProps })}
+            {loggedIn ? renderLoggedInView() : UnisalaLandingPage()}
           </IonCol>
           {width > 1000 && views.greaterThan1000}
           {renderNewUserView()}

@@ -10,7 +10,7 @@ import { lockOpenOutline } from "ionicons/icons"
 import ExploreUniversities from "assets/ExploreUniversity.png"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 
-export const UnisalaLandingPage = ({ allProps }) => {
+export const UnisalaLandingPage = () => {
   return (
     <div style={{ margin: "27px 0px 0px 0px" }}>
       <IonCard className="mb-1">
