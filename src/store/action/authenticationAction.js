@@ -29,7 +29,7 @@ export const loginUser = ({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          history.push("/home")
+          window.location.replace("/home")
         }
 
         if (!res.data.success) {
