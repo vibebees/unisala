@@ -19,6 +19,7 @@ import useWindowWidth from "hooks/useWindowWidth"
 import ResetPassword from "./Verification/ForgotPassword/ResetPassword"
 import clsx from "clsx"
 import LoginText from "./LoginText"
+import AuthTemplate from "./template/AuthTemplate"
 
 export const Authentication = ({ allProps }) => {
   const { activeNavDrop, setActiveNavDrop } = allProps
@@ -53,33 +54,26 @@ export const Authentication = ({ allProps }) => {
             >
               <LoginText allProps={{ setShowSignup, showSignup, setauth }} />
             </IonCard>
-            <IonCol
-              className={clsx(
-                showSignup ? "slide-out-right" : "slide-in-right"
-              )}
+
+            <AuthTemplate
+              singupTrueClass={"slide-out-right"}
+              singupFalseClass={"slide-in-right"}
+              showSignup={showSignup}
+              auth={auth}
+              setauth={setauth}
             >
               <SignIn setauth={setauth} auth={auth} allProps={allProps} />
-            </IonCol>
+            </AuthTemplate>
             {width > 764 && auth.state !== "welcomeForm" && (
-              <IonCol
-                className={clsx(
-                  showSignup ? "slide-in-left" : "slide-out-left"
-                )}
+              <AuthTemplate
+                auth={auth}
+                setauth={setauth}
+                showSignup={showSignup}
+                singupTrueClass={"slide-in-left"}
+                singupFalseClass={"slide-out-left"}
               >
-                {auth.state === "signup" ? (
-                  <SignUp setauth={setauth} allProps={allProps} />
-                ) : auth.state === "SignUpVerification" ? (
-                  <SignUpVerification setauth={setauth} auth={auth} />
-                ) : auth.state === "emailVerify" ? (
-                  <EmailVerify setauth={setauth} />
-                ) : auth.state === "ForgotPasswordVerification" ? (
-                  <ForgotPasswordVerification setauth={setauth} auth={auth} />
-                ) : auth.state === "resetPassword" ? (
-                  <ResetPassword setauth={setauth} auth={auth} />
-                ) : auth.state === "userNotVerified" ? (
-                  <UserNotVerified setauth={setauth} auth={auth} />
-                ) : null}
-              </IonCol>
+                <SignUp setauth={setauth} allProps={allProps} />
+              </AuthTemplate>
             )}
           </IonRow>
         </IonGrid>

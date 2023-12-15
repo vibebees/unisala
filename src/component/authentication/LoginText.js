@@ -55,6 +55,12 @@ const LoginText = ({ allProps }) => {
               email: "",
               code: 0
             })
+          } else {
+            setauth({
+              state: "signin",
+              email: "",
+              code: 0
+            })
           }
           setShowSignup(!showSignup)
         }}

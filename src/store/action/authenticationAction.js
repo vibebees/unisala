@@ -20,9 +20,10 @@ export const loginUser = ({
       .then((res) => {
         setLoading(false)
         if (res.data.success) {
-
-          res?.data?.accessToken && localStorage.setItem("accessToken", res?.data?.accessToken)
-          res?.data?.refreshToken && localStorage.setItem("refreshToken", res?.data?.refreshToken)
+          res?.data?.accessToken &&
+            localStorage.setItem("accessToken", res?.data?.accessToken)
+          res?.data?.refreshToken &&
+            localStorage.setItem("refreshToken", res?.data?.refreshToken)
 
           dispatch({
             type: USER_LOGIN,
