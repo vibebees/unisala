@@ -42,9 +42,11 @@ export const SearchTemplate = () => {
   return (
     <IonContent>
       <IonGrid className="max-width-container">
-        <IonCol className="max-md:block hidden">
-          <SearchBar />
-        </IonCol>
+        {tab !== "uni" && (
+          <IonCol className="max-md:block hidden">
+            <SearchBar />
+          </IonCol>
+        )}
 
         {tab !== "uni" && <SearchTab />}
 

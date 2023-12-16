@@ -187,7 +187,7 @@ function CourseCard({ allProps }) {
   } = allProps
 
   return (
-    <IonCard>
+    <IonCard className="max-md:mx-0">
       <IonGrid>
         <IonRow>
           <IonCol

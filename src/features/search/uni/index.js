@@ -11,7 +11,8 @@ import {
   IonPage,
   IonRow,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonContent
 } from "@ionic/react"
 import Filter from "./Filter"
 import SearchResults from "./SearchResults"
@@ -27,6 +28,9 @@ import { closeOutline } from "ionicons/icons"
 import { INITIAL_QUERY_DATA } from "./Filter/constants"
 import SearchTab from "../atoms/SearchTab"
 import { ChipsTab } from "../orgamism/ChipsTab"
+import clsx from "clsx"
+import { SearchBar } from "component/searchBox"
+import { menuController } from "@ionic/core/components"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -58,6 +62,10 @@ function index({ query }) {
     }
   }, [searchParams])
 
+  async function openMenu() {
+    await menuController.open("menu")
+  }
+
   return (
     <>
       <IonRow className="overflow-hidden">
@@ -68,7 +76,11 @@ function index({ query }) {
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="w-full h-[1196px" contentId="main-content">
+            <IonMenu
+              menuId="menu"
+              className="w-full h-[1196px"
+              contentId="main-content"
+            >
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
@@ -79,23 +91,27 @@ function index({ query }) {
                   </IonMenuToggle>
                 </IonToolbar>
               </IonHeader>
-              <IonCol className="filter-col absolute top-10 z-[1000]">
+              <IonContent
+                className={clsx("filter-col absolute top-10 z-[1000]")}
+              >
                 <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
-              </IonCol>
+              </IonContent>
             </IonMenu>
-            <IonPage id="main-content">
+            <IonPage id="main-content" className="!-z-0">
               <IonHeader>
-                <IonToolbar>
+                <IonToolbar className="pr-2">
                   <IonButtons slot="start">
                     <IonMenuButton></IonMenuButton>
                   </IonButtons>
+                  <SearchBar />
                 </IonToolbar>
               </IonHeader>
+              <IonContent className="ion-padding hidden  absolute"></IonContent>
             </IonPage>
           </>
         )}
 
-        <IonCol className="results-col pl-[360px] max-md:pl-0">
+        <IonCol className="results-col pl-[360px] max-md:mt-14 max-md:mx-0 max-md:px-0 ">
           <SearchTab />
           <ChipsTab />
           {loading || isLoading ? (

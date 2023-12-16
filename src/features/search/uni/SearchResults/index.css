@@ -30,9 +30,3 @@
 .results-header-card {
   margin-inline: auto;
 }
-
-@media screen and (max-width: 720px) {
-  .results-col {
-    margin-top: 48px;
-  }
-}
