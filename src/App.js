@@ -68,7 +68,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <IonApp>
-          <IonPage>
+          <IonPage className="text-black">
             <IonReactRouter>
               {width >= 768 && <DesktopView allProps={allProps} />}
               {width < 768 && (

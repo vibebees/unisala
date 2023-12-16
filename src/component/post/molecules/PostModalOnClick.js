@@ -16,7 +16,7 @@ import {
   IonButtons,
   useIonToast
 } from "@ionic/react"
-import { closeOutline, imageOutline } from "ionicons/icons"
+import { arrowBack, closeOutline, imageOutline } from "ionicons/icons"
 
 import "../index.css"
 
@@ -29,6 +29,7 @@ import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
 import { userServer } from "servers/endpoints"
 import TextChecker from "utils/components/TextChecker"
 import { Avatar } from "component/Avatar"
+import Form from "./Form"
 
 export const PostModalOnClick = ({ allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -38,6 +39,7 @@ export const PostModalOnClick = ({ allProps }) => {
   const imgfile = useRef()
   const [postText, setPostText] = useState("")
   const [files, setFiles] = useState(null)
+  const [selectedTab, setSelectedTab] = useState()
 
   const profilePic = user?.picture
   const formData = new FormData()
@@ -493,11 +495,11 @@ export const PostModalOnClick = ({ allProps }) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <form
+      {/* <form
         onSubmit={handleSubmit}
         className="overflow-y-scroll threadScroll px-1 h-full "
       >
-        {/* <div className="post-preview">
+        <div className="post-preview">
           <IonItem className="ion-no-padding" lines="none">
             <IonAvatar>
               <Avatar username={user.username} profilePic={profilePic} />
@@ -560,52 +562,52 @@ export const PostModalOnClick = ({ allProps }) => {
               />
             </div>
           )}
-        </div> */}
-
-        {/* <IonButton
-          className="post-pop-button mt-5"
-          type="submit"
-          expand="full"
-          slot=""
-          shape="round"
-        >
-          Post
-        </IonButton> */}
-
-        {/* <IonText className="">
-          <h1 className="text-black text-center mt-2 text-2xl">
-            Tell us whats on your mind
-          </h1>
-        </IonText> */}
-
-        {/* <div className="grid place-items-center gap-y-8 mt-24 ">
-          {Object.keys(metaData).map((item, i) => (
-            <>
-              <IonButton className="mt-0 hover:scale-95 transition-all ease-in">
-                {metaData[item].name}
-              </IonButton>
-            </>
-          ))}
-        </div> */}
-
-        <div className="mt-2 grid grid-cols-3">
-          {Object.keys(metaData).map((item, i) => (
-            <>
-              <IonButton
-                size="small"
-                className="text-xs p-0 mt-0 hover:scale-95 transition-all ease-in underline"
-                fill="clear"
-              >
-                {metaData[item].name}
-              </IonButton>
-            </>
-          ))}
         </div>
-        <h1 className="text-black text-center  w-full mt-16">
-          this will be section for "other" catergory here we will directly show
-          text area for user to post content
-        </h1>
-      </form>
+      </form> */}
+
+      <div className="overflow-y-scroll threadScroll px-1 h-full ">
+        {!selectedTab ? (
+          <div className="grid place-items-center gap-y-8 mt-24">
+            {Object.keys(metaData).map((item, i) => (
+              <>
+                <IonButton
+                  className="mt-0 hover:scale-95 transition-all ease-in"
+                  onClick={() => setSelectedTab(item)}
+                >
+                  {metaData[item].name}
+                </IonButton>
+              </>
+            ))}
+          </div>
+        ) : (
+          <>
+            <div className="relative">
+              <IonButton
+                fill="clear"
+                className="absolute left-0 -top-2"
+                onClick={() => setSelectedTab(null)}
+              >
+                <IonIcon icon={arrowBack} />
+              </IonButton>
+              <IonText>
+                <h1 className="text-center mt-2 text-xl">
+                  {metaData[selectedTab].name}
+                </h1>
+              </IonText>
+            </div>
+
+            <IonItem className="ion-no-padding" lines="none">
+              <IonAvatar>
+                <Avatar username={user.username} profilePic={profilePic} />
+              </IonAvatar>
+              <IonLabel className="ion-padding-start">
+                <h2 className="font-semibold">{user.username}</h2>
+              </IonLabel>
+            </IonItem>
+            <Form metaData={metaData[selectedTab]} />
+          </>
+        )}
+      </div>
     </IonModal>
   )
 }

@@ -12,14 +12,19 @@ export const CreateAPostCard = ({ allProps }) => {
 
   useEffect(() => {
     const fn = async () => {
-      const res = await axios.get(userServer + "/getMetadataTags")
+      const res = await axios.get(userServer + "/getMetadataTags", {
+        headers: {
+          authorization: localStorage.getItem("accessToken")
+        }
+      })
+
       setMeta(res.data)
     }
     fn()
   }, [])
   return (
     <>
-      <PostModalOnClick allProps={allProps} />
+      <PostModalOnClick allProps={allProps} metaData={meta} />
       <IonCard
         style={{ marginBottom: "20px" }}
         onClick={() => {
