@@ -13,12 +13,12 @@ import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
 
 import { useMutation } from "@apollo/client"
- import { useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
-import {USER_SERVICE_GQL} from "servers/types"
-import {EditPost, DeletePost} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { EditPost, DeletePost } from "graphql/user"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -138,13 +138,13 @@ const Thread = ({ thread, refetch }) => {
   })
 
   return (
-    <IonCard className=" relative pt-4 pb-6">
-      <Link to={`/@/${username}`} className="px-4">
-        <div className="thread-header">
-          <div className="thread_profile-pic">
+    <IonCard className=" relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
+      <Link to={`/@/${username}`} className="px-4 max-md:px-2">
+        <div className="thread-header gap-2">
+          <div className="thread_profile-pic ">
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
-          <div className="thread_userdetails">
+          <div className="thread_userdetails ">
             <h3 className="" style={{ color: "#222428" }}>
               {firstName + " " + lastName}
             </h3>
@@ -156,7 +156,7 @@ const Thread = ({ thread, refetch }) => {
           </div>
         </div>
       </Link>
-      <div className="thread_content !pl-16 pr-8">
+      <div className="thread_content !pl-16 pr-8 max-md:pr-3">
         <div className="thread_comment">
           {editable ? (
             <div>
@@ -194,7 +194,7 @@ const Thread = ({ thread, refetch }) => {
             </div>
           ) : (
             <>
-              <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
+              <ThreadExpand htmlText={postText} maxLines={50} _id={_id} />
             </>
           )}
         </div>
