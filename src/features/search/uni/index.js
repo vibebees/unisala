@@ -78,7 +78,7 @@ function index({ query }) {
 
   return (
     <>
-      <IonRow className="overflow-hidden">
+      <IonRow className="overflow-hidden max-md:overflow-visible">
         {windowWidth > 768 ? (
           <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
