@@ -11,7 +11,8 @@ import {
   IonPage,
   IonRow,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonContent
 } from "@ionic/react"
 import Filter from "./Filter"
 import SearchResults from "./SearchResults"
@@ -31,6 +32,9 @@ import UniversityScholarshipTab from "../atoms/UniversityScholarshipTab"
 import ScholarshipResults from "./ScholarshipResults"
 import { URLgetter } from "utils/lib/URLupdate"
 import { useHistory } from "react-router-dom"
+import clsx from "clsx"
+import { SearchBar } from "component/searchBox"
+
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
@@ -82,7 +86,11 @@ function index({ query }) {
         ) : (
           // this is for smaller screens
           <>
-            <IonMenu className="w-full h-[1196px" contentId="main-content">
+            <IonMenu
+              menuId="menu"
+              className="w-full h-[1196px"
+              contentId="main-content"
+            >
               <IonHeader>
                 <IonToolbar>
                   <IonTitle>Filters</IonTitle>
@@ -93,23 +101,27 @@ function index({ query }) {
                   </IonMenuToggle>
                 </IonToolbar>
               </IonHeader>
-              <IonCol className="filter-col absolute top-10 z-[1000]">
+              <IonContent
+                className={clsx("filter-col absolute top-10 z-[1000]")}
+              >
                 <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
-              </IonCol>
+              </IonContent>
             </IonMenu>
-            <IonPage id="main-content">
+            <IonPage id="main-content" className="!-z-0">
               <IonHeader>
-                <IonToolbar>
+                <IonToolbar className="pr-2">
                   <IonButtons slot="start">
                     <IonMenuButton></IonMenuButton>
                   </IonButtons>
+                  <SearchBar />
                 </IonToolbar>
               </IonHeader>
+              <IonContent className="ion-padding hidden  absolute"></IonContent>
             </IonPage>
           </>
         )}
 
-        <IonCol className="results-col pl-[360px] max-md:pl-0">
+        <IonCol className="results-col pl-[360px] max-md:mt-14 max-md:mx-0 max-md:px-0 ">
           <SearchTab />
           <ChipsTab />
           <UniversityScholarshipTab />
