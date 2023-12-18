@@ -23,6 +23,7 @@ import { fetchFamousUniversities } from "graphql/user"
 import FloatingButton from "../../component/FloatingButton"
 import useDocTitle from "hooks/useDocTitile"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
+import VideoCard from "component/video"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -83,6 +84,7 @@ export const Home = ({ allProps }) => {
           className: "similarschoolss"
         }}
       />
+
 
       <InfinteFeed userInfo={user} allProps={allProps} />
     </>

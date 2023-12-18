@@ -19,6 +19,8 @@ import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
 import { EditPost, DeletePost } from "graphql/user"
+import ReactPlayer from "react-player"
+import VideoPlayer from "component/video/videoPlayer"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -298,15 +300,12 @@ const Thread = ({ thread, refetch }) => {
     return null
   }
 
-
-  return (
-    <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
-      {renderHeader()}
-      <div className="thread_content !pl-16 pr-8 max-md:pr-3">
+  const defaultThread = () => {
+    return (
+      <>
         {renderContent()}
         {renderImages()}
-        {renderFooter()}
-        {/* {reply && (
+        {reply && (
           <ReplyInput
             setReply={setReply}
             postId={_id}
@@ -314,7 +313,7 @@ const Thread = ({ thread, refetch }) => {
             setNumberOfComments={setNumberOfComments}
           />
         )}
-        {renderOptions()} */}
+        {renderOptions()}
         {postCommentsCount > 0 && (
           <ShowMore
             postId={_id}
@@ -324,6 +323,22 @@ const Thread = ({ thread, refetch }) => {
             numberOfComments={numberOfComments}
           />
         )}
+      </>
+    )
+  }
+  const postBody = (video = false) => {
+    return (video
+      ? <VideoPlayer />
+      : defaultThread())
+  }
+
+  return (
+    <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
+      {renderHeader()}
+      <VideoPlayer />
+      <div className="thread_content !pl-16 pr-8 max-md:pr-3">
+        {postBody()}
+        {renderFooter()}
       </div>
     </IonCard>
   )
