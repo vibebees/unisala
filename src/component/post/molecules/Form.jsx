@@ -11,6 +11,7 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import TextChecker from "utils/components/TextChecker"
 import axios from "axios"
 import { userServer } from "servers/endpoints"
+import ImageUpload from "./ImageUpload"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -106,11 +107,11 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }),
             fields: {
               postText(existingImages = []) {
-                console.log(existingImages)
                 return [...existingImages, ...imageLinks]
               }
             }
           })
+          setCreateAPostPopUp(false)
         }
       }
       present({
@@ -135,7 +136,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   })
 
   const handleSubmit = (e) => {
-    console.log("submiting")
     e.preventDefault()
 
     if (files?.length > 4) {
@@ -167,6 +167,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         mode: "ios"
       })
     }
+    setCreateAPostPopUp(false)
   }
 
   const generateInputTag = (item) => {
@@ -211,13 +212,14 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           className="h-40 mb-12 text-black relative"
           theme="snow"
           onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
-          value={postData.postText}
+          value={postData?.postText}
         />
       </>
     )
   }
 
   const generateHTML = (item) => {
+    console.log({ item })
     switch (item?.type) {
       case "input":
         return generateInputTag(item)
@@ -238,6 +240,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             <div className="mt-4">{generateHTML(item)}</div>
           </>
         ))}
+        <ImageUpload files={files} setFiles={setFiles} />
         <IonButton type="submit">Submit</IonButton>
       </form>
     </div>

@@ -329,8 +329,8 @@ export const PostModalOnClick = ({ allProps }) => {
         {
           id: "universitySearch",
           name: "University Search Field",
-          type: "input",
-          options: null,
+          type: "select",
+          options: [],
           api: true,
           validation: null,
           edges: [],
@@ -389,7 +389,7 @@ export const PostModalOnClick = ({ allProps }) => {
         {
           id: "universitySearch",
           name: "University Search Field",
-          type: "input",
+          type: "select",
           options: null,
           api: true,
           validation: null,
@@ -481,6 +481,12 @@ export const PostModalOnClick = ({ allProps }) => {
     <IonModal
       onDidDismiss={() => setCreateAPostPopUp(false)}
       isOpen={createAPostPopUp}
+      style={
+        {
+          // "--width": "100%",
+          // "--height": "100%"
+        }
+      }
     >
       <IonHeader className="">
         <IonToolbar>

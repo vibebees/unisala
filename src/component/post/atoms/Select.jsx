@@ -25,6 +25,7 @@ const SelectAtom = ({ options, item, setPostData }) => {
       options={modifiedOptions}
       styles={customStyles}
       menuPlacement="bottom"
+      value={item.userAnswer}
       onChange={(e) => {
         setPostData((prev) => ({
           ...prev,

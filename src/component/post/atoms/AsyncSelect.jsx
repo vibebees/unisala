@@ -2,6 +2,10 @@ import axios from "axios"
 import React, { useRef } from "react"
 import { universityServer } from "servers/endpoints"
 import AsyncSelect from "react-select/async"
+import { UniSearchDataList } from "graphql/uni"
+import { tryCatch } from "ramda"
+import { useLazyQuery, useQuery } from "@apollo/client"
+import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 
 const AsyncSelectAtom = ({ item, setPostData }) => {
   const ref = useRef()
@@ -19,7 +23,8 @@ const AsyncSelectAtom = ({ item, setPostData }) => {
       zIndex: 100
     })
   }
-  const fetchModel = async (majorQuery = " ") => {
+
+  const fetchMajor = async (majorQuery = " ") => {
     try {
       const response = await axios.get(
         `${universityServer}/keyword/majors/${majorQuery}/5`
@@ -34,10 +39,33 @@ const AsyncSelectAtom = ({ item, setPostData }) => {
     }
   }
 
+  const fetechUni = async (uni = " ") => {
+    try {
+      const response = await axios.get(
+        `${universityServer}/keyword/schoolName/${uni}/5`
+      )
+      console.log({ response })
+      return response.data.map((i) => ({
+        value: i.name,
+        label: i.name.toUpperCase()
+      }))
+    } catch (error) {
+      console.error("Error fetching data:", error)
+      return []
+    }
+  }
+
   const loadOptions = (inputVal, callback) => {
+    let options
+
     setTimeout(async () => {
       try {
-        const options = await fetchModel(inputVal)
+        // const options = await fetchMajor(inputVal)
+        if (item.id === "major") {
+          options = await fetchMajor(inputVal)
+        } else {
+          options = await fetechUni(inputVal)
+        }
         callback(options)
       } catch (error) {
         console.error("Error loading options:", error)
@@ -52,6 +80,7 @@ const AsyncSelectAtom = ({ item, setPostData }) => {
       menuPlacement="bottom"
       placeholder="Search for a major..."
       ref={ref}
+      value={item.userAnswer}
       onChange={(e) => setPostData((prev) => ({ ...prev, [item.id]: e.value }))}
       className="mt-2"
     />

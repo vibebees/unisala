@@ -1,0 +1,3 @@
+- tag and checkbox type
+
+- tags ra checkbox api ma halna baaki raixa
