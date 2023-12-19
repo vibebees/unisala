@@ -7,6 +7,7 @@ import {
 } from "./helper.func"
  import {
   book,
+  documentSharp,
   helpCircleSharp,
   personCircle,
   schoolSharp,
@@ -69,7 +70,7 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
           name: schoolData?.name,
           level: "Review My Universtiy",
           icon: schoolSharp, // Make sure to have the appropriate icons imported
-          iconSize: 5,
+          iconSize: 7,
           routing: true,
           link: `/university/${schoolData?.name}`
         })
@@ -81,34 +82,44 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
           name: "Explore Topics",
           level: "Interested Subjects",
           icon: book, // Make sure to have the appropriate icons imported
-          iconSize: 5,
+          iconSize: 7,
           routing: true,
           link: `/space`
         })
       }
 
       // If user is applying but hasn't shown interest in any particular university.
-      if (userStatus === "applying" && interestedUni.length === 0) {
+      if (userStatus === "applying") {
         userGuide.push({
           name: "Explore Universities",
           level: "Find Your Fit",
           icon: schoolSharp,
-          iconSize: 5,
+          iconSize: 7,
           routing: true,
           link: `/search?q=Howard`
         })
       }
 
       // Suggesting interview prep session for users either "applying" or "actively looking".
-      if (userStatus === "applying" || userStatus === "actively looking") {
+      if (["applying", "looking"].includes(userStatus) > 0) {
         userGuide.push({
           name: "Interview Prep",
           level: "Prepare for your Interviews",
           icon: helpCircleSharp,
-          iconSize: 5,
+          iconSize: 7,
           routing: true,
           key: "interviewPrep",
           link: `https://docs.google.com/forms/d/e/1FAIpQLSee_bp9nUOb3fymt0qZSUUseIgdYnoh5php-mUb_iqmS-Rwqw/viewform`
+        })
+
+        userGuide.push({
+          name: "Express I20",
+          level: "Processing I20",
+          icon: documentSharp,
+          iconSize: 7,
+          routing: true,
+          key: "interviewPrep",
+          link: `https://forms.gle/iN2brCZ3qGuKzogM6`
         })
       }
 
