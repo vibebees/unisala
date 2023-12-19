@@ -16,7 +16,7 @@ const SearchTab = () => {
         value: "all"
       },
       {
-        name: "Universities",
+        name: "Universities & Scholarships",
         value: "uni"
       },
       {

@@ -133,7 +133,6 @@ export const googleAuthAction = ({
         if (res.data.success) {
           localStorage.setItem("accessToken", res?.data?.accessToken)
           localStorage.setItem("refreshToken", res?.data?.refreshToken)
-
           if (res?.data.isFirstLogin) {
             localStorage.setItem("newUser", "true")
           }

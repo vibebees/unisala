@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 import CourseCard from "component/courseCard"
 import noResultsFound from "assets/no-results.jpg"
 import "./index.css"
+import CustomTrackingLink from "features/analytics/LinkTrack"
 import { FeedSkeleton } from "component/skeleton/feedSkeleton"
 
 function index({ filterPage, setFilterPage }) {
@@ -21,9 +22,14 @@ function index({ filterPage, setFilterPage }) {
       {Array.isArray(searchData) &&
         searchData.map((data, index) => {
           return (
-            <Link to={`/university/${data?.name}`} key={index}>
+            <CustomTrackingLink
+              title={`${data?.name} clicked on university result filter `}
+              to={`/university/${data?.name}`}
+              key={index}
+              destination={`/university/${data?.name}`}
+            >
               <CourseCard allProps={data} />
-            </Link>
+            </CustomTrackingLink>
           )
         })}
       <IonInfiniteScroll
@@ -38,7 +44,11 @@ function index({ filterPage, setFilterPage }) {
           loadingText="Loading more data..."
           loadingSpinner="dots"
         >
-          {filterPage > 1 && <h1 className="text-[#488AFF]"><FeedSkeleton/></h1>}
+          {filterPage > 1 && (
+            <h1 className="text-[#488AFF]">
+              <FeedSkeleton />
+            </h1>
+          )}
         </IonInfiniteScrollContent>
       </IonInfiniteScroll>
     </div>

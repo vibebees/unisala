@@ -28,17 +28,22 @@ import { closeOutline } from "ionicons/icons"
 import { INITIAL_QUERY_DATA } from "./Filter/constants"
 import SearchTab from "../atoms/SearchTab"
 import { ChipsTab } from "../orgamism/ChipsTab"
+import UniversityScholarshipTab from "../atoms/UniversityScholarshipTab"
+import ScholarshipResults from "./ScholarshipResults"
+import { URLgetter } from "utils/lib/URLupdate"
+import { useHistory } from "react-router-dom"
 import clsx from "clsx"
 import { SearchBar } from "component/searchBox"
-import { menuController } from "@ionic/core/components"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
   const dispatch = useDispatch()
   const location = useLocation()
+  const history = useHistory()
   const searchParams = new URLSearchParams(location.search)
   const [filtered, setFiltered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [activeSubTab, setActiveSubTab] = useState("u")
   const { data, loading } = useQuery(UniSearchDataList, {
     context: { server: UNIVERSITY_SERVICE_GQL },
     variables: { name: query || "" },
@@ -62,13 +67,18 @@ function index({ query }) {
     }
   }, [searchParams])
 
-  async function openMenu() {
-    await menuController.open("menu")
-  }
+  useEffect(() => {
+    const url = URLgetter("st")
+    if (url) {
+      setActiveSubTab(url)
+    } else {
+      setActiveSubTab("u")
+    }
+  }, [history.location.search])
 
   return (
     <>
-      <IonRow className="overflow-hidden">
+      <IonRow className="overflow-hidden max-md:overflow-visible">
         {windowWidth > 768 ? (
           <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
             <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
@@ -114,13 +124,16 @@ function index({ query }) {
         <IonCol className="results-col pl-[360px] max-md:mt-14 max-md:mx-0 max-md:px-0 ">
           <SearchTab />
           <ChipsTab />
+          <UniversityScholarshipTab />
           {loading || isLoading ? (
             Array.from({ length: 12 }).map((_, i) => <ThreadSkeleton key={i} />)
-          ) : (
+          ) : activeSubTab === "u" ? (
             <SearchResults
               filterPage={filterPage}
               setFilterPage={setFilterPage}
             />
+          ) : (
+            <ScholarshipResults />
           )}
         </IonCol>
       </IonRow>
