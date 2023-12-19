@@ -355,7 +355,7 @@ function index({ setIsLoading, filterPage }) {
                 defaultOptions
                 styles={customStyles}
                 menuPlacement="top"
-                placeholder="Search Major"
+                placeholder="Start typing to .... Major"
                 value={{
                   value: selectedMajor,
                   label: selectedMajor

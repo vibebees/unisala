@@ -34,37 +34,42 @@ const config = require("./config"),
         )
       )
     }
-    if (graphQLErrors) {
-      for (let err of graphQLErrors) {
-        const {message, path} = err || {}
-        const {statusCode} = JSON.parse(message) || {}
-        switch (statusCode) {
-          // case 400:
-          case 401:
-            return fromPromise(
-              getNewToken()
-                .catch((error) => {
-                  return error // Consider whether you should be returning 'error' here
-                })
-            )
-            .filter((value) => {
-              return Boolean(value)
-            })
-            .flatMap((accessToken) => {
-              const oldHeaders = operation.getContext().headers
-              operation.setContext({
-                headers: {
-                  ...oldHeaders,
-                  authorization: `Bearer ${accessToken}`
-                }
+    try {
+      if (graphQLErrors) {
+        for (let err of graphQLErrors) {
+          const {message, path} = err || {}
+          const {statusCode} = JSON.parse(message) || {}
+          switch (statusCode) {
+            // case 400:
+            case 401:
+              return fromPromise(
+                getNewToken()
+                  .catch((error) => {
+                    return error // Consider whether you should be returning 'error' here
+                  })
+              )
+              .filter((value) => {
+                return Boolean(value)
               })
-              return forward(operation)
-            })
+              .flatMap((accessToken) => {
+                const oldHeaders = operation.getContext().headers
+                operation.setContext({
+                  headers: {
+                    ...oldHeaders,
+                    authorization: `Bearer ${accessToken}`
+                  }
+                })
+                return forward(operation)
+              })
 
-          default:
+            default:
+          }
         }
       }
+    } catch (err) {
+      console.log(err)
     }
+
     if (networkError) {
       console.log(`[Network error]: ${networkError}`)
     }
