@@ -29,7 +29,7 @@ import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
 import { userServer } from "servers/endpoints"
 import TextChecker from "utils/components/TextChecker"
 import { Avatar } from "component/Avatar"
-import Form from "./Form"
+import Form from "../molecules/Form"
 
 export const PostModalOnClick = ({ allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -37,122 +37,152 @@ export const PostModalOnClick = ({ allProps }) => {
   const [present, dismiss] = useIonToast()
   const client = useApolloClient()
   const imgfile = useRef()
-  const [postText, setPostText] = useState("")
-  const [files, setFiles] = useState(null)
   const [selectedTab, setSelectedTab] = useState()
-
+  const [postData, setPostData] = useState(null)
   const profilePic = user?.picture
   const formData = new FormData()
-  const [addPost] = useMutation(AddPost, {
-    context: { server: USER_SERVICE_GQL },
-    update: (cache, { data: { addPost } }) => {
-      const post = {
-        postText: addPost.post.postText,
-        date: addPost.post.date,
-        _id: addPost.post._id,
-        user: {
-          _id: user._id,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          picture: user.picture || null
-        },
-        upVoteCount: 0,
-        postCommentsCount: 0,
-        upVoted: false,
-        type: "post",
-        saved: false,
-        images: addPost.post.images || [],
-        __typename: "PostNewsFeed"
-      }
-      if (!tags) {
-        const data = cache.readQuery({
-          query: getNewsFeed,
-          variables: { userId: user._id, page: 0 },
-          context: { server: USER_SERVICE_GQL }
-        })
-        data &&
-          cache.writeQuery({
-            query: getNewsFeed,
-            variables: { userId: user._id, page: 0 },
-            context: { server: USER_SERVICE_GQL },
-            data: {
-              fetchMyNewsFeed: [post, ...data.fetchMyNewsFeed]
-            }
-          })
-      } else {
-        const data = cache.readQuery({
-          query: GetAllPostBySpaceCategoryID,
-          variables: { id: tags[0] }, // tags array is made such that the 0th index is space id and 1st index is parent id
-          context: { server: USER_SERVICE_GQL }
-        })
+  // const [addPost] = useMutation(AddPost, {
+  //   context: { server: USER_SERVICE_GQL },
+  //   update: (cache, { data: { addPost } }) => {
+  //     const post = {
+  //       postText: addPost.post.postText,
+  //       date: addPost.post.date,
+  //       _id: addPost.post._id,
+  //       user: {
+  //         _id: user._id,
+  //         username: user.username,
+  //         firstName: user.firstName,
+  //         lastName: user.lastName,
+  //         picture: user.picture || null
+  //       },
+  //       upVoteCount: 0,
+  //       postCommentsCount: 0,
+  //       upVoted: false,
+  //       type: "post",
+  //       saved: false,
+  //       images: addPost.post.images || [],
+  //       __typename: "PostNewsFeed"
+  //     }
+  //     if (!tags) {
+  //       const data = cache.readQuery({
+  //         query: getNewsFeed,
+  //         variables: { userId: user._id, page: 0 },
+  //         context: { server: USER_SERVICE_GQL }
+  //       })
+  //       data &&
+  //         cache.writeQuery({
+  //           query: getNewsFeed,
+  //           variables: { userId: user._id, page: 0 },
+  //           context: { server: USER_SERVICE_GQL },
+  //           data: {
+  //             fetchMyNewsFeed: [post, ...data.fetchMyNewsFeed]
+  //           }
+  //         })
+  //     } else {
+  //       const data = cache.readQuery({
+  //         query: GetAllPostBySpaceCategoryID,
+  //         variables: { id: tags[0] }, // tags array is made such that the 0th index is space id and 1st index is parent id
+  //         context: { server: USER_SERVICE_GQL }
+  //       })
 
-        data &&
-          cache.writeQuery({
-            query: GetAllPostBySpaceCategoryID,
-            variables: { id: tags[0] },
-            context: { server: USER_SERVICE_GQL },
-            data: {
-              getAllPostBySpaceCategoryID: {
-                ...data.getAllPostBySpaceCategoryID,
-                posts: [post, ...data.getAllPostBySpaceCategoryID.posts]
-              }
-            }
-          })
-      }
-    },
+  //       data &&
+  //         cache.writeQuery({
+  //           query: GetAllPostBySpaceCategoryID,
+  //           variables: { id: tags[0] },
+  //           context: { server: USER_SERVICE_GQL },
+  //           data: {
+  //             getAllPostBySpaceCategoryID: {
+  //               ...data.getAllPostBySpaceCategoryID,
+  //               posts: [post, ...data.getAllPostBySpaceCategoryID.posts]
+  //             }
+  //           }
+  //         })
+  //     }
+  //   },
 
-    onCompleted: async (data) => {
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          formData.append("image", files[i])
-        }
-        const res = await axios.post(
-          userServer + `/post/addPostImage/${data.addPost.post._id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }
-        )
+  //   onCompleted: async (data) => {
+  //     if (files) {
+  //       for (let i = 0; i < files.length; i++) {
+  //         formData.append("image", files[i])
+  //       }
+  //       const res = await axios.post(
+  //         userServer + `/post/addPostImage/${data.addPost.post._id}`,
+  //         formData,
+  //         {
+  //           headers: {
+  //             "Content-Type": "multipart/form-data"
+  //           }
+  //         }
+  //       )
 
-        if (res.data.success) {
-          const imageLinks = res.data.post.images
-          client.cache.modify({
-            id: client.cache.identify({
-              __typename: "PostNewsFeed",
-              _id: data.addPost.post._id
-            }),
-            fields: {
-              postText(existingImages = []) {
-                console.log(existingImages)
-                return [...existingImages, ...imageLinks]
-              }
-            }
-          })
-        }
-      }
-      present({
-        duration: 3000,
-        message: "Post added",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
-      // setfile("")
-    },
-    onError: (error) => {
-      present({
-        duration: 5000,
-        message: error.message,
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-    }
-  })
+  //       if (res.data.success) {
+  //         const imageLinks = res.data.post.images
+  //         client.cache.modify({
+  //           id: client.cache.identify({
+  //             __typename: "PostNewsFeed",
+  //             _id: data.addPost.post._id
+  //           }),
+  //           fields: {
+  //             postText(existingImages = []) {
+  //               console.log(existingImages)
+  //               return [...existingImages, ...imageLinks]
+  //             }
+  //           }
+  //         })
+  //       }
+  //     }
+  //     present({
+  //       duration: 3000,
+  //       message: "Post added",
+  //       buttons: [{ text: "X", handler: () => dismiss() }],
+  //       color: "primary",
+  //       mode: "ios"
+  //     })
+  //     // setfile("")
+  //   },
+  //   onError: (error) => {
+  //     present({
+  //       duration: 5000,
+  //       message: error.message,
+  //       buttons: [{ text: "X", handler: () => dismiss() }],
+  //       color: "danger",
+  //       mode: "ios"
+  //     })
+  //   }
+  // })
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+
+  //   if (files?.length > 4) {
+  //     present({
+  //       duration: 3000,
+  //       message: "Maximum allowed files is 4.",
+  //       buttons: [{ text: "X", handler: () => dismiss() }],
+  //       color: "danger",
+  //       mode: "ios"
+  //     })
+  //     return
+  //   }
+
+  //   if (postText.length > 0 || files?.length > 0) {
+  //     addPost({
+  //       variables: {
+  //         postText: TextChecker(postText),
+  //         tags
+  //       }
+  //     })
+  //     setCreateAPostPopUp(false)
+  //   } else {
+  //     present({
+  //       duration: 3000,
+  //       message: "Please include something to post",
+  //       buttons: [{ text: "X", handler: () => dismiss() }],
+  //       color: "danger",
+  //       mode: "ios"
+  //     })
+  //   }
+  // }
   const metaData = {
     suggestMeUniversity: {
       id: "suggestMeUniversity",
@@ -200,8 +230,8 @@ export const PostModalOnClick = ({ allProps }) => {
         {
           id: "major",
           name: "Major",
-          type: "input",
-          options: null,
+          type: "select",
+          options: [],
           api: true,
           validation: null,
           edges: [],
@@ -440,45 +470,12 @@ export const PostModalOnClick = ({ allProps }) => {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  // const handleRemoveFile = (index) => {
+  //   const newFiles = Array.from(files)
 
-    if (files?.length > 4) {
-      present({
-        duration: 3000,
-        message: "Maximum allowed files is 4.",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-      return
-    }
-
-    if (postText.length > 0 || files?.length > 0) {
-      addPost({
-        variables: {
-          postText: TextChecker(postText),
-          tags
-        }
-      })
-      setCreateAPostPopUp(false)
-    } else {
-      present({
-        duration: 3000,
-        message: "Please include something to post",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-    }
-  }
-
-  const handleRemoveFile = (index) => {
-    const newFiles = Array.from(files)
-
-    newFiles.splice(index, 1)
-    setFiles(newFiles)
-  }
+  //   newFiles.splice(index, 1)
+  //   setFiles(newFiles)
+  // }
   // text editor
   return (
     <IonModal
@@ -489,7 +486,12 @@ export const PostModalOnClick = ({ allProps }) => {
         <IonToolbar>
           <IonTitle>Start a Discussion</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={() => setCreateAPostPopUp(false)}>
+            <IonButton
+              onClick={() => {
+                setPostData(null)
+                setCreateAPostPopUp(false)
+              }}
+            >
               Close
             </IonButton>
           </IonButtons>
@@ -572,7 +574,10 @@ export const PostModalOnClick = ({ allProps }) => {
               <>
                 <IonButton
                   className="mt-0 hover:scale-95 transition-all ease-in"
-                  onClick={() => setSelectedTab(item)}
+                  onClick={() => {
+                    setPostData({ id: item })
+                    setSelectedTab(item)
+                  }}
                 >
                   {metaData[item].name}
                 </IonButton>
@@ -585,7 +590,10 @@ export const PostModalOnClick = ({ allProps }) => {
               <IonButton
                 fill="clear"
                 className="absolute left-0 -top-2"
-                onClick={() => setSelectedTab(null)}
+                onClick={() => {
+                  setPostData(null)
+                  setSelectedTab(null)
+                }}
               >
                 <IonIcon icon={arrowBack} />
               </IonButton>
@@ -604,7 +612,12 @@ export const PostModalOnClick = ({ allProps }) => {
                 <h2 className="font-semibold">{user.username}</h2>
               </IonLabel>
             </IonItem>
-            <Form metaData={metaData[selectedTab]} />
+            <Form
+              metaData={metaData[selectedTab]}
+              postData={postData}
+              setPostData={setPostData}
+              allProps={allProps}
+            />
           </>
         )}
       </div>

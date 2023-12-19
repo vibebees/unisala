@@ -7,11 +7,11 @@ import {
   IonCard,
   IonItem
 } from "@ionic/react"
-import { CreateAPostCard } from "../../component/post/index"
+import { CreateAPostCard } from "../../component/post/template/index"
 
 import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
- import { InfinteFeed } from "./InfiniteScrollFeed"
+import { InfinteFeed } from "./InfiniteScrollFeed"
 
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "graphql/uni"
@@ -22,7 +22,7 @@ import ScrollableCard from "../../component/ScrollableImageCard/organism/Scrolla
 import { fetchFamousUniversities } from "graphql/user"
 import FloatingButton from "../../component/FloatingButton"
 import useDocTitle from "hooks/useDocTitile"
-import {UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL} from "servers/types"
+import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")

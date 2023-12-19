@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
-import { PostModalOnClick } from "./molecules/PostModalOnClick"
-import { PostCardForClick } from "./molecules/PostCardForClick"
+import { PostModalOnClick } from "../organisim/PostModalOnClick"
+import { PostCardForClick } from "../organisim/PostCardForClick"
 import { IonCard, IonTitle } from "@ionic/react"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -18,7 +18,7 @@ export const CreateAPostCard = ({ allProps }) => {
         }
       })
 
-      setMeta(res.data)
+      setMeta(res.data?.data)
     }
     fn()
   }, [])

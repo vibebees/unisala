@@ -16,15 +16,23 @@ import UnisalaIntro from "./UnisalaIntro"
 import SpaceHeader from "./SpaceHeader"
 import PreLoader from "../../component/preloader"
 import { SpaceNotFound } from "../../component/PageNotFound"
-import {CreateAPostCard} from "../../component/post"
+import { CreateAPostCard } from "../../component/post/template"
 
-export const Spaces = ({allProps}) => {
+export const Spaces = ({ allProps }) => {
   // TOP SPACES
 
   const {
-    handleResize, loggedIn, spaceId, parentId, tags, loading, spaceCategory,
-    searchSpaceCategory, user, width, views
-
+    handleResize,
+    loggedIn,
+    spaceId,
+    parentId,
+    tags,
+    loading,
+    spaceCategory,
+    searchSpaceCategory,
+    user,
+    width,
+    views
   } = allProps
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -77,7 +85,7 @@ export const Spaces = ({allProps}) => {
           >
             <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
             {loggedIn && width >= 768 && (
-                <CreateAPostCard allProps={allProps} />
+              <CreateAPostCard allProps={allProps} />
             )}
             {loggedIn ? (
               <SpaceFeed spaceId={spaceId} userInfo={user} />
