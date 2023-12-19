@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux"
 import useWindowWidth from "hooks/useWindowWidth"
 import { searchGetSuccess } from "store/action/index"
 import { useQuery } from "@apollo/client"
-import { UniSearchDataList } from "graphql/uni/"
+import { UniSearchDataList, ScholarshipResults } from "graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 import { useLocation } from "react-router"
@@ -29,11 +29,11 @@ import { INITIAL_QUERY_DATA } from "./Filter/constants"
 import SearchTab from "../atoms/SearchTab"
 import { ChipsTab } from "../orgamism/ChipsTab"
 import UniversityScholarshipTab from "../atoms/UniversityScholarshipTab"
-import ScholarshipResults from "./ScholarshipResults"
 import { URLgetter } from "utils/lib/URLupdate"
 import { useHistory } from "react-router-dom"
 import clsx from "clsx"
 import { SearchBar } from "component/searchBox"
+import ScholarshipResult from "./ScholarshipResults"
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -49,11 +49,24 @@ function index({ query }) {
     variables: { name: query || "" },
     skip: searchParams.size > 2
   })
+
+  // const { data: scholarshipData } = useQuery(ScholarshipResults, {
+  //   context: { server: UNIVERSITY_SERVICE_GQL },
+  //   variables: {
+  //     gpa: {
+  //       min: 0,
+  //       max: 3
+  //     }
+  //   }
+  // })
+
+  // if (scholarshipData) {
+  //   console.log("scholarshipLoading", scholarshipData)
+  // }
+
   useEffect(() => {
     dispatch(searchGetSuccess(data?.searchSchool))
   }, [data])
-  // ...item?.totalPeopleVoted,
-  // ...item?.overallRating,
 
   const [filterPage, setFilterPage] = useState(1)
 
@@ -133,7 +146,7 @@ function index({ query }) {
               setFilterPage={setFilterPage}
             />
           ) : (
-            <ScholarshipResults />
+            <ScholarshipResult />
           )}
         </IonCol>
       </IonRow>

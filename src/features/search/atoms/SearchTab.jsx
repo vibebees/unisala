@@ -42,7 +42,9 @@ const SearchTab = () => {
   return (
     <IonCard className=" sticky max-md:static -top-14 z-20 max-md:m-0">
       <IonCardContent>
-        {query.length > 0 && <h1>Search Result For {`"${query}"`}: </h1>}
+        {query.length > 0 && (
+          <h1 className="text-sm">Search Result For {`"${query}"`}: </h1>
+        )}
         <div
           style={{
             display: "inline-flex",

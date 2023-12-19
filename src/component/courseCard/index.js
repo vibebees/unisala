@@ -7,102 +7,15 @@ import {
   IonIcon,
   IonText,
   IonCardTitle,
-  IonSkeletonText,
-  IonSlides,
-  IonSlide,
-  IonModal,
-  IonButton,
-  IonContent,
-  IonImg
+  IonSkeletonText
 } from "@ionic/react"
 import { saveOutline, shareOutline } from "ionicons/icons"
 import { LikeATag } from "../tags"
-import { universityDefaultImage } from "servers/s3.configs"
 import Location from "./../../features/search/atoms/CardLocation"
 import ApplicationCharges from "./../../features/search/atoms/ApplicationCharges"
 import Offerings from "./../../features/search/atoms/Offerings"
 import RatingCard from "./../../features/search/atoms/RatingCard"
-import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
-
-function ImageModal({ isOpen, imageSrc, onClose }) {
-  return (
-    <IonModal isOpen={isOpen}>
-      <IonContent>
-        <IonButton onClick={onClose}>Close</IonButton>
-        <IonImg src={imageSrc} alt="Selected Image" />
-      </IonContent>
-    </IonModal>
-  )
-}
-
-function CardImage({ allProps }) {
-  const {
-    images,
-    pictures = [],
-    recommended = true,
-    onSearch = false
-  } = allProps
-
-  const [modalOpen, setModalOpen] = useState(false)
-  const [selectedImage, setSelectedImage] = useState("")
-
-  const imageContainerStyle = {
-    display: "inline-flex",
-    flexWrap: "nowrap"
-  }
-  const imageStyle = {
-    width: "150px",
-    height: "120px",
-    objectFit: "cover",
-    margin: "4px",
-    cursor: "pointer" // Add a pointer cursor to indicate clickable images
-  }
-  const handleImageClick = (imageSrc) => {
-    setSelectedImage(imageSrc)
-    setModalOpen(true)
-  }
-  return (
-    <div className="card-image - overflow-hidden mr-2">
-      {onSearch ? (
-        <IonSlides
-          options={{
-            autoplay: true,
-            loop: true,
-            speed: 3000
-          }}
-        >
-          {pictures?.map((picture, index) => (
-            <IonSlide key={index}>
-              <IonImg
-                src={picture || images?.[0] || universityDefaultImage}
-                alt={`University Image ${index + 1}`}
-                style={imageStyle}
-              />
-            </IonSlide>
-          ))}
-        </IonSlides>
-      ) : (
-        <div style={imageContainerStyle}>
-          {pictures?.map((picture, index) => (
-            <ImageWithLoader
-              key={index}
-              src={picture || images?.[0] || universityDefaultImage}
-              style={imageStyle}
-              alt={`University Image ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Render the ImageModal component */}
-      <ImageModal
-        isOpen={modalOpen}
-        imageSrc={selectedImage}
-        onClose={() => setModalOpen(false)}
-      />
-    </div>
-  )
-}
+import CardImage from "./atom/CardImage"
 
 function CardActions({ allProps }) {
   const { showSave = false, showShare = false } = allProps
@@ -180,7 +93,7 @@ function CourseCard({ allProps }) {
     name,
     ownType,
     tags,
-
+    pictures,
     undergraduateApplicationFee,
     totalPeopleVoted,
     overallRating
@@ -195,7 +108,7 @@ function CourseCard({ allProps }) {
             className="overflow-hidden "
             size={"auto"}
           >
-            <CardImage allProps={allProps} />
+            <CardImage pictures={pictures} />
           </IonCol>
           <IonCol>
             <IonRow>

@@ -29,7 +29,7 @@ function index({ setIsLoading, filterPage }) {
   const [selectedMajor, setSelectedMajor] = useState("")
   const history = useHistory()
   const dispatch = useDispatch()
-  const [getScholarship, { data, loading, fetchMore }] = useLazyQuery(
+  const [getUniversityResults, { data, loading, fetchMore }] = useLazyQuery(
     UniFilterResults,
     {
       context: { server: UNIVERSITY_SERVICE_GQL },
@@ -181,7 +181,7 @@ function index({ setIsLoading, filterPage }) {
   useEffect(() => {
     setIsFiltered(true)
     const queryObject = getAllQueryParams(1)
-    getScholarship({
+    getUniversityResults({
       variables: {
         ...queryObject
       }

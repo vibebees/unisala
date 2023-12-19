@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from "react"
 import {
   IonCard,
@@ -5,65 +6,165 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonImg,
-  IonRow
+  IonRow,
+  IonCol,
+  IonChip,
+  IonGrid,
+  IonButton,
+  IonList
 } from "@ionic/react"
-import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+import CardImage from "component/courseCard/atom/CardImage"
+import {
+  schoolOutline,
+  starOutline,
+  bookOutline,
+  receiptOutline
+} from "ionicons/icons"
+import ScholarshipText from "./ScholarshipText"
+import { LikeATag } from "component/tags"
+import Modal from "component/Reusable/Modal"
+import { DetailItem } from "component/folderStructure/molecules/detailItem"
+import { Table } from "component/folderStructure/molecules/table"
 
-const ScholarshipCard = ({ scholarship }) => {
-  const {
-    university,
-    scholarshipName,
-    level,
-    gpaRequirement,
-    actRequirement,
-    satRequirement,
-    scholarshipAmount,
-    imageUrl
-  } = scholarship
+const ScholarshipCard = ({
+  pictures = [],
+  university_name = "",
+  scholarship_name = "",
+  level = "",
+  gpa = {},
+  act = {},
+  sat = {},
+  non_score_eligibility_requirements = "",
+  tags = [],
+  awards = [],
+  scholarship_url = ""
+}) => {
+  const ModalData = (
+    <div>
+      <IonList>
+        <DetailItem label="Scholarship Name" value={scholarship_name} />
+        <DetailItem label="Level" value={level} />
+        <DetailItem label="ACT Score" value={`${act.min} - ${act.max}`} />
+        {awards.length > 0 && <Table awards={awards} />}
+        <DetailItem label="SAT Score" value={`${sat.min} - ${sat.max}`} />
+        <DetailItem
+          label="Non Score Eligibility Requirements"
+          value={non_score_eligibility_requirements}
+        />
+        <DetailItem
+          label="Scholarship URL"
+          value={
+            <a
+              href={scholarship_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500"
+            >
+              {scholarship_url}
+            </a>
+          }
+        />
+      </IonList>
+    </div>
+  )
 
   return (
-    <IonCard className="">
+    <IonCard className="h-full">
       <IonRow className="relative">
-        <ImageWithLoader
-          src={imageUrl}
-          style={{
-            height: "150px",
-            width: "100%",
-            objectFit: "cover"
-          }}
-          alt={university}
-        />
+        <IonCol
+          size="auto"
+          style={{ margin: "auto" }}
+          className="overflow-hidden "
+        >
+          <CardImage pictures={pictures} />
+        </IonCol>
         <IonCardHeader className="ion-no-margin absolute bottom-0 w-full  ion-no-padding bg-black py-2 px-5 bg-opacity-60">
           <IonCardSubtitle className="ion-text-center font-semibold !text-start text-base text-white  ">
-            {university}
+            {university_name}
           </IonCardSubtitle>
         </IonCardHeader>
       </IonRow>
 
-      <IonCardContent>
+      <IonCardContent className="h-full">
         <IonCardTitle className="ion-text-start py-2">
-          {scholarshipName}
+          {scholarship_name}{" "}
+          <IonChip className="ion-no-padding ion-no-margin px-2 leading-none h-fit py-1 bg-blue-100 capitalize mx-1 text-xs text-blue-600 font-semibold">
+            {level}
+          </IonChip>
         </IonCardTitle>
-        <p>
-          <span className="font-semibold">Level:</span> {level}
-        </p>
-        <p>
-          <span className="font-semibold">GPA Requirement:</span>{" "}
-          {gpaRequirement}
-        </p>
-        <p>
-          <span className="font-semibold">ACT Requirement:</span>{" "}
-          {actRequirement}
-        </p>
-        <p>
-          <span className="font-semibold">SAT Requirement:</span>{" "}
-          {satRequirement}
-        </p>
-        <p>
-          <span className="font-semibold">Scholarship Amount:</span>{" "}
-          {scholarshipAmount}
-        </p>
+        <IonGrid className=" mt-2  ">
+          <IonRow className="flex-wrap  items-stretch">
+            <IonCol className="ion-no-padding">
+              <ScholarshipText
+                icon={schoolOutline}
+                header={"GPA Requirement"}
+                value={`${gpa?.min}-${gpa?.max}`}
+                color="#38c238"
+              />
+              <br />
+
+              <ScholarshipText
+                icon={starOutline}
+                header={"ACT Requirement"}
+                value={`${act?.min}-${act?.max}`}
+                color="#eab308"
+              />
+            </IonCol>
+            <IonCol className="ion-no-padding">
+              <ScholarshipText
+                icon={bookOutline}
+                header={"SAT Requirement"}
+                value={`${sat?.min}-${sat?.max}`}
+                color="#a855f7"
+              />
+              <br />
+              <ScholarshipText
+                icon={receiptOutline}
+                header={"Non-Score Eligibility Requirements"}
+                value={non_score_eligibility_requirements}
+                color="#ec4899"
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+
+        <IonRow className="flex items-center mt-3 ">
+          <IonCol>
+            {tags?.length > 0 && (
+              <LikeATag
+                colorTitle="blue"
+                colorValue="blue"
+                title="tags: "
+                value={tags.join("#")}
+                skipBg={true}
+              />
+            )}
+          </IonCol>
+          <IonCol size="auto" className="flex">
+            <div className="w-fit">
+              <Modal
+                ModalButton={
+                  <IonButton
+                    className="w-fit rounded-md border hover:bg-neutral-50 border-blue-300 text-blue-500 capitalize "
+                    fill="clear"
+                  >
+                    Learn More
+                  </IonButton>
+                }
+                ModalData={ModalData}
+                header="Scholarship Details"
+              />
+            </div>
+
+            <IonButton
+              className="w-fit rounded-md bg-neutral-700 hover:bg-neutral-800 text-neutral-100 ml-3  capitalize "
+              fill="clear"
+              color={"#333333"}
+            >
+              visit website
+            </IonButton>
+          </IonCol>
+        </IonRow>
       </IonCardContent>
     </IonCard>
   )
