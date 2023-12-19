@@ -12,6 +12,9 @@ import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 
 const Form = ({ metaData }) => {
+  // this into {0: "", 1: ""}
+  const [selected, setSelected] = useState({})
+
   const generateInputTag = (item) => {
     return (
       <>
@@ -21,14 +24,17 @@ const Form = ({ metaData }) => {
     )
   }
   const generateSelectTag = (item) => {
-    const [selected, setSelected] = useState(null)
-
+    console.log({ asa: item.conditionalEdges?.[selected] })
     return (
       <>
         <IonLabel>{item.name}</IonLabel>
         <IonSelect
           className="w-1/2"
-          onIonChange={(e) => setSelected(e.target.value)}
+          onIonChange={
+            (e) =>
+              setSelected((prev) => ({ ...prev, [item.id]: e.target.value }))
+            // generateHTML(item.conditionalEdges?.[e.target.value]?.[0])
+          }
         >
           {item.options.map((item, i) => (
             <IonSelectOption value={item} key={`${item}-i`}>
@@ -36,9 +42,14 @@ const Form = ({ metaData }) => {
             </IonSelectOption>
           ))}
         </IonSelect>
+        {/* {Object.keys(selected).length > 0 &&
+          Object.values(selected).map((val) =>
+            generateHTML(item?.conditionalEdges?.[val]?.[0])
+          )} */}
       </>
     )
   }
+
   const generateTextareaTag = (item) => {
     return (
       <>
@@ -48,7 +59,6 @@ const Form = ({ metaData }) => {
     )
   }
   const generateHTML = (item) => {
-    console.log({ item })
     switch (item?.type) {
       case "input":
         return generateInputTag(item)
