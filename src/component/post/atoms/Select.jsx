@@ -1,7 +1,7 @@
 import React from "react"
 import ReactSelect from "react-select"
 
-const SelectAtom = ({ options, item, setPostData }) => {
+const SelectAtom = ({ options, item, setPostData, postData }) => {
   const customStyles = {
     menuList: (styles) => ({
       ...styles
@@ -25,12 +25,18 @@ const SelectAtom = ({ options, item, setPostData }) => {
       options={modifiedOptions}
       styles={customStyles}
       menuPlacement="bottom"
-      value={item.userAnswer}
+      defaultValue={
+        postData && postData.levelOfStudy ? postData.levelOfStudy : null
+      }
       onChange={(e) => {
-        setPostData((prev) => ({
-          ...prev,
-          [item.id]: e.value.toLowerCase()
-        }))
+        console.log(e, item.id)
+        setPostData((prev) => {
+          let obj = {
+            ...prev
+          }
+          obj[item.id] = e.value
+          return obj
+        })
       }}
     />
   )

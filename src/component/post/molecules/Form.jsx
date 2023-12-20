@@ -1,5 +1,5 @@
 import { IonButton, IonInput, IonLabel, useIonToast } from "@ionic/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
@@ -169,12 +169,12 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
     setCreateAPostPopUp(false)
   }
-
   const generateInputTag = (item) => {
     return (
       <>
-        <IonLabel>{item.name}</IonLabel>
+        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
         <IonInput
+          id={item.id} // Add id attribute here
           name={item.name}
           className="border border-[#bdbdbd] rounded-sm"
           onIonChange={(e) => {
@@ -187,17 +187,19 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       </>
     )
   }
+
   const generateSelectTag = (item) => {
     return (
       <>
-        <IonLabel>{item.name}</IonLabel>
+        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
         {item.api ? (
-          <AsyncSelectAtom item={item} setPostData={setPostData} />
+          <AsyncSelectAtom item={item} setPostData={setPostData} postData={postData} />
         ) : (
           <SelectAtom
             options={item.options}
             item={item}
             setPostData={setPostData}
+            postData={postData}
           />
         )}
       </>
@@ -207,8 +209,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const generateTextareaTag = (item) => {
     return (
       <>
-        <IonLabel>{item.name}</IonLabel>
+        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
         <ReactQuill
+          id={item.id} // Add id attribute here
           className="h-40 mb-12 text-black relative"
           theme="snow"
           onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
@@ -234,11 +237,18 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
-        {metaData.edges.map((item) => (
+        {metaData.edges.map((item) => {
+
+
+          return (
           <>
             <div className="mt-4">{generateHTML(item)}</div>
+            {/* <div className="mt-4">{(item.id)}</div> */}
+
           </>
-        ))}
+        )
+}
+        )}
         <ImageUpload files={files} setFiles={setFiles} />
         <IonButton type="submit">Submit</IonButton>
       </form>

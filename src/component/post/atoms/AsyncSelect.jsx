@@ -7,7 +7,7 @@ import { tryCatch } from "ramda"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 
-const AsyncSelectAtom = ({ item, setPostData }) => {
+const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   const ref = useRef()
   const customStyles = {
     menuList: (styles) => ({
@@ -80,8 +80,19 @@ const AsyncSelectAtom = ({ item, setPostData }) => {
       menuPlacement="bottom"
       placeholder="Search for a major..."
       ref={ref}
-      value={item.userAnswer}
-      onChange={(e) => setPostData((prev) => ({ ...prev, [item.id]: e.value }))}
+      defaultValue={
+        postData && postData.levelOfStudy ? postData.levelOfStudy : null
+      }
+      onChange={(e) => {
+        setPostData((prev) => {
+          let obj = {
+            ...prev
+          }
+          obj[item.id] = e.value
+          console.log({ obj })
+          return obj
+        })
+      }}
       className="mt-2"
     />
   )
