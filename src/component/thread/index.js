@@ -247,9 +247,7 @@ const Thread = ({ thread, refetch }) => {
           postId={_id}
           upVoted={upVoted}
         />
-        <Reply
-          repliesCount={postCommentsCount}
-        />
+        <Reply repliesCount={postCommentsCount} setReply={setReply} />
         <Save
           postId={_id}
           saved={saved}
@@ -306,7 +304,7 @@ const Thread = ({ thread, refetch }) => {
         {renderContent()}
         {renderImages()}
         {renderFooter()}
-        {/* {reply && (
+        {reply && (
           <ReplyInput
             setReply={setReply}
             postId={_id}
@@ -314,7 +312,7 @@ const Thread = ({ thread, refetch }) => {
             setNumberOfComments={setNumberOfComments}
           />
         )}
-        {renderOptions()} */}
+        {renderOptions()}
         {postCommentsCount > 0 && (
           <ShowMore
             postId={_id}
