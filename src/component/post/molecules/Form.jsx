@@ -219,7 +219,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   }
 
   const generateHTML = (item) => {
-    console.log({ item })
     switch (item?.type) {
       case "input":
         return generateInputTag(item)

@@ -1,3 +1,7 @@
 - tag and checkbox type
-
 - tags ra checkbox api ma halna baaki raixa
+- rating model popover problem
+- preffered location: state
+- commentList breaking
+- SUGGEST ME - USER SELECTING MAP IN TEXT EDITOR
+- analytics
