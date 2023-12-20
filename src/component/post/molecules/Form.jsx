@@ -238,16 +238,12 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     <div className="px-2">
       <form onSubmit={handleSubmit}>
         {metaData.edges.map((item) => {
-
-
           return (
-          <>
-            <div className="mt-4">{generateHTML(item)}</div>
-            {/* <div className="mt-4">{(item.id)}</div> */}
-
-          </>
-        )
-}
+            <>
+              <div className="mt-4">{generateHTML(item)}</div>
+            </>
+          )
+        }
         )}
         <ImageUpload files={files} setFiles={setFiles} />
         <IonButton type="submit">Submit</IonButton>
