@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import "../auth.css"
 import VerificationCode from "./VerificationCode"
 import { USER_LOGIN } from "store/action/types"
-import {userServer} from "servers/endpoints"
+import { userServer } from "servers/endpoints"
 
 const SignUpVerification = ({ auth, setauth }) => {
   const [present, dismiss] = useIonToast()
@@ -47,6 +47,7 @@ const SignUpVerification = ({ auth, setauth }) => {
         setLoading(false)
         if (res.data.success === true) {
           localStorage.setItem("accessToken", res?.data?.accessToken)
+          localStorage.setItem("refreshToken", res?.data?.refreshToken)
           dispatch({
             type: USER_LOGIN,
             payload: {

@@ -4,7 +4,7 @@ import ReactGA from "react-ga4"
 const CustomTrackingLink = ({
   to,
   children,
-  description = "",
+  title = "",
   destination,
   customFunction
 }) => {
@@ -17,7 +17,7 @@ const CustomTrackingLink = ({
     ReactGA.send({
       hitType: "pageview",
       page: destination,
-      title: description,
+      title: title,
       from: currentPath,
       timeStamp: new Date()
     })

@@ -12,6 +12,12 @@
   color: black !important;
 }
 
+.select-placeholder {
+  opacity: 1 !important;
+}
+
+
+
 .field {
   display: inline-flex;
   gap: 1rem;
@@ -31,7 +37,6 @@
 ion-radio::part(container) {
   width: 20px;
   height: 20px;
-
   border-radius: 50%;
   border: 2px solid #ddd;
 }

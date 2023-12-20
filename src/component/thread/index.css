@@ -4,7 +4,6 @@
 
 .thread-header {
   display: inline-flex;
-  gap: 1rem;
   align-items: center;
 }
 

@@ -35,7 +35,7 @@ export const ProfilePop = ({ allProps }) => {
       <CustomTrackingLink
         to={`/@/${user?.username}`}
         destination={user?.name}
-        description="Navigating to profile page"
+        title="Navigating to profile page"
       >
         <IonItem
           button

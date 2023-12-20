@@ -486,7 +486,8 @@ export const GetProfessor = gql`
             }
           }
         }
+        overallRating
+        totalPeopleVoted
       }
     }
   `
-

@@ -21,6 +21,7 @@ import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "servers/types"
 import { fetchFamousUniversities } from "graphql/user"
 import CustomTrackingLink from "features/analytics/LinkTrack"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
 export const screenGreaterThan1000 = () => {
   const { data: famousUniversities } = useQuery(fetchFamousUniversities, {
@@ -86,7 +87,7 @@ export const screenGreaterThan1000 = () => {
             <CustomTrackingLink
               to={`/university/${item?.name}`}
               destination={"/university"}
-              description="Clicked on famous university List card"
+              title="Clicked on famous university List card"
               key={index}
             >
               <IonItem
@@ -98,7 +99,16 @@ export const screenGreaterThan1000 = () => {
                 key={index}
               >
                 <IonAvatar slot="start">
-                  <img src={item.pictures} />
+                  <ImageWithLoader
+                    src={item.pictures}
+                    style={{
+                      borderRadius: "100%",
+                      width: "40px",
+                      height: "40px",
+                      overflow: "hidden",
+                      objectFit: "cover"
+                    }}
+                  />
                 </IonAvatar>
                 <IonLabel>
                   <h2

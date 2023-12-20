@@ -104,6 +104,7 @@ export const Home = ({ allProps }) => {
           margin: "auto",
           maxWidth: "1200px"
         }}
+        className="max-md:px-0"
       >
         <IonRow
           style={{ justifyContent: "flex-start", margin: "0 auto" }}
@@ -117,6 +118,7 @@ export const Home = ({ allProps }) => {
               minHeight: "calc(90vh)",
               overflow: "hidden"
             }}
+            className="max-md:px-0"
           >
             {loggedIn ? renderLoggedInView() : UnisalaLandingPage({ allProps })}
           </IonCol>

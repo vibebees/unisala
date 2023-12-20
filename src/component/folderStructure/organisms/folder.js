@@ -19,7 +19,7 @@ export const FolderGeneral = ({item, allProps}) => {
 
   return (
     <>
-      <IonCol className="h-80 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center min-w-[250px] !shrink-0">
+      <IonCol className="h-20 bg-neutral-50 px-0 shadow-md rounded-md flex justify-center flex-col items-center min-w-[250px] !shrink-0">
         <IconAtom icon={icon} className={folderSize} />
         <div className="w-full">
           <h3 className="text-center px-2 leading-5 text-lg !font-semibold text-neutral-700">
