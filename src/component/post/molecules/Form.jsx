@@ -176,7 +176,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         <IonLabel>{item.name}</IonLabel>
         <IonInput
           name={item.name}
-          className=""
+          className="border border-[#bdbdbd] rounded-sm"
           onIonChange={(e) => {
             setPostData((prev) => ({
               ...prev,
