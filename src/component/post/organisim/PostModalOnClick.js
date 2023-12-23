@@ -23,6 +23,7 @@ import "react-quill/dist/quill.snow.css"
 
 import { Avatar } from "component/Avatar"
 import Form from "../molecules/Form"
+import { ButtonTrack } from "features/analytics/ButtonTrack"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -30,8 +31,6 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const [selectedTab, setSelectedTab] = useState()
   const [postData, setPostData] = useState(null)
   const profilePic = user?.picture
-
-
 
   const buttonStyles = {
     0: "red",
@@ -67,19 +66,23 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
       <div className="overflow-y-scroll threadScroll px-1 h-full ">
         {!selectedTab ? (
           <div className="grid place-items-center gap-y-8 mt-24">
-            {Object.keys(metaData).map((item, i) => (
-              <>
-                <IonButton
-                  className={`mt-0 hover:scale-95 transition-all ease-in`}
-                  onClick={() => {
-                    setPostData({ id: item })
-                    setSelectedTab(item)
-                  }}
-                >
-                  {metaData[item].name}
-                </IonButton>
-              </>
-            ))}
+            {metaData &&
+              Object.keys(metaData).map((item, i) => (
+                <>
+                  <IonButton
+                    className={`mt-0 hover:scale-95 transition-all ease-in`}
+                    onClick={() => {
+                      setPostData({ id: item })
+                      setSelectedTab(item)
+                      ButtonTrack(
+                        `${item} button clicked while creating a post`
+                      )
+                    }}
+                  >
+                    {metaData[item].name}
+                  </IonButton>
+                </>
+              ))}
           </div>
         ) : (
           <>
