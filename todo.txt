@@ -1,7 +1,30 @@
-- tag and checkbox type
-- tags ra checkbox api ma halna baaki raixa
+- tag and checkbox type ------ DONE
+- tags ra checkbox api ma halna baaki raixa ---- backend part
 - rating model popover problem
-- preffered location: state
-- commentList breaking
-- SUGGEST ME - USER SELECTING MAP IN TEXT EDITOR
-- analytics
+- preffered location: state --- backend bata aauna parxa, metioned below, t
+- build satScore, actScore and so on ---- LEFT
+- commentList breaking ---- fixed
+- SUGGEST ME - USER SELECTING MAP IN TEXT EDITOR ---DONE
+- analytics  -------- DONE
+
+
+changes in api needed : 
+change tyationToMajor pe tag to select, api = false
+relin reviewUni should not be checkbox type
+wouldYouGoBack in reviewUni should be radio type
+reviewSubCategories in reviewUni should be select type with api false
+prefferedLocation should be select type with api false and all US states as Option
+- description
+ADD THESE FIELDS IN SCHEMA
+- anonymityOption: Boolean
+- relationToMajor: String
+
+ITEATION 2 
+
+- chain analytics
+MANDATE - levelOfStudy
+- Validation include for fields related to scores
+
+
+- select, Search for <name>
+- input <name>

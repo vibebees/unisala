@@ -85,11 +85,22 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       }
       onChange={(e) => {
         setPostData((prev) => {
+          let newHtml = `<h3> ${
+            item.name
+          } : <strong> ${e.value.toUpperCase()} </strong></h3>`
+          let postText
+          if (postData.postText) {
+            console.log("hehehe", postData.postText)
+            postText = postData.postText + newHtml
+            console.log("after", postText)
+          } else {
+            postText = newHtml
+          }
           let obj = {
             ...prev
           }
           obj[item.id] = e.value
-          console.log({ obj })
+          obj.postText = postText
           return obj
         })
       }}

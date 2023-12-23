@@ -17,7 +17,7 @@ export const CreateAPostCard = ({ allProps }) => {
           authorization: localStorage.getItem("accessToken")
         }
       })
-      console.log({ res })
+
       setMeta(res.data?.data)
     }
     fn()

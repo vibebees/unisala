@@ -1,4 +1,13 @@
-import { IonButton, IonInput, IonLabel, useIonToast } from "@ionic/react"
+import {
+  IonButton,
+  IonCheckbox,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+  useIonToast
+} from "@ionic/react"
 import React, { useEffect, useState } from "react"
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
@@ -19,10 +28,42 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
+
   const client = useApolloClient()
 
   const formData = new FormData()
-
+  let RatingData = [
+    {
+      value: 1,
+      imageURL:
+        "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Enraged%20Face.png",
+      Emojis: "😡"
+    },
+    {
+      value: 2,
+      imageURL:
+        "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Downcast%20Face%20with%20Sweat.png",
+      Emojis: "😞"
+    },
+    {
+      value: 3,
+      imageURL:
+        "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Neutral%20Face.png",
+      Emojis: "😐"
+    },
+    {
+      value: 4,
+      imageURL:
+        "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Beaming%20Face%20with%20Smiling%20Eyes.png",
+      Emojis: "😊"
+    },
+    {
+      value: 5,
+      imageURL:
+        "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Smiling%20Face%20with%20Heart-Eyes.png",
+      Emojis: "😍"
+    }
+  ]
   const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
 
@@ -169,6 +210,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
     setCreateAPostPopUp(false)
   }
+
   const generateInputTag = (item) => {
     return (
       <>
@@ -176,6 +218,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         <IonInput
           id={item.id} // Add id attribute here
           name={item.name}
+          type={item.type}
           className="border border-[#bdbdbd] rounded-sm"
           onIonChange={(e) => {
             setPostData((prev) => ({
@@ -189,11 +232,35 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   }
 
   const generateSelectTag = (item) => {
+    if (item.id === "userRating") {
+      return (
+        <>
+          <IonLabel>{item.name}</IonLabel>
+          <div className="flex justify-start gap-x-2">
+            {RatingData.map((item, i) => (
+              <div
+                key={i}
+                className="mt-2 cursor-pointer"
+                onClick={() =>
+                  setPostData((prev) => ({ ...prev, rating: item.value }))
+                }
+              >
+                <img src={item.imageURL} alt="" width={48} />
+              </div>
+            ))}
+          </div>
+        </>
+      )
+    }
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
         {item.api ? (
-          <AsyncSelectAtom item={item} setPostData={setPostData} postData={postData} />
+          <AsyncSelectAtom
+            item={item}
+            setPostData={setPostData}
+            postData={postData}
+          />
         ) : (
           <SelectAtom
             options={item.options}
@@ -205,6 +272,8 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       </>
     )
   }
+
+  console.log({ text: postData?.postText })
 
   const generateTextareaTag = (item) => {
     return (
@@ -221,10 +290,31 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     )
   }
 
+  const generateCheckbox = (item) => {
+    return (
+      <div className="flex mt-2 w-fit items-center">
+        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+
+        <IonCheckbox
+          className="ml-2 "
+          id={item.id} // Add id attribute here
+          name={item.name}
+          onIonChange={(e) => {
+            setPostData((prev) => ({
+              ...prev,
+              [item.id]: e.target.checked
+            }))
+          }}
+        />
+      </div>
+    )
+  }
   const generateHTML = (item) => {
     switch (item?.type) {
       case "input":
         return generateInputTag(item)
+      case "checkbox":
+        return generateCheckbox(item)
       case "select":
         return generateSelectTag(item)
       case "textarea":
@@ -243,8 +333,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
               <div className="mt-4">{generateHTML(item)}</div>
             </>
           )
-        }
-        )}
+        })}
         <ImageUpload files={files} setFiles={setFiles} />
         <IonButton type="submit">Submit</IonButton>
       </form>

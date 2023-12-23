@@ -20,6 +20,28 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
     value: option,
     label: option
   }))
+
+  const handleChange = (e) => {
+    setPostData((prev) => {
+      let newHtml = `<h3> ${
+        item.name
+      } : <strong> ${e.value.toUpperCase()} </strong></h3>`
+      let postText
+      if (postData.postText) {
+        console.log("hehehe", postData.postText)
+        postText = postData.postText + newHtml
+        console.log("after", postText)
+      } else {
+        postText = newHtml
+      }
+      let obj = {
+        ...prev
+      }
+      obj[item.id] = e.value.toLowerCase()
+      obj.postText = postText
+      return obj
+    })
+  }
   return (
     <ReactSelect
       options={modifiedOptions}
@@ -28,16 +50,7 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
       defaultValue={
         postData && postData.levelOfStudy ? postData.levelOfStudy : null
       }
-      onChange={(e) => {
-        console.log(e, item.id)
-        setPostData((prev) => {
-          let obj = {
-            ...prev
-          }
-          obj[item.id] = e.value
-          return obj
-        })
-      }}
+      onChange={handleChange}
     />
   )
 }
