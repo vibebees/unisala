@@ -23,6 +23,7 @@ import {
 } from "./constants"
 import { universityServer } from "servers/endpoints"
 import { URLgetter, URLupdate } from "utils/lib/URLupdate"
+import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 
 function index({ setIsLoading, filterPage }) {
   const [isFiltered, setIsFiltered] = useState(false)

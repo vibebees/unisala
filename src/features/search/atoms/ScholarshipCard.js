@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React from "react"
+import React, { useState } from "react"
 import {
   IonCard,
   IonCardContent,
@@ -25,6 +25,7 @@ import { LikeATag } from "component/tags"
 import Modal from "component/Reusable/Modal"
 import { DetailItem } from "component/folderStructure/molecules/detailItem"
 import { Table } from "component/folderStructure/molecules/table"
+import IonWebPop from "features/university/sideDetails/visitWebsite/IonWebPop"
 
 const ScholarshipCard = ({
   pictures = [],
@@ -39,6 +40,7 @@ const ScholarshipCard = ({
   awards = [],
   scholarship_url = ""
 }) => {
+  const [popup, setPopup] = React.useState(false)
   const ModalData = (
     <div>
       <IonList>
@@ -78,7 +80,7 @@ const ScholarshipCard = ({
         >
           <CardImage pictures={pictures} />
         </IonCol>
-        <IonCardHeader className="ion-no-margin absolute bottom-0 w-full  ion-no-padding bg-black py-2 px-5 bg-opacity-60">
+        <IonCardHeader className="ion-no-margin absolute bottom-0 w-fit  ion-no-padding bg-black py-2 px-5 bg-opacity-60">
           <IonCardSubtitle className="ion-text-center font-semibold !text-start text-base text-white  ">
             {university_name}
           </IonCardSubtitle>
@@ -160,9 +162,16 @@ const ScholarshipCard = ({
               className="w-fit rounded-md bg-neutral-700 hover:bg-neutral-800 text-neutral-100 ml-3  capitalize "
               fill="clear"
               color={"#333333"}
+              onClick={() => setPopup(true)}
             >
               visit website
             </IonButton>
+            <IonWebPop
+              setPopup={setPopup}
+              urls={scholarship_url}
+              popup={popup}
+              tab={false}
+            />
           </IonCol>
         </IonRow>
       </IonCardContent>
