@@ -212,7 +212,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     setCreateAPostPopUp(false)
   }
 
-  console.log({ postData })
   const generateInputTag = (item) => {
     return (
       <>
@@ -225,7 +224,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           className="border border-[#bdbdbd] rounded-sm"
           onIonChange={(e) => {
             const postText = htmlForEditor(
-              postData.postText,
+              postData?.postText,
               item.name,
               e.target.value
             )
@@ -268,7 +267,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
                     "grayscale-[100]": Number(postData?.rating) !== i + 1
                   })}
                 >
-                  {Number(postData.rating) !== i + 1 ? (
+                  {Number(postData?.rating) !== i + 1 ? (
                     val.Emojis
                   ) : (
                     <img src={val.imageURL} alt="" width={48} className="" />

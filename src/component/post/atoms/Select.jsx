@@ -27,7 +27,7 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
   const handleChange = (e) => {
     setPostData((prev) => {
       const postText = htmlForEditor(
-        prev.postText,
+        postData?.postText,
         item.name,
         e.value.toUpperCase()
       )
@@ -65,11 +65,12 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
             placeholder="Enter score"
             onIonChange={(e) => {
               const postText = htmlForEditor(
-                postData?.postText,
-                scoreType.toUpperCase(),
+                postData.postText,
+                scoreType,
                 e.target.value
               )
-              console.log(e.target.value)
+
+              console.log(postText)
               setPostData((prev) => ({
                 ...prev,
                 postText,

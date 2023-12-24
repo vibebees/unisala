@@ -72,10 +72,6 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                   <IonButton
                     className={`mt-0 hover:scale-95 transition-all ease-in`}
                     onClick={() => {
-                      setPostData({
-                        id: item,
-                        postText: `<h1>  </h1>`
-                      })
                       setSelectedTab(item)
                       ButtonTrack(
                         `${item} button clicked while creating a post`
