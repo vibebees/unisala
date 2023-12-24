@@ -486,7 +486,98 @@ export const GetProfessor = gql`
             }
           }
         }
+        overallRating
+        totalPeopleVoted
+      }
+    }
+  `,
+  ScholarshipResults = gql`
+    query ScholarshipResults(
+      $pageSize: Int
+      $page: Int
+      $sat: RangeInput
+      $act: RangeInput
+      $gpa: RangeInput
+    ) {
+      searchScholarship(
+        pageSize: $pageSize
+        page: $page
+        sat: $sat
+        act: $act
+        gpa: $gpa
+      ) {
+        status {
+          success
+          message
+        }
+        scholarships {
+          _id
+          university_name
+          scholarship_name
+          international_specific
+          level
+          transfer_specific
+          scholarship_url
+          gpa {
+            max
+            min
+          }
+          act {
+            max
+            min
+          }
+          sat {
+            max
+            min
+          }
+          awards {
+            award_name
+            scholarship_amount {
+              amount
+              disbursement_schedule
+            }
+          }
+          non_score_eligibility_requirements
+          unitId
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+          }
+          calendar
+          name
+          alias
+          urls {
+            home
+            financialAid
+            admissions
+            netPriceCalculator
+            onlineApplication
+          }
+
+          highestLevelOfOffering
+          undergraduateOffering
+          graduateOffering
+          grantsMedicalDegree
+          grantsMedicalDegree
+          hasHospital
+          missionStatement
+          bio
+          briefAddress
+          library {
+            physicalBook
+            physicalMedia
+            digitalElectronicBook
+            recordedYear
+          }
+          majors {
+            title
+            pollTotalGraduates
+          }
+          ownType
+          pictures
+          tags
+        }
       }
     }
   `
-

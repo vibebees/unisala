@@ -12,10 +12,10 @@ import SubmitSpace from "../Button/SubmitSpace"
 import { useMutation } from "@apollo/client"
 import { useHistory } from "react-router"
 import { closeOutline, imageOutline } from "ionicons/icons"
- import axios from "axios"
-import {AddSpaceCategory} from "graphql/user"
-import {USER_SERVICE_GQL} from "servers/types"
-import {userServer} from "servers/endpoints"
+import axios from "axios"
+import { AddSpaceCategory } from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { userServer } from "servers/endpoints"
 const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
   const [redirecting, setRedirecting] = useState(false)
@@ -65,7 +65,6 @@ const SpaceForm = ({ setIsOpen }) => {
               }
             }
           )
-          console.log(res, "file added successfully")
         }
 
         present({

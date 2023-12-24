@@ -8,6 +8,7 @@ import {
 import roadmap from "assets/roadmap.png"
 import { lockOpenOutline } from "ionicons/icons"
 import ExploreUniversities from "assets/ExploreUniversity.png"
+import { ButtonTrack } from "features/analytics/ButtonTrack"
 
 export const UnisalaLandingPage = ({ allProps }) => {
   return (
@@ -39,7 +40,10 @@ export const UnisalaLandingPage = ({ allProps }) => {
             <div className="flex gap-4 w-full pr-28 justify-end ">
               <button
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-                onClick={() => window.location.replace("/login")} // Replace '/login' with your login URL
+                onClick={() => {
+                  ButtonTrack("Landing page login button clicked")
+                  window.location.replace("/login")
+                }} // Replace '/login' with your login URL
               >
                 <IonIcon icon={lockOpenOutline} />
                 &nbsp; Log In Now
@@ -56,12 +60,16 @@ export const UnisalaLandingPage = ({ allProps }) => {
           <div className="absolute w-full bottom-20  -right-7">
             <br />
             <div className="flex gap-4 w-full pr-28 justify-start ">
-
               <button
                 className="capitalize font-semibold  text-black flex items-center px-3 py-2 bg-neutral-100 hover:text-blue-600 rounded-3xl"
-                onClick={() => window.open("/search?tab=uni", "_blank")}
+                onClick={() => {
+                  ButtonTrack(
+                    "Landing page explore universities button clicked"
+                  )
+                  window.open("/search?tab=uni", "_blank")
+                }}
               >
-                  Explore Universities
+                Explore Universities
                 <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
               </button>
             </div>
@@ -79,7 +87,10 @@ export const UnisalaLandingPage = ({ allProps }) => {
             <div className="flex gap-4 w-full pr-28 justify-end ">
               <button
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-                onClick={() => window.open("/roadmap", "_blank")}
+                onClick={() => {
+                  ButtonTrack("Landing page visa roadmap button clicked")
+                  window.open("/roadmap", "_blank")
+                }}
               >
                 VISA ROADMAP
                 <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
@@ -185,7 +196,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
           </div>
         </IonCardContent>
       </IonCard> */}
-{/*
+      {/*
       <IonCard className="mb-1">
         <IonCardContent
           className={

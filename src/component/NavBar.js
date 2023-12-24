@@ -43,7 +43,7 @@ const Nav = ({ allProps }) => {
         description: "Profile button clicked",
         to: "/profile"
       }
-      ButtonTrack(data)
+      ButtonTrack("Profile button clicked")
     },
     unreadMessagesCount =
       0 || useSelector((state) => state?.userProfile?.unreadMessages?.length)
@@ -104,6 +104,7 @@ const Nav = ({ allProps }) => {
                     customFunction={() => {
                       setActive(`${item?.link}`)
                     }}
+                    title={`Clicked on ${item?.name} nav link`}
                   >
                     <div
                       style={{
