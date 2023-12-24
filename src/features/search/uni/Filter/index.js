@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import { IonCard, IonCardContent, IonCol, IonRow } from "@ionic/react"
 import "./index.css"
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState, useRef } from "react"
 import { useLazyQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { UniFilterResults } from "graphql/uni"
@@ -30,6 +30,7 @@ function index({ setIsLoading, filterPage }) {
   const [selectedMajor, setSelectedMajor] = useState("")
   const history = useHistory()
   const dispatch = useDispatch()
+  const ref = useRef()
   const [getUniversityResults, { data, loading, fetchMore }] = useLazyQuery(
     UniFilterResults,
     {
@@ -204,7 +205,7 @@ function index({ setIsLoading, filterPage }) {
     if (majordata) {
       setSelectedMajor(majordata)
     } else {
-      setSelectedMajor("Search Major")
+      setSelectedMajor("Search a Major")
     }
   }, [history.location.search])
 
@@ -223,7 +224,7 @@ function index({ setIsLoading, filterPage }) {
     })
   }
 
-  const fetchModel = async (majorQuery = "") => {
+  const fetchMajor = async (majorQuery = "") => {
     try {
       const response = await axios.get(
         `${universityServer}/keyword/majors/${
@@ -240,13 +241,17 @@ function index({ setIsLoading, filterPage }) {
     }
   }
 
-  const loadOptions = async (inputVal, callback) => {
-    try {
-      const options = await fetchModel(inputVal)
-      callback(options)
-    } catch (error) {
-      console.error("Error loading options:", error)
-    }
+  const loadOptions = (inputVal, callback) => {
+    let options
+
+    setTimeout(async () => {
+      try {
+        options = await fetchMajor(inputVal)
+        callback(options)
+      } catch (error) {
+        console.error("Error loading options:", error)
+      }
+    }, 1000)
   }
 
   return (
@@ -354,9 +359,10 @@ function index({ setIsLoading, filterPage }) {
                 cacheOptions
                 loadOptions={loadOptions}
                 defaultOptions
+                ref={ref}
                 styles={customStyles}
                 menuPlacement="top"
-                placeholder="Search Major"
+                placeholder="Search a Major"
                 value={{
                   value: selectedMajor,
                   label: selectedMajor

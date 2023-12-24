@@ -71,7 +71,7 @@ const ScholarshipCard = ({
   )
 
   return (
-    <IonCard className="h-full">
+    <IonCard className="h-full max-md:p-0 max-md:m-0 max-md:my-2">
       <IonRow className="relative">
         <IonCol
           size="auto"
@@ -95,7 +95,7 @@ const ScholarshipCard = ({
           </IonChip>
         </IonCardTitle>
         <IonGrid className=" mt-2  ">
-          <IonRow className="flex-wrap  items-stretch">
+          <IonRow className="flex-wrap max-md:grid items-stretch">
             <IonCol className="ion-no-padding">
               <ScholarshipText
                 icon={schoolOutline}
@@ -112,7 +112,7 @@ const ScholarshipCard = ({
                 color="#eab308"
               />
             </IonCol>
-            <IonCol className="ion-no-padding">
+            <IonCol className="ion-no-padding max-md:mt-4">
               <ScholarshipText
                 icon={bookOutline}
                 header={"SAT Requirement"}

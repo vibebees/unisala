@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { IonCard, IonCardContent } from "@ionic/react"
+import { IonCard, IonCardContent, IonText } from "@ionic/react"
 import { useHistory } from "react-router"
 import { URLgetter, URLupdate } from "utils/lib/URLupdate"
+import { ButtonTrack } from "features/analytics/ButtonTrack"
 
 const SearchTab = () => {
   const [tab, setTab] = useState("all")
@@ -54,21 +55,24 @@ const SearchTab = () => {
           }}
         >
           {tabs.map((t, index) => (
-            <p
-              key={index}
-              onClick={() => {
-                const urldata = URLupdate("tab", t.value)
-                history.push({ search: urldata })
-              }}
-              style={{
-                cursor: "pointer",
-                fontSize: "1.2rem",
-                color: t.value === tab ? "#3171e0" : "",
-                borderBottom: t.value === tab ? "2px solid #3171e0" : ""
-              }}
-            >
-              {t.name}
-            </p>
+            <IonText key={index} className="w-fit ">
+              <h4
+                onClick={() => {
+                  const urldata = URLupdate("tab", t.value)
+                  history.push({ search: urldata })
+                  ButtonTrack(`${t.value} search tab clicked`)
+                }}
+                className="max-md:text-xs"
+                style={{
+                  cursor: "pointer",
+
+                  color: t.value === tab ? "#3171e0" : "",
+                  borderBottom: t.value === tab ? "2px solid #3171e0" : ""
+                }}
+              >
+                {t.name}
+              </h4>
+            </IonText>
           ))}
         </div>
       </IonCardContent>

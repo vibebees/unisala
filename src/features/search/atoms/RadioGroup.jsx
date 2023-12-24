@@ -25,10 +25,10 @@ const RadioGroup = ({
   const handleChange = (e) => {
     const data = URLupdate(urlKey, e.target.value[0])
     history.push({ search: data.toString() })
+    setSelected(e.target.value)
   }
 
   useEffect(() => {
-    console.log("getting radio group data")
     const data = URLgetter(urlKey)
     if (data) {
       if (data === value1[0]) {
