@@ -4,6 +4,7 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonRadioGroup,
   IonSelect,
   IonSelectOption,
   useIonToast
@@ -21,6 +22,8 @@ import TextChecker from "utils/components/TextChecker"
 import axios from "axios"
 import { userServer } from "servers/endpoints"
 import ImageUpload from "./ImageUpload"
+import clsx from "clsx"
+import { htmlForEditor } from "../utils/htmlForEditor"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -69,9 +72,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 
     update: (cache, { data: { addPost } }) => {
       const post = {
-        postText: addPost.post.postText,
-        date: addPost.post.date,
-        _id: addPost.post._id,
+        postText: addPost?.post.postText,
+        date: addPost?.post.date,
+        _id: addPost?.post._id,
         user: {
           _id: user._id,
           username: user.username,
@@ -84,7 +87,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         upVoted: false,
         type: "post",
         saved: false,
-        images: addPost.post.images || [],
+        images: addPost?.post.images || [],
         __typename: "PostNewsFeed"
       }
       if (!tags) {
@@ -194,9 +197,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       addPost({
         variables: {
           ...postData,
-          testScoreMark: {
-            satScore: 1600
-          }
+          testScoreMark: {}
         }
       })
     } else {
@@ -211,6 +212,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     setCreateAPostPopUp(false)
   }
 
+  console.log({ postData })
   const generateInputTag = (item) => {
     return (
       <>
@@ -219,10 +221,17 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           id={item.id} // Add id attribute here
           name={item.name}
           type={item.type}
+          placeholder={item.placeholder || ""}
           className="border border-[#bdbdbd] rounded-sm"
           onIonChange={(e) => {
+            const postText = htmlForEditor(
+              postData.postText,
+              item.name,
+              e.target.value
+            )
             setPostData((prev) => ({
               ...prev,
+              postText,
               [item.id]: parseFloat(e.target.value)
             }))
           }}
@@ -237,15 +246,34 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         <>
           <IonLabel>{item.name}</IonLabel>
           <div className="flex justify-start gap-x-2">
-            {RatingData.map((item, i) => (
+            {RatingData.map((val, i) => (
               <div
                 key={i}
                 className="mt-2 cursor-pointer"
-                onClick={() =>
-                  setPostData((prev) => ({ ...prev, rating: item.value }))
-                }
+                onClick={() => {
+                  const postText = htmlForEditor(
+                    postData.postText,
+                    item.name,
+                    val.Emojis
+                  )
+                  setPostData((prev) => ({
+                    ...prev,
+                    postText,
+                    rating: String(val.value)
+                  }))
+                }}
               >
-                <img src={item.imageURL} alt="" width={48} />
+                <span
+                  className={clsx("text-4xl transition ease-linear", {
+                    "grayscale-[100]": Number(postData?.rating) !== i + 1
+                  })}
+                >
+                  {Number(postData.rating) !== i + 1 ? (
+                    val.Emojis
+                  ) : (
+                    <img src={val.imageURL} alt="" width={48} className="" />
+                  )}
+                </span>
               </div>
             ))}
           </div>
@@ -319,6 +347,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         return generateSelectTag(item)
       case "textarea":
         return generateTextareaTag(item)
+
       default:
         return null
     }

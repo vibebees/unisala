@@ -22,6 +22,8 @@ export const CreateAPostCard = ({ allProps }) => {
     }
     fn()
   }, [])
+
+  console.log({ meta })
   return (
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />

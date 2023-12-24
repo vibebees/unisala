@@ -139,7 +139,8 @@ const Thread = ({ thread, refetch }) => {
 
   // Refactored functions
   const renderHeader = () => {
-    const {firstName, lastName, username, date, profilePic} = thread.user || {}
+    const { firstName, lastName, username, profilePic } = thread.user || {}
+
     return (
       <Link to={`/@/${username}`} className="px-4 max-md:px-2">
         <div className="thread-header gap-2">
@@ -147,12 +148,10 @@ const Thread = ({ thread, refetch }) => {
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails ">
-            <h3 style={{color: "#222428"}}>
-              {firstName + " " + lastName}
-            </h3>
+            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
             <div className="threads_username">
               <p>@{username}</p>
-              <p className="threads_date">{moment(date).fromNow()}</p>
+              <p className="threads_date">{moment(thread?.date).fromNow()}</p>
             </div>
           </div>
         </div>
@@ -160,7 +159,7 @@ const Thread = ({ thread, refetch }) => {
     )
   }
   const renderContent = () => {
-    const {postText, _id} = thread
+    const { postText, _id } = thread
 
     // Handling for the editable state
     if (editable) {
@@ -177,7 +176,7 @@ const Thread = ({ thread, refetch }) => {
             fill="clear"
             className="ion-no-padding capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
             size="small"
-            style={{"--ripple-color": "transparent"}}
+            style={{ "--ripple-color": "transparent" }}
             onClick={() => setEditable(false)}
           >
             Cancel
@@ -187,7 +186,7 @@ const Thread = ({ thread, refetch }) => {
             fill="clear"
             size="small"
             onClick={editPost}
-            style={{"--ripple-color": "transparent"}}
+            style={{ "--ripple-color": "transparent" }}
           >
             Save
           </IonButton>
@@ -203,7 +202,7 @@ const Thread = ({ thread, refetch }) => {
     )
   }
   const renderImages = () => {
-    const {images, _id} = thread
+    const { images, _id } = thread
 
     if (images?.length > 0) {
       return (
@@ -238,20 +237,13 @@ const Thread = ({ thread, refetch }) => {
     return null
   }
   const renderFooter = () => {
-    const {upVoteCount, postCommentsCount, upVoted, saved, _id} = thread
+    const { upVoteCount, postCommentsCount, upVoted, saved, _id } = thread
 
     return (
       <div className="thread_footer">
-        <Upvote
-          upVoteCount={upVoteCount}
-          postId={_id}
-          upVoted={upVoted}
-        />
+        <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} />
         <Reply repliesCount={postCommentsCount} setReply={setReply} />
-        <Save
-          postId={_id}
-          saved={saved}
-        />
+        <Save postId={_id} saved={saved} />
       </div>
     )
   }
@@ -296,7 +288,6 @@ const Thread = ({ thread, refetch }) => {
     return null
   }
 
-
   return (
     <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
       {renderHeader()}
@@ -325,7 +316,6 @@ const Thread = ({ thread, refetch }) => {
       </div>
     </IonCard>
   )
-
 }
 
 export default Thread
