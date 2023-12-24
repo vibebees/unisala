@@ -13,7 +13,6 @@ const RenderFolder = ({ item, allProps, customStyles, popUp }) => {
     <ComponentToRender
       allProps={allProps}
       item={item}
-      className="w-full"
       style={{ flex: "1 1 40%", ...customStyles }}
     />
   )
@@ -37,26 +36,23 @@ export const FolderStructure = ({ allProps = {} }) => {
   }, [allProps?.data])
 
   if (allProps?.data?.length === 0) return null
-
   return (
     <IonCard style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
       <CardHeader header={folderName} />
       <IonCardContent key={"index"} className="w-full">
-        <IonGrid className="w-full gap-3 flex flex-wrap">
+      <IonGrid className="w-full gap-3 flex flex-wrap">
           <IonRow
-            className={clsx(
-              "transition-all duration-150 ease-linear",
-              showMore ? "h-full " : "h-[328px] overflow-hidden"
-            )}
+
           >
             {data.map((item, index) => (
-              <IonCol key={index}>
+              <IonCol key={index} size="auto">
                 {item.key === "interviewPrep" ? (
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
-                    <RenderFolder
-                      {...{ item, allProps, customStyles, popUp }}
-                    />
-                  </a>
+                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                <RenderFolder
+                  {...{ item, allProps, customStyles, popUp }}
+                />
+              </a>
+
                 ) : popUp ? (
                   <RenderFolder {...{ item, allProps, customStyles, popUp }} />
                 ) : (

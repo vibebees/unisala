@@ -7,7 +7,7 @@ import {
   IonCard,
   IonItem
 } from "@ionic/react"
-import { CreateAPostCard } from "../../component/post/index"
+import { CreateAPostCard } from "../../component/post/template/index"
 
 import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"

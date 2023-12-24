@@ -3,17 +3,17 @@ import { useSelector } from "react-redux"
 import { IonTextarea, IonIcon, useIonToast } from "@ionic/react"
 import { sendOutline } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
- import { Avatar } from "../Avatar"
+import { Avatar } from "../Avatar"
 import "./index.css"
 import ReactQuill from "react-quill"
-import {USER_SERVICE_GQL} from "servers/types"
-import {GetCommentList, AddComment} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { GetCommentList, AddComment } from "graphql/user"
 
 function ReplyInput({
   setReply,
-  postId,
+  postId = "",
   isReply,
-  parentId,
+  parentId = "",
   singlePost,
   setNumberOfComments,
   replyTo

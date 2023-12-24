@@ -72,7 +72,7 @@ const StepsButtons = ({ allProps }) => {
       } else {
         present({
           duration: 3000,
-          message: data?.editProfile?.status.message,
+          message: data?.editProfile?.status?.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
@@ -87,7 +87,7 @@ const StepsButtons = ({ allProps }) => {
     onError: (error) => {
       present({
         duration: 30000,
-        message: error.message,
+        message: error?.message,
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
         mode: "ios"

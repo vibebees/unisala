@@ -15,7 +15,7 @@ import {
   USER_SERVICE_GQL
 } from "./types"
 import { io } from "socket.io-client"
-import { getNewToken } from "api/authentication"
+import {getNewToken} from "api/authentication"
 
 const config = require("./config"),
   {
@@ -25,6 +25,7 @@ const config = require("./config"),
     userServiceAddress,
     callSocketAddress
   } = urls,
+
   errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) =>
@@ -33,38 +34,20 @@ const config = require("./config"),
         )
       )
     }
-    let status = JSON.parse(graphQLErrors?.[0]?.message)
-
-    if (status?.statusCode === 401) {
-      localStorage.removeItem("accessToken")
-      fromPromise(getNewToken().catch((error) => error))
-        .filter((value) => Boolean(value))
-        .flatMap((accessToken) => {
-          const oldHeaders = operation.getContext().headers
-          localStorage.setItem("accessToken", accessToken)
-
-          operation.setContext({
-            headers: {
-              ...oldHeaders,
-              authorization: `${accessToken}`
-            }
-          })
-          return forward(operation)
-        })
-    }
-
-    if (graphQLErrors) {
-      for (let err of graphQLErrors) {
-        const { message, path } = err || {}
-        const { statusCode } = JSON.parse(message) || {}
-        switch (statusCode) {
-          // case 400:
-          case 401:
-            return fromPromise(
-              getNewToken().catch((error) => {
-                return error // Consider whether you should be returning 'error' here
-              })
-            )
+    try {
+      if (graphQLErrors) {
+        for (let err of graphQLErrors) {
+          const {message, path} = err || {}
+          const {statusCode} = JSON.parse(message) || {}
+          switch (statusCode) {
+            // case 400:
+            case 401:
+              return fromPromise(
+                getNewToken()
+                  .catch((error) => {
+                    return error // Consider whether you should be returning 'error' here
+                  })
+              )
               .filter((value) => {
                 return Boolean(value)
               })
@@ -79,10 +62,14 @@ const config = require("./config"),
                 return forward(operation)
               })
 
-          default:
+            default:
+          }
         }
       }
+    } catch (err) {
+      console.log(err)
     }
+
     if (networkError) {
       console.log(`[Network error]: ${networkError}`)
     }

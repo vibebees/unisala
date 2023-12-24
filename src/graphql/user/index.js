@@ -57,12 +57,32 @@ export const AddComment = gql`
       $unitId: Float
       $tags: [ID]
       $postTag: String
+      $id: NodeEnum
+      $levelOfStudy: LevelOfStudyEnum
+      $major: String
+      $gpa: Float
+      $testScore: TestScoreEnum
+      $testScoreMark: TestScoreMark
+      $preferLocation: String
+      $description: String
+      $uniName: String
+      $rating: String
     ) {
       addPost(
         postText: $postText
         unitId: $unitId
         tags: $tags
         postTag: $postTag
+        id: $id
+        levelOfStudy: $levelOfStudy
+        major: $major
+        gpa: $gpa
+        testScore: $testScore
+        testScoreMark: $testScoreMark
+        preferLocation: $preferLocation
+        description: $description
+        uniName: $uniName
+        rating: $rating
       ) {
         status {
           success
@@ -1187,12 +1207,14 @@ export const AddComment = gql`
           }
         }
       }
-    }`,
-    fetchFamousUniversities = gql`
-    query getFamousUniversity{
-      getFamousUniversity{
+    }
+  `,
+  fetchFamousUniversities = gql`
+    query getFamousUniversity {
+      getFamousUniversity {
         unitId
         name
         pictures
       }
-    }`
+    }
+  `

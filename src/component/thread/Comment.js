@@ -141,7 +141,7 @@ function Comment({
 
   return (
     <div className=" relative  mt-2 ">
-      <div className=" mx-14 max-md:mx-1 pt-3 pl-4 rounded-xl pb-2 relative bg-neutral-200 bg-opacity-60 commentShadow ">
+<div className ="pt-3 pl-4 pb-2 rounded-xl relative bg-neutral-200 bg-opacity-60 commentShadow w-full">
         <Link to={`/@/${username}`}>
           <div className="thread-header !gap-2">
             <div className="thread_profile-pic scale-75">
