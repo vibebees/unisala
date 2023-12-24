@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
 import ReactSelect from "react-select"
 import { htmlForEditor } from "../utils/htmlForEditor"
+import { IonInput, IonLabel } from "@ionic/react"
 
 const SelectAtom = ({ options, item, setPostData, postData }) => {
+  const [scoreType, setScoreType] = useState(null)
   const customStyles = {
     menuList: (styles) => ({
       ...styles
@@ -36,18 +38,50 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
       obj.postText = postText
       return obj
     })
+
+    if (item.id === "testScores") {
+      setScoreType(e.value.toLowerCase())
+    }
   }
   return (
-    <ReactSelect
-      options={modifiedOptions}
-      styles={customStyles}
-      menuPlacement="bottom"
-      placeholder={item.placeholder || ""}
-      defaultValue={
-        postData && postData.levelOfStudy ? postData.levelOfStudy : null
-      }
-      onChange={handleChange}
-    />
+    <>
+      <ReactSelect
+        options={modifiedOptions}
+        styles={customStyles}
+        menuPlacement="bottom"
+        placeholder={item.placeholder || ""}
+        defaultValue={
+          postData && postData.levelOfStudy ? postData.levelOfStudy : null
+        }
+        onChange={handleChange}
+      />
+
+      {scoreType && (
+        <div className="mt-4">
+          <IonLabel className="capitalize">{scoreType} Score</IonLabel>
+          <IonInput
+            type="string"
+            className="border border-[#bdbdbd] rounded-sm"
+            placeholder="Enter score"
+            onIonChange={(e) => {
+              const postText = htmlForEditor(
+                postData?.postText,
+                scoreType.toUpperCase(),
+                e.target.value
+              )
+              console.log(e.target.value)
+              setPostData((prev) => ({
+                ...prev,
+                postText,
+                testScoreMark: {
+                  satScore: parseFloat(e.target.value)
+                }
+              }))
+            }}
+          />
+        </div>
+      )}
+    </>
   )
 }
 

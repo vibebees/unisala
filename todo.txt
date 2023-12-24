@@ -32,3 +32,4 @@ MANDATE - levelOfStudy
 
 API part
 - review sub categories has wrong name
+- suugestMeUni ma bhako testScore schema lai testScores

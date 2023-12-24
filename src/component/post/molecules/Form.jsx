@@ -193,15 +193,11 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       return
     }
 
-    console.log({ postData })
-
     if (postData?.postText?.length > 0 || files?.length > 0) {
       addPost({
         variables: {
           ...postData,
-          testScoreMark: {
-            satScore: 1600
-          }
+          testScoreMark: {}
         }
       })
     } else {
@@ -216,6 +212,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     setCreateAPostPopUp(false)
   }
 
+  console.log({ postData })
   const generateInputTag = (item) => {
     return (
       <>
@@ -241,12 +238,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         />
       </>
     )
-  }
-
-  const generateRadio = (item) => {
-    console.log("FROM RADIO", item)
-    console.log(item)
-    return <IonRadioGroup>jkahskashkj</IonRadioGroup>
   }
 
   const generateSelectTag = (item) => {
