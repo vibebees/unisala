@@ -1,5 +1,6 @@
 import React from "react"
 import ReactSelect from "react-select"
+import { htmlForEditor } from "../utils/htmlForEditor"
 
 const SelectAtom = ({ options, item, setPostData, postData }) => {
   const customStyles = {
@@ -23,17 +24,11 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
 
   const handleChange = (e) => {
     setPostData((prev) => {
-      let newHtml = `<h3> ${
-        item.name
-      } : <strong> ${e.value.toUpperCase()} </strong></h3>`
-      let postText
-      if (postData.postText) {
-        console.log("hehehe", postData.postText)
-        postText = postData.postText + newHtml
-        console.log("after", postText)
-      } else {
-        postText = newHtml
-      }
+      const postText = htmlForEditor(
+        prev.postText,
+        item.name,
+        e.value.toUpperCase()
+      )
       let obj = {
         ...prev
       }
@@ -47,6 +42,7 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
       options={modifiedOptions}
       styles={customStyles}
       menuPlacement="bottom"
+      placeholder={item.placeholder || ""}
       defaultValue={
         postData && postData.levelOfStudy ? postData.levelOfStudy : null
       }

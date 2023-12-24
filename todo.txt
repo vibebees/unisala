@@ -20,7 +20,8 @@ ADD THESE FIELDS IN SCHEMA
 - relationToMajor: String
 
 ITEATION 2 
-
+- textarea ma duplicate bhako solve garam
+- radio type halam
 - chain analytics
 MANDATE - levelOfStudy
 - Validation include for fields related to scores
@@ -28,3 +29,6 @@ MANDATE - levelOfStudy
 
 - select, Search for <name>
 - input <name>
+
+API part
+- review sub categories has wrong name

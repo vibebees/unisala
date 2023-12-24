@@ -63,10 +63,13 @@ export const AddComment = gql`
       $gpa: Float
       $testScore: TestScoreEnum
       $testScoreMark: TestScoreMark
-      $preferLocation: String
-      $description: String
-      $uniName: String
+      $preferredLocation: String
+      $universitySearch: String
       $rating: String
+      $anonymityOption: Boolean
+      $relationToMajor: Boolean
+      $attendAgain: Boolean
+      $reviewSubCategories: String
     ) {
       addPost(
         postText: $postText
@@ -79,10 +82,13 @@ export const AddComment = gql`
         gpa: $gpa
         testScore: $testScore
         testScoreMark: $testScoreMark
-        preferLocation: $preferLocation
-        description: $description
-        uniName: $uniName
+        preferredLocation: $preferredLocation
+        universitySearch: $universitySearch
         rating: $rating
+        anonymityOption: $anonymityOption
+        relationToMajor: $relationToMajor
+        attendAgain: $attendAgain
+        reviewSubCategories: $reviewSubCategories
       ) {
         status {
           success

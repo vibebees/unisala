@@ -6,6 +6,7 @@ import { UniSearchDataList } from "graphql/uni"
 import { tryCatch } from "ramda"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
+import { htmlForEditor } from "../utils/htmlForEditor"
 
 const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   const ref = useRef()
@@ -78,27 +79,32 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       loadOptions={loadOptions}
       styles={customStyles}
       menuPlacement="bottom"
-      placeholder="Search for a major..."
+      placeholder={item.placeholder || ""}
       ref={ref}
       defaultValue={
         postData && postData.levelOfStudy ? postData.levelOfStudy : null
       }
       onChange={(e) => {
         setPostData((prev) => {
-          let newHtml = `<h3> ${
-            item.name
-          } : <strong> ${e.value.toUpperCase()} </strong></h3>`
-          let postText
-          if (postData.postText) {
-            console.log("hehehe", postData.postText)
-            postText = postData.postText + newHtml
-            console.log("after", postText)
-          } else {
-            postText = newHtml
-          }
+          // let newHtml = `<h3> ${
+          //   item.name
+          // } : <strong> ${e.value.toUpperCase()} </strong></h3>`
+          // let postText
+          // if (postData.postText) {
+          //   console.log("hehehe", postData.postText)
+          //   postText = postData.postText + newHtml
+          //   console.log("after", postText)
+          // } else {
+          //   postText = newHtml
+          // }
           let obj = {
             ...prev
           }
+          const postText = htmlForEditor(
+            postData?.postText,
+            item.name,
+            e.value.toUpperCase()
+          )
           obj[item.id] = e.value
           obj.postText = postText
           return obj
