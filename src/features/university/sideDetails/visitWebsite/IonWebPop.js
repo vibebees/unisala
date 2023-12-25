@@ -13,7 +13,10 @@ const IonWebPop = ({ setPopup, popup, followThis = [], urls, tab = false }) => {
   }
   // const urls = followThis || uniData?.elevatorInfo?.urls
   const isUrl = (url) => {
-    return url?.includes("http") ? url : `https:\\${url}`
+    if (typeof url === "string") {
+      return url?.includes("http") ? url : `https:\\${url}`
+    }
+    return url
   }
   return (
     <IonPopover

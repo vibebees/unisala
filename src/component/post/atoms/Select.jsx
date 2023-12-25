@@ -29,7 +29,7 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
       const postText = htmlForEditor(
         postData?.postText,
         item.name,
-        e.value.toUpperCase()
+        e.value
       )
       let obj = {
         ...prev

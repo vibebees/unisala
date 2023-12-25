@@ -103,7 +103,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
           const postText = htmlForEditor(
             postData?.postText,
             item.name,
-            e.value.toUpperCase()
+            e.value
           )
           obj[item.id] = e.value
           obj.postText = postText
