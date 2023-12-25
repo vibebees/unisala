@@ -73,6 +73,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                     className={`mt-0 hover:scale-95 transition-all ease-in`}
                     onClick={() => {
                       setSelectedTab(item)
+                      setPostData({ id: item })
                       ButtonTrack(
                         `${item} button clicked while creating a post`
                       )

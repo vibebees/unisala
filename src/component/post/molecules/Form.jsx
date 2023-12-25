@@ -179,6 +179,8 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   })
 
+  console.log({ postData })
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -196,8 +198,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     if (postData?.postText?.length > 0 || files?.length > 0) {
       addPost({
         variables: {
-          ...postData,
-          testScoreMark: {}
+          ...postData
         }
       })
     } else {

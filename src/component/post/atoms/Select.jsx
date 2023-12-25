@@ -70,12 +70,13 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
                 e.target.value
               )
 
-              console.log(postText)
+              console.log("he", e.target.value)
+
               setPostData((prev) => ({
                 ...prev,
                 postText,
                 testScoreMark: {
-                  satScore: parseFloat(e.target.value)
+                  [`${scoreType}Score`]: parseFloat(e?.target?.value)
                 }
               }))
             }}
