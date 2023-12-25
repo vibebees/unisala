@@ -96,7 +96,7 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
           icon: schoolSharp,
           iconSize: 7,
           routing: true,
-          link: `/search?q=Howard`
+          link: `/search?tab=uni`
         })
       }
 
