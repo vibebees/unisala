@@ -65,16 +65,16 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
       let userGuide = []
 
       // If user has subjects of interest.
-      if (interestedUni.length > 0) {
-        userGuide.push({
-          name: schoolData?.name,
-          level: "Review My Universtiy",
-          icon: schoolSharp, // Make sure to have the appropriate icons imported
-          iconSize: 7,
-          routing: true,
-          link: `/university/${schoolData?.name}`
-        })
-      }
+      // if (interestedUni.length > 0) {
+      //   userGuide.push({
+      //     name: schoolData?.name,
+      //     level: "Review My Universtiy",
+      //     icon: schoolSharp, // Make sure to have the appropriate icons imported
+      //     iconSize: 7,
+      //     routing: true,
+      //     link: `/university/${schoolData?.name}`
+      //   })
+      // }
 
       // If user has subjects of interest.
       if (interestedSubjects.length > 0) {
