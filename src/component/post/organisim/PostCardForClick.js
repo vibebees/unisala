@@ -1,9 +1,19 @@
 import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel } from "@ionic/react"
 import { Avatar } from "../../Avatar"
 import { imageOutline } from "ionicons/icons"
+import {useEffect, useState} from "react"
 
-export const PostCardForClick = ({ allProps }) => {
-  const placeholder = "What's on your mind?"
+export const PostCardForClick = ({allProps = {}}) => {
+  const {userInfo = {}} = allProps
+  const {userStatus = "looking"} = userInfo || {}
+  const [placeholder, setPlaceholder] = useState("Suggest me university ...")
+
+  useEffect(() => {
+    const value = ["graduated", "studying"].includes(userStatus)
+    ? "Review university 🏛️ ..."
+      : "Suggest me university 🏛️ ..."
+    setPlaceholder(value)
+  }, [userStatus])
   const { user } = allProps
   return (
     <div

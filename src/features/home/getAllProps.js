@@ -124,16 +124,16 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
       }
 
       // Suggesting review/rating for users either "graduated" or "studying".
-      if (userStatus === "graduated" || userStatus === "studying") {
-        userGuide.push({
-          name: "Share Your Experience",
-          level: "Review and Rate your University",
-          icon: starSharp, // Use an appropriate icon for reviews/ratings
-          iconSize: 5,
-          routing: true,
-          link: `/review-university` // Point to the appropriate review page in your application
-        })
-      }
+      // if (userStatus === "graduated" || userStatus === "studying") {
+      //   userGuide.push({
+      //     name: "Share Your Experience",
+      //     level: "Review and Rate your University",
+      //     icon: starSharp, // Use an appropriate icon for reviews/ratings
+      //     iconSize: 5,
+      //     routing: true,
+      //     link: `/review-university` // Point to the appropriate review page in your application
+      //   })
+      // }
 
       return userGuide
     }
