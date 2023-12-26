@@ -14,6 +14,7 @@ const ImageWithLoader = ({ style, src, className, alt }) => {
           className={className}
           alt={alt}
           style={style}
+          loading="lazy"
           onIonImgDidLoad={() => setImageLoaded(true)}
           onIonError={() => {
             setImageLoaded(true)
