@@ -19,7 +19,7 @@ const RenderFolder = ({ item, allProps, customStyles, popUp }) => {
   )
 }
 export const FolderStructure = ({ allProps = {} }) => {
-  const { folderName = "", customStyles = {} } = allProps
+  const { folderName = "", customStyles = {}, customHeight = true } = allProps
   const [popUp, setPopup] = useState(allProps?.popUp || false)
   const [currentURL, setCurrentURL] = useState("")
   const [showMore, setShowMore] = useState(false)
@@ -46,7 +46,10 @@ export const FolderStructure = ({ allProps = {} }) => {
           <IonRow
             className={clsx(
               "transition-all duration-150 ease-linear",
-              showMore ? "h-full " : "h-[328px] overflow-hidden"
+              showMore && customHeight
+                ? "h-full "
+                : "h-[328px] overflow-hidden",
+              !customHeight && "h-fit"
             )}
           >
             {data.map((item, index) => (
