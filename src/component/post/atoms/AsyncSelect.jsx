@@ -45,10 +45,10 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       const response = await axios.get(
         `${universityServer}/keyword/schoolName/${uni}/5`
       )
-      console.log({ response })
       return response.data.map((i) => ({
         value: i.name,
-        label: i.name.toUpperCase()
+        label: i.name.toUpperCase(),
+        unitId: i?.unitId
       }))
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -86,24 +86,18 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       }
       onChange={(e) => {
         setPostData((prev) => {
-          // let newHtml = `<h3> ${
-          //   item.name
-          // } : <strong> ${e.value.toUpperCase()} </strong></h3>`
-          // let postText
-          // if (postData.postText) {
-          //   console.log("hehehe", postData.postText)
-          //   postText = postData.postText + newHtml
-          //   console.log("after", postText)
-          // } else {
-          //   postText = newHtml
-          // }
+
           let obj = {
             ...prev
+          }
+
+          if (e?.unitId) {
+            obj.unitId = e.unitId
           }
           const postText = htmlForEditor(
             postData?.postText,
             item.name,
-            e.value.toUpperCase()
+            e.value
           )
           obj[item.id] = e.value
           obj.postText = postText

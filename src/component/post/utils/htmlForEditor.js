@@ -8,11 +8,11 @@ export const htmlForEditor = (postText, type, value) => {
   if (postText?.includes(type)) {
     return postText.replace(
       typeRegex,
-      `<h3> ${type} : <strong> ${value} </strong></h3>`
+      `<h3> ${type} : <span> ${value} </span></h3>`
     )
   } else {
     return postText
-      ? postText + `<h3> ${type} : <strong> ${value} </strong></h3>`
-      : `<h3> ${type} : <strong> ${value} </strong></h3>`
+      ? postText + `<h3> ${type} : <span> ${value} </span></h3>`
+      : `<h3> ${type} : <span> ${value} </span></h3>`
   }
 }
