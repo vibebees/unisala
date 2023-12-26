@@ -96,6 +96,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           variables: { userId: user._id, page: 0 },
           context: { server: USER_SERVICE_GQL }
         })
+
         data &&
           cache.writeQuery({
             query: getNewsFeed,
@@ -150,12 +151,11 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
               _id: data.addPost.post._id
             }),
             fields: {
-              postText(existingImages = []) {
+              images(existingImages = []) {
                 return [...existingImages, ...imageLinks]
               }
             }
           })
-          setCreateAPostPopUp(false)
         }
       }
       present({
