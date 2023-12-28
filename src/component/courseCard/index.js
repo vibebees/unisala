@@ -95,8 +95,11 @@ function CourseCard({ allProps }) {
     tags,
     pictures,
     undergraduateApplicationFee,
+    graduateApplicationFee,
+    graduate,
     totalPeopleVoted,
-    overallRating
+    overallRating,
+    undergraduate
   } = allProps
 
   return (
@@ -132,6 +135,9 @@ function CourseCard({ allProps }) {
                 <Offerings allProps={allProps} />
                 <ApplicationCharges
                   undergraduateApplicationFee={undergraduateApplicationFee}
+                  undergraduate={undergraduate}
+                  graduateApplicationFee={graduateApplicationFee}
+                  graduate={graduate}
                 />
 
                 {ownType?.length > 0 && (
