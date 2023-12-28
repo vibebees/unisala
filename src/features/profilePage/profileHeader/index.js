@@ -50,7 +50,8 @@ const ProfileHeader = ({ tab, setTab, data }) => {
     { id: 1, menu: "Threads" },
     { id: 2, menu: "Guestbook" },
     { id: 3, menu: "Saved" },
-    { id: 4, menu: "Roadmap" }
+    { id: 4, menu: "Roadmap" },
+    { id: 5, menu: "List" }
   ]
 
   const changeTab = (tabs) => {

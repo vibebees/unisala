@@ -24,6 +24,7 @@ import noResultsFound from "assets/no-results.jpg"
 import { USER_SERVICE_GQL } from "servers/types"
 import { useSelector } from "react-redux"
 import { screenGreaterThan1000 } from "../home/helper.func"
+import List from "component/List"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -95,7 +96,8 @@ const ProfilePage = () => {
     1: "threads",
     2: "guestbook",
     3: "saved",
-    4: "roadmap"
+    4: "roadmap",
+    5: "List"
   }
 
   // this effect is responsible to show the component(target users who probably came by following a link)
@@ -164,6 +166,7 @@ const ProfilePage = () => {
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
             {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
+            {tab === 5 && <List />}
           </IonCol>
 
           {windowWidth >= 1000 && views.greaterThan100}
