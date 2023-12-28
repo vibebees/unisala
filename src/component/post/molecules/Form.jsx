@@ -96,6 +96,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           variables: { userId: user._id, page: 0 },
           context: { server: USER_SERVICE_GQL }
         })
+
         data &&
           cache.writeQuery({
             query: getNewsFeed,
@@ -150,12 +151,11 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
               _id: data.addPost.post._id
             }),
             fields: {
-              postText(existingImages = []) {
+              images(existingImages = []) {
                 return [...existingImages, ...imageLinks]
               }
             }
           })
-          setCreateAPostPopUp(false)
         }
       }
       present({
@@ -212,7 +212,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     setCreateAPostPopUp(false)
   }
 
-  console.log({ postData })
   const generateInputTag = (item) => {
     return (
       <>
@@ -225,7 +224,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           className="border border-[#bdbdbd] rounded-sm"
           onIonChange={(e) => {
             const postText = htmlForEditor(
-              postData.postText,
+              postData?.postText,
               item.name,
               e.target.value
             )
@@ -268,7 +267,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
                     "grayscale-[100]": Number(postData?.rating) !== i + 1
                   })}
                 >
-                  {Number(postData.rating) !== i + 1 ? (
+                  {Number(postData?.rating) !== i + 1 ? (
                     val.Emojis
                   ) : (
                     <img src={val.imageURL} alt="" width={48} className="" />

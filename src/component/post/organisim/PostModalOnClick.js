@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import { useSelector } from "react-redux"
 
@@ -29,7 +29,15 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [selectedTab, setSelectedTab] = useState()
-  const [postData, setPostData] = useState(null)
+  const [postData, setPostData] = useState({
+    id: selectedTab
+  })
+  useEffect(() => {
+    setPostData({
+      ...postData,
+      id: selectedTab
+    })
+  }, [selectedTab])
   const profilePic = user?.picture
 
   const buttonStyles = {
@@ -72,10 +80,6 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                   <IonButton
                     className={`mt-0 hover:scale-95 transition-all ease-in`}
                     onClick={() => {
-                      setPostData({
-                        id: item,
-                        postText: `<h1>  </h1>`
-                      })
                       setSelectedTab(item)
                       ButtonTrack(
                         `${item} button clicked while creating a post`

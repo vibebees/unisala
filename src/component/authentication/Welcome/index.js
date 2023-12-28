@@ -85,7 +85,7 @@ const Index = ({ allProps }) => {
                     ? step
                     : React.cloneElement(step, {
                         question: questions[index - 1],
-                        category: questions[index - 1].category
+                        category: questions[index - 1]?.category
                       })}
                 </div>
               ))}
