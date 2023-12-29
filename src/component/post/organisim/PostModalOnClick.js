@@ -15,7 +15,7 @@ import {
   IonTitle,
   IonButtons
 } from "@ionic/react"
-import { arrowBack } from "ionicons/icons"
+import { arrowBack, star } from "ionicons/icons"
 
 import "../index.css"
 
@@ -85,8 +85,9 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                         `${item} button clicked while creating a post`
                       )
                     }}
+                    color= {metaData[item]?.color}
                   >
-                    {metaData[item].name}
+                    {metaData[item]?.name}
                   </IonButton>
                 </>
               ))}
