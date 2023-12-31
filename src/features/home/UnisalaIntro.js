@@ -34,9 +34,16 @@ export const UnisalaLandingPage = ({ allProps }) => {
           <img src={roadmap} alt="roadmap" />
           <div className="absolute w-full top-6 -right-7">
             <h1 className="pt-1 !font-bold !text-neutral-700 !text-3xl pb-05 black-text">
-              Unlock Your Access to Amazing Features!
+            🌟 Inspire Success: Shape Careers, Change Lives 🚀
             </h1>
+            <p>
+              Find Your Right University!
+            </p>
+            <p>
+              Share Your Journey!
+            </p>
             <br />
+
             <div className="flex gap-4 w-full pr-28 justify-end ">
               <button
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
@@ -53,6 +60,8 @@ export const UnisalaLandingPage = ({ allProps }) => {
           </div>
         </IonCardContent>
       </IonCard>
+
+
 
       <IonCard className="mb-1 !">
         <IonCardContent className="p-0 relative flex-column text-center">
