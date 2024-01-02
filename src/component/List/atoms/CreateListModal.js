@@ -3,10 +3,10 @@ import {
   IonInput,
   IonText,
   IonList,
-  IonRadio,
-  IonRadioGroup,
+  IonTextarea,
   IonButton
 } from "@ionic/react"
+import axios from "axios"
 
 const CreateListModal = () => {
   return (
@@ -21,26 +21,20 @@ const CreateListModal = () => {
             <IonText>
               <h2>Name</h2>
             </IonText>
-            <IonInput placeholder="List  Name" className="mt-4"></IonInput>{" "}
+            <IonInput
+              placeholder="List  Name"
+              className="mt-4 rounded-md"
+            ></IonInput>{" "}
           </IonList>
           <IonList className="mt-4">
             <IonText>
-              <h2>Who can see your Lists ?</h2>
+              <h2>A short description </h2>
             </IonText>
-            <IonRadioGroup className="flex mt-2 flex-col items-start justify-center gap-1 ">
-              <IonList className="flex  items-center justify-start gap-2">
-                <IonRadio slot="start" />
-                <IonText>
-                  <p>Public</p>
-                </IonText>
-              </IonList>
-              <IonList className="flex items-center justify-start gap-2">
-                <IonRadio slot="start" />
-                <IonText>
-                  <p>Private</p>
-                </IonText>
-              </IonList>
-            </IonRadioGroup>
+            <IonTextarea
+              placeholder="Description"
+              className="mt-4 rounded-md"
+              rows={5}
+            ></IonTextarea>{" "}
           </IonList>
           <IonButton
             className="mt-4 h-10 text-base capitalize"
