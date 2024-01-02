@@ -74,7 +74,10 @@ const MajorList = ({ isLoading, results, handleClick }) => (
           ))
       : results.map((item, index) => (
           <IonItem key={index}>
-            <IonCheckbox value={item.id} onClick={handleClick} />
+          <IonCheckbox value={item.id} onClick={(e) => {
+            e.target.value = item.name
+            handleClick(e)
+          }} />
             <span className="px-2 text-sm font-medium text-neutral-600">
               {item.name}
             </span>
@@ -85,7 +88,7 @@ const MajorList = ({ isLoading, results, handleClick }) => (
 
 const SecondStep = ({ question }) => {
   const [searchInput, setSearchInput] = useState(false),
-    [searchTerm, setSearchTerm] = useState(" "),
+    [searchTerm, setSearchTerm] = useState("comput"),
     token = useSelector((state) => state?.auth?.accessToken),
     [isLoading, setIsLoading] = useState(false),
     [results, setResults] = useState([]),
@@ -104,8 +107,6 @@ const SecondStep = ({ question }) => {
   useDebouncedEffect(handleInput, [searchTerm], 2000)
 
   const getMajors = async () => {
-    console.log("api called")
-    console.log("searchTerm", searchTerm)
     setIsLoading(true)
     try {
       const res = await axios.get(

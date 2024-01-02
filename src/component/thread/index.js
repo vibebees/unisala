@@ -197,7 +197,7 @@ const Thread = ({ thread, refetch }) => {
     // Handling for the non-editable state
     return (
       <div className="thread_comment">
-        <ThreadExpand htmlText={postText} maxLines={50} _id={_id} />
+        <ThreadExpand htmlText={postText} maxLines={5} _id={_id} />
       </div>
     )
   }

@@ -25,6 +25,9 @@ import ImageUpload from "./ImageUpload"
 import clsx from "clsx"
 import { htmlForEditor } from "../utils/htmlForEditor"
 
+
+
+
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const [selected, setSelected] = useState({})
@@ -67,7 +70,60 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       Emojis: "😍"
     }
   ]
-  const [addPost] = useMutation(AddPost, {
+  const [ratings, setRatings] = useState(
+    metaData?.edges
+      .filter((item) => item?.rating)
+      .reduce((acc, item) => ({ ...acc, [item?.id]: null }), {})
+  )
+
+  const handleRatingChange = (itemId, value, name) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [itemId]: value
+    }))
+    // Update the postData with the new rating
+    const postText = htmlForEditor(
+      postData?.postText,
+      name,
+      RatingData.find((val) => val.value === value)?.Emojis
+    )
+    setPostData((prev) => ({
+      ...prev,
+      postText,
+      [itemId]: value
+    }))
+  }
+
+  const generateRatingComponent = (item) => {
+    return (
+      <>
+          <IonLabel>{item.name}</IonLabel>
+          <div className="flex justify-start gap-x-2">
+        {RatingData.map((val, index) => (
+          <div
+            key={index}
+            className="mt-2 cursor-pointer"
+            onClick={() => handleRatingChange(item.id, val.value, item.name)}
+          >
+            <span
+              className={clsx("text-4xl transition ease-linear", {
+                "grayscale": ratings[item.id] !== val.value
+              })}
+            >
+              {ratings[item.id] !== val.value ? (
+                val.Emojis
+              ) : (
+                <img src={val.imageURL} alt="" width={48} />
+              )}
+            </span>
+          </div>
+        ))}
+      </div>
+      </>
+
+    )
+  }
+const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
 
     update: (cache, { data: { addPost } }) => {
@@ -96,6 +152,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           variables: { userId: user._id, page: 0 },
           context: { server: USER_SERVICE_GQL }
         })
+
         data &&
           cache.writeQuery({
             query: getNewsFeed,
@@ -150,12 +207,11 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
               _id: data.addPost.post._id
             }),
             fields: {
-              postText(existingImages = []) {
+              images(existingImages = []) {
                 return [...existingImages, ...imageLinks]
               }
             }
           })
-          setCreateAPostPopUp(false)
         }
       }
       present({
@@ -183,6 +239,8 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    console.log("Submitting postData:", postData) // Log the postData here
 
     if (files?.length > 4) {
       present({
@@ -241,45 +299,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   }
 
   const generateSelectTag = (item) => {
-    if (item.id === "userRating") {
-      return (
-        <>
-          <IonLabel>{item.name}</IonLabel>
-          <div className="flex justify-start gap-x-2">
-            {RatingData.map((val, i) => (
-              <div
-                key={i}
-                className="mt-2 cursor-pointer"
-                onClick={() => {
-                  const postText = htmlForEditor(
-                    postData.postText,
-                    item.name,
-                    val.Emojis
-                  )
-                  setPostData((prev) => ({
-                    ...prev,
-                    postText,
-                    rating: String(val.value)
-                  }))
-                }}
-              >
-                <span
-                  className={clsx("text-4xl transition ease-linear", {
-                    "grayscale-[100]": Number(postData?.rating) !== i + 1
-                  })}
-                >
-                  {Number(postData?.rating) !== i + 1 ? (
-                    val.Emojis
-                  ) : (
-                    <img src={val.imageURL} alt="" width={48} className="" />
-                  )}
-                </span>
-              </div>
-            ))}
-          </div>
-        </>
-      )
-    }
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
@@ -344,7 +363,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       case "checkbox":
         return generateCheckbox(item)
       case "select":
-        return generateSelectTag(item)
+        return item?.rating ? generateRatingComponent(item) : generateSelectTag(item)
       case "textarea":
         return generateTextareaTag(item)
 

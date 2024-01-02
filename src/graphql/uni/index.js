@@ -472,8 +472,12 @@ export const GetProfessor = gql`
 
         studentCharges {
           undergraduateApplicationFee
+          graduateApplicationFee
           undergraduate {
             inState {
+              tuition
+            }
+            outOfState {
               tuition
             }
             offCampusWithFamily {
@@ -483,6 +487,28 @@ export const GetProfessor = gql`
               }
               roomAndBoard
               otherExpenses
+            }
+            offCampusNotWithFamily {
+              costOfAttendance {
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            onCampus {
+              costOfAttendance {
+                inState
+                outOfState
+              }
+            }
+          }
+          graduate {
+            inState {
+              tuition
+            }
+            outOfState {
+              tuition
             }
           }
         }

@@ -73,7 +73,8 @@ export const Home = ({ allProps }) => {
           ...allProps,
           folderName: "",
           data: userGuide,
-          popUp: false
+          popUp: false,
+          customHeight: false
         }}
       />
 
