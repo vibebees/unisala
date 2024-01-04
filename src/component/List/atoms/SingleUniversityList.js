@@ -6,13 +6,14 @@ import {
   IonText,
   IonRow,
   IonCardContent,
-  IonIcon
+  IonIcon,
+  IonButton
 } from "@ionic/react"
-import { location } from "ionicons/icons"
+import { location, closeOutline } from "ionicons/icons"
 
 const SingleUniversityList = () => {
   return (
-    <IonCard className="h-20 ion-no-padding border hover:bg-neutral-100 ion-no-margin shadow-none">
+    <IonCard className="h-20 ion-no-padding border group hover:bg-neutral-100 ion-no-margin shadow-none">
       <IonRow className="ion-no-margin ion-no-padding h-full">
         <IonCol size="auto" className=" ion-no-padding ion-no-margin">
           <ImageWithLoader
@@ -45,6 +46,16 @@ const SingleUniversityList = () => {
               <p style={{ alignSelf: "center" }}>New York, NY</p>
             </IonText>
           </IonCardContent>
+        </IonCol>
+        <IonCol size="auto" className="ion-no-padding ion-no-margin">
+          <IonButton
+            className="hidden  hover:bg-red-50 group-hover:block h-full ion-no-margin ion-no-padding w-10 "
+            fill="clear"
+            color="dark"
+            style={{ alignSelf: "center" }}
+          >
+            <IonIcon className="text-2xl   text-red-500" icon={closeOutline} />
+          </IonButton>
         </IonCol>
       </IonRow>
     </IonCard>

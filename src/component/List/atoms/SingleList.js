@@ -5,14 +5,14 @@ import ActionButton from "./ActionButton"
 import { URLupdate } from "utils/lib/URLupdate"
 import { useHistory } from "react-router"
 
-const SingleList = () => {
+const SingleList = ({ _id, description, title }) => {
   const history = useHistory()
   return (
     <IonCard className="mx-0 group">
       <IonRow>
         <IonCol
           onClick={() => {
-            const data = URLupdate("id", "123456")
+            const data = URLupdate("id", _id)
             history.push({ search: data })
           }}
           size="11"
@@ -32,13 +32,13 @@ const SingleList = () => {
             >
               <IonText>
                 <h3 className="text-base font-semibold text-neutral-900">
-                  My List
+                  {title}
                 </h3>
               </IonText>
 
               <IonText>
                 <p className="text-xs text-gray-500">
-                  this is a description of the list
+                  {description.slice(0, 20)}...
                 </p>
               </IonText>
             </IonCol>
@@ -48,7 +48,7 @@ const SingleList = () => {
           size="1"
           className=" items-center flex justify-center border-black"
         >
-          <ActionButton />
+          <ActionButton _id={_id} />
         </IonCol>
       </IonRow>
     </IonCard>

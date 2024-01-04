@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { authInstance } from "api/axiosInstance"
+import { userServer } from "servers/endpoints"
 import {
   ellipsisVerticalOutline,
   pinOutline,
@@ -6,10 +8,38 @@ import {
   trashOutline,
   closeOutline
 } from "ionicons/icons"
-import { IonIcon, IonActionSheet } from "@ionic/react"
+import { IonIcon, IonActionSheet, useIonToast } from "@ionic/react"
 
-const ActionButton = () => {
+const ActionButton = ({ _id }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [present, dismiss] = useIonToast()
+
+  const deleteList = async () => {
+    const res = await authInstance.delete(`${userServer}/delete-list/${_id}`)
+    if (res.data.success) {
+      console.log(res.data)
+    } else {
+      console.log(res.data)
+    }
+  }
+
+  const handleAction = (action) => {
+    return async () => {
+      switch (action) {
+        case "pin":
+          break
+        case "edit":
+          break
+        case "delete":
+          await deleteList()
+          break
+        case "cancel":
+          break
+        default:
+          break
+      }
+    }
+  }
   return (
     <div>
       <IonIcon
@@ -28,7 +58,7 @@ const ActionButton = () => {
             text: "Pin List",
             icon: pinOutline,
             data: {
-              action: "delete"
+              action: "pin"
             }
           },
           {
@@ -43,7 +73,7 @@ const ActionButton = () => {
             role: "destructive",
             icon: trashOutline,
             data: {
-              action: "delete"
+              action: handleAction("delete")
             }
           },
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   IonButtons,
   IonButton,
@@ -11,6 +11,7 @@ import {
 
 const index = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
   const [isOpen, setIsOpen] = useState(false)
+
   return (
     <>
       <div className="ion-padding p-0">
@@ -22,7 +23,12 @@ const index = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
             <IonToolbar>
               <IonTitle>{header}</IonTitle>
               <IonButtons slot="end">
-                <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+                <IonButton
+                  className="modal-close-btn"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Close
+                </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
