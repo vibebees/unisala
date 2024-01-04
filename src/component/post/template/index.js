@@ -5,11 +5,12 @@ import { IonCard, IonTitle } from "@ionic/react"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { userServer } from "servers/endpoints"
+import { useHistory } from "react-router"
 export const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
   const [meta, setMeta] = useState({})
-
+  const history = useHistory()
   useEffect(() => {
     const fn = async () => {
       const res = await axios.get(userServer + "/getMetadataTags", {
@@ -29,6 +30,11 @@ export const CreateAPostCard = ({ allProps }) => {
       <IonCard
         style={{ marginBottom: "20px" }}
         onClick={() => {
+          const params = new URLSearchParams(window.location.href.search)
+          params.set("create", "y")
+          history.push({
+            search: params.toString()
+          })
           setCreateAPostPopUp(true)
         }}
       >
