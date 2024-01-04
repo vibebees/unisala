@@ -78,14 +78,14 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       [itemId]: value
     }))
     // Update the postData with the new rating
-    const postText = htmlForEditor(
-      postData?.postText,
-      name,
-      RatingData.find((val) => val.value === value)?.Emojis
-    )
+    // const postText = htmlForEditor(
+    //   postData?.postText,
+    //   name,
+    //   RatingData.find((val) => val.value === value)?.Emojis
+    // )
     setPostData((prev) => ({
       ...prev,
-      postText,
+      // postText,
       [itemId]: value
     }))
   }
