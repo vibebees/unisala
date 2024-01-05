@@ -25,7 +25,6 @@ import { Avatar } from "component/Avatar"
 import Form from "../molecules/Form"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 import { useHistory, useLocation } from "react-router-dom"
-import { meta } from "eslint-plugin-promise/rules/param-names"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
@@ -58,7 +57,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const handleTabSelection = (item) => {
     setSelectedTab(item)
     setPostData({ id: item })
-    params.set("type", item)
+    params.append("type", item)
     history.push({ search: params.toString() })
     ButtonTrack(`${item} button clicked while creating a post`)
   }

@@ -11,6 +11,7 @@ export const CreateAPostCard = ({ allProps }) => {
   const { setCreateAPostPopUp } = allProps
   const [meta, setMeta] = useState({})
   const history = useHistory()
+  const params = new URLSearchParams(window.location.href.search)
   useEffect(() => {
     const fn = async () => {
       const res = await axios.get(userServer + "/getMetadataTags", {
@@ -18,7 +19,6 @@ export const CreateAPostCard = ({ allProps }) => {
           authorization: localStorage.getItem("accessToken")
         }
       })
-
       setMeta(res.data?.data)
     }
     fn()
@@ -30,8 +30,10 @@ export const CreateAPostCard = ({ allProps }) => {
       <IonCard
         style={{ marginBottom: "20px" }}
         onClick={() => {
-          const params = new URLSearchParams(window.location.href.search)
-          params.set("create", "y")
+          params.append("create", "y")
+          if (allProps.unitId) {
+            params.append("unitId", allProps.unitId)
+          }
           history.push({
             search: params.toString()
           })

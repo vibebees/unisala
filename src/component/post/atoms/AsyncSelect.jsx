@@ -1,5 +1,5 @@
 import axios from "axios"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { universityServer } from "servers/endpoints"
 import AsyncSelect from "react-select/async"
 import { UniSearchDataList } from "graphql/uni"
@@ -7,9 +7,11 @@ import { tryCatch } from "ramda"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { htmlForEditor } from "../utils/htmlForEditor"
+import { useLocation } from "react-router"
 
 const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   const ref = useRef()
+  const universityName = useLocation().pathname.split("university/")[1]
   const customStyles = {
     menuList: (styles) => ({
       ...styles
@@ -25,6 +27,20 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
     })
   }
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.href)
+    const unitId = params.get("unitId")
+    const postText = htmlForEditor(
+      postData?.postText,
+      item.name,
+      universityName
+    )
+    setPostData((prev) => ({
+      ...prev,
+      postText,
+      unitId: parseFloat(unitId)
+    }))
+  }, [])
   const fetchMajor = async (majorQuery = " ") => {
     try {
       const response = await axios.get(
@@ -61,7 +77,6 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 
     setTimeout(async () => {
       try {
-        // const options = await fetchMajor(inputVal)
         if (item.id === "major") {
           options = await fetchMajor(inputVal)
         } else {
@@ -81,12 +96,13 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       menuPlacement="bottom"
       placeholder={item.placeholder || ""}
       ref={ref}
-      defaultValue={
-        postData && postData.levelOfStudy ? postData.levelOfStudy : null
+      defaultInputValue={
+        postData && postData.levelOfStudy
+          ? postData.levelOfStudy
+          : universityName
       }
       onChange={(e) => {
         setPostData((prev) => {
-
           let obj = {
             ...prev
           }
@@ -94,11 +110,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
           if (e?.unitId) {
             obj.unitId = e.unitId
           }
-          const postText = htmlForEditor(
-            postData?.postText,
-            item.name,
-            e.value
-          )
+          const postText = htmlForEditor(postData?.postText, item.name, e.value)
           obj[item.id] = e.value
           obj.postText = postText
           return obj
