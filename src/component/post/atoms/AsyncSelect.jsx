@@ -31,20 +31,15 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   useEffect(() => {
     console.log({ params })
     if (params.get("unitId")) {
-      const unitId = params.get("unitId")
-
       const postText = htmlForEditor(
         postData?.postText,
-        item.name,
+        "University 🏫",
         universityName
       )
       setPostData((prev) => ({
         ...prev,
-        postText,
-        unitId: parseFloat(unitId)
+        postText
       }))
-
-      console.log({ unitId })
     }
   }, [])
 
@@ -104,11 +99,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       menuPlacement="bottom"
       placeholder={item.placeholder || ""}
       ref={ref}
-      defaultInputValue={
-        postData && postData.levelOfStudy
-          ? postData.levelOfStudy
-          : universityName
-      }
+      defaultInputValue={item.id !== "major" && universityName}
       onChange={(e) => {
         setPostData((prev) => {
           let obj = {

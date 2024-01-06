@@ -25,11 +25,13 @@ import { Avatar } from "component/Avatar"
 import Form from "../molecules/Form"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 import { useHistory, useLocation } from "react-router-dom"
+import { htmlForEditor } from "../utils/htmlForEditor"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
   const history = useHistory()
   const params = new URLSearchParams(location.search)
+  const universityName = useLocation().pathname.split("university/")[1]
 
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
@@ -46,9 +48,12 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   }, [params, createAPostPopUp])
 
   useEffect(() => {
-    setPostData({
-      ...postData,
-      id: selectedTab
+    setPostData((prevPostData) => {
+      return {
+        ...prevPostData,
+        id: selectedTab,
+        unitId: params.get("unitId") || null
+      }
     })
   }, [selectedTab])
 
