@@ -12,6 +12,7 @@ import { useLocation } from "react-router"
 const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   const ref = useRef()
   const universityName = useLocation().pathname.split("university/")[1]
+  const params = new URLSearchParams(window.location.href)
   const customStyles = {
     menuList: (styles) => ({
       ...styles
@@ -28,7 +29,6 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   }
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.href)
     console.log({ params })
     if (params.get("unitId")) {
       const unitId = params.get("unitId")
@@ -46,7 +46,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 
       console.log({ unitId })
     }
-  }, [])
+  }, [params])
 
   console.log({ postData })
   const fetchMajor = async (majorQuery = " ") => {

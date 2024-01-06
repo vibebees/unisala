@@ -79,8 +79,6 @@ export const FolderScholarship = ({ item, allProps, customHeight }) => {
     </div>
   )
 
-  console.log("item", customHeight)
-
   return (
     <>
       <IonCol
