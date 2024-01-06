@@ -46,7 +46,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 
       console.log({ unitId })
     }
-  }, [params])
+  }, [])
 
   console.log({ postData })
   const fetchMajor = async (majorQuery = " ") => {
