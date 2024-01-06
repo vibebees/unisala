@@ -29,17 +29,20 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.href)
-    const unitId = params.get("unitId")
-    const postText = htmlForEditor(
-      postData?.postText,
-      item.name,
-      universityName
-    )
-    setPostData((prev) => ({
-      ...prev,
-      postText,
-      unitId: parseFloat(unitId)
-    }))
+
+    if (params.get("unitId")) {
+      const unitId = params.get("unitId")
+      const postText = htmlForEditor(
+        postData?.postText,
+        item.name,
+        universityName
+      )
+      setPostData((prev) => ({
+        ...prev,
+        postText,
+        unitId: parseFloat(unitId)
+      }))
+    }
   }, [])
   const fetchMajor = async (majorQuery = " ") => {
     try {
