@@ -29,9 +29,10 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.href)
-
+    console.log({ params })
     if (params.get("unitId")) {
       const unitId = params.get("unitId")
+
       const postText = htmlForEditor(
         postData?.postText,
         item.name,
@@ -42,8 +43,12 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
         postText,
         unitId: parseFloat(unitId)
       }))
+
+      console.log({ unitId })
     }
   }, [])
+
+  console.log({ postData })
   const fetchMajor = async (majorQuery = " ") => {
     try {
       const response = await axios.get(
