@@ -52,7 +52,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
       return {
         ...prevPostData,
         id: selectedTab,
-        unitId: params.get("unitId") || null
+        unitId: parseFloat(params.get("unitId")) || null
       }
     })
   }, [selectedTab])
