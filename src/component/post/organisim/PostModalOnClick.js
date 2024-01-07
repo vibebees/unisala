@@ -31,8 +31,6 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
   const history = useHistory()
   const params = new URLSearchParams(location.search)
-  const universityName = useLocation().pathname.split("university/")[1]
-
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [selectedTab, setSelectedTab] = useState()
@@ -52,7 +50,8 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
       return {
         ...prevPostData,
         id: selectedTab,
-        unitId: parseFloat(params.get("unitId")) || null
+        unitId: parseFloat(params.get("unitId")) || null,
+        tags: allProps.tags && tags
       }
     })
   }, [selectedTab])
@@ -103,7 +102,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
           <div className="grid place-items-center gap-y-8 mt-24">
             {metaData &&
               Object.keys(metaData).map((item, i) => (
-                <>
+                <div key={i}>
                   <IonButton
                     className={`mt-0 hover:scale-95 transition-all ease-in`}
                     onClick={() => handleTabSelection(item)}
@@ -111,7 +110,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                   >
                     {metaData[item]?.name}
                   </IonButton>
-                </>
+                </div>
               ))}
           </div>
         ) : (
