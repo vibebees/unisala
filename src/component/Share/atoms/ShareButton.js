@@ -12,8 +12,7 @@ const ShareButton = ({ allProps }) => {
     },
     Iconstyle = {
       color: "blue"
-    },
-    showAddList = true
+    }
   } = allProps
   const popover = useRef(null)
   const [popoverOpen, setPopoverOpen] = useState(false)

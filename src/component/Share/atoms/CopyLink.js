@@ -9,12 +9,13 @@ const CopyLink = ({ link }) => {
       lines="none"
       button
       onClick={() => {
-        navigator.clipboard.writeText(link)
-        present({
-          message: "Link Copied",
-          duration: 2000,
-          position: "bottom",
-          color: "success"
+        navigator.clipboard.writeText(link).then(() => {
+          present({
+            message: "Link Copied",
+            duration: 2000,
+            position: "bottom",
+            color: "success"
+          })
         })
       }}
       className="ion-no-margin hover:bg-opacity-70  ion-no-padding"

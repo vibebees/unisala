@@ -102,7 +102,8 @@ function CourseCard({ allProps }) {
     graduate,
     totalPeopleVoted,
     overallRating,
-    undergraduate
+    undergraduate,
+    unitId
   } = allProps
   const link =
     window.location.origin + `/university/${name.trim().split(" ").join("%20")}`
@@ -190,7 +191,7 @@ function CourseCard({ allProps }) {
           pictures.length === 0 ? "top-4" : "top-1/2"
         )}
       >
-        <ShareButton allProps={{ link: link }} />
+        <ShareButton allProps={{ link: link, unitId: unitId }} />
       </div>
     </IonCard>
   )

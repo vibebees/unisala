@@ -11,7 +11,8 @@ import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 import CreateListModal from "component/List/atoms/CreateListModal"
 import Modal from "component/Reusable/Modal"
-const AddToList = () => {
+const AddToList = ({ allProps }) => {
+  const { link, showAddList = true, unitId = null } = allProps
   const [isOpen, setIsOpen] = React.useState(false)
   const [lists, setLists] = React.useState([])
   const [present] = useIonToast()
@@ -47,7 +48,7 @@ const AddToList = () => {
         `${userServer}/update-list/${listId}`,
         {
           type: "add",
-          unitId: "5f9b6f9b0a4a2d0017e1a2e0"
+          unitId: unitId
         }
       )
       if (res.data.success) {
