@@ -42,7 +42,7 @@ const OtherInput = ({ value, handleInputChange }) => (
   </IonRow>
 )
 
-const AskCurrentStatus = ({ question }) => {
+const AskCurrentStatus = ({ question = {} }) => {
   const {
     data: QuestionData,
     setWelcomeFormdata,

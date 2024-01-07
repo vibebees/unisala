@@ -7,19 +7,26 @@ import { CardHeader } from "component/Reusable/cardHeader"
 import clsx from "clsx"
 
 // Create a function to render a folder based on conditions
-const RenderFolder = ({ item, allProps, customStyles, popUp }) => {
+const RenderFolder = ({
+  item,
+  allProps,
+  customStyles,
+  popUp,
+  customHeight
+}) => {
   const ComponentToRender = popUp ? FolderScholarship : FolderGeneral
   return (
     <ComponentToRender
       allProps={allProps}
       item={item}
+      customHeight={customHeight}
       className="w-full"
       style={{ flex: "1 1 40%", ...customStyles }}
     />
   )
 }
 export const FolderStructure = ({ allProps = {} }) => {
-  const { folderName = "", customStyles = {} } = allProps
+  const { folderName = "", customStyles = {}, customHeight = true } = allProps
   const [popUp, setPopup] = useState(allProps?.popUp || false)
   const [currentURL, setCurrentURL] = useState("")
   const [showMore, setShowMore] = useState(false)
@@ -45,8 +52,11 @@ export const FolderStructure = ({ allProps = {} }) => {
         <IonGrid className="w-full gap-3 flex flex-wrap">
           <IonRow
             className={clsx(
-              "transition-all duration-150 ease-linear",
-              showMore ? "h-full " : "h-[328px] overflow-hidden"
+              "transition-all w-full duration-150 ease-linear",
+              showMore && customHeight
+                ? "h-full "
+                : "h-[328px] overflow-hidden",
+              !customHeight && "h-fit flex-nowrap"
             )}
           >
             {data.map((item, index) => (
@@ -54,15 +64,17 @@ export const FolderStructure = ({ allProps = {} }) => {
                 {item.key === "interviewPrep" ? (
                   <a href={item.link} target="_blank" rel="noopener noreferrer">
                     <RenderFolder
-                      {...{ item, allProps, customStyles, popUp }}
+                      {...{ item, allProps, customStyles, popUp, customHeight }}
                     />
                   </a>
                 ) : popUp ? (
-                  <RenderFolder {...{ item, allProps, customStyles, popUp }} />
+                  <RenderFolder
+                    {...{ item, allProps, customStyles, popUp, customHeight }}
+                  />
                 ) : (
                   <Link to={item.link}>
                     <RenderFolder
-                      {...{ item, allProps, customStyles, popUp }}
+                      {...{ item, allProps, customStyles, popUp, customHeight }}
                     />
                   </Link>
                 )}

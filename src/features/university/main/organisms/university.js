@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react"
-import {
-  IonContent
-} from "@ionic/react"
+import { IonContent } from "@ionic/react"
 import Discussion from "../../Discussion"
 import Review from "../../Discussion/Post"
 import { HeaderNavigator } from "../molecules/headerNavigator"
 import { SideNavigator } from "../molecules/sideNavigator"
 import { UniversityHeader } from "../molecules/header"
+import { CreateAPostCard } from "component/post/template"
 
 export const UniversityBuild = ({ allProps }) => {
-  const {
-    data,
-    app,
-    profile,
-    UniScroll
-  } = allProps
+  const { data, app, profile, UniScroll } = allProps
 
   return (
     <IonContent>
@@ -36,6 +30,15 @@ export const UniversityBuild = ({ allProps }) => {
           <div ref={profile}>
             <UniversityHeader allProps={allProps} />
           </div>
+
+          <div className="lg:w-2/3 mx-auto mt-4">
+            <CreateAPostCard
+              allProps={{
+                ...allProps,
+                unitId: data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId
+              }}
+            />
+          </div>
           <SideNavigator allProps={allProps} />
           <div
             style={{
@@ -43,7 +46,9 @@ export const UniversityBuild = ({ allProps }) => {
               margin: "0 auto"
             }}
           >
-            <Discussion uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId} />
+            {/* <Discussion
+              uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId}
+            /> */}
             <Review uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId} />
           </div>
         </div>

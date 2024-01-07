@@ -6,7 +6,7 @@ export const authInstance = axios.create({
   baseURL: authBaseURL,
   headers: {
     Authorization: localStorage.getItem("accessToken")
-      ? "JWT " + localStorage.getItem("accessToken")
+      ? "Bearer " + localStorage.getItem("accessToken")
       : null,
     "Content-Type": "application/json",
     accept: "application/json"

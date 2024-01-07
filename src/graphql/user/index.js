@@ -53,11 +53,11 @@ export const AddComment = gql`
   `,
   AddPost = gql`
     mutation addPost(
-      $postText: String
+      $postText: String!
       $unitId: Float
       $tags: [ID]
       $postTag: String
-      $id: NodeEnum
+      $id: NodeEnum!
       $levelOfStudy: LevelOfStudyEnum
       $major: String
       $gpa: Float
@@ -65,11 +65,15 @@ export const AddComment = gql`
       $testScoreMark: TestScoreMark
       $preferredLocation: String
       $universitySearch: String
-      $rating: String
       $anonymityOption: Boolean
       $relationToMajor: Boolean
       $attendAgain: Boolean
       $reviewSubCategories: String
+      $admissionAndApplicationRating: Int
+      $financialAidAndScholarshipRating: Int
+      $academicProgramsAndDepartmentRating: Int
+      $studentLifeAndServiceRating: Int
+      $careerAndAlumniResourceRating: Int
     ) {
       addPost(
         postText: $postText
@@ -84,11 +88,15 @@ export const AddComment = gql`
         testScoreMark: $testScoreMark
         preferredLocation: $preferredLocation
         universitySearch: $universitySearch
-        rating: $rating
         anonymityOption: $anonymityOption
         relationToMajor: $relationToMajor
         attendAgain: $attendAgain
         reviewSubCategories: $reviewSubCategories
+        admissionAndApplicationRating: $admissionAndApplicationRating
+        financialAidAndScholarshipRating: $financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating: $academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating: $studentLifeAndServiceRating
+        careerAndAlumniResourceRating: $careerAndAlumniResourceRating
       ) {
         status {
           success

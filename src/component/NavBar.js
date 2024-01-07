@@ -93,7 +93,10 @@ const Nav = ({ allProps }) => {
             <SearchBar />
           </div>
         </div>
-        <IonRow style={{ display: "inline-flex", gap: "2.5rem" }}>
+        <IonRow
+          className="flex-wrap shrink gap-10 max-lg:gap-5 max-[800px]:gap-2"
+          style={{ display: "inline-flex" }}
+        >
           {decode &&
             navigation.map((item, index) => {
               return (

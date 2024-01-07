@@ -5,7 +5,11 @@ import Modal from "../Reusable/Modal"
 import Feedback from "./organism/Feedback"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 
-function index() {
+function index({
+  ModalData = Feedback,
+  Icon = helpOutline,
+  header = "Feedback"
+}) {
   return (
     <IonFab
       slot="fixed"
@@ -21,11 +25,11 @@ function index() {
             }}
             size="small"
           >
-            <IonIcon icon={helpOutline}></IonIcon>
+            <IonIcon icon={Icon}></IonIcon>
           </IonFabButton>
         }
-        ModalData={<Feedback />}
-        header="Feeback"
+        ModalData={<ModalData />}
+        header={header}
       />
     </IonFab>
   )
