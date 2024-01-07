@@ -8,7 +8,7 @@ import { ChipsTab } from "../orgamism/ChipsTab"
 import UniversityScholarshipTab from "../atoms/UniversityScholarshipTab"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 export const ResultsColumn = ({ isLoading, loading, activeSubTab, filterPage, setFilterPage }) => (
-  <IonCol className="results-col ">
+  <IonCol className="results-col pl-[360px] max-md:mt-14 max-md:mx-0 max-md:px-0">
     <SearchTab />
     <ChipsTab />
     <UniversityScholarshipTab />

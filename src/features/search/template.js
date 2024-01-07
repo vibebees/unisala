@@ -40,9 +40,97 @@ export const SearchTemplate = () => {
       setTab("all")
     }
   }, [history.location.search])
-
-
   const { setPopUp } = useContext(ExploreFilterPopupContext)
+
+/*
+
+  const UniversityResults = ({ universities, loading }) => {
+    return (
+      <div>
+        <h3 style={{ color: "#4d4d4d" }}>Universities</h3>
+        <div>
+          {universities?.length ? (
+            universities?.map((data, index) => (
+              <Link to={`/university/${data?.name}`} key={index}>
+                <CourseCard allProps={data} />
+              </Link>
+            ))
+          ) : (
+            <IonCardTitle style={{ textAlign: "center", color: "#898989" }}>
+              {!loading && " Sorry! No result found."}
+            </IonCardTitle>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const UserResults = ({ users, loading }) => {
+    return (
+      <div>
+        <h3 style={{ marginBottom: "1rem", color: "#4d4d4d" }}>Users</h3>
+        {users?.length ? (
+          <div className="grid-3">
+            {users.map((user, index) => (
+              <UserCard
+                key={index}
+                profileBanner={user?.coverPicture}
+                profileImg={user?.picture}
+                name={user?.firstName + " " + user?.lastName}
+                username={user?.username}
+                location={user?.location}
+                oneLineBio={user?.oneLineBio}
+              />
+            ))}
+          </div>
+        ) : (
+          <IonCardTitle style={{ textAlign: "center", color: "#898989" }}>
+            {loading ? "Loading..." : "Sorry! No result found"}
+          </IonCardTitle>
+        )}
+      </div>
+    )
+  }
+  const SearchFilterRow = ({ setPopUp }) => {
+    return (
+      <IonRow className="mobile-row">
+        <IonCol>
+          <SearchBar />
+        </IonCol>
+        <IonCol size="auto">
+          <IonIcon
+            icon={school}
+            onClick={() => setPopUp(true)}
+            size="large"
+          />
+        </IonCol>
+      </IonRow>
+    )
+  }
+return (
+    <>
+      <SearchFilterRow setPopUp={setPopUp} />
+      {tab !== "uni" && <SearchTab />}
+
+      <IonRow>
+        <IonCol className="result-col">
+          {tab === "all" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+              <UserResults users={searchUser?.searchUser?.user} loading={loading} />
+              <UniversityResults universities={unidata?.searchSchool} loading={loading} />
+              <div>
+                <h3 style={{ marginBottom: "1rem", color: "#4d4d4d" }}>Posts</h3>
+              </div>
+            </div>
+          )}
+          {tab === "user" && <UserSearchResult query={query} />}
+          {tab === "uni" && <UniSearchResult query={query} />}
+          {tab === "post" && <h1>Posts</h1>}
+        </IonCol>
+      </IonRow>
+    </>
+  )
+*/
 
 
 return (
@@ -161,4 +249,6 @@ return (
         </IonRow>
     </>
   )
+
 }
+

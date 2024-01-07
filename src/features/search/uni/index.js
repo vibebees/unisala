@@ -83,6 +83,9 @@ function index({ query }) {
 
   const isDesktop = useWindowWidth() > 768
 
+
+
+
 return (
   <>
     <IonRow>
@@ -94,13 +97,13 @@ return (
             setIsLoading={() => {}} // Replace with actual setIsLoading function
           />
       )}
-      {/* <ResultsColumn
+      <ResultsColumn
         isLoading={isLoading}
         loading={loading}
         activeSubTab={activeSubTab}
         filterPage={filterPage}
         setFilterPage={setFilterPage}
-      /> */}
+      />
     </IonRow>
   </>
 )
