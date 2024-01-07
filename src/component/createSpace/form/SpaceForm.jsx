@@ -166,7 +166,7 @@ const SpaceForm = ({ setIsOpen }) => {
           >
             <IonIcon icon={imageOutline} class="text-3xl text-[#818080]" />
             <IonText className="text-[#818080] font-medium text-xl">
-              Upload you Image
+              Upload Cover Image
             </IonText>
           </label>
           <input

@@ -40,5 +40,5 @@ export default function SpacePage({ allPropssetPopup }) {
     loading
   })
 
-  return <SpaceIndex allProps={allProps} />
+  return <Spaces allProps={allProps} />
 }
