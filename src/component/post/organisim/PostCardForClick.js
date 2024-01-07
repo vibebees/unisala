@@ -1,14 +1,20 @@
 import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel } from "@ionic/react"
 import { Avatar } from "../../Avatar"
 import { imageOutline } from "ionicons/icons"
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
+import { useLocation } from "react-router"
 
-export const PostCardForClick = ({allProps = {}}) => {
-  const {userInfo = {}} = allProps
-  const {userStatus = ""} = userInfo || {}
-  const [placeholder, setPlaceholder] = useState("Review university 🏛️ ...")
+export const PostCardForClick = ({ allProps = {} }) => {
+  const { userInfo = {} } = allProps
+  const { userStatus = "looking" } = userInfo || {}
+  const [placeholder, setPlaceholder] = useState("Suggest me university ...")
+  const pathname = useLocation().pathname.split("/")[1]
 
   useEffect(() => {
+    if (pathname === "university") {
+      setPlaceholder("Review University 🏛️ ")
+      return
+    }
     const value = ["looking", "applying"].includes(userStatus)
       ? "Suggest me university 🏛️ ..."
       : "Review university 🏛️ ..."
@@ -31,7 +37,11 @@ export const PostCardForClick = ({allProps = {}}) => {
         >
           <Avatar username={user.username} profilePic={user?.picture} />
         </IonAvatar>
-        <input type="text" placeholder={placeholder} className="searchInput" />
+        <input
+          type="text"
+          placeholder={placeholder}
+          className="searchInput bg-transparent border-none outline-none"
+        />
 
         <IonCol size="auto">
           <IonItem lines="none">

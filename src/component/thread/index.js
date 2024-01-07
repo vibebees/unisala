@@ -19,6 +19,7 @@ import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
 import { EditPost, DeletePost } from "graphql/user"
+import Share from "component/Share"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -42,6 +43,7 @@ const Thread = ({ thread, refetch }) => {
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
   const [numberOfComments, setNumberOfComments] = useState(1)
+  const BASEURL = window.location.origin
 
   const [updatedData, setUpdatedData] = useState({
     postText,
@@ -244,6 +246,19 @@ const Thread = ({ thread, refetch }) => {
         <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} />
         <Reply repliesCount={postCommentsCount} setReply={setReply} />
         <Save postId={_id} saved={saved} />
+        <Share
+          allProps={{
+            link: `${BASEURL}/thread/${_id}`,
+            btnstyle: {
+              width: "35px",
+              height: "35px"
+            },
+            Iconstyle: {
+              color: "gray"
+            },
+            showAddList: false
+          }}
+        />
       </div>
     )
   }
