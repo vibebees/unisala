@@ -1,6 +1,6 @@
 import React from "react"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
-import { IonCard, IonText, IonCol, IonRow, IonContent } from "@ionic/react"
+import { IonCard, IonText, IonCol, IonRow } from "@ionic/react"
 import ActionButton from "./ActionButton"
 import { URLupdate } from "utils/lib/URLupdate"
 import { useHistory } from "react-router"

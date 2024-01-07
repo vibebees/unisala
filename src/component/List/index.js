@@ -38,7 +38,8 @@ const index = () => {
   return (
     <ListContext.Provider value={{ lists, setLists }}>
       <div className="min-h-[50vh]">
-        <Listsearch />
+        {/* <Listsearch /> */}
+        <br />
         <section className="px-3">
           <IonText className="text-lg mt-6 font-bold ">Your Lists</IonText>
           <section>

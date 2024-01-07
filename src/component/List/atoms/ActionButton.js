@@ -1,47 +1,83 @@
-import React, { useState } from "react"
+/* eslint-disable no-case-declarations */
+/* eslint-disable react/jsx-no-duplicate-props */
+import React, { useContext, useState } from "react"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 import {
   ellipsisVerticalOutline,
-  pinOutline,
   pencilOutline,
   trashOutline,
   closeOutline
 } from "ionicons/icons"
 import { IonIcon, IonActionSheet, useIonToast } from "@ionic/react"
-
+import { ListContext } from ".."
+import Modal from "component/Reusable/Modal"
+import CreateListModal from "./CreateListModal"
 const ActionButton = ({ _id }) => {
+  const { setLists, lists } = useContext(ListContext)
   const [isOpen, setIsOpen] = useState(false)
   const [present, dismiss] = useIonToast()
 
   const deleteList = async () => {
-    const res = await authInstance.delete(`${userServer}/delete-list/${_id}`)
-    if (res.data.success) {
-      console.log(res.data)
-    } else {
-      console.log(res.data)
+    try {
+      const res = await authInstance.delete(`${userServer}/delete-list/${_id}`)
+      if (res.data.success) {
+        setLists((prev) => prev.filter((list) => list._id !== _id))
+        present({
+          message: "List deleted successfully",
+          duration: 2000,
+          color: "success",
+          buttons: [{ text: "Done", handler: () => dismiss() }]
+        })
+      } else {
+        present({
+          message: "List could not be deleted",
+          duration: 2000,
+          color: "danger",
+          buttons: [{ text: "Done", handler: () => dismiss() }]
+        })
+      }
+    } catch (error) {
+      present({
+        message: "List could not be deleted",
+        duration: 2000,
+        color: "danger",
+        buttons: [{ text: "Done", handler: () => dismiss() }]
+      })
+    } finally {
+      setIsOpen(false)
     }
   }
 
-  const handleAction = (action) => {
-    return async () => {
-      switch (action) {
-        case "pin":
-          break
-        case "edit":
-          break
-        case "delete":
-          await deleteList()
-          break
-        case "cancel":
-          break
-        default:
-          break
-      }
+  const handleAction = async (action) => {
+    switch (action) {
+      case "pin":
+        break
+      case "edit":
+        const btn = document.querySelector(".modalbutton")
+        btn.click()
+        break
+      case "delete":
+        await deleteList()
+        break
+      case "cancel":
+        break
+      default:
+        break
     }
   }
   return (
     <div>
+      <Modal
+        ModalButton={<div className="absolute w-0 h-0 -z-50 modalbutton"></div>}
+        header="Edit List"
+        ModalData={
+          <CreateListModal
+            editList={true}
+            list={lists.filter((item) => item._id === _id)[0]}
+          />
+        }
+      />
       <IonIcon
         onClick={() => setIsOpen(true)}
         id="open-action-sheet"
@@ -51,21 +87,18 @@ const ActionButton = ({ _id }) => {
 
       <IonActionSheet
         isOpen={isOpen}
-        onDidDismiss={() => setIsOpen(false)}
         header="List Actions"
+        onDidDismiss={(result) => {
+          handleAction(result?.detail?.data?.action).then(() => {
+            setIsOpen(false)
+          })
+        }}
         buttons={[
-          {
-            text: "Pin List",
-            icon: pinOutline,
-            data: {
-              action: "pin"
-            }
-          },
           {
             text: "Edit List",
             icon: pencilOutline,
             data: {
-              action: "delete"
+              action: "edit"
             }
           },
           {
@@ -73,7 +106,7 @@ const ActionButton = ({ _id }) => {
             role: "destructive",
             icon: trashOutline,
             data: {
-              action: handleAction("delete")
+              action: "delete"
             }
           },
 
