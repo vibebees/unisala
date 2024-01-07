@@ -83,116 +83,6 @@ function index({ query }) {
 
   const isDesktop = useWindowWidth() > 768
 
-/*
-  return (
-    <>
-      <IonRow className="overflow-hidden max-md:overflow-visible">
-        {windowWidth > 768 ? (
-          <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
-            <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
-          </IonCol>
-        ) : (
-          // this is for smaller screens
-          <>
-            <IonMenu
-              menuId="menu"
-              className="w-full h-[1196px"
-              contentId="main-content"
-            >
-              <IonHeader>
-                <IonToolbar>
-                  <IonTitle>Filters</IonTitle>
-                  <IonMenuToggle slot="end">
-                    <IonButton fill="clear">
-                      <IonIcon icon={closeOutline} />
-                    </IonButton>
-                  </IonMenuToggle>
-                </IonToolbar>
-              </IonHeader>
-              <IonContent
-                className={clsx("filter-col absolute top-10 z-[1000]")}
-              >
-                <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
-              </IonContent>
-            </IonMenu>
-            <IonPage id="main-content" className="!-z-0">
-              <IonHeader>
-                <IonToolbar className="pr-2">
-                  <IonButtons slot="start">
-                    <IonMenuButton></IonMenuButton>
-                  </IonButtons>
-                  <SearchBar />
-                </IonToolbar>
-              </IonHeader>
-              <IonContent className="ion-padding hidden  absolute"></IonContent>
-            </IonPage>
-          </>
-        )}
-
-        <IonCol className="results-col pl-[360px] max-md:mt-14 max-md:mx-0 max-md:px-0 ">
-          <SearchTab />
-          <ChipsTab />
-          <UniversityScholarshipTab />
-          {loading || isLoading ? (
-            Array.from({ length: 12 }).map((_, i) => <ThreadSkeleton key={i} />)
-          ) : activeSubTab === "u" ? (
-            <SearchResults
-              filterPage={filterPage}
-              setFilterPage={setFilterPage}
-            />
-          ) : (
-            <ScholarshipResult />
-          )}
-        </IonCol>
-      </IonRow>
-    </>
-  )
-*/
-
-// return (
-//   <>
-//     <IonRow className="overflow-hidden max-md:overflow-visible">
-//       {windowWidth > 768 ? (
-//         <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
-//           <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
-//         </IonCol>
-//       ) : (
-//         // this is for smaller screens
-//         <>
-//           <IonMenu
-//             menuId="menu"
-//             className="w-full h-[1196px"
-//             contentId="main-content"
-//           >
-
-
-//           </IonMenu>
-//           <IonPage id="main-content" className="!-z-0">
-//             <IonHeader>
-//               <IonToolbar className="pr-2">
-//                 <IonButtons slot="start">
-//                   <IonMenuButton></IonMenuButton>
-//                 </IonButtons>
-//                 <SearchBar />
-//               </IonToolbar>
-//             </IonHeader>
-//             <IonContent className="ion-padding hidden  absolute"></IonContent>
-//           </IonPage>
-//         </>
-//       )}
-
-//       <ResultsColumn
-//         isLoading={isLoading}
-//         loading={loading}
-//         activeSubTab={activeSubTab}
-//         filterPage={filterPage}
-//         setFilterPage={setFilterPage}
-//       />
-//     </IonRow>
-//   </>
-// )
-
-
 return (
   <>
     <IonRow>
@@ -204,13 +94,13 @@ return (
             setIsLoading={() => {}} // Replace with actual setIsLoading function
           />
       )}
-      <ResultsColumn
+      {/* <ResultsColumn
         isLoading={isLoading}
         loading={loading}
         activeSubTab={activeSubTab}
         filterPage={filterPage}
         setFilterPage={setFilterPage}
-      />
+      /> */}
     </IonRow>
   </>
 )

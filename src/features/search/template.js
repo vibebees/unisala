@@ -13,8 +13,9 @@ import UniSearchResult from "./uni"
 import { SearchBar } from "component/searchBox"
 import SearchTab from "./atoms/SearchTab"
 import { URLgetter } from "utils/lib/URLupdate"
-import {funnelOutline} from "ionicons/icons"
-import { UniPopupProvider, useUniPopup } from "./uni/uniPopupContext"
+import {funnelOutline, school} from "ionicons/icons"
+import { ExploreFilterPopupContext} from "./uni/ExploreUniFilterPopupContext"
+import {color} from "framer-motion"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")
@@ -40,37 +41,25 @@ export const SearchTemplate = () => {
     }
   }, [history.location.search])
 
-  // const { popUp, setPopUp, closePopup} = useUniPopup()
+
+  const { setPopUp } = useContext(ExploreFilterPopupContext)
 
 
-
-
-  const PopupControlButton = () => {
-    const { setPopUp } = useUniPopup() // Using the hook inside a component wrapped by the Provider
-
-    return (
-      <IonButton onClick={() => {
-        console.log("clicked")
-        setPopUp(true)
-      }}>
-        <IonIcon icon={funnelOutline} />
-      </IonButton>
-    )
-  }
 return (
-    <IonContent>
-      <IonGrid className="max-width-container">
+    <>
 
-      <IonRow>
-          <IonCol size="auto">
-          <UniPopupProvider>
-              <PopupControlButton /> {/* A new component to control the popup */}
-            </UniPopupProvider>
-          </IonCol>
-          <IonCol>
-            <SearchBar />
-          </IonCol>
-        </IonRow>
+    <IonRow className="mobile-row">
+      <IonCol>
+        <SearchBar />
+      </IonCol>
+      <IonCol size="auto">
+        <IonIcon
+          icon={school}
+          onClick={() => setPopUp(true)}
+          size="large"
+        />
+      </IonCol>
+    </IonRow>
 
         {tab !== "uni" && <SearchTab />}
 
@@ -81,8 +70,7 @@ return (
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "2rem",
-                  marginTop: "1.5rem"
+                  gap: "2rem"
                 }}
               >
                 <div>
@@ -124,7 +112,6 @@ return (
                 <div>
                   <h3
                     style={{
-                      marginBottom: "1rem",
                       color: "#4d4d4d"
                     }}
                   >
@@ -167,14 +154,11 @@ return (
             )}
             {tab === "user" && <UserSearchResult query={query} />}
             {tab === "uni" && (
-              <UniPopupProvider>
                 <UniSearchResult query={query} />
-              </UniPopupProvider>
-            )}
+             )}
             {tab === "post" && <h1>Posts</h1>}
           </IonCol>
         </IonRow>
-      </IonGrid>
-    </IonContent>
+    </>
   )
 }

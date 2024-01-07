@@ -64,15 +64,26 @@
     .recommend-search {
         /* Adjustments for mobile screens */
         width: 100%;
-        top: 3rem;
         left: 0;
         right: 0;
-        margin: 10px 0;
+        margin: 0;
         z-index: 1000;
 
       }
 
     .search-box {
         width: 100%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .mobile-row {
+        display: flex;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .mobile-row {
+        display: none;
     }
 }

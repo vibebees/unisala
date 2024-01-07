@@ -22,14 +22,14 @@ export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
         lines="none"
         key={key}
       >
-        <IonAvatar slot="start">
+        {/* <IonAvatar slot="start">
           <img
             src={
               profileImage ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXcCCJKE3QoYsKTUblewvIWujVUQWpsd7BhA&usqp=CAU"
             }
           />
-        </IonAvatar>
+        </IonAvatar> */}
         <IonLabel >
           <h2
             style={{
