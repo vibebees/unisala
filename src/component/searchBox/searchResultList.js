@@ -1,10 +1,12 @@
 import {IonAvatar, IonItem, IonLabel} from "@ionic/react"
+import {set} from "ramda"
 import {useEffect, useState} from "react"
 import {Link} from "react-router-dom"
 import {universityDefaultImage} from "servers/s3.configs"
 
 export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
-  const [profileImage, setProfileImage] = useState(item?.pictures?.[0] || universityDefaultImage)
+  const [profileImage, setProfileImage] = useState(item?.pictures?.[0] || item?.picture || universityDefaultImage)
+
 
   return (
     <Link
@@ -17,10 +19,6 @@ export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
       onClick={() => setDropDownOptions(false)}
     >
       <IonItem
-        style={{
-          margin: "0px",
-          padding: "0px"
-        }}
         lines="none"
         key={key}
       >
@@ -32,10 +30,11 @@ export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
             }
           />
         </IonAvatar>
-        <IonLabel>
+        <IonLabel >
           <h2
             style={{
-              margin: 0
+              margin: 0,
+              width: "100%"
             }}
           >
             {item?.name || `${item?.firstName} ${item?.lastName}`}

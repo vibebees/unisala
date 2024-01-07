@@ -29,7 +29,6 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   }
 
   useEffect(() => {
-    console.log({ params })
     if (params.get("unitId")) {
       const postText = htmlForEditor(
         postData?.postText,
@@ -43,7 +42,6 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
     }
   }, [])
 
-  console.log({ postData })
   const fetchMajor = async (majorQuery = " ") => {
     try {
       const response = await axios.get(
@@ -99,7 +97,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       menuPlacement="bottom"
       placeholder={item.placeholder || ""}
       ref={ref}
-      defaultInputValue={item.id !== "major" && universityName}
+      defaultInputValue={item.id !== "major" ? universityName || "" : ""}
       onChange={(e) => {
         setPostData((prev) => {
           let obj = {
@@ -110,7 +108,9 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
             obj.unitId = e.unitId
           }
           const postText = htmlForEditor(postData?.postText, item.name, e.value)
+          console.log(item.id, { value: e.value })
           obj[item.id] = e.value
+
           obj.postText = postText
           return obj
         })

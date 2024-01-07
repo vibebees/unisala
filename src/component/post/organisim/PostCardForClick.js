@@ -5,13 +5,13 @@ import {useEffect, useState} from "react"
 
 export const PostCardForClick = ({allProps = {}}) => {
   const {userInfo = {}} = allProps
-  const {userStatus = "looking"} = userInfo || {}
-  const [placeholder, setPlaceholder] = useState("Suggest me university ...")
+  const {userStatus = ""} = userInfo || {}
+  const [placeholder, setPlaceholder] = useState("Review university 🏛️ ...")
 
   useEffect(() => {
-    const value = ["graduated", "studying"].includes(userStatus)
-    ? "Review university 🏛️ ..."
-      : "Suggest me university 🏛️ ..."
+    const value = ["looking", "applying"].includes(userStatus)
+      ? "Suggest me university 🏛️ ..."
+      : "Review university 🏛️ ..."
     setPlaceholder(value)
   }, [userStatus])
   const { user } = allProps
@@ -36,9 +36,6 @@ export const PostCardForClick = ({allProps = {}}) => {
         <IonCol size="auto">
           <IonItem lines="none">
             <IonIcon icon={imageOutline} />
-            <IonLabel className="ion-padding-start">
-              <p>Image</p>
-            </IonLabel>
           </IonItem>
         </IonCol>
       </IonItem>

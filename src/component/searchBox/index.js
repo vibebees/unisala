@@ -92,7 +92,11 @@ export const SearchBar = () => {
         </Link>
       </div>
       {dropDownOptions && Array.isArray(options) && options.length > 0 && (
-        <div className="recommend-search" ref={dropdownRef}>
+        <div className="recommend-search" ref={dropdownRef}
+        style={{
+          zIndex: 1000 // ensure it's above other content
+        }}
+        >
           {Array.isArray(options) &&
             options.map((item, i) => (
               <SearchBarResultList
