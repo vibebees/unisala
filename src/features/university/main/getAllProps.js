@@ -52,6 +52,7 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     [AdmisionAnimate, setAdmissionAnimate] = useState(false),
     [GrantAnimate, setGrantAnimate] = useState(false),
     [LibrariesAnimate, setLibrariesAnimate] = useState(false),
+    [createAPostPopUp, setCreateAPostPopUp] = useState(false),
     [appState, setAppState] = useState({
       scrollTop: 0,
       clientHeight: 0
@@ -213,6 +214,8 @@ export const getAllProps = ({ id, loading, data, uniData, isSideBar }) => {
     isSideBar,
     testScoreDataSource: uniData?.testScore,
     admissionEmpty,
-    admission
+    admission,
+    createAPostPopUp,
+    setCreateAPostPopUp
   }
 }

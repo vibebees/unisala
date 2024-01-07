@@ -24,13 +24,16 @@ import { userServer } from "servers/endpoints"
 import ImageUpload from "./ImageUpload"
 import clsx from "clsx"
 import { htmlForEditor } from "../utils/htmlForEditor"
+import { useHistory, useLocation } from "react-router"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
-  const [selected, setSelected] = useState({})
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
+  const location = useLocation()
+  const histroy = useHistory()
+  const params = new URLSearchParams(location.search)
 
   const client = useApolloClient()
 
@@ -67,6 +70,54 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       Emojis: "😍"
     }
   ]
+  const [ratings, setRatings] = useState({})
+
+  const handleRatingChange = (itemId, value, name) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [itemId]: value
+    }))
+    // Update the postData with the new rating
+    // const postText = htmlForEditor(
+    //   postData?.postText,
+    //   name,
+    //   RatingData.find((val) => val.value === value)?.Emojis
+    // )
+    setPostData((prev) => ({
+      ...prev,
+      // postText,
+      [itemId]: value
+    }))
+  }
+
+  const generateRatingComponent = (item) => {
+    return (
+      <>
+        <IonLabel>{item.name}</IonLabel>
+        <div className="flex justify-start gap-x-2">
+          {RatingData.map((val, index) => (
+            <div
+              key={index}
+              className="mt-2 cursor-pointer"
+              onClick={() => handleRatingChange(item?.id, val.value, item.name)}
+            >
+              <span
+                className={clsx("text-4xl transition ease-linear", {
+                  grayscale: ratings[item?.id] !== val.value
+                })}
+              >
+                {ratings[item?.id] !== val.value ? (
+                  val.Emojis
+                ) : (
+                  <img src={val.imageURL} alt="" width={48} />
+                )}
+              </span>
+            </div>
+          ))}
+        </div>
+      </>
+    )
+  }
   const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
 
@@ -182,6 +233,8 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    console.log("Submitting postData:", postData) // Log the postData here
+
     if (files?.length > 4) {
       present({
         duration: 3000,
@@ -196,8 +249,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     if (postData?.postText?.length > 0 || files?.length > 0) {
       addPost({
         variables: {
-          ...postData,
-          testScoreMark: {}
+          ...postData
         }
       })
     } else {
@@ -210,6 +262,12 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     }
     setCreateAPostPopUp(false)
+    params.delete("create")
+    params.delete("type")
+
+    histroy.push({
+      search: params.toString()
+    })
   }
 
   const generateInputTag = (item) => {
@@ -240,45 +298,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   }
 
   const generateSelectTag = (item) => {
-    if (item.id === "userRating") {
-      return (
-        <>
-          <IonLabel>{item.name}</IonLabel>
-          <div className="flex justify-start gap-x-2">
-            {RatingData.map((val, i) => (
-              <div
-                key={i}
-                className="mt-2 cursor-pointer"
-                onClick={() => {
-                  const postText = htmlForEditor(
-                    postData.postText,
-                    item.name,
-                    val.Emojis
-                  )
-                  setPostData((prev) => ({
-                    ...prev,
-                    postText,
-                    rating: String(val.value)
-                  }))
-                }}
-              >
-                <span
-                  className={clsx("text-4xl transition ease-linear", {
-                    "grayscale-[100]": Number(postData?.rating) !== i + 1
-                  })}
-                >
-                  {Number(postData?.rating) !== i + 1 ? (
-                    val.Emojis
-                  ) : (
-                    <img src={val.imageURL} alt="" width={48} className="" />
-                  )}
-                </span>
-              </div>
-            ))}
-          </div>
-        </>
-      )
-    }
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
@@ -299,8 +318,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       </>
     )
   }
-
-  console.log({ text: postData?.postText })
 
   const generateTextareaTag = (item) => {
     return (
@@ -343,7 +360,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       case "checkbox":
         return generateCheckbox(item)
       case "select":
-        return generateSelectTag(item)
+        return item?.rating
+          ? generateRatingComponent(item)
+          : generateSelectTag(item)
       case "textarea":
         return generateTextareaTag(item)
 
@@ -355,10 +374,10 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
-        {metaData.edges.map((item) => {
+        {metaData?.edges?.map((item) => {
           return (
             <>
-              <div className="mt-4">{generateHTML(item)}</div>
+              <div className="mt-4">{item && generateHTML(item)}</div>
             </>
           )
         })}
