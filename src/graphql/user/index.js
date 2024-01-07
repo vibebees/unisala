@@ -53,11 +53,11 @@ export const AddComment = gql`
   `,
   AddPost = gql`
     mutation addPost(
-      $postText: String
+      $postText: String!
       $unitId: Float
       $tags: [ID]
       $postTag: String
-      $id: NodeEnum
+      $id: NodeEnum!
       $levelOfStudy: LevelOfStudyEnum
       $major: String
       $gpa: Float

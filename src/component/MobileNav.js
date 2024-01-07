@@ -132,7 +132,7 @@ export default function MobileNav({ setCreateAPostPopUp, allProps }) {
             >
               Messages
             </IonLabel>
-            <IonBadge>3</IonBadge>
+            <IonBadge>0</IonBadge>
           </IonTabButton>
 
           {/* <IonTabButton

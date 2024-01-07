@@ -24,16 +24,16 @@ import { userServer } from "servers/endpoints"
 import ImageUpload from "./ImageUpload"
 import clsx from "clsx"
 import { htmlForEditor } from "../utils/htmlForEditor"
-
-
-
+import { useHistory, useLocation } from "react-router"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
-  const [selected, setSelected] = useState({})
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
+  const location = useLocation()
+  const histroy = useHistory()
+  const params = new URLSearchParams(location.search)
 
   const client = useApolloClient()
 
@@ -70,11 +70,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       Emojis: "😍"
     }
   ]
-  const [ratings, setRatings] = useState(
-    metaData?.edges
-      .filter((item) => item?.rating)
-      .reduce((acc, item) => ({ ...acc, [item?.id]: null }), {})
-  )
+  const [ratings, setRatings] = useState({})
 
   const handleRatingChange = (itemId, value, name) => {
     setRatings((prevRatings) => ({
@@ -97,33 +93,32 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const generateRatingComponent = (item) => {
     return (
       <>
-          <IonLabel>{item.name}</IonLabel>
-          <div className="flex justify-start gap-x-2">
-        {RatingData.map((val, index) => (
-          <div
-            key={index}
-            className="mt-2 cursor-pointer"
-            onClick={() => handleRatingChange(item.id, val.value, item.name)}
-          >
-            <span
-              className={clsx("text-4xl transition ease-linear", {
-                "grayscale": ratings[item.id] !== val.value
-              })}
+        <IonLabel>{item.name}</IonLabel>
+        <div className="flex justify-start gap-x-2">
+          {RatingData.map((val, index) => (
+            <div
+              key={index}
+              className="mt-2 cursor-pointer"
+              onClick={() => handleRatingChange(item?.id, val.value, item.name)}
             >
-              {ratings[item.id] !== val.value ? (
-                val.Emojis
-              ) : (
-                <img src={val.imageURL} alt="" width={48} />
-              )}
-            </span>
-          </div>
-        ))}
-      </div>
+              <span
+                className={clsx("text-4xl transition ease-linear", {
+                  grayscale: ratings[item?.id] !== val.value
+                })}
+              >
+                {ratings[item?.id] !== val.value ? (
+                  val.Emojis
+                ) : (
+                  <img src={val.imageURL} alt="" width={48} />
+                )}
+              </span>
+            </div>
+          ))}
+        </div>
       </>
-
     )
   }
-const [addPost] = useMutation(AddPost, {
+  const [addPost] = useMutation(AddPost, {
     context: { server: USER_SERVICE_GQL },
 
     update: (cache, { data: { addPost } }) => {
@@ -254,8 +249,7 @@ const [addPost] = useMutation(AddPost, {
     if (postData?.postText?.length > 0 || files?.length > 0) {
       addPost({
         variables: {
-          ...postData,
-          testScoreMark: {}
+          ...postData
         }
       })
     } else {
@@ -268,6 +262,12 @@ const [addPost] = useMutation(AddPost, {
       })
     }
     setCreateAPostPopUp(false)
+    params.delete("create")
+    params.delete("type")
+
+    histroy.push({
+      search: params.toString()
+    })
   }
 
   const generateInputTag = (item) => {
@@ -319,8 +319,6 @@ const [addPost] = useMutation(AddPost, {
     )
   }
 
-  console.log({ text: postData?.postText })
-
   const generateTextareaTag = (item) => {
     return (
       <>
@@ -362,7 +360,9 @@ const [addPost] = useMutation(AddPost, {
       case "checkbox":
         return generateCheckbox(item)
       case "select":
-        return item?.rating ? generateRatingComponent(item) : generateSelectTag(item)
+        return item?.rating
+          ? generateRatingComponent(item)
+          : generateSelectTag(item)
       case "textarea":
         return generateTextareaTag(item)
 
@@ -374,10 +374,10 @@ const [addPost] = useMutation(AddPost, {
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
-        {metaData.edges.map((item) => {
+        {metaData?.edges?.map((item) => {
           return (
             <>
-              <div className="mt-4">{generateHTML(item)}</div>
+              <div className="mt-4">{item && generateHTML(item)}</div>
             </>
           )
         })}
