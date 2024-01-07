@@ -5,11 +5,11 @@ import SocialMediaShare from "../atoms/SocialMediaShare"
 import { logoFacebook, logoTwitter, logoInstagram } from "ionicons/icons"
 
 const ListOptions = ({ allProps }) => {
-  const { link } = allProps
+  const { link, showAddList } = allProps
 
   return (
     <div>
-      <AddToList />
+      {showAddList && <AddToList />}
       <CopyLink link={link} />
       <SocialMediaShare
         Icon={logoFacebook}

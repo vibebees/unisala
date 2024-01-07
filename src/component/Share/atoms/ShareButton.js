@@ -4,7 +4,17 @@ import { shareSocialOutline } from "ionicons/icons"
 import ListOptions from "../organism/ListOptions"
 
 const ShareButton = ({ allProps }) => {
-  const { link, height = 40, width = 40 } = allProps
+  const {
+    link,
+    btnstyle = {
+      width: "40px",
+      height: "40px"
+    },
+    Iconstyle = {
+      color: "blue"
+    },
+    showAddList = true
+  } = allProps
   const popover = useRef(null)
   const [popoverOpen, setPopoverOpen] = useState(false)
 
@@ -19,11 +29,12 @@ const ShareButton = ({ allProps }) => {
         fill="clear"
         color="primary"
         onClick={openPopover}
-        style={{ height: `${height}px`, width: `${width}px` }}
-        className="  rounded-full  overflow-hidden ion-no-margin ion-no-padding  border border-blue-500  outline-none"
+        style={{ ...btnstyle }}
+        className="  rounded-full  overflow-hidden ion-no-margin ion-no-padding  outline-none"
       >
         <IonIcon
-          className=" rounded-full p-2 h-full ion-no-padding ion-no-margin  text-3xl w-full block text-blue-700 "
+          style={{ ...Iconstyle }}
+          className=" rounded-full p-2 h-full ion-no-padding ion-no-margin  text-3xl w-full block  "
           icon={shareSocialOutline}
         />
       </IonButton>
