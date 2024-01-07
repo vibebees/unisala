@@ -42,11 +42,8 @@ export const Spaces = ({ allProps }) => {
   }, [])
 
   // condition because we do not want to send null datas to backend
-  if (spaceId) {
+  if (spaceId && !tags.includes(spaceId)) {
     tags.push(spaceId)
-  }
-  if (parentId) {
-    tags.push(parentId)
   }
 
   if (loading) {
