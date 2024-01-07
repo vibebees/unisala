@@ -31,7 +31,7 @@ export const UniversityBuild = ({ allProps }) => {
             <UniversityHeader allProps={allProps} />
           </div>
 
-          <div className="lg:w-2/3 mx-auto mt-4">
+          <div className="lg:w-2/5 mx-auto mt-4">
             <CreateAPostCard
               allProps={{
                 ...allProps,
