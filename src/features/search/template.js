@@ -1,5 +1,5 @@
 import { useEffect, useState, createContext, useContext} from "react"
-import { IonGrid, IonRow, IonCol, IonContent, IonCardTitle, IonButton, IonIcon } from "@ionic/react"
+import { IonGrid, IonRow, IonCol, IonContent, IonCardTitle, IonButton, IonIcon, IonLabel } from "@ionic/react"
 import { useLocation, Link, useHistory } from "react-router-dom"
 import { UniSearchDataList } from "graphql/uni"
 import { userSearch } from "graphql/user"
@@ -24,7 +24,8 @@ export const SearchTemplate = () => {
   const query = searchParams.get("q") || ""
   useDocTitle("Search ᛫ " + query)
   const history = useHistory()
-  const { data: unidata, loading } = useQuery(UniSearchDataList, {
+
+  const { data: unidata, loading, refetch} = useQuery(UniSearchDataList, {
     variables: { name: query },
     context: { server: UNIVERSITY_SERVICE_GQL }
   })
@@ -42,7 +43,10 @@ export const SearchTemplate = () => {
   }, [history.location.search])
   const { setPopUp } = useContext(ExploreFilterPopupContext)
 
-/*
+
+  useEffect(() => {
+    refetch()
+  }, [query])
 
   const UniversityResults = ({ universities, loading }) => {
     return (
@@ -94,21 +98,22 @@ export const SearchTemplate = () => {
   const SearchFilterRow = ({ setPopUp }) => {
     return (
       <IonRow className="mobile-row">
+         <IonCol size="auto">
+            <IonIcon
+              icon={school}
+              onClick={() => setPopUp(true)}
+              size="large"
+              color="success"
+            />
+        </IonCol>
         <IonCol>
           <SearchBar />
-        </IonCol>
-        <IonCol size="auto">
-          <IonIcon
-            icon={school}
-            onClick={() => setPopUp(true)}
-            size="large"
-          />
         </IonCol>
       </IonRow>
     )
   }
 return (
-    <>
+    <IonContent>
       <SearchFilterRow setPopUp={setPopUp} />
       {tab !== "uni" && <SearchTab />}
 
@@ -128,11 +133,11 @@ return (
           {tab === "post" && <h1>Posts</h1>}
         </IonCol>
       </IonRow>
-    </>
+    </IonContent>
   )
-*/
 
 
+/*
 return (
     <>
 
@@ -249,6 +254,6 @@ return (
         </IonRow>
     </>
   )
-
+*/
 }
 

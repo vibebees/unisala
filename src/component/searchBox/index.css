@@ -1,9 +1,8 @@
 .search-box {
-    display: inline-flex;
-    width: 100%;
-    width: 100%;
+    width: 400px;
     align-items: center;
     position: relative;
+    display: flex;
 }
 
 .search-input-box {
@@ -15,6 +14,7 @@
     --placeholder-font-weight: 500;
     --placeholder-opacity: 0.4;
     --placeholder-color: #515050;
+    width: 100%;
 }
 
 .search-box__search-icon {
@@ -62,14 +62,13 @@
 
 @media (width < 768px) {
     .recommend-search {
-        /* Adjustments for mobile screens */
         width: 100%;
         left: 0;
         right: 0;
         margin: 0;
         z-index: 1000;
-
-      }
+        top: 100%;
+    }
 
     .search-box {
         width: 100%;

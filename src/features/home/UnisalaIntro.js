@@ -9,6 +9,8 @@ import roadmap from "assets/roadmap.png"
 import { lockOpenOutline } from "ionicons/icons"
 import ExploreUniversities from "assets/ExploreUniversity.png"
 import currentStudents from "assets/currentStudents.jpeg"
+import question from "assets/welcome/question.jpeg"
+
 
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 import {ImageSlider} from "./welcomeSlider"
@@ -27,7 +29,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
             <h1 className="text-2xl font-bold pt-1 pb-2">
               <strong>Are you an incoming student?</strong> 🤔
             </h1>
-            <img src={currentStudents} alt="roadmap" />
+            <img src={question} alt="roadmap" />
             <li>
               <strong></strong>
               <ul className="list-inside space-y-1 mt-1">
