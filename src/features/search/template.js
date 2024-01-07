@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { IonGrid, IonRow, IonCol, IonContent, IonCardTitle } from "@ionic/react"
+import { useEffect, useState, createContext, useContext} from "react"
+import { IonGrid, IonRow, IonCol, IonContent, IonCardTitle, IonButton, IonIcon } from "@ionic/react"
 import { useLocation, Link, useHistory } from "react-router-dom"
 import { UniSearchDataList } from "graphql/uni"
 import { userSearch } from "graphql/user"
@@ -13,6 +13,8 @@ import UniSearchResult from "./uni"
 import { SearchBar } from "component/searchBox"
 import SearchTab from "./atoms/SearchTab"
 import { URLgetter } from "utils/lib/URLupdate"
+import {funnelOutline} from "ionicons/icons"
+import { UniPopupProvider, useUniPopup } from "./uni/uniPopupContext"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")
@@ -38,14 +40,37 @@ export const SearchTemplate = () => {
     }
   }, [history.location.search])
 
-  return (
+  // const { popUp, setPopUp, closePopup} = useUniPopup()
+
+
+
+
+  const PopupControlButton = () => {
+    const { setPopUp } = useUniPopup() // Using the hook inside a component wrapped by the Provider
+
+    return (
+      <IonButton onClick={() => {
+        console.log("clicked")
+        setPopUp(true)
+      }}>
+        <IonIcon icon={funnelOutline} />
+      </IonButton>
+    )
+  }
+return (
     <IonContent>
       <IonGrid className="max-width-container">
-        {tab !== "uni" && (
-          <IonCol className="max-md:block hidden">
+
+      <IonRow>
+          <IonCol size="auto">
+          <UniPopupProvider>
+              <PopupControlButton /> {/* A new component to control the popup */}
+            </UniPopupProvider>
+          </IonCol>
+          <IonCol>
             <SearchBar />
           </IonCol>
-        )}
+        </IonRow>
 
         {tab !== "uni" && <SearchTab />}
 
@@ -141,7 +166,11 @@ export const SearchTemplate = () => {
               </div>
             )}
             {tab === "user" && <UserSearchResult query={query} />}
-            {tab === "uni" && <UniSearchResult query={query} />}
+            {tab === "uni" && (
+              <UniPopupProvider>
+                <UniSearchResult query={query} />
+              </UniPopupProvider>
+            )}
             {tab === "post" && <h1>Posts</h1>}
           </IonCol>
         </IonRow>

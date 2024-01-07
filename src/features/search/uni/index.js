@@ -24,7 +24,7 @@ import { UniSearchDataList, ScholarshipResults } from "graphql/uni/"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 import { useLocation } from "react-router"
-import { closeOutline } from "ionicons/icons"
+import { closeOutline, funnelOutline } from "ionicons/icons"
 import { INITIAL_QUERY_DATA } from "./Filter/constants"
 import SearchTab from "../atoms/SearchTab"
 import { ChipsTab } from "../orgamism/ChipsTab"
@@ -34,6 +34,11 @@ import { useHistory } from "react-router-dom"
 import clsx from "clsx"
 import { SearchBar } from "component/searchBox"
 import ScholarshipResult from "./ScholarshipResults"
+import { DesktopFilter } from "./desktopFilter"
+import { MobileFilter } from "./mobileFilter"
+import {ResultsColumn} from "./resultColumn"
+
+
 
 function index({ query }) {
   const windowWidth = useWindowWidth()
@@ -50,19 +55,6 @@ function index({ query }) {
     skip: searchParams.size > 2
   })
 
-  // const { data: scholarshipData } = useQuery(ScholarshipResults, {
-  //   context: { server: UNIVERSITY_SERVICE_GQL },
-  //   variables: {
-  //     gpa: {
-  //       min: 0,
-  //       max: 3
-  //     }
-  //   }
-  // })
-
-  // if (scholarshipData) {
-  //   console.log("scholarshipLoading", scholarshipData)
-  // }
 
   useEffect(() => {
     dispatch(searchGetSuccess(data?.searchSchool))
@@ -89,6 +81,9 @@ function index({ query }) {
     }
   }, [history.location.search])
 
+  const isDesktop = useWindowWidth() > 768
+
+/*
   return (
     <>
       <IonRow className="overflow-hidden max-md:overflow-visible">
@@ -152,6 +147,73 @@ function index({ query }) {
       </IonRow>
     </>
   )
+*/
+
+// return (
+//   <>
+//     <IonRow className="overflow-hidden max-md:overflow-visible">
+//       {windowWidth > 768 ? (
+//         <IonCol className="filter-col  py-6 fixed overflow-y-scroll z-50 bottom-0 top-0">
+//           <Filter filterPage={filterPage} setIsLoading={setIsLoading} />
+//         </IonCol>
+//       ) : (
+//         // this is for smaller screens
+//         <>
+//           <IonMenu
+//             menuId="menu"
+//             className="w-full h-[1196px"
+//             contentId="main-content"
+//           >
+
+
+//           </IonMenu>
+//           <IonPage id="main-content" className="!-z-0">
+//             <IonHeader>
+//               <IonToolbar className="pr-2">
+//                 <IonButtons slot="start">
+//                   <IonMenuButton></IonMenuButton>
+//                 </IonButtons>
+//                 <SearchBar />
+//               </IonToolbar>
+//             </IonHeader>
+//             <IonContent className="ion-padding hidden  absolute"></IonContent>
+//           </IonPage>
+//         </>
+//       )}
+
+//       <ResultsColumn
+//         isLoading={isLoading}
+//         loading={loading}
+//         activeSubTab={activeSubTab}
+//         filterPage={filterPage}
+//         setFilterPage={setFilterPage}
+//       />
+//     </IonRow>
+//   </>
+// )
+
+
+return (
+  <>
+    <IonRow>
+      {isDesktop ? (
+        <DesktopFilter filterPage={filterPage} setIsLoading={setIsLoading} />
+      ) : (
+          <MobileFilter
+            filterPage={1} // Example page number
+            setIsLoading={() => {}} // Replace with actual setIsLoading function
+          />
+      )}
+      <ResultsColumn
+        isLoading={isLoading}
+        loading={loading}
+        activeSubTab={activeSubTab}
+        filterPage={filterPage}
+        setFilterPage={setFilterPage}
+      />
+    </IonRow>
+  </>
+)
 }
 
 export default index
