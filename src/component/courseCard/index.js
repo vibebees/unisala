@@ -16,6 +16,9 @@ import ApplicationCharges from "./../../features/search/atoms/ApplicationCharges
 import Offerings from "./../../features/search/atoms/Offerings"
 import RatingCard from "./../../features/search/atoms/RatingCard"
 import CardImage from "./atom/CardImage"
+import ShareButton from "component/Share"
+import CustomTrackingLink from "features/analytics/LinkTrack"
+import clsx from "clsx"
 
 function CardActions({ allProps }) {
   const { showSave = false, showShare = false } = allProps
@@ -101,76 +104,94 @@ function CourseCard({ allProps }) {
     overallRating,
     undergraduate
   } = allProps
+  const link =
+    window.location.origin + `/university/${name.trim().split(" ").join("%20")}`
 
   return (
-    <IonCard className="max-md:mx-0">
-      <IonGrid>
-        <IonRow>
-          <IonCol
-            style={{ margin: "auto" }}
-            className="overflow-hidden "
-            size={"auto"}
-          >
-            <CardImage pictures={pictures} />
-          </IonCol>
-          <IonCol>
-            <IonRow>
-              <IonCol>
-                <IonRow className="ion-no-padding m-0  items-center  h-fit">
-                  <IonCol size="auto h-fit">
-                    <div style={{ display: "flex", float: "right" }}>
-                      <CardActions allProps={allProps} />
-                    </div>
-                    <IonText color="dark">
-                      <IonCardTitle>{name}</IonCardTitle>
-                    </IonText>
-                    <Location allProps={allProps} />
-                  </IonCol>
-                  <IonCol className="h-fit">
-                    <RatingCard
-                      allProps={{ overallRating, totalPeopleVoted }}
+    <IonCard className="max-md:mx-0 relative">
+      <CustomTrackingLink
+        title={`${name} clicked on university result filter `}
+        to={`/university/${name}`}
+        destination={`/university/${name}`}
+      >
+        <IonGrid>
+          <IonRow>
+            <IonCol
+              style={{ margin: "auto" }}
+              className="overflow-hidden "
+              size={"auto"}
+            >
+              <CardImage pictures={pictures} />
+            </IonCol>
+            <IonCol>
+              <IonRow>
+                <IonCol>
+                  <IonRow className="ion-no-padding m-0   items-center  h-fit">
+                    <IonCol size="12">
+                      <div style={{ display: "flex", float: "right" }}>
+                        <CardActions allProps={allProps} />
+                      </div>
+
+                      <IonText color="dark">
+                        <IonCardTitle>{name}</IonCardTitle>
+                      </IonText>
+
+                      <Location allProps={allProps} />
+                    </IonCol>
+                    <IonCol className="h-fit">
+                      <RatingCard
+                        allProps={{ overallRating, totalPeopleVoted }}
+                      />
+                    </IonCol>
+                  </IonRow>
+                  <Offerings allProps={allProps} />
+                  <ApplicationCharges
+                    undergraduateApplicationFee={undergraduateApplicationFee}
+                    undergraduate={undergraduate}
+                    graduateApplicationFee={graduateApplicationFee}
+                    graduate={graduate}
+                  />
+
+                  {ownType?.length > 0 && (
+                    <LikeATag
+                      colorTitle="green"
+                      colorValue="yellow"
+                      title="Own Type:"
+                      value={ownType}
                     />
-                  </IonCol>
-                </IonRow>
-                <Offerings allProps={allProps} />
-                <ApplicationCharges
-                  undergraduateApplicationFee={undergraduateApplicationFee}
-                  undergraduate={undergraduate}
-                  graduateApplicationFee={graduateApplicationFee}
-                  graduate={graduate}
-                />
+                  )}
+                  {/* {tags?.map((tag, index) => <LikeATag colorTitle="blue" colorValue="yellow" title="Tags:" value={tag} key={index} />)} */}
+                  {tags?.length > 0 && (
+                    <LikeATag
+                      colorTitle="blue"
+                      colorValue="blue"
+                      title="tags: "
+                      value={tags.join("#")}
+                      skipBg={true}
+                    />
+                  )}
 
-                {ownType?.length > 0 && (
-                  <LikeATag
-                    colorTitle="green"
-                    colorValue="yellow"
-                    title="Own Type:"
-                    value={ownType}
-                  />
-                )}
-                {/* {tags?.map((tag, index) => <LikeATag colorTitle="blue" colorValue="yellow" title="Tags:" value={tag} key={index} />)} */}
-                {tags?.length > 0 && (
-                  <LikeATag
-                    colorTitle="blue"
-                    colorValue="blue"
-                    title="tags: "
-                    value={tags.join("#")}
-                    skipBg={true}
-                  />
-                )}
-
-                {/* <IonRow>
+                  {/* <IonRow>
                   <IonCol>
                     <h4>Mission Statement:</h4>
                     <p>{missionStatement}</p>
                   </IonCol>
                 </IonRow> */}
-                {/* Other columns go here */}
-              </IonCol>
-            </IonRow>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
+                  {/* Other columns go here */}
+                </IonCol>
+              </IonRow>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </CustomTrackingLink>
+      <div
+        className={clsx(
+          "absolute bottom-5 right-3",
+          pictures.length === 0 ? "top-4" : "top-1/2"
+        )}
+      >
+        <ShareButton allProps={{ link: link }} />
+      </div>
     </IonCard>
   )
 }

@@ -8,22 +8,24 @@ import {
   useIonToast,
   IonSpinner
 } from "@ionic/react"
-import axios from "axios"
 import { userServer } from "servers/endpoints"
 import { authInstance } from "api/axiosInstance"
-import { ListContext } from ".."
+import { ListContext } from "component/List/index"
 
-const CreateListModal = ({ editList = false, list }) => {
+const CreateListModal = ({ editList = false, list = {} }) => {
   const { setLists, lists } = useContext(ListContext)
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = React.useState(false)
   const [input, setInput] = React.useState({
-    title: editList ? list.title : "",
-    description: editList ? list.description : ""
+    title: editList ? list?.title : "",
+    description: editList ? list?.description : ""
   })
 
   const handleEdit = async () => {
-    if (input.title === list.title && input.description === list.description) {
+    if (
+      input.title === list?.title &&
+      input?.description === list?.description
+    ) {
       return present({
         duration: 3000,
         message: "No changes made!",
@@ -34,7 +36,7 @@ const CreateListModal = ({ editList = false, list }) => {
     }
 
     const res = await authInstance.patch(
-      `${userServer}/update-list/${list._id}`,
+      `${userServer}/update-list/${list?._id}`,
       {
         title: input.title,
         description: input.description
@@ -42,11 +44,11 @@ const CreateListModal = ({ editList = false, list }) => {
     )
     if (res.data.success) {
       setLists((prev) =>
-        prev.map((list) => {
-          if (list._id === res.data.data._id) {
+        prev.map((lis) => {
+          if (lis._id === res.data.data._id) {
             return res.data.data
           }
-          return list
+          return lis
         })
       )
       present({

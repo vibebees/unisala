@@ -22,14 +22,14 @@ function index({ filterPage, setFilterPage }) {
       {Array.isArray(searchData) &&
         searchData.map((data, index) => {
           return (
-            <CustomTrackingLink
-              title={`${data?.name} clicked on university result filter `}
-              to={`/university/${data?.name}`}
-              key={index}
-              destination={`/university/${data?.name}`}
-            >
-              <CourseCard allProps={data} />
-            </CustomTrackingLink>
+            // <CustomTrackingLink
+            //   title={`${data?.name} clicked on university result filter `}
+            //   to={`/university/${data?.name}`}
+            //   key={index}
+            //   destination={`/university/${data?.name}`}
+            // >
+            <CourseCard key={index} allProps={data} />
+            // </CustomTrackingLink>
           )
         })}
       <IonInfiniteScroll
