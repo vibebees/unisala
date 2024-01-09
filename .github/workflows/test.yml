@@ -19,9 +19,9 @@ jobs:
       - name: install & build
         run: |
           npm i --force
-          CI=false NODE_ENV=PRODUCTION npm run build
+          CI=false NODE_ENV=production npm run build
         env:
-          NODE_ENV: PRODUCTION
+          NODE_ENV: production
 
       - name: copy file via ssh key
         if: ${{github.ref == 'refs/heads/test'}}
