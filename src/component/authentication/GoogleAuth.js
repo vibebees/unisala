@@ -2,22 +2,16 @@ import { useRef } from "react"
 import { useIonToast } from "@ionic/react"
 
 import "./auth.css"
- import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { googleAuthAction } from "store/action/authenticationAction"
 import { useHistory } from "react-router"
-import {useScript} from "hooks/useScript"
+import { useScript } from "hooks/useScript"
 
-export const GoogleAuth = ({ setauth, allProps = {} }) => {
-  const { setPopoverOpen, authFromPopUp } = allProps
+export const GoogleAuth = ({ setauth }) => {
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef(),
     dispatch = useDispatch(),
-    history = useHistory(),
-    moveToHome = () => {
-      if (!authFromPopUp) {
-        history.push("/home")
-      }
-    }
+    history = useHistory()
 
   const onGoogleSignIn = (user) => {
     const { credential } = user
@@ -25,10 +19,7 @@ export const GoogleAuth = ({ setauth, allProps = {} }) => {
       googleAuthAction({
         present,
         dismiss,
-        credential,
-        setPopoverOpen,
-        authFromPopUp,
-        moveToHome
+        credential
       })
     )
   }

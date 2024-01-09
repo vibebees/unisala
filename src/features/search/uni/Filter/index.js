@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
-import { IonCard, IonCardContent, IonCol, IonRow } from "@ionic/react"
+import { IonButton, IonCard, IonCardContent, IonCol, IonIcon, IonLabel, IonRow } from "@ionic/react"
 import "./index.css"
-import { useEffect, useLayoutEffect, useState, useRef } from "react"
+import { useEffect, useLayoutEffect, useState, useRef, useContext } from "react"
 import { useLazyQuery } from "@apollo/client"
 import { UNIVERSITY_SERVICE_GQL } from "servers/types"
 import { UniFilterResults } from "graphql/uni"
@@ -24,6 +24,8 @@ import {
 import { universityServer } from "servers/endpoints"
 import { URLgetter, URLupdate } from "utils/lib/URLupdate"
 import { useDebouncedEffect } from "hooks/useDebouncedEffect"
+import {search} from "ionicons/icons"
+import {ExploreFilterPopupContext} from "../ExploreUniFilterPopupContext"
 
 function index({ setIsLoading, filterPage }) {
   const [isFiltered, setIsFiltered] = useState(false)
@@ -57,6 +59,8 @@ function index({ setIsLoading, filterPage }) {
       })
     }
   }, [filterPage])
+
+  const {popUp, closePopup} = useContext(ExploreFilterPopupContext)
 
   const getAllQueryParams = (page) => {
     let queryObject = {}
@@ -382,6 +386,15 @@ function index({ setIsLoading, filterPage }) {
               key={"stateselect"}
             />
           </div>
+          <IonButton
+            className="w-full flex-nowrap"
+            color="success"
+            onClick={closePopup}
+          >
+            <IonLabel>Search</IonLabel>
+            <IonIcon icon={search}></IonIcon>
+
+            </IonButton>
         </IonCardContent>
       </IonCard>
     </>

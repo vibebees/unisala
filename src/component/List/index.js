@@ -14,7 +14,6 @@ import {
   IonContent
 } from "@ionic/react"
 import ListContainer from "./molecules/ListContainer"
-import SingleUniversityList from "./atoms/SingleUniversityList"
 import { useHistory } from "react-router"
 import { URLgetter, URLdelete } from "utils/lib/URLupdate"
 import Lists from "./molecules/Lists"

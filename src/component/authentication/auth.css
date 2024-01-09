@@ -34,9 +34,8 @@
 .sign-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     padding: 2rem 40px;
-    min-height: 85vh;
+
 }
 
 .auth-name {

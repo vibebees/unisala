@@ -1,13 +1,10 @@
 import { useState } from "react"
-import AWS from "aws-sdk"
 
 const S3_BUCKET = "unisala-test"
 const REGION = "ap-south-1"
 
-AWS.config.update({
-  accessKeyId: "AKIAZ6I45TER3Z53WMUW",
-  secretAccessKey: "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"
-})
+let AWS = {}
+
 
 const myBucket = new AWS.S3({
   params: { Bucket: S3_BUCKET },

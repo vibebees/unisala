@@ -6,11 +6,17 @@ import { URLgetter } from "utils/lib/URLupdate"
 
 const Lists = () => {
   const id = URLgetter("id")
-  const [universitiesList, setUniversitiesList] = useState([])
+  const [universitiesList, setUniversitiesList] = useState({
+    data: [],
+    id: ""
+  })
   const getAllLists = async () => {
     const res = await authInstance.get(`${userServer}/get-list-details/${id}`)
     if (res.data.success) {
-      setUniversitiesList(res.data?.data?.unitDetails)
+      setUniversitiesList({
+        data: res.data.data.unitDetails,
+        id: res.data.data._id
+      })
     }
   }
 
@@ -21,9 +27,14 @@ const Lists = () => {
   return (
     <div className="w-full">
       {universitiesList &&
-        universitiesList.length > 0 &&
-        universitiesList.map((list, index) => (
-          <SingleUniversityList key={index} {...list} />
+        universitiesList.data.length > 0 &&
+        universitiesList.data.map((list, index) => (
+          <SingleUniversityList
+            key={index}
+            {...list}
+            id={universitiesList.id}
+            setUniversitiesList={setUniversitiesList}
+          />
         ))}
       {universitiesList.length === 0 && (
         <div className="text-center text-lg">No universities found!</div>

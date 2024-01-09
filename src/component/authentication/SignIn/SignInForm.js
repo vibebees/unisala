@@ -7,7 +7,7 @@ import { useHistory } from "react-router"
 import { validateSignIn } from "utils/components/validate"
 import { loginUser } from "store/action/authenticationAction"
 
-const SignInForm = ({ setauth }) => {
+const SignInForm = ({ setauth, setShowSignup = null }) => {
   const [input, setInput] = useState({ email: "", password: "" })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -85,19 +85,19 @@ const SignInForm = ({ setauth }) => {
       >
         {loading ? <IonSpinner></IonSpinner> : "Login"}
       </button>
-      {location.pathname === "/login" && (
-        <IonRow
-          onClick={() => {
-            setauth({ state: "signup" })
-          }}
-          className="auth-change mt-8 inline-flex "
-        >
-          <p className="text-blue-600 font-medium text-lg">
-            Not Registered Yet?{" "}
-            <span className="underline underline-offset-4"> Click Here</span>
-          </p>
-        </IonRow>
-      )}
+
+      <IonRow
+        onClick={() => {
+          setauth({ state: "signup" })
+          if (setShowSignup) setShowSignup(true)
+        }}
+        className="auth-change mt-8 inline-flex "
+      >
+        <p className="text-blue-600 font-medium text-lg">
+          Not Registered Yet?{" "}
+          <span className="underline underline-offset-4"> Click Here</span>
+        </p>
+      </IonRow>
     </form>
   )
 }
