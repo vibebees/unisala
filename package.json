@@ -74,7 +74,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set \"CI=false\" && react-scripts build",
+    "build": "GENERATE_SOURCEMAP=true set \"CI=false\" && react-scripts build",
     "build-win": "set CI=false&&react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
@@ -82,7 +82,9 @@
     "android": "npx cap add android",
     "ios": "npx cap add ios",
     "openandroid": "npx cap open android",
-    "ionic:build": "npm run build && ionic capacitor "
+    "ionic:build": "npm run build && ionic capacitor ",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
+
   },
   "eslintConfig": {
     "extends": [
