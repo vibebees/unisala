@@ -31,14 +31,12 @@ export const UniversityBuild = ({ allProps }) => {
             <UniversityHeader allProps={allProps} />
           </div>
 
-          <div className="lg:w-2/5 mx-auto mt-4">
-            <CreateAPostCard
+          <CreateAPostCard
               allProps={{
                 ...allProps,
                 unitId: data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId
               }}
             />
-          </div>
           <SideNavigator allProps={allProps} />
           <div
             style={{

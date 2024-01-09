@@ -15,9 +15,9 @@ export const PostCardForClick = ({ allProps = {} }) => {
       setPlaceholder("Review University 🏛️ ")
       return
     }
-    const value = ["graduated", "studying"].includes(userStatus)
-      ? "Review university 🏛️ ..."
-      : "Suggest me university 🏛️ ..."
+    const value = ["looking", "applying"].includes(userStatus)
+      ? "Suggest me university 🏛️ ..."
+      : "Review university 🏛️ ..."
     setPlaceholder(value)
   }, [userStatus])
   const { user } = allProps
@@ -46,9 +46,6 @@ export const PostCardForClick = ({ allProps = {} }) => {
         <IonCol size="auto">
           <IonItem lines="none">
             <IonIcon icon={imageOutline} />
-            <IonLabel className="ion-padding-start">
-              <p>Image</p>
-            </IonLabel>
           </IonItem>
         </IonCol>
       </IonItem>

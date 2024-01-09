@@ -1,8 +1,8 @@
-import AWS from "aws-sdk"
 import {key} from "ionicons/icons"
 import {store} from "../store/store"
 
 let
+  AWS = {},
   S3_BUCKET = null,
   REGION = "us-east-1",
   BASE_URL = ""

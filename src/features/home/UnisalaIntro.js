@@ -8,6 +8,9 @@ import {
 import roadmap from "assets/roadmap.png"
 import { lockOpenOutline } from "ionicons/icons"
 import ExploreUniversities from "assets/ExploreUniversity.png"
+import currentStudents from "assets/currentStudents.jpeg"
+import question from "assets/welcome/question.jpeg"
+
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 import { ImageSlider } from "./welcomeSlider"
 import Login from "features/login"
@@ -21,31 +24,47 @@ export const UnisalaLandingPage = ({ allProps }) => {
 
       <IonCard className="mb-4">
         <IonCardContent className="flex flex-col text-left">
-          <h1 className="text-2xl font-bold pt-1 pb-2">
-            Share and Shape Careers, Change Lives!
-          </h1>
           <ul className="list-disc list-inside text-md space-y-2">
-            <li>
+            <h1 className="text-2xl font-bold pt-1 pb-2">
               <strong>Are you an incoming student?</strong> 🤔
+            </h1>
+            <img src={question} alt="roadmap" />
+            <li>
+              <strong></strong>
               <ul className="list-inside space-y-1 mt-1">
                 <li>
-                  🏫 Get university recommendations tailored to your interests
-                  and goals.
+                  <ul className="list-inside space-y-1 mt-1">
+                    <li>
+                      🏫 Get university recommendations tailored to your
+                      interests and goals.
+                    </li>
+                    <li>
+                      💬 Ask questions and receive advice from student and
+                      graduates who &lsquo; ve been in your shoes.
+                    </li>
+                    <li>
+                      🤓 Make informed decisions with insights on courses,
+                      campus life and more reviews.
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  💬 Ask questions and receive advice from student and graduates
-                  who &lsquo; ve been in your shoes.
-                </li>
-                <li>
-                  🤓 Make informed decisions with insights on courses, campus
-                  life and more reviews.
-                </li>
+                <br />
               </ul>
             </li>
-            <br />
+          </ul>
+          <br />
+        </IonCardContent>
+      </IonCard>
 
+      <IonCard className="mb-4">
+        <IonCardContent className="flex flex-col text-left">
+          <ul className="list-disc list-inside text-md space-y-2">
+            <h1 className="text-2xl font-bold pt-1 pb-2">
+              <strong> Are you a current student 🧑‍🎓 or alumni 🎓 ?</strong>
+            </h1>
+            <img src={currentStudents} alt="roadmap" />
             <li>
-              <strong>Are you a current student or alumni?</strong> 🎓
+              <strong></strong>
               <ul className="list-inside space-y-1 mt-1">
                 <li>
                   🌟 Help shape the future of students by sharing your
@@ -56,10 +75,6 @@ export const UnisalaLandingPage = ({ allProps }) => {
                   decision-making process.
                 </li>
                 <li>
-                  🤝🌍 Connect with community, expanding your network and
-                  learning from diverse perspectives.
-                </li>
-                <li>
                   🎤💡 Share tips on academics, campus life, and career
                   opportunities to illuminate the path for others.
                 </li>
@@ -67,48 +82,38 @@ export const UnisalaLandingPage = ({ allProps }) => {
             </li>
           </ul>
           <br />
+
+          <div className="flex gap-4 w-full pr-28 justify-end ">
+            <button
+              className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
+              onClick={() => {
+                ButtonTrack("Landing page login button clicked")
+                window.location.replace("/login")
+              }} // Replace '/login' with your login URL
+            >
+              <IonIcon icon={lockOpenOutline} />
+              &nbsp; Log In Now
+              <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
+            </button>
+          </div>
+        </IonCardContent>
+      </IonCard>
+
+      <IonCard className="mb-4">
+        <IonCardContent className="flex flex-col text-left">
+          <h1 className="text-2xl font-bold pt-1 pb-2">
+            <strong> Join Unisala</strong> 🤔
+          </h1>
+          <br />
           <p className="text-md mt-4">
-            Join Unisala — a community where knowledge empowers, experiences
-            guide, and every voice matters.
+            A community where knowledge empowers, experiences guide, and every
+            voice matters.
             <strong>
               Together, lets build a platform that turns academic aspirations
               into achievements. 🤝✨{" "}
             </strong>
           </p>
         </IonCardContent>
-
-        {/*
-     <IonCardContent className="flex flex-col text-left">
-  <h1 className="text-2xl font-bold pt-1 pb-2">
-    Platform for Better Decision Making 🎯
-  </h1>
-  <ul className="list-disc list-inside text-md space-y-2">
-    <li>
-      <strong>Engage:</strong> Connect with peers and professionals. 🤝
-    </li>
-    <li>
-      <strong>Ask Questions:</strong> Get clarity on your queries. 🤔
-    </li>
-    <li>
-      <strong>Learn:</strong> Gain insights from real experiences. 📘
-    </li>
-    <li>
-      <strong>University Reviews:</strong> Access authentic reviews for informed decisions. 🏫
-    </li>
-    <li>
-      <strong>Course Insights:</strong> Understand course offerings and what to expect. 📚
-    </li>
-    <li>
-      <strong>Visa Interviews:</strong> Prepare with firsthand advice and tips. 💼
-    </li>
-    <li>
-      <strong>Community Support:</strong> You’re not alone on this journey. We’re here to support each other. 💪✨
-    </li>
-    <li>
-      <strong>Share Your Story:</strong> Planning to study in the USA, currently enrolled, or graduated? Your insights are invaluable. Contribute your university reviews and suggestions! 🎓
-    </li>
-  </ul>
-</IonCardContent> */}
       </IonCard>
 
       {/* <IonCard className="mb-1">
@@ -200,7 +205,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
                 onClick={() => {
                   ButtonTrack("Landing page visa roadmap button clicked")
-                  window.open("/roadmap", "_blank")
+                  window.location.replace("/roadmap")
                 }}
               >
                 VISA ROADMAP

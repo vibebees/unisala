@@ -14,9 +14,20 @@ import "./index.css"
 import CustomTrackingLink from "features/analytics/LinkTrack"
 import { FeedSkeleton } from "component/skeleton/feedSkeleton"
 
+const NoResultCard = () => {
+  return (<IonCard style={{textAlign: "center"}}>
+    <img alt="unisala: no results found" src={noResultsFound} />
+    <IonCardHeader>
+      <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>
+      <IonCardSubtitle>
+        There were not any saved views, recent queries, or source matching
+        your search.
+      </IonCardSubtitle>
+    </IonCardHeader>
+  </IonCard>)
+}
 function index({ filterPage, setFilterPage }) {
-  const { searchData } = useSelector((store) => store?.university || [])
-
+   const { searchData } = useSelector((store) => store?.university || [])
   return searchData?.length ? (
     <div className="relative">
       {Array.isArray(searchData) &&
@@ -53,17 +64,10 @@ function index({ filterPage, setFilterPage }) {
       </IonInfiniteScroll>
     </div>
   ) : (
-    <IonCard style={{ textAlign: "center" }}>
-      <img alt="unisala: no results found" src={noResultsFound} />
-      <IonCardHeader>
-        <IonCardTitle>Sorry! No result found &#9785;</IonCardTitle>
-        <IonCardSubtitle>
-          There were not any saved views, recent queries, or source matching
-          your search.
-        </IonCardSubtitle>
-      </IonCardHeader>
-    </IonCard>
-  )
+    <NoResultCard />
+    )
+
+
 }
 
 export default index
