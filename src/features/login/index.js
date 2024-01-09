@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { IonCol, IonGrid, IonRow, IonContent } from "@ionic/react"
+import { IonCol, IonGrid, IonRow, IonContent, IonCard } from "@ionic/react"
 import SignIn from "../../component/authentication/SignIn/Index"
 import SignUp from "../../component/authentication/SignUp/Index"
 import EmailVerify from "../../component/authentication/Verification/ForgotPassword/EmailVerify"
@@ -17,31 +17,29 @@ export const Login = ({ allProps }) => {
   })
 
   return (
-    <IonContent className="auth-pop ">
-      <IonGrid className="">
-        <IonRow style={{ overflow: "hidden" }}>
-          <IonCol>
-            {auth.state === "signin" ? (
-              <SignIn auth={auth} setauth={setauth} allProps={allProps} />
-            ) : auth.state === "signup" ? (
-              <SignUp setauth={setauth} auth={auth} allProps={allProps} />
-            ) : auth.state === "SignUpVerification" ? (
-              <SignUpVerification setauth={setauth} auth={auth} />
-            ) : auth.state === "emailVerify" ? (
-              <EmailVerify setauth={setauth} />
-            ) : auth.state === "ForgotPasswordVerification" ? (
-              <ForgotPasswordVerification setauth={setauth} auth={auth} />
-            ) : auth.state === "resetPassword" ? (
-              <ResetPassword setauth={setauth} auth={auth} />
-            ) : auth.state === "userNotVerified" ? (
-              <UserNotVerified setauth={setauth} auth={auth} />
-            ) : auth.state === "welcomeForm" ? (
-              <WelcomSteps />
-            ) : null}
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </IonContent>
+    <IonGrid className="ion-no-padding ion-no-margin">
+      <IonRow style={{ overflow: "hidden" }}>
+        <IonCol>
+          {auth.state === "signin" ? (
+            <SignIn auth={auth} setauth={setauth} />
+          ) : auth.state === "signup" ? (
+            <SignUp setauth={setauth} auth={auth} />
+          ) : auth.state === "SignUpVerification" ? (
+            <SignUpVerification setauth={setauth} auth={auth} />
+          ) : auth.state === "emailVerify" ? (
+            <EmailVerify setauth={setauth} />
+          ) : auth.state === "ForgotPasswordVerification" ? (
+            <ForgotPasswordVerification setauth={setauth} auth={auth} />
+          ) : auth.state === "resetPassword" ? (
+            <ResetPassword setauth={setauth} auth={auth} />
+          ) : auth.state === "userNotVerified" ? (
+            <UserNotVerified setauth={setauth} auth={auth} />
+          ) : auth.state === "welcomeForm" ? (
+            <WelcomSteps />
+          ) : null}
+        </IonCol>
+      </IonRow>
+    </IonGrid>
   )
 }
 export default Login

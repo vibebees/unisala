@@ -119,13 +119,7 @@ export const registerUser =
 // USAGE
 // dispatch(registerUser(input, setsave, setdatacheck, setauth, present, dismiss));
 
-export const googleAuthAction = ({
-  present,
-  dismiss,
-  credential,
-  setPopoverOpen = () => {},
-  moveToHome
-}) => {
+export const googleAuthAction = ({ present, dismiss, credential }) => {
   return (dispatch) =>
     axios
       .post(userServer + `/auth/google`, { token: credential })
@@ -133,6 +127,7 @@ export const googleAuthAction = ({
         if (res.data.success) {
           localStorage.setItem("accessToken", res?.data?.accessToken)
           localStorage.setItem("refreshToken", res?.data?.refreshToken)
+
           if (res?.data.isFirstLogin) {
             localStorage.setItem("newUser", "true")
           }
@@ -144,10 +139,6 @@ export const googleAuthAction = ({
             type: LOGIN,
             payload: res.data
           })
-
-          dismiss()
-          setPopoverOpen(false)
-          moveToHome()
         }
         if (!res.data.success) {
           dispatch({

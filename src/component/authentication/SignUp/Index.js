@@ -4,7 +4,7 @@ import SignUpForm from "./SignUpForm"
 import AppleAuth from "../AppleAuth"
 import "../auth.css"
 
-export const SignUp = ({ setauth, allProps }) => {
+export const SignUp = ({ setauth, setShowSignup = null }) => {
   return (
     <div className="sign-content">
       <IonText className="auth-start">
@@ -22,7 +22,7 @@ export const SignUp = ({ setauth, allProps }) => {
             width: "234px"
           }}
         >
-          <GoogleAuth setauth={setauth} allProps={allProps} />
+          <GoogleAuth setauth={setauth} />
         </div>
       </div>
       {/* <div className="auth-button">
@@ -31,7 +31,7 @@ export const SignUp = ({ setauth, allProps }) => {
       <div className="auth-or">
         <p className="auth-or-p">OR</p>
       </div>
-      <SignUpForm setauth={setauth} />
+      <SignUpForm setauth={setauth} setShowSignup={setShowSignup} />
     </div>
   )
 }
