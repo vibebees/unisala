@@ -44,5 +44,5 @@ jobs:
           port: 22
           script: |
             cd unisala-web/build
-            sudo rm -rf /var/www/html/* 
+            sudo rm -rf /var/www/html/*
             sudo cp -r * /var/www/html
