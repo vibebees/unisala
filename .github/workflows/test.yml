@@ -19,9 +19,9 @@ jobs:
       - name: install & build
         run: |
           npm i --force
-          CI=false NODE_ENV=TEST npm run build
+          CI=false NODE_ENV=PRODUCTION npm run build
         env:
-          NODE_ENV: TEST
+          NODE_ENV: PRODUCTION
 
       - name: copy file via ssh key
         if: ${{github.ref == 'refs/heads/test'}}
@@ -44,5 +44,5 @@ jobs:
           port: 22
           script: |
             cd unisala-web/build
-            sudo rm -rf /var/www/html/* 
+            sudo rm -rf /var/www/html/*
             sudo cp -r * /var/www/html
