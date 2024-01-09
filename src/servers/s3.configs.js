@@ -1,43 +1,10 @@
-import AWS from "aws-sdk"
-import {key} from "ionicons/icons"
-import {store} from "../store/store"
 
 let
   S3_BUCKET = null,
   REGION = "us-east-1",
   BASE_URL = ""
 
-export const awsBucket = (type) => {
-  switch (type) {
-    case "user":
-      S3_BUCKET = "unisala-user-images"
-      REGION = "us-east-1"
-      AWS?.config?.update({
-        accessKeyId: "AKIAUVJSKU37X3A6PCBA",
-        secretAccessKey: "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",
-        region: REGION
-      })
-      BASE_URL = "https://unisala-user-images.s3.us-east-1.amazonaws.com/"
-      break
-    case "uni":
-      AWS?.config?.update({
-        accessKeyId: "AKIAUVJSKU37TPTUP4P7",
-        secretAccessKey: "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",
-        region: REGION
-      })
-      S3_BUCKET = "unisala-university-images"
-      REGION = "us-east-1"
-      BASE_URL = "https://unisala-university-images.s3.us-east-1.amazonaws.com/"
-      break
-    default:
-      break
-  }
-  return new AWS.S3({
-    params: {Bucket: S3_BUCKET},
-    region: REGION
-  })
-
-},
+export const awsBucket = (type) => {},
   bucketName = (type) => {
     let S3_BUCKET = null
     switch (type) {
