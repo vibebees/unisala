@@ -199,7 +199,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
                   ButtonTrack(
                     "Landing page explore universities button clicked"
                   )
-                  window.open("/search?tab=uni", "_blank")
+                  window.location.replace("/search?tab=uni")
                 }}
               >
                 Explore Universities
@@ -223,7 +223,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
                 className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
                 onClick={() => {
                   ButtonTrack("Landing page visa roadmap button clicked")
-                  window.open("/roadmap", "_blank")
+                  window.location.replace("/roadmap")
                 }}
               >
                 VISA ROADMAP
