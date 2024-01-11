@@ -31,7 +31,7 @@ export const loginUser = ({
             payload: res?.data || {}
           })
           window.location.replace(
-            redirectUrl ? `/university/${redirectUrl}&create=y` : "/home"
+            redirectUrl ? `/university/${redirectUrl}&create=y` : "/"
           )
         }
 

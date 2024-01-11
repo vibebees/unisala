@@ -37,7 +37,9 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
           history,
           setLoading,
           present,
-          redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`
+          redirectUrl: params.get("uni")
+            ? params.get("uni") + `?unitId=${params.get("unitId")}`
+            : null
         })
       )
     } else {
