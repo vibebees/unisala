@@ -182,7 +182,9 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
               setCreateAPostPopUp(false)
               params.set("uni", location.pathname.split("university/")[1])
               history.push({ search: params.toString() })
-
+              ButtonTrack(
+                "Not logged user attempted to login when we was about to post on university page"
+              )
               setTimeout(() => {
                 history.push("/login")
               })
@@ -194,7 +196,10 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
           <IonButton
             color={"warning"}
             className="mt-4 w-4/5"
-            onClick={() => setAllowPost(true)}
+            onClick={() => {
+              setAllowPost(true)
+              ButtonTrack("Not logged user wants to post without logging in")
+            }}
           >
             Continue without logging in
           </IonButton>
