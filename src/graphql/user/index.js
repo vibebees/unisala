@@ -57,7 +57,7 @@ export const AddComment = gql`
       $unitId: Float
       $tags: [ID]
       $postTag: String
-      $id: NodeEnum!
+      $id: String!
       $levelOfStudy: LevelOfStudyEnum
       $major: String
       $gpa: Float
