@@ -17,7 +17,7 @@ import SpaceHeader from "./SpaceHeader"
 import PreLoader from "../../component/preloader"
 import { SpaceNotFound } from "../../component/PageNotFound"
 import { CreateAPostCard } from "../../component/post/template"
-
+import Tabs from "../../component/tabs"
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
 
@@ -32,7 +32,10 @@ export const Spaces = ({ allProps }) => {
     searchSpaceCategory,
     user,
     width,
-    views
+    views,
+    configSegment,
+    tab,
+    setTab
   } = allProps
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -40,6 +43,16 @@ export const Spaces = ({ allProps }) => {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+
+
+  useEffect(() => {
+    const queryString = window.location.search
+    const queryParams = new URLSearchParams(queryString)
+    const flagValue = queryParams.get("address")
+
+    setTab(flagValue)
+}, [window.location.search])
 
   // condition because we do not want to send null datas to backend
   if (spaceId && !tags.includes(spaceId)) {
@@ -53,63 +66,74 @@ export const Spaces = ({ allProps }) => {
   if (!spaceCategory) {
     return <SpaceNotFound />
   }
+const scrollToTop = () => {
+  document.querySelector(".ThreadContainer").scrollIntoView({ behavior: "smooth" })
+}
 
+  const tabs = {
+    feed: (
+      <>
+        <CreateAPostCard allProps={allProps} />
+        <SpaceFeed spaceId={spaceId} userInfo={user} />
+      </>
+    ),
+    members: (
+      <>
+       members
+      </>
+    ),
+    events: (
+      <>
+        events
+      </>
+    )
+  }
+  const SpaceBody = () => {
+    return tabs[tab]
+  }
+  const Space = () => (
+    <IonCol className="colStyle ThreadContainer">
+      <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
+      <IonRow className="bg-white" >
+        <Tabs config ={configSegment} />
+      </IonRow>
+      <SpaceBody />
+    </IonCol>
+  )
+
+/*
   return (
     <IonContent color="light">
-      {width < 768 && views.lessThan768}
-      <IonGrid
-        style={{
-          width: width >= 768 ? "95%" : "100%",
-          margin: "auto",
-          maxWidth: "1200px"
-        }}
-      >
-        <IonRow
-          style={{
-            justifyContent: "flex-start",
-            margin: "0 auto"
-          }}
-          className="max-width-container"
-        >
-          {width > 768 && views.greaterThan768}
-          <IonCol
-            style={{
-              maxWidth: "700px",
-              margin: "auto",
-              minHeight: "calc(90vh)"
-            }}
-            className="ThreadContainer"
-          >
-            <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
-            {loggedIn && width >= 768 && (
-              <CreateAPostCard allProps={allProps} />
-            )}
-            {loggedIn ? (
-              <SpaceFeed spaceId={spaceId} userInfo={user} />
-            ) : (
-              <UnisalaIntro />
-            )}
-          </IonCol>
+    {width < 768 && views.lessThan768}
+    <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
+      <IonRow className="rowStyle">
+        {width > 768 && views.greaterThan768}
+        <Space/>
+        {width > 1000 && <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>}
+      </IonRow>
+    </IonGrid>
+    <button className="scrollButton" onClick={scrollToTop}>
+      <IonIcon icon={arrowUpOutline} className="scrollIcon" />
+    </button>
+  </IonContent>
+  )
+  */
+  return (
+    <IonContent color="light">
+    {width < 768 && views.lessThan768}
+    <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
+        <IonRow className="rowStyle">
+        {width > 768 && views.greaterThan768}
 
-          <IonCol className="max-w-max">
-            {width > 1000 && views.greaterThan1000}
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-      <button
-        className={clsx(
-          "w-10 h-10 rounded-full hover:shadow-lg hover:bg-neutral-300 duration-200 transition-all ease-linear bg-neutral-200 grid place-content-center fixed right-10 bottom-6"
-        )}
-        onClick={() => {
-          let ThreadContainer = document.querySelector(".ThreadContainer")
-          ThreadContainer.scrollIntoView({ behavior: "smooth" })
-        }}
-      >
-        <IonIcon
-          icon={arrowUpOutline}
-          class="text-neutral-700 text-lg"
-        ></IonIcon>
-      </button>
-    </IonContent>
+          <Space />
+          {width > 1000 && <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>}
+
+      </IonRow>
+
+    </IonGrid>
+    <button className="scrollButton" onClick={scrollToTop}>
+      <IonIcon icon={arrowUpOutline} className="scrollIcon" />
+    </button>
+  </IonContent>
   )
 }

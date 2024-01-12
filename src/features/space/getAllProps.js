@@ -4,7 +4,7 @@ import {screenGreaterThan1000} from "./screens.greater.1000"
 import {screensMoreThan768} from "./screens.moreThan768"
 import {screenLessThan768} from "./screens.lessThan768"
 import unisalaImg from "assets/unisala-intro.png"
-import {useParams} from "react-router"
+import {useHistory, useParams} from "react-router"
 import {personCircle, arrowUpOutline} from "ionicons/icons"
 
 export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, profileData = {}, data = {}, loading = true}) => {
@@ -13,7 +13,7 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
 
   const {getTopActiveSpaces} = topSpaceData || {},
     [showTopScrollbtn, setShowTopScrollbtn] = useState(false),
-
+    history = useHistory(),
     [width, setWidth] = useState(window.innerWidth),
     handleResize = () => {
       const {innerWidth} = window
@@ -51,6 +51,43 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     spaceId = spaceCategory?._id,
     parentId = spaceCategory?.parentId // this could be null as the current space could be parent in itself
   let tags = []
+  const configSegment = {
+    options: [
+      {
+        "name": "Feed",
+        "icon": "home"
+      },
+      {
+        "name": "Members",
+        "icon": "people"
+      },
+      {
+        "name": "Events",
+        "icon": "calendar"
+      },
+      {
+        "name": "About",
+        "icon": "information-circle"
+      },
+      {
+        "name": "Apply",
+        "icon": "clipboard"
+      },
+      {
+        "name": "History",
+        "icon": "time"
+      }
+    ],
+    onClick: (event) => {
+      const value = event?.target?.value.toLowerCase()
+      history.push({
+          pathname: window.location.pathname,
+          search: `?address=${value}`
+      })
+    }
+  },
+   [tab, setTab] = useState("")
+
 
   return {
     unisalaImg,
@@ -78,7 +115,10 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     loading,
     searchSpaceCategory,
     spaceCategory,
-    tags
+    tags,
+    configSegment,
+    tab,
+    setTab
   }
 
 }

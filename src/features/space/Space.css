@@ -116,3 +116,81 @@
     background-size: cover;
     background-position: center;
 }
+
+
+.gridStyle {
+    width: 95%;
+    margin: auto;
+    max-width: 1200px;
+  }
+
+  .gridStyleFull {
+    width: 100%;
+  }
+
+  .colStyle {
+    max-width: 700px;
+    margin: auto;
+    min-height: calc(90vh);
+  }
+
+  .scrollButton {
+    width: 2.5rem; /* 40px */
+    height: 2.5rem; /* 40px */
+    border-radius: 9999px; /* Full round */
+    background-color: #e5e7eb; /* neutral-200 */
+    position: fixed;
+    right: 2.5rem; /* 40px */
+    bottom: 1.5rem; /* 24px */
+    display: grid;
+    place-content: center;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+
+  .scrollButton:hover {
+    background-color: #d1d5db; /* neutral-300 */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .iconStyle {
+    color: #4b5563; /* neutral-700 */
+    font-size: 1.125rem; /* text-lg */
+  }
+
+
+  .profile-header-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .profile-header-gradient {
+    background: linear-gradient(90deg, rgba(0, 0, 0) 20%, rgba(99, 96, 96, 1) 62%);
+    position: relative;
+    padding: 1rem;
+    color: white;
+  }
+
+  .space-name {
+    font-size: 1.125rem; /* text-lg */
+    text-transform: capitalize;
+    font-weight: 800; /* font-extrabold */
+  }
+
+  .space-description {
+    font-weight: 500; /* font-medium */
+  }
+
+  .popover-button {
+    position: absolute;
+    right: 1.25rem; /* right-5 */
+    top: 0.5rem; /* top-2 */
+  }
+
+  .popover-content {
+    color: black;
+  }
+
+  .modal-title {
+    font-size: 1.25rem; /* text-xl */
+  }
