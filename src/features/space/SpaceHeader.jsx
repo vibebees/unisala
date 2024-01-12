@@ -110,21 +110,26 @@ const SpaceHeader = ({spaceDetails}) => {
 
   return (
     <IonCard>
-      <IonCardHeader >
-        <img
-          className="profile-header-img"
-          src={spaceDetails?.image || SpaceHeaderImg}
-          alt={`${spaceDetails?.name} Header`}
-        />
-      </IonCardHeader>
+    <IonCardHeader>
+      <img
+        className="profile-header-img"
+        src={spaceDetails?.image || SpaceHeaderImg}
+        alt={`${spaceDetails?.name} Header`}
+        style={{ height: "auto", maxWidth: "100%", borderRadius: "10px" }}
+      />
+    </IonCardHeader>
 
-      <div className="profile-header-gradient">
-        <h1 className="space-name">{spaceDetails?.name}</h1>
-        <p className="space-description">{spaceDetails?.description}</p>
+    <div className="profile-header-gradient">
+      <h2 className="space-name">
+        {spaceDetails?.name}
+      </h2>
+      <p className="space-description" style={{ fontSize: "16px" }}>
+        {spaceDetails?.description}
+      </p>
       <OptionsEditSpace />
+    </div>
+  </IonCard>
 
-      </div>
-    </IonCard>
   )
 
 }

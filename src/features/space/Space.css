@@ -165,22 +165,24 @@
   }
 
   .profile-header-gradient {
-    background: linear-gradient(90deg, rgba(0, 0, 0) 20%, rgba(99, 96, 96, 1) 62%);
-    position: relative;
-    padding: 1rem;
-    color: white;
+    background: linear-gradient(135deg, #000000, #6fff00);
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
   }
 
   .space-name {
-    font-size: 1.125rem; /* text-lg */
-    text-transform: capitalize;
-    font-weight: 800; /* font-extrabold */
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff; /* Contrasting color */
   }
 
   .space-description {
-    font-weight: 500; /* font-medium */
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #fff; /* Less prominent but readable color */
   }
-
   .popover-button {
     position: absolute;
     right: 1.25rem; /* right-5 */

@@ -18,6 +18,8 @@ import PreLoader from "../../component/preloader"
 import { SpaceNotFound } from "../../component/PageNotFound"
 import { CreateAPostCard } from "../../component/post/template"
 import Tabs from "../../component/tabs"
+import { Members } from "./org/members"
+import {Event} from "./org/event"
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
 
@@ -70,23 +72,16 @@ const scrollToTop = () => {
   document.querySelector(".ThreadContainer").scrollIntoView({ behavior: "smooth" })
 }
 
+  const Feed = () => (<>
+    <CreateAPostCard allProps={allProps} />
+    <SpaceFeed spaceId={spaceId} userInfo={user} />
+  </>)
+
+
   const tabs = {
-    feed: (
-      <>
-        <CreateAPostCard allProps={allProps} />
-        <SpaceFeed spaceId={spaceId} userInfo={user} />
-      </>
-    ),
-    members: (
-      <>
-       members
-      </>
-    ),
-    events: (
-      <>
-        events
-      </>
-    )
+    feed: <Feed />,
+    members: <Members/>,
+    events: <Members/>
   }
   const SpaceBody = () => {
     return tabs[tab]
