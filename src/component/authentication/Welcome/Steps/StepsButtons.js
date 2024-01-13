@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "graphql/user"
-import {USER_SERVICE_GQL} from "servers/types"
+import { USER_SERVICE_GQL } from "servers/types"
 
 const StepsButtons = ({ allProps }) => {
   const { welcomeFormdata } = useContext(WelcomeData),
@@ -21,7 +21,16 @@ const StepsButtons = ({ allProps }) => {
       lastName: decode.lastName,
       username: decode.username
     }),
-    { currentStep, setCurrentStep, setNewUser, modalRef, refetch } = allProps
+    {
+      currentStep,
+      setCurrentStep,
+      setNewUser,
+      modalRef,
+      refetch,
+      meta,
+      totalSteps
+    } = allProps
+  const metaData = Object.values(meta)
   // eslint-disable-next-line require-await
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
@@ -95,8 +104,19 @@ const StepsButtons = ({ allProps }) => {
     }
   })
 
+  const validationFunctions = () => {
+    let typeofData = typeof welcomeFormdata[metaData[currentStep - 1].id]
+    if (typeofData === "string") {
+      return welcomeFormdata[metaData[currentStep - 1].id] !== ""
+    }
+    if (typeofData === "object") {
+      return welcomeFormdata[metaData[currentStep - 1].id].length > 0
+    }
+  }
+
   const handleSubmit = () => {
-    if (currentStep === 5 && welcomeFormdata.studyLevel === "") {
+    const isValid = validationFunctions()
+    if (!isValid) {
       return present({
         duration: 3000,
         message: "Please select atleast one study level",
@@ -115,41 +135,8 @@ const StepsButtons = ({ allProps }) => {
       console.log(error)
     }
   }
-
-  const handleSkip = () => {
-    // If you want to save some default value or an indication that the user chose to skip, you can do it here.
-
-    // Move to the next step or directly submit if it's the last step.
-    if (currentStep === 5) {
-      handleSubmit()
-    } else {
-      setCurrentStep(currentStep + 1)
-    }
-  }
-
-  const validationFunctions = [
-    () => true, // Step 1 validation function
-    () => {
-      // Step 2 validation function
-      return welcomeFormdata?.userStatus?.length > 0
-    },
-    () => {
-      // Step 3 validation function
-      return welcomeFormdata?.interestedSubjects !== ""
-    },
-    () => {
-      // Step 3 validation function
-      return welcomeFormdata?.studyLevel !== ""
-    },
-    () => {
-      // Step 4 validation function
-      return welcomeFormdata?.interestedUni?.length > 0
-    },
-    () => true // Step 5 validation function
-  ]
   const handleNext = () => {
-    const isValid = validationFunctions[currentStep - 1]()
-
+    const isValid = validationFunctions()
     if (!isValid) {
       return present({
         duration: 3000,
@@ -159,9 +146,17 @@ const StepsButtons = ({ allProps }) => {
         mode: "ios"
       })
     }
-
     setCurrentStep(currentStep + 1)
   }
+
+  const handleSkip = () => {
+    if (currentStep === totalSteps) {
+      handleSubmit()
+    } else {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
   return (
     <IonCard className="w-full ion-no-margin ion-no-padding shadow-none  flex justify-between h-12">
       <IonButton
@@ -178,9 +173,9 @@ const StepsButtons = ({ allProps }) => {
       </IonButton>
       <IonButton
         className="flex-shrink-0"
-        onClick={currentStep === 5 ? handleSubmit : handleNext}
+        onClick={currentStep === totalSteps ? handleSubmit : handleNext}
       >
-        {currentStep === 5 ? "Submit" : "Next"}
+        {currentStep === totalSteps ? "Submit" : "Next"}
       </IonButton>
     </IonCard>
   )
