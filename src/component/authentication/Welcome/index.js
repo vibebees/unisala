@@ -8,6 +8,7 @@ import "./index.css"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 import Step from "./Steps/Step"
+import FirstStep from "./Steps/welcome"
 
 export const WelcomeData = createContext()
 

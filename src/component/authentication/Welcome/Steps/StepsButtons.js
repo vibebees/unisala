@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react"
-import { IonButton, useIonToast, IonContent, IonCard } from "@ionic/react"
+import React, { useContext, useState } from "react"
+import { IonButton, useIonToast, IonCard } from "@ionic/react"
 import clsx from "clsx"
 import { WelcomeData } from ".."
-import { useDispatch, Provider, useSelector } from "react-redux"
-import { useMutation, useQuery } from "@apollo/client"
+import { useDispatch, useSelector } from "react-redux"
+import { useMutation } from "@apollo/client"
 import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "graphql/user"
@@ -119,7 +119,7 @@ const StepsButtons = ({ allProps }) => {
     if (!isValid) {
       return present({
         duration: 3000,
-        message: "Please select atleast one study level",
+        message: "Please select atleast one university",
         buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
         mode: "ios"
