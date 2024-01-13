@@ -1,15 +1,18 @@
 import {IonSegment} from "@ionic/react"
 import Segments from "../atoms/Segment"
-import {useState} from "react"
 const Tabs = ({props}) => {
-    const [selectedSegment, setSelectedSegment] = useState("home")
-
-    const {options, onClick} = props
-
+    const {options, onClick, scrollable = true} = props
     return (
-        <IonSegment value="default" scrollable= {true} >
+        <IonSegment value="default" scrollable= {scrollable} >
             {
-                options?.map(({name, icon}, i) => <Segments key={i} name={name} icon={icon} onClick={onClick} />)
+                options?.map(({name, icon, count = false, nav }, i) => <Segments
+                    key={i}
+                    name={name}
+                    icon={icon}
+                    onClick={onClick}
+                    count={count}
+                    nav={nav}
+                />)
             }
         </IonSegment>
 

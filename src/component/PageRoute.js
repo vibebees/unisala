@@ -55,17 +55,10 @@ export const PageRoute = ({ allProps }) => (
         <StudyAbroadRoadmap />
       </Route>
 
-      <Route path="/myjourney" exact>
-        <StudyAbroadRoadmapInput />
+      <Route path="/@/:username" exact>
+        <ProfilePage />
       </Route>
 
-      <Route exact path="/home">
-        <HomePage />
-      </Route>
-
-      <Route exact path="/">
-        <HomePage propsall={allProps} />
-      </Route>
 
       <Route exact path="/university/:id">
         <UniversityPage />
@@ -75,9 +68,6 @@ export const PageRoute = ({ allProps }) => (
         <ThreadDetail />
       </Route>
 
-      <Route path="/@/:username" exact>
-        <ProfilePage />
-      </Route>
 
       {messagingRoutes()}
       {spaceRoutes()}
@@ -99,6 +89,14 @@ export const PageRoute = ({ allProps }) => (
 
       <Route path="/login" exact>
         <Login allProps={allProps} />
+      </Route>
+
+      <Route exact path="/home">
+        <HomePage />
+      </Route>
+
+      <Route exact path="/">
+        <HomePage propsall={allProps} />
       </Route>
 
       <Route path="*" exact>

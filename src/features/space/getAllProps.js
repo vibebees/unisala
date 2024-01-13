@@ -55,38 +55,35 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     options: [
       {
         "name": "Feed",
-        "icon": "home"
+        "icon": "home",
+        "nav": "feed"
       },
       {
-        "name": "Members",
-        "icon": "people"
-      },
-      {
-        "name": "Events",
-        "icon": "calendar"
-      },
-      {
-        "name": "About",
-        "icon": "information-circle"
+        "name": "Org",
+        "icon": "people",
+        "nav": "org&mem=members"
+
       },
       {
         "name": "Apply",
-        "icon": "clipboard"
+        "icon": "clipboard",
+        "nav": "apply"
       },
       {
         "name": "History",
-        "icon": "time"
+        "icon": "time",
+        "nav": "history"
       }
     ],
-    onClick: (event) => {
-      const value = event?.target?.value.toLowerCase()
+    onClick: (event, nav) => {
       history.push({
           pathname: window.location.pathname,
-          search: `?address=${value}`
+          search: `?address=${nav}`
       })
-    }
+    },
+    scrollable: false
   },
-   [tab, setTab] = useState("")
+   [tab, setTab] = useState("feed")
 
 
   return {
