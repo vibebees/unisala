@@ -36,10 +36,9 @@ export const Spaces = ({ allProps }) => {
     width,
     views,
     configSegment,
-    tab = "feed",
+    tab,
     setTab
   } = allProps
-
   useEffect(() => {
     window.addEventListener("resize", handleResize)
     return () => {
@@ -49,7 +48,13 @@ export const Spaces = ({ allProps }) => {
 
 
 
+  useEffect(() => {
+    const queryString = window.location.search
+    const queryParams = new URLSearchParams(queryString)
+    const flagValue = queryParams.get("address") || "feed"
 
+    setTab(flagValue)
+}, [window.location.search])
 
   // condition because we do not want to send null datas to backend
   if (spaceId && !tags.includes(spaceId)) {
@@ -75,7 +80,7 @@ const scrollToTop = () => {
 
   const tabs = {
     feed: <Feed />,
-    org: <Members/>,
+    members: <Members/>,
     events: <Members/>
   }
   const SpaceBody = () => {
@@ -91,6 +96,23 @@ const scrollToTop = () => {
     </IonCol>
   )
 
+/*
+  return (
+    <IonContent color="light">
+    {width < 768 && views.lessThan768}
+    <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
+      <IonRow className="rowStyle">
+        {width > 768 && views.greaterThan768}
+        <Space/>
+        {width > 1000 && <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>}
+      </IonRow>
+    </IonGrid>
+    <button className="scrollButton" onClick={scrollToTop}>
+      <IonIcon icon={arrowUpOutline} className="scrollIcon" />
+    </button>
+  </IonContent>
+  )
+  */
   return (
     <IonContent color="light">
     {width < 768 && views.lessThan768}
@@ -99,7 +121,7 @@ const scrollToTop = () => {
         {width > 768 && views.greaterThan768}
 
           <Space />
-          {width > 1000 && <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>}
+          {width > 1200 && <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>}
 
       </IonRow>
 
