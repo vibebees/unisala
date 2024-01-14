@@ -47,16 +47,6 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
     }
   }
 
-  // Handling the toast notification for login status
-  useEffect(() => {
-    if (loading) {
-      present({
-        message: "Logging in...",
-        duration: 2000
-      })
-    }
-  }, [loading, present])
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="auth-input-div">
