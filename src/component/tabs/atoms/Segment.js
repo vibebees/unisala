@@ -1,6 +1,7 @@
 import {IonIcon, IonLabel, IonSegmentButton} from "@ionic/react"
 import * as icons from "ionicons/icons"
 import {useLocation} from "react-router"
+import ReactGA from "react-ga4"
 
 const Segment = ({name = "", icon = "", onClick = () => {}, nav = ""}) => {
     const location = useLocation()
@@ -17,10 +18,18 @@ const Segment = ({name = "", icon = "", onClick = () => {}, nav = ""}) => {
         })
 
     const activeClasses = isActive ? "bg-blue-500 text-white" : "bg-transparent text-gray-600"
-return (
+    return (
         <>
-            <IonSegmentButton value={name} onClick={(e) => onClick(e, nav)} className={activeClasses}>
-            <IonIcon icon={iconName}></IonIcon>
+            <IonSegmentButton value={name} onClick={(e) => {
+                onClick(e, nav)
+                ReactGA.event({
+                    category: "Segment",
+                    action: name + " clicked",
+                    label: name,
+                    nav: nav
+                })
+            }} className={activeClasses}>
+                <IonIcon icon={iconName}></IonIcon>
                 <IonLabel>{name}</IonLabel>
             </IonSegmentButton>
         </>

@@ -23,6 +23,8 @@ import { Members } from "./org/members"
 import {Event} from "./org/event"
 import { StudyAbroadRoadmapInput } from "features/roadmap/template"
 import { apply } from "ramda"
+import {SqueezeBox} from "component/squeezeBox"
+import {History} from "./org/history"
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
 
@@ -84,11 +86,11 @@ const scrollToTop = () => {
   const tabs = {
     feed: <Feed />,
     org: <Members/>,
-    history: <StudyAbroadRoadmapInput/>,
-    apply: <>
+    history: <History/>,
+    apply: <div className ="bg-white">
           <IonCol>
             <h4 className="font-semibold pl-4">Your next steps</h4>
-            <div className="h-full mt-4 px-4 bg-neutral-100 border border-neutral-400 border-opacity-20 rounded-md py-6">
+            <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6">
               <div className="flex items-center  w-full">
                 {/* <StepInput
                   currentstep={"1/10"}
@@ -130,7 +132,7 @@ const scrollToTop = () => {
               </div>
             </div>
           </IonCol>
-    </>
+    </div>
   }
   const SpaceBody = () => {
     return tabs[tab]
@@ -138,7 +140,7 @@ const scrollToTop = () => {
   const Space = () => (
     <IonCol className="colStyle ThreadContainer">
       <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
-      <IonRow className="bg-white" >
+      <IonRow class="bg-white" >
         <Tabs config ={configSegment} />
       </IonRow>
       <SpaceBody />
