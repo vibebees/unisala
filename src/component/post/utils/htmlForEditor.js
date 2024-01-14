@@ -1,26 +1,25 @@
 export const htmlForEditor = (postText, type, value) => {
   const typeRegex = new RegExp(`<h3>\\s*${type}\\s*:.*?<\\/h3>`, "g")
-  const universityLink = `<a> ${type} : <a href="/university/${value}"> ${value} </a></a>`
+  const newText = `<h3> ${type} : <span> ${value} </span></h3>`
+  let universityLink
+  const checkIfUni = type.split(" ")[0].toLowerCase() === "university"
+  if (checkIfUni) {
+    value = value.toUpperCase()
+    universityLink = `<a> ${type} : <a href="/university/${value}"> ${value} </a></a>`
+  }
   if (value.trim() === "") {
     return postText.replace(typeRegex, "")
   }
 
-  console.log(type.toLowerCase() === "university")
-  console.log({ universityLink, type })
   if (postText?.includes(type)) {
-    if (type.toLowerCase() === "university 🏫") {
+    if (checkIfUni) {
       return postText.replace(typeRegex, universityLink)
     }
-    return postText.replace(
-      typeRegex,
-      `<h3> ${type} : <span> ${value} </span></h3>`
-    )
+    return postText.replace(typeRegex, newText)
   } else {
-    if (type.toLowerCase() === "university") {
-      return postText.replace(typeRegex, universityLink)
+    if (checkIfUni) {
+      return postText ? postText + universityLink : universityLink
     }
-    return postText
-      ? postText + `<h3> ${type} : <span> ${value} </span></h3>`
-      : `<h3> ${type} : <span> ${value} </span></h3>`
+    return postText ? postText + newText : newText
   }
 }
