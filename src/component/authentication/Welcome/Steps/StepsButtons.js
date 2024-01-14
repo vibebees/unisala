@@ -70,7 +70,6 @@ const StepsButtons = ({ allProps }) => {
       // update uesr details in redux
       if (data?.editProfile?.status?.success) {
         modalRef.current.dismiss()
-
         present({
           duration: 3000,
           message: "Customizing your feed based on your profile!",
@@ -106,6 +105,10 @@ const StepsButtons = ({ allProps }) => {
 
   const validationFunctions = () => {
     let typeofData = typeof welcomeFormdata[metaData[currentStep - 1].id]
+
+    if (currentStep === 1) {
+      return true
+    }
     if (typeofData === "string") {
       return welcomeFormdata[metaData[currentStep - 1].id] !== ""
     }

@@ -1,6 +1,7 @@
 import React from "react"
 import { IonGrid, IonCardContent } from "@ionic/react"
 import Headers from "../organism/Headers"
+import Welcome from "./welcome"
 const SelectOptions = React.lazy(() => import("../organism/SelectOptions"))
 const InputOptions = React.lazy(() => import("../organism/InputOptions"))
 
@@ -9,9 +10,12 @@ const Step = ({ metaData }) => {
     <div>
       <div>
         <IonGrid className="mx-12 max-md:mx-4 mt-6 ">
-          <Headers title={metaData?.name} subtitle={metaData?.placeholder} />
+          {metaData?.placeholder && (
+            <Headers title={metaData?.name} subtitle={metaData?.placeholder} />
+          )}
+          {metaData.type === "html" && <Welcome metaData={metaData} />}
           {metaData.type === "select" && (
-            <IonGrid className="mt-8 border  grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
+            <IonGrid className="mt-8  grid grid-cols-2 gap-8 max-md:grid-cols-1 ">
               <SelectOptions metaData={metaData} />
             </IonGrid>
           )}

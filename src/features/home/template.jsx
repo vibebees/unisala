@@ -89,12 +89,13 @@ export const Home = ({ allProps }) => {
     </>
   )
 
-  const renderNewUserView = () => {
+  const renderNewUserView = React.useCallback(() => {
     if (loggedIn && newUser) {
       return <WelcomeSteps allProps={{ ...allProps, refetch }} />
     }
     return null
-  }
+  }, [loggedIn, newUser])
+
   return (
     <IonContent color="light">
       <FloatingButton />
