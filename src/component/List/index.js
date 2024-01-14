@@ -53,7 +53,7 @@ const index = () => {
                 <IonTitle>Lists</IonTitle>
                 <IonButtons slot="end">
                   <IonButton
-                    className=""
+                    className="ListModalCloseBtn"
                     onClick={() => {
                       const data = URLdelete("id")
                       history.push({ search: data })

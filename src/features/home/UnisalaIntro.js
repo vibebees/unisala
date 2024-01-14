@@ -11,21 +11,20 @@ import ExploreUniversities from "assets/ExploreUniversity.png"
 import currentStudents from "assets/currentStudents.jpeg"
 import question from "assets/welcome/question.jpeg"
 
-
 import { ButtonTrack } from "features/analytics/ButtonTrack"
-import {ImageSlider} from "./welcomeSlider"
+import { ImageSlider } from "./welcomeSlider"
+import Login from "features/login"
 
 export const UnisalaLandingPage = ({ allProps }) => {
   return (
-    <div style={{margin: "27px 0px 0px 0px"}}>
-
-
-
+    <div style={{ margin: "27px 0px 0px 0px" }}>
+      <IonCard className="">
+        <Login />
+      </IonCard>
 
       <IonCard className="mb-4">
         <IonCardContent className="flex flex-col text-left">
           <ul className="list-disc list-inside text-md space-y-2">
-
             <h1 className="text-2xl font-bold pt-1 pb-2">
               <strong>Are you an incoming student?</strong> 🤔
             </h1>
@@ -33,86 +32,72 @@ export const UnisalaLandingPage = ({ allProps }) => {
             <li>
               <strong></strong>
               <ul className="list-inside space-y-1 mt-1">
-
                 <li>
                   <ul className="list-inside space-y-1 mt-1">
-                    <li>🏫 Get university recommendations tailored to your interests and goals.</li>
-                    <li>💬 Ask questions and receive advice from student and graduates who &lsquo; ve been in your shoes.</li>
-                    <li>🤓 Make informed decisions with insights on courses, campus life and more reviews.</li>
+                    <li>
+                      🏫 Get university recommendations tailored to your
+                      interests and goals.
+                    </li>
+                    <li>
+                      💬 Ask questions and receive advice from student and
+                      graduates who &lsquo; ve been in your shoes.
+                    </li>
+                    <li>
+                      🤓 Make informed decisions with insights on courses,
+                      campus life and more reviews.
+                    </li>
                   </ul>
                 </li>
                 <br />
               </ul>
-
             </li>
           </ul>
           <br />
-
-          <div className="flex gap-4 w-full pr-28 justify-end ">
-            <button
-              className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-              onClick={() => {
-                ButtonTrack("Landing page login button clicked")
-                window.location.replace("/login")
-              }} // Replace '/login' with your login URL
-            >
-              <IonIcon icon={lockOpenOutline} />
-              &nbsp; Log In Now
-              <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
-            </button>
-          </div>
         </IonCardContent>
-
       </IonCard>
-
-
 
       <IonCard className="mb-4">
         <IonCardContent className="flex flex-col text-left">
           <ul className="list-disc list-inside text-md space-y-2">
             <h1 className="text-2xl font-bold pt-1 pb-2">
-
               <strong> Are you a current student 🧑‍🎓 or alumni 🎓 ?</strong>
             </h1>
             <img src={currentStudents} alt="roadmap" />
             <li>
               <strong></strong>
               <ul className="list-inside space-y-1 mt-1">
-                <li>🌟 Help shape the future of students by sharing your experiences</li>
-                <li>📝✅ Review your university, helping students in their decision-making process.</li>
-                <li>🎤💡 Share tips on academics, campus life, and career opportunities to illuminate the path for others.</li>
+                <li>
+                  🌟 Help shape the future of students by sharing your
+                  experiences
+                </li>
+                <li>
+                  📝✅ Review your university, helping students in their
+                  decision-making process.
+                </li>
+                <li>
+                  🎤💡 Share tips on academics, campus life, and career
+                  opportunities to illuminate the path for others.
+                </li>
               </ul>
-
             </li>
           </ul>
           <br />
-
-
-          <div className="flex gap-4 w-full pr-28 justify-end ">
-            <button
-              className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-              onClick={() => {
-                ButtonTrack("Landing page login button clicked")
-                window.location.replace("/login")
-              }} // Replace '/login' with your login URL
-            >
-              <IonIcon icon={lockOpenOutline} />
-              &nbsp; Log In Now
-              <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
-            </button>
-          </div>
         </IonCardContent>
       </IonCard>
 
       <IonCard className="mb-4">
         <IonCardContent className="flex flex-col text-left">
-        <h1 className="text-2xl font-bold pt-1 pb-2">
-              <strong>  Join Unisala</strong> 🤔
-            </h1>
+          <h1 className="text-2xl font-bold pt-1 pb-2">
+            <strong> Join Unisala</strong> 🤔
+          </h1>
           <br />
           <p className="text-md mt-4">
-         A community where knowledge empowers, experiences guide, and every voice matters.
-            <strong>Together, lets build a platform that turns academic aspirations into achievements. 🤝✨ </strong>
+            A community where knowledge empowers, experiences guide, and every
+            voice matters.
+            <strong>
+              Together, lets build a platform that turns academic aspirations
+              into achievements. 🤝✨{" "}
+            </strong>
           </p>
         </IonCardContent>
       </IonCard>
@@ -139,22 +124,7 @@ export const UnisalaLandingPage = ({ allProps }) => {
 
       <IonCard className="mb-1 !">
         <ImageSlider />
-        <div className="flex gap-4 w-full pr-28 justify-end ">
-            <button
-              className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-              onClick={() => {
-                ButtonTrack("Landing page login button clicked")
-                window.location.replace("/login")
-              }} // Replace '/login' with your login URL
-            >
-              <IonIcon icon={lockOpenOutline} />
-              &nbsp; Log In Now
-              <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
-            </button>
-          </div>
       </IonCard>
-
-
 
       {/* <IonCard className="mb-1 !">
         <IonCardContent className="p-0 relative flex-column text-center">
@@ -184,8 +154,6 @@ export const UnisalaLandingPage = ({ allProps }) => {
           </div>
         </IonCardContent>
       </IonCard> */}
-
-
 
       <IonCard className="mb-1 !">
         <IonCardContent className="p-0 relative flex-column text-center">
@@ -233,8 +201,6 @@ export const UnisalaLandingPage = ({ allProps }) => {
           </div>
         </IonCardContent>
       </IonCard> */}
-
-
 
       {/* <IonCard className="mb-1">
         <IonCardContent className="flex-column text-center">

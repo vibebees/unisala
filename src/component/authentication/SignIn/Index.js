@@ -5,7 +5,7 @@ import AppleAuth from "../AppleAuth"
 import "../auth.css"
 import clsx from "clsx"
 
-export const SignIn = ({ setauth, auth, allProps }) => {
+export const SignIn = ({ setauth, auth, setShowSignup = null }) => {
   return (
     <div
       className={clsx(
@@ -24,7 +24,7 @@ export const SignIn = ({ setauth, auth, allProps }) => {
             width: "234px"
           }}
         >
-          <GoogleAuth setauth={setauth} allProps={allProps} />
+          <GoogleAuth setauth={setauth} />
         </div>
       </div>
       {/* <div className="auth-button">
@@ -34,7 +34,7 @@ export const SignIn = ({ setauth, auth, allProps }) => {
       <div className="auth-or">
         <p className="auth-or-p">or Sign in with Email!</p>
       </div>
-      <SignInForm setauth={setauth} />
+      <SignInForm setauth={setauth} setShowSignup={setShowSignup} />
     </div>
   )
 }

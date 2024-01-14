@@ -94,15 +94,14 @@ const ProfilePage = () => {
   const tabMap = {
     0: "profile",
     1: "threads",
-    2: "guestbook",
+    2: "list",
     3: "saved",
     4: "roadmap",
-    5: "List"
+    5: "guestbook"
   }
 
   // this effect is responsible to show the component(target users who probably came by following a link)
   useEffect(() => {
-    const data = URLgetter("id")
     const query = URLgetter("tab")
 
     if (!query) {
@@ -113,7 +112,7 @@ const ProfilePage = () => {
         case "threads":
           setTab(1)
           break
-        case "guestbook":
+        case "list":
           setTab(2)
           break
         case "saved":
@@ -122,7 +121,7 @@ const ProfilePage = () => {
         case "roadmap":
           setTab(4)
           break
-        case "List":
+        case "guestbook":
           setTab(5)
           break
         default:
@@ -172,9 +171,9 @@ const ProfilePage = () => {
               <ProfileBody data={profileBodyData} />
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
-            {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
+            {tab === 2 && <List />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
-            {tab === 5 && <List />}
+            {tab === 5 && <Guestbook userId={_id} firstName={firstName} />}
           </IonCol>
 
           {windowWidth >= 1000 && views.greaterThan100}

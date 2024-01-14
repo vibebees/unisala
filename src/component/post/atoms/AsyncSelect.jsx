@@ -108,7 +108,6 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
             obj.unitId = e.unitId
           }
           const postText = htmlForEditor(postData?.postText, item.name, e.value)
-          console.log(item.id, { value: e.value })
           obj[item.id] = e.value
 
           obj.postText = postText
