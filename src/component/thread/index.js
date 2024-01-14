@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
+import { IonButton, IonCard, IonIcon, useIonToast, IonText } from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import Save from "./actions/Save"
@@ -11,6 +11,7 @@ import { Avatar } from "../Avatar"
 import ThreadExpand from "./ThreadExpand"
 import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
+import CircleRating from "./actions/CircleRating"
 
 import { useMutation } from "@apollo/client"
 import { useSelector } from "react-redux"
@@ -34,7 +35,8 @@ const Thread = ({ thread, refetch }) => {
     saved,
     user,
     tags,
-    postImage
+    postImage,
+    admissionAndApplicationRating
   } = thread
 
   const { firstName, lastName, username, picture } = thread.user || {}
@@ -303,11 +305,37 @@ const Thread = ({ thread, refetch }) => {
     return null
   }
 
+  const rating = () => {
+    if (admissionAndApplicationRating) {
+      return (
+        <div className="flex flex-col mt-3">
+          <h2 className="font-medium text-blue-800 text-base">Rating</h2>{" "}
+          <section className="mt-1 w-[60%] flex flex-col gap-3">
+            <div className="flex justify-between   items-center">
+              <p className="text-blue-500">Admission & Application </p>
+              <div className="w-7 h-7 relative">
+                <CircleRating rating={admissionAndApplicationRating} />
+              </div>
+            </div>
+            <div className="flex justify-between   items-center">
+              <p className="text-blue-500">Admission & Application </p>
+              <div className="w-7 h-7 relative">
+                <CircleRating rating={4} />
+              </div>
+            </div>
+          </section>
+        </div>
+      )
+    }
+    return null
+  }
+
   return (
     <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
       {renderHeader()}
       <div className="thread_content !pl-16 pr-8 max-md:pr-3">
         {renderContent()}
+        {rating()}
         {renderImages()}
         {renderFooter()}
         {reply && (
