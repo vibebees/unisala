@@ -34,8 +34,9 @@ export const Communicators = ({ recentMessages = [], messagingTo = {}, socket = 
             return recentMessages?.map((item, index) => {
                 // const { id, avatar, name, username, message, time } = c
                 // console.log("item", item)
+
                 return <Link to={`/messages/${item?.user?.username}`} key={index} onClick={() => setUpChat(item)}>
-                    <MessageItem {...item.user} {...item.recentMessage} />
+                    <MessageItem {...item?.user} {...item?.recentMessage} />
                 </Link>
             })
         }
