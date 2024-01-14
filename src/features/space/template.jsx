@@ -6,7 +6,8 @@ import {
   IonContent,
   IonCard,
   IonPage,
-  IonIcon
+  IonIcon,
+  IonInput
 } from "@ionic/react"
 import "./Space.css"
 import { arrowUpOutline } from "ionicons/icons"
@@ -20,6 +21,8 @@ import { CreateAPostCard } from "../../component/post/template"
 import Tabs from "../../component/tabs"
 import { Members } from "./org/members"
 import {Event} from "./org/event"
+import { StudyAbroadRoadmapInput } from "features/roadmap/template"
+import { apply } from "ramda"
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
 
@@ -80,8 +83,54 @@ const scrollToTop = () => {
 
   const tabs = {
     feed: <Feed />,
-    members: <Members/>,
-    events: <Members/>
+    org: <Members/>,
+    history: <StudyAbroadRoadmapInput/>,
+    apply: <>
+          <IonCol>
+            <h4 className="font-semibold pl-4">Your next steps</h4>
+            <div className="h-full mt-4 px-4 bg-neutral-100 border border-neutral-400 border-opacity-20 rounded-md py-6">
+              <div className="flex items-center  w-full">
+                {/* <StepInput
+                  currentstep={"1/10"}
+                  label={"Enter your ILETS Test Result"}
+                  placeholder={"Enter score"}
+                  inputType={"number"}
+                  setInput={setdata}
+                  name={"stepOne"}
+                  inputValue={data.stepOne}
+                  key={1}
+                /> */}
+              </div>
+
+              <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
+                <span className="text-sm text-neutral-400">2/10</span>
+                <div className="flex items-center h-fit gap-4 py-2">
+                  <label htmlFor="Gpa" className="text-sm h-fit">
+                    Enter your ILETS Test Result
+                  </label>
+                  <IonInput
+                    placeholder="Enter Test Score"
+                    type="number"
+                    className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
+                  ></IonInput>
+                </div>
+              </div>
+              <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
+                <span className="text-sm text-neutral-400">3/10</span>
+                <div className="flex items-center h-fit gap-4 py-2">
+                  <label htmlFor="Gpa" className="text-sm h-fit">
+                    Enter your ILETS Test Result
+                  </label>
+                  <IonInput
+                    placeholder="Enter Test Score"
+                    type="number"
+                    className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
+                  ></IonInput>
+                </div>
+              </div>
+            </div>
+          </IonCol>
+    </>
   }
   const SpaceBody = () => {
     return tabs[tab]
@@ -96,23 +145,6 @@ const scrollToTop = () => {
     </IonCol>
   )
 
-/*
-  return (
-    <IonContent color="light">
-    {width < 768 && views.lessThan768}
-    <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
-      <IonRow className="rowStyle">
-        {width > 768 && views.greaterThan768}
-        <Space/>
-        {width > 1000 && <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>}
-      </IonRow>
-    </IonGrid>
-    <button className="scrollButton" onClick={scrollToTop}>
-      <IonIcon icon={arrowUpOutline} className="scrollIcon" />
-    </button>
-  </IonContent>
-  )
-  */
   return (
     <IonContent color="light">
     {width < 768 && views.lessThan768}
