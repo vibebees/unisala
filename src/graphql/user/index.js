@@ -822,7 +822,11 @@ export const AddComment = gql`
       fetchMyNewsFeed(userId: $userId, page: $page) {
         section
         postText
-        c
+        admissionAndApplicationRating
+        financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating
+        careerAndAlumniResourceRating
         upVoted
         upVoteCount
         postCommentsCount
