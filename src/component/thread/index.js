@@ -1,6 +1,13 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
+import {
+  IonButton,
+  IonCard,
+  IonIcon,
+  IonSlide,
+  IonSlides,
+  useIonToast
+} from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import Save from "./actions/Save"
@@ -205,33 +212,24 @@ const Thread = ({ thread, refetch }) => {
   }
   const renderImages = () => {
     const { images, _id } = thread
-
+    const slideOpts = {
+      initialSlide: 0,
+      speed: 400
+    }
     if (images?.length > 0) {
       return (
         <Link to={`/thread/${_id}`} className={clsx("flex")}>
-          <img
-            src={images[0]}
-            alt="Thread image"
-            className={clsx(
-              "object-cover",
-              images.length > 1 ? "w-1/2" : "w-full max-w-[500px] shadow-md"
-            )}
-          />
-
-          {images.length > 1 && (
-            <div className="w-1/2 relative">
-              <img
-                src={images[1]}
-                alt="Thread image"
-                className="shrink-0 object-cover w-max"
-              />
-              <div className="absolute grid place-content-center bg-neutral-950 z-10 bg-opacity-40 top-0 left-0 right-0 bottom-0 w-full h-full">
-                <h3 className="text-neutral-50 font-semibold text-2xl">
-                  +{images.length - 1}
-                </h3>
-              </div>
-            </div>
-          )}
+          <IonSlides pager={true} options={slideOpts}>
+            {images.map((image, index) => (
+              <IonSlide key={index}>
+                <img
+                  src={image}
+                  alt={image}
+                  style={{ width: "80%", paddingBottom: "2rem" }}
+                />
+              </IonSlide>
+            ))}
+          </IonSlides>
         </Link>
       )
     }
