@@ -122,11 +122,11 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
-          admissionAndApplicationRating
-          financialAidAndScholarshipRating
-          academicProgramsAndDepartmentRating
-          studentLifeAndServiceRating
-          careerAndAlumniResourceRating
+          # admissionAndApplicationRating
+          # financialAidAndScholarshipRating
+          # academicProgramsAndDepartmentRating
+          # studentLifeAndServiceRating
+          # careerAndAlumniResourceRating
           postImage
           date
           upVoted
@@ -469,6 +469,7 @@ export const AddComment = gql`
           _id
           images
           postText
+
           date
           upVoteCount
           postCommentsCount
