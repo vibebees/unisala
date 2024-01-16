@@ -318,9 +318,27 @@ const Thread = ({ thread, refetch }) => {
               </div>
             </div>
             <div className="flex justify-between   items-center">
-              <p className="text-blue-500">Admission & Application </p>
+              <p className="text-blue-500">Financial Aid & Scholarships</p>
               <div className="w-7 h-7 relative">
                 <CircleRating rating={4} />
+              </div>
+            </div>
+            <div className="flex justify-between   items-center">
+              <p className="text-blue-500">Academic Programs & Department</p>
+              <div className="w-7 h-7 relative">
+                <CircleRating rating={3} />
+              </div>
+            </div>
+            <div className="flex justify-between   items-center">
+              <p className="text-blue-500">Student Life & Services</p>
+              <div className="w-7 h-7 relative">
+                <CircleRating rating={5} />
+              </div>
+            </div>
+            <div className="flex justify-between   items-center">
+              <p className="text-blue-500">Career & Alumni Resources</p>
+              <div className="w-7 h-7 relative">
+                <CircleRating rating={3} />
               </div>
             </div>
           </section>

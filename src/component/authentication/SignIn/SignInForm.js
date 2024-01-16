@@ -12,7 +12,7 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
-  const [present] = useIonToast()
+  const [present, dismiss] = useIonToast()
   const history = useHistory()
 
   const handleChange = (e) => {
@@ -27,21 +27,11 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true)
       // Dispatch the loginUser action with appropriate arguments
-      dispatch(loginUser({ input, history, setLoading, present }))
+      dispatch(loginUser({ input, history, setLoading, present, dismiss }))
     } else {
       setErrors(validationErrors)
     }
   }
-
-  // Handling the toast notification for login status
-  useEffect(() => {
-    if (loading) {
-      present({
-        message: "Logging in...",
-        duration: 2000
-      })
-    }
-  }, [loading, present])
 
   return (
     <form onSubmit={handleSubmit}>
