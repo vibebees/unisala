@@ -12,7 +12,8 @@ export const loginUser = ({
   present,
   dismiss,
   setauth,
-  history
+  history,
+  redirectUrl
 }) => {
   return (dispatch) => {
     axios
@@ -29,7 +30,9 @@ export const loginUser = ({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          window.location.replace("/home")
+          window.location.replace(
+            redirectUrl ? `/university/${redirectUrl}&create=y` : "/"
+          )
         }
 
         if (!res.data.success) {
@@ -50,9 +53,9 @@ export const loginUser = ({
         setLoading(false)
         present({
           duration: 3000,
-          message: error.message,
+          message: error.response.data.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "primary",
+          color: "danger",
           mode: "ios"
         })
         if (error.status === 302) {
@@ -92,7 +95,6 @@ export const registerUser =
       .catch((err) => {
         setsave(false) // Stop loading indication
         setdatacheck(false) // Reset data check on error
-
         // Check if the error response has the expected format
         if (err.response && err.response.data.errors) {
           // Example action dispatch on error
@@ -109,17 +111,17 @@ export const registerUser =
             })
           }
         } else {
-          // Handle unexpected errors
           console.error("An unexpected error occurred", err)
-          // Optionally dispatch another action or show a different message
         }
       })
   }
 
-// USAGE
-// dispatch(registerUser(input, setsave, setdatacheck, setauth, present, dismiss));
-
-export const googleAuthAction = ({ present, dismiss, credential }) => {
+export const googleAuthAction = ({
+  present,
+  dismiss,
+  credential,
+  redirectUrl
+}) => {
   return (dispatch) =>
     axios
       .post(userServer + `/auth/google`, { token: credential })

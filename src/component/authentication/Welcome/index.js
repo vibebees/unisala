@@ -1,37 +1,23 @@
-import React, {
-  useState,
-  createContext,
-  useMemo,
-  useEffect,
-  useRef
-} from "react"
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonModal,
-  IonContent,
-  IonButton,
-  IonIcon
-} from "@ionic/react"
-import Welcome from "./Steps/welcome"
-import AskMajor from "./Steps/askMajor"
-import AskCurrentStatus from "./Steps/askCurrentStatus"
-import AskUniversity from "./Steps/askUniversity"
-import AskLevelofStudy from "./Steps/askLevelOfStudy"
+import React, { useState, createContext, useEffect, useRef } from "react"
+import { IonRow, IonCol, IonModal } from "@ionic/react"
 import Indicators from "./Steps/Indicators"
 import StepsButtons from "./Steps/StepsButtons"
-import { useQuery } from "@apollo/client"
 import clsx from "clsx"
 import PreLoader from "../../preloader"
 import "./index.css"
-import { USER_SERVICE_GQL } from "servers/types"
-import { GetAllQuestions } from "graphql/user"
+import { authInstance } from "api/axiosInstance"
+import { userServer } from "servers/endpoints"
+import Step from "./Steps/Step"
 
 export const WelcomeData = createContext()
 
 const Index = ({ allProps }) => {
   const [currentStep, setCurrentStep] = useState(1)
+  const [totalSteps, setTotalSteps] = useState(0)
+  const [meta, setMeta] = useState({})
+  const modalRef = useRef(null)
+
+  const [status, setStatus] = useState("ideal")
   const [welcomeFormdata, setWelcomeFormdata] = useState({
       interestedSubjects: [],
       userStatus: "",
@@ -40,71 +26,79 @@ const Index = ({ allProps }) => {
     }),
     { setNewUser, newUser } = allProps
 
-  const { data, loading, error } = useQuery(GetAllQuestions, {
-      context: { server: USER_SERVICE_GQL }
-    }),
-    questions = data?.getAllQuestions?.questions
-
-  const stepComponents = [
-      <Welcome key="welcome" />,
-      <AskCurrentStatus key="userStatus" />,
-      <AskMajor key="interestedSubjects" />,
-      <AskLevelofStudy key="studyLevel" />,
-      <AskUniversity key="interestedUni" />
-    ],
-    modalRef = useRef(null)
-
-  if (loading) return <PreLoader />
-  if (error) {
-    return (
-      <div className="text-center text-red-500 py-4">Something went wrong</div>
-    )
+  const getAllQuestion = async () => {
+    setStatus("loading")
+    try {
+      const res = await authInstance.get(
+        `${userServer}/get-onboarding-metadata`
+      )
+      if (res.data.success) {
+        setMeta(res.data.data)
+        setTotalSteps(Object.values(res.data.data).length)
+        setStatus("ideal")
+      }
+    } catch (error) {
+      console.log(error)
+      setStatus("error")
+    }
   }
+
+  useEffect(() => {
+    getAllQuestion()
+  }, [])
+
+  const LoadedComponent = (
+    <IonRow className="flex-col h-full">
+      <IonCol size="auto">
+        <Indicators currentStep={currentStep} totalSteps={totalSteps} />
+      </IonCol>
+      <IonRow className=" flex-1">
+        <IonCol className=" welcomeScroll overflow-y-auto  h-full ">
+          {Object.values(meta).map((MetaData, index) => {
+            return (
+              <div
+                key={index}
+                className={clsx("step-container  absolute left-0 w-full", {
+                  "z-10": currentStep === index + 1,
+                  "z-0 opacity-0": currentStep !== index + 1,
+                  "fade-enter": currentStep === index + 1,
+                  "fade-exit": currentStep !== index + 1
+                })}
+              >
+                <Step metaData={MetaData} />
+              </div>
+            )
+          })}
+        </IonCol>
+      </IonRow>
+
+      <IonCol size="auto" className="">
+        <StepsButtons
+          allProps={{
+            ...allProps,
+            currentStep,
+            setCurrentStep,
+            modalRef,
+            meta,
+            totalSteps
+          }}
+        />
+      </IonCol>
+    </IonRow>
+  )
+
   return (
     <IonModal ref={modalRef} isOpen={newUser}>
       <WelcomeData.Provider
-        value={{ data, welcomeFormdata, setWelcomeFormdata }}
+        value={{ meta, welcomeFormdata, setWelcomeFormdata }}
       >
-        <IonRow className="flex-col h-full">
-          <IonCol size="auto">
-            <Indicators currentStep={currentStep} />
-          </IonCol>
-          <IonRow className=" flex-1">
-            <IonCol className=" welcomeScroll overflow-y-auto  h-full ">
-              {stepComponents.map((step, index) => (
-                <div
-                  key={index}
-                  className={clsx("step-container  absolute left-0 w-full", {
-                    "z-10": currentStep === index + 1,
-                    "z-0 opacity-0": currentStep !== index + 1,
-                    "fade-enter": currentStep === index + 1,
-                    "fade-exit": currentStep !== index + 1
-                  })}
-                >
-                  {index === 0
-                    ? step
-                    : React.cloneElement(step, {
-                        question: questions[index - 1],
-                        category: questions[index - 1]?.category
-                      })}
-                </div>
-              ))}
-            </IonCol>
-          </IonRow>
-
-          <IonCol size="auto" className="">
-            <StepsButtons
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-              allProps={{
-                ...allProps,
-                currentStep,
-                setCurrentStep,
-                modalRef
-              }}
-            />
-          </IonCol>
-        </IonRow>
+        {status === "ideal" && LoadedComponent}
+        {status === "loading" && <PreLoader />}
+        {status === "error" && (
+          <div className="text-center text-red-500 py-4">
+            Something went wrong
+          </div>
+        )}
       </WelcomeData.Provider>
     </IonModal>
   )

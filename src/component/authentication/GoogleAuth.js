@@ -13,13 +13,16 @@ export const GoogleAuth = ({ setauth }) => {
     dispatch = useDispatch(),
     history = useHistory()
 
+  const params = new URLSearchParams(window.location.search)
+
   const onGoogleSignIn = (user) => {
     const { credential } = user
     dispatch(
       googleAuthAction({
         present,
         dismiss,
-        credential
+        credential,
+        redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`
       })
     )
   }

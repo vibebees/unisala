@@ -113,7 +113,8 @@ const index = () => {
         (recentMessagesWithNetwork) => {
           const mergedData =
             connectionList.map((conn) => {
-              const userId = conn.user._id
+              const userId = conn?.user?._id
+              if (!userId) return ""
               const userMessages = recentMessagesWithNetwork.filter(
                 (msg) => msg?.senderId === userId || msg?.receiverId === userId
               )
