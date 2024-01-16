@@ -30,7 +30,6 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
     const validationErrors = validateSignIn(input)
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true)
-      // Dispatch the loginUser action with appropriate arguments
       dispatch(
         loginUser({
           input,

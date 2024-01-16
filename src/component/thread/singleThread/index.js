@@ -17,7 +17,7 @@ import {
 } from "ionicons/icons"
 import moment from "moment"
 import ImageCollage from "../ImageCollages"
-import RatingCircle from "../actions/CircleRating"
+import RatingCircle from "../actions/Rating"
 
 import { useMutation } from "@apollo/client"
 import { useSelector } from "react-redux"

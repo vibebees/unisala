@@ -11,7 +11,7 @@ import { Avatar } from "../Avatar"
 import ThreadExpand from "./ThreadExpand"
 import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
-import CircleRating from "./actions/CircleRating"
+import Rating from "./actions/Rating"
 
 import { useMutation } from "@apollo/client"
 import { useSelector } from "react-redux"
@@ -36,7 +36,11 @@ const Thread = ({ thread, refetch }) => {
     user,
     tags,
     postImage,
-    admissionAndApplicationRating
+    admissionAndApplicationRating,
+    financialAidAndScholarshipRating,
+    academicProgramsAndDepartmentRatingm,
+    studentLifeAndServiceRating,
+    careerAndAlumniResourceRating
   } = thread
 
   const { firstName, lastName, username, picture } = thread.user || {}
@@ -306,41 +310,41 @@ const Thread = ({ thread, refetch }) => {
   }
 
   const rating = () => {
-    if (admissionAndApplicationRating) {
+    if (
+      admissionAndApplicationRating ||
+      financialAidAndScholarshipRating ||
+      academicProgramsAndDepartmentRatingm ||
+      studentLifeAndServiceRating ||
+      careerAndAlumniResourceRating
+    ) {
       return (
         <div className="flex flex-col mt-3">
           <h2 className="font-medium text-blue-800 text-base">Rating</h2>{" "}
           <section className="mt-1 w-[60%] flex flex-col gap-3">
-            <div className="flex justify-between   items-center">
-              <p className="text-blue-500">Admission & Application </p>
-              <div className="w-7 h-7 relative">
-                <CircleRating rating={admissionAndApplicationRating} />
-              </div>
-            </div>
-            <div className="flex justify-between   items-center">
-              <p className="text-blue-500">Financial Aid & Scholarships</p>
-              <div className="w-7 h-7 relative">
-                <CircleRating rating={4} />
-              </div>
-            </div>
-            <div className="flex justify-between   items-center">
-              <p className="text-blue-500">Academic Programs & Department</p>
-              <div className="w-7 h-7 relative">
-                <CircleRating rating={3} />
-              </div>
-            </div>
-            <div className="flex justify-between   items-center">
-              <p className="text-blue-500">Student Life & Services</p>
-              <div className="w-7 h-7 relative">
-                <CircleRating rating={5} />
-              </div>
-            </div>
-            <div className="flex justify-between   items-center">
-              <p className="text-blue-500">Career & Alumni Resources</p>
-              <div className="w-7 h-7 relative">
-                <CircleRating rating={3} />
-              </div>
-            </div>
+            <Rating
+              label="Admission & Application"
+              rating={admissionAndApplicationRating}
+            />
+
+            <Rating
+              label="Financial Aid & Scholarships"
+              rating={financialAidAndScholarshipRating}
+            />
+
+            <Rating
+              label="Academic Programs & Department"
+              rating={academicProgramsAndDepartmentRatingm}
+            />
+
+            <Rating
+              label="Student Life & Services"
+              rating={studentLifeAndServiceRating}
+            />
+
+            <Rating
+              label="Career & Alumni Resources"
+              rating={careerAndAlumniResourceRating}
+            />
           </section>
         </div>
       )
