@@ -1,22 +1,28 @@
-import {useState} from "react"
+import { useState } from "react"
 import useDocTitle from "hooks/useDocTitile"
-import {screenGreaterThan1000} from "./screens.greater.1000"
-import {screensMoreThan768} from "./screens.moreThan768"
-import {screenLessThan768} from "./screens.lessThan768"
+import { screenGreaterThan1000 } from "./screens.greater.1000"
+import { screensMoreThan768 } from "./screens.moreThan768"
+import { screenLessThan768 } from "./screens.lessThan768"
 import unisalaImg from "assets/unisala-intro.png"
-import {useHistory, useParams} from "react-router"
-import {personCircle, arrowUpOutline} from "ionicons/icons"
+import { useHistory, useParams } from "react-router"
+import { personCircle } from "ionicons/icons"
 
-export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, profileData = {}, data = {}, loading = true}) => {
-
+export const getAllProps = ({
+  user = {},
+  topSpaceData = {},
+  loggedIn = false,
+  profileData = {},
+  data = {},
+  loading = true
+}) => {
   useDocTitle("Unisala")
 
-  const {getTopActiveSpaces} = topSpaceData || {},
+  const { getTopActiveSpaces } = topSpaceData || {},
     [showTopScrollbtn, setShowTopScrollbtn] = useState(false),
     history = useHistory(),
     [width, setWidth] = useState(window.innerWidth),
     handleResize = () => {
-      const {innerWidth} = window
+      const { innerWidth } = window
       if (width !== innerWidth) {
         setWidth(innerWidth)
       }
@@ -47,44 +53,47 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
     params = useParams(),
     searchSpaceCategory = data?.searchSpaceCategory || {},
-    {spaceCategory} = searchSpaceCategory,
+    { spaceCategory } = searchSpaceCategory,
     spaceId = spaceCategory?._id,
     parentId = spaceCategory?.parentId // this could be null as the current space could be parent in itself
   let tags = []
   const configSegment = {
-    options: [
-      {
-        "name": "Feed",
-        "icon": "home",
-        "nav": "feed"
-      },
-      {
-        "name": "Org",
-        "icon": "people",
-        "nav": "org&mem=members"
-
-      },
-      {
-        "name": "Apply",
-        "icon": "clipboard",
-        "nav": "apply"
-      },
-      {
-        "name": "History",
-        "icon": "time",
-        "nav": "history"
-      }
-    ],
-    onClick: (event, nav) => {
-      history.push({
+      options: [
+        {
+          name: "Feed",
+          icon: "home",
+          nav: "feed"
+        },
+        {
+          name: "Org",
+          icon: "people",
+          nav: "org&mem=members"
+        },
+        {
+          name: "Apply",
+          icon: "clipboard",
+          nav: "apply"
+        },
+        {
+          name: "History",
+          icon: "time",
+          nav: "history"
+        },
+        {
+          name: "Invite",
+          icon: "people",
+          nav: "invite"
+        }
+      ],
+      onClick: (event, nav) => {
+        history.push({
           pathname: window.location.pathname,
           search: `?address=${nav}`
-      })
+        })
+      },
+      scrollable: false
     },
-    scrollable: false
-  },
-   [tab, setTab] = useState("feed")
-
+    [tab, setTab] = useState("feed")
 
   return {
     unisalaImg,
@@ -117,5 +126,4 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     tab,
     setTab
   }
-
 }
