@@ -44,19 +44,24 @@ return (
                     buttons={["OK"]}
                     inputs={[
                         {
-                            label: "Red",
+                            label: "Freshman",
                             type: "radio",
-                            value: "red"
+                            value: "Freshman"
                         },
                         {
-                            label: "Blue",
+                            label: "Sophomore",
                             type: "radio",
-                            value: "blue"
+                            value: "Sophomore"
                         },
                         {
-                            label: "Green",
+                            label: "Junior",
                             type: "radio",
-                            value: "green"
+                            value: "Junior"
+                        },
+                        {
+                            label: "Senior",
+                            type: "radio",
+                            value: "Senior"
                         }
                     ]}
                     onDidDismiss={() => setShowAlert(false)}
