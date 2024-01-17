@@ -122,6 +122,11 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
+          # admissionAndApplicationRating
+          # financialAidAndScholarshipRating
+          # academicProgramsAndDepartmentRating
+          # studentLifeAndServiceRating
+          # careerAndAlumniResourceRating
           postImage
           date
           upVoted
@@ -464,6 +469,7 @@ export const AddComment = gql`
           _id
           images
           postText
+
           date
           upVoteCount
           postCommentsCount
@@ -817,6 +823,11 @@ export const AddComment = gql`
       fetchMyNewsFeed(userId: $userId, page: $page) {
         section
         postText
+        admissionAndApplicationRating
+        financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating
+        careerAndAlumniResourceRating
         upVoted
         upVoteCount
         postCommentsCount
