@@ -30,9 +30,12 @@ export const loginUser = ({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          window.location.replace(
-            redirectUrl ? `/university/${redirectUrl}&create=y` : "/"
-          )
+
+          if (redirectUrl) {
+            setTimeout(() => {
+              window.location.replace(`/university/${redirectUrl}&create=y`)
+            }, 1000)
+          }
         }
 
         if (!res.data.success) {
