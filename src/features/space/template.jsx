@@ -138,7 +138,7 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invitation: <div className="bg-white">This is invitation tab</div>
+    invite: <Invitation />
   }
   const SpaceBody = () => {
     return tabs[tab]
@@ -149,7 +149,9 @@ export const Spaces = ({ allProps }) => {
       <IonRow class="bg-white">
         <Tabs config={configSegment} />
       </IonRow>
-      <SpaceBody />
+      <div className="min-h-[50vh]">
+        <SpaceBody />
+      </div>
     </IonCol>
   )
 

@@ -86,10 +86,7 @@ export const getAllProps = ({
         }
       ],
       onClick: (event, nav) => {
-        history.push({
-          pathname: window.location.pathname,
-          search: `?address=${nav}`
-        })
+        history.push({ search: `?address=${nav}` })
       },
       scrollable: false
     },

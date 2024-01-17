@@ -1,34 +1,38 @@
-import React, {useEffect, useRef} from "react"
-import {IonAccordion, IonAccordionGroup, IonInput, IonItem, IonLabel, IonTextarea} from "@ionic/react"
+import React, { useEffect, useRef } from "react"
+import {
+  IonAccordion,
+  IonAccordionGroup,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonTextarea
+} from "@ionic/react"
 import "./index.css"
-import {StudyAbroadRoadmapInput} from "features/roadmap/template"
-export const SqueezeBox = ({data}) => {
+import { StudyAbroadRoadmapInput } from "features/roadmap/template"
+export const SqueezeBox = ({ data }) => {
+  const accordionGroup = useRef(null)
+  useEffect(() => {
+    if (!accordionGroup.current) {
+      return
+    }
 
-
-    const accordionGroup = useRef(null)
-    useEffect(() => {
-        if (!accordionGroup.current) {
-          return
-        }
-
-        accordionGroup.current.value = ["2024"]
-      }, [])
+    accordionGroup.current.value = ["2024"]
+  }, [])
   return (
-      <IonAccordionGroup ref={accordionGroup} expand="inset">
-          {data.map((item, index) => (
-              <IonAccordion value={item.title} key={index} >
-                  <IonItem slot="header" >
-                      <IonLabel>{item.title}</IonLabel>
-                  </IonItem>
-                  <div className="ion-padding" slot="content">
-                      {/* {item.content} */}
+    <IonAccordionGroup ref={accordionGroup} expand="inset">
+      {data.map((item, index) => (
+        <IonAccordion value={item.title} key={index}>
+          <IonItem slot="header">
+            <IonLabel>{item.title}</IonLabel>
+          </IonItem>
+          <div className="ion-no-padding" slot="content">
+            {/* {item.content} */}
 
-                        {item.child}
-                      {/* <IonTextarea value={item.content} style={{ height: "300px" }} /> */}
-                  </div>
-              </IonAccordion>
-          ))}
-
-      </IonAccordionGroup>
+            {item.child}
+            {/* <IonTextarea value={item.content} style={{ height: "300px" }} /> */}
+          </div>
+        </IonAccordion>
+      ))}
+    </IonAccordionGroup>
   )
 }
