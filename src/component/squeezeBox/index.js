@@ -19,13 +19,21 @@ export const SqueezeBox = ({ data }) => {
     accordionGroup.current.value = ["2024"]
   }, [])
   return (
-    <IonAccordionGroup ref={accordionGroup} expand="inset">
+    <IonAccordionGroup
+      className="ion-no-margin ion-no-padding w-full "
+      ref={accordionGroup}
+      expand="inset"
+    >
       {data.map((item, index) => (
-        <IonAccordion value={item.title} key={index}>
+        <IonAccordion
+          className="ion-no-margin ion-no-padding "
+          value={item.title}
+          key={index}
+        >
           <IonItem slot="header">
             <IonLabel>{item.title}</IonLabel>
           </IonItem>
-          <div className="ion-no-padding" slot="content">
+          <div className="ion-no-padding " slot="content">
             {/* {item.content} */}
 
             {item.child}

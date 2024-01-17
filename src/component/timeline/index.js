@@ -29,7 +29,10 @@ export const TimeLine = () => {
   })
 
   return (
-    <IonGrid style={{ maxWidth: "900px" }} className="w-full">
+    <IonGrid
+      style={{ maxWidth: "900px" }}
+      className="w-full ion-no-margin ion-no-padding"
+    >
       <SingleTimeline />
     </IonGrid>
   )
