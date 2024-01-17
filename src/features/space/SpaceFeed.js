@@ -17,6 +17,7 @@ import clsx from "clsx"
 
 import { USER_SERVICE_GQL } from "servers/types"
 import StateMessage from "component/stateMessage/index"
+import {EventCard} from "component/events"
 export const SpaceFeed = ({ userInfo, spaceId }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
@@ -45,6 +46,8 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>
         )}
+      <EventCard />
+
         {Array.isArray(allPosts?.posts) &&
           allPosts?.posts.map((post, index) => {
             // const { post } = item
@@ -64,6 +67,9 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
               </div>
             )
           })}
+
+      <EventCard />
+
       </div>
 
       {/* {loading &&
