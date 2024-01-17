@@ -1,30 +1,69 @@
-import React from "react"
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton } from "@ionic/react"
+import React, {useState} from "react"
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonIcon, IonAlert, IonImage, IonImg } from "@ionic/react"
+import {calendarOutline} from "ionicons/icons"
+
 export const EventCard = () => {
-    let event = {
-        url: "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/417163474_911996316962759_3112905582576049338_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=d8d9c5&_nc_ohc=JKulCIZDeVwAX_Du8Ua&_nc_ht=scontent-atl3-2.xx&oh=00_AfCFTrE5cJ1JaJNjYeU3MWrDLyfrmWhmRVNA-d2n6KWBhw&oe=65AC8206",
-        date: "2021-09-01",
-        title: "Welcome Back",
-        description: "Welcome back to campus! Come join us for a fun filled day of events and activities. We will have food, games, and prizes. We look forward to seeing you there!"
-    }
-  return (
-    <IonCard>
-      <img src={event?.url} alt={event.title} />
+  let event = {
+    imageUrl: "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/418947802_122122699298093982_4250882892682419291_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=3635dc&_nc_ohc=1vz-5Qp2XYwAX_vv3nU&_nc_ht=scontent-atl3-2.xx&oh=00_AfD4g5nQpU9EMTHo8StSziFa83IaF8LHn-vTLKHr9mNN2A&oe=65ABD8BE",
+    date: "Saturday, January 27, 2024",
+    title: "Computer Science Webinar with Alumni",
+    description: "NSAS Student Association invites you to a webinar with distinguished alumni from our Computer Science department. Get insights into the industry, network with former students, and learn about the opportunities available to you after graduation. Food, games, and prizes await!"
+  }
+  const [showAlert, setShowAlert] = useState(false)
 
-      <IonCardHeader>
-        <IonCardSubtitle>{event.date}</IonCardSubtitle>
-        <IonCardTitle>{event.title}</IonCardTitle>
-      </IonCardHeader>
-
-      <IonCardContent>
-        <p>{event.description}</p>
-        <IonButton expand="block" onClick={() => registerForEvent(event.id)}>Register</IonButton>
-      </IonCardContent>
-    </IonCard>
-  )
+  const handleRegister = () => {
+    setShowAlert(true)
+  }
+const confirmRegistration = () => {
+    // Place your registration confirmation logic here
+    console.log("User confirmed registration")
+    setShowAlert(false)
 }
-const registerForEvent = (eventId) => {
-  // Function to handle event registration logic
-  console.log(`Registering for event with ID: ${eventId}`)
-  // Add your registration logic here
+
+return (
+    <>
+        <IonCard>
+            <IonImg
+                src={event.imageUrl}
+            ></IonImg>
+            <IonCardHeader>
+                <IonCardSubtitle>
+                    <IonIcon icon={calendarOutline} style={{verticalAlign: "bottom"}} /> {event.date}
+                </IonCardSubtitle>
+                <IonCardTitle>{event.title}</IonCardTitle>
+            </IonCardHeader>
+
+            <IonCardContent>
+                <p>{event.description}</p>
+                <IonButton expand="block" color="primary" onClick={handleRegister}>Register Now</IonButton>
+                <IonAlert
+                    isOpen={showAlert}
+                    className="confirmation"
+                    trigger="present-alert"
+                    header="Select your year in college "
+                    buttons={["OK"]}
+                    inputs={[
+                        {
+                            label: "Red",
+                            type: "radio",
+                            value: "red"
+                        },
+                        {
+                            label: "Blue",
+                            type: "radio",
+                            value: "blue"
+                        },
+                        {
+                            label: "Green",
+                            type: "radio",
+                            value: "green"
+                        }
+                    ]}
+                    onDidDismiss={() => setShowAlert(false)}
+
+                ></IonAlert>
+            </IonCardContent>
+        </IonCard>
+    </>
+  )
 }
