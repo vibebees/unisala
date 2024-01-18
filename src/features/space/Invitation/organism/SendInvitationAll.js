@@ -7,7 +7,7 @@ const SendInvitationAll = () => {
   return (
     <IonCard className="ion-no-margin ion-no-padding shadow-none px-4 py-6">
       <Header
-        header={"Send Invitation Alls"}
+        header={"Send Invitation All"}
         subHeader={
           "Upload an Excel file with the list of email addresses of the people you want to invite to your space"
         }
