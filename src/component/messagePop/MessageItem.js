@@ -10,6 +10,9 @@ export const MessageItem = ({ firstName, username, lastName, picture, _id, image
     // if (currentUserId === item?.sender?._id) {
     //     setSeen(true)
     // }
+    if (firstName === undefined || lastName === undefined) {
+        return <div></div>
+    }
     return (
         <div className="message-pop-item">
             <IonItem

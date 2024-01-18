@@ -14,9 +14,18 @@ import useRating from "hooks/useRating"
 import Modal from "component/Reusable/Modal"
 import SeeMoreButton from "component/Reusable/Buttons/SeeMoreButton"
 import ListItemValue from "component/Reusable/ListValueItem"
+import ShareButton from "component/Share"
 
 export const BioDetails = ({ allProps }) => {
   const { width, uniData, handleResize } = allProps
+  const link =
+    window.location.origin +
+    `/university/${uniData?.elevatorInfo?.name.trim().split(" ").join("%20")}`
+
+  const Iconstyle = {
+    color: "grey",
+    margin: "0 0px"
+  }
 
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -114,12 +123,22 @@ export const BioDetails = ({ allProps }) => {
                 {useRating(uniData?.reviews || []) || "N/A"} Review
               </p>
             </IonCardContent>
-            <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
+            <IonCardContent
+              className="items-center gap-8"
+              style={{ display: "flex", padding: "0 12px", height: "26px" }}
+            >
               {/* <p style={{ alignSelf: "center" }}>See more </p> */}
               <Modal
                 ModalButton={<SeeMoreButton />}
                 ModalData={ModalData}
                 header="About"
+              />
+              <ShareButton
+                allProps={{
+                  link,
+                  unitId: uniData?.elevatorInfo?.unitId,
+                  Iconstyle
+                }}
               />
             </IonCardContent>
           </div>
