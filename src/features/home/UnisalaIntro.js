@@ -82,20 +82,6 @@ export const UnisalaLandingPage = ({ allProps }) => {
             </li>
           </ul>
           <br />
-
-          <div className="flex gap-4 w-full pr-28 justify-end ">
-            <button
-              className="capitalize wobble-hor-bottom text-neutral-100 flex items-center px-3 py-2 bg-blue-600 rounded-3xl"
-              onClick={() => {
-                ButtonTrack("Landing page login button clicked")
-                window.location.replace("/login")
-              }} // Replace '/login' with your login URL
-            >
-              <IonIcon icon={lockOpenOutline} />
-              &nbsp; Log In Now
-              <span className="animate-ping absolute inline-flex h-9 w-20 rounded-3xl bg-sky-400 opacity-50 scale-50"></span>
-            </button>
-          </div>
         </IonCardContent>
       </IonCard>
 

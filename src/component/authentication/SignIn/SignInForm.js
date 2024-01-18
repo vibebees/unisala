@@ -8,7 +8,11 @@ import { validateSignIn } from "utils/components/validate"
 import { loginUser } from "store/action/authenticationAction"
 
 const SignInForm = ({ setauth, setShowSignup = null }) => {
-  const [input, setInput] = useState({ email: "", password: "" })
+  const params = new URLSearchParams(window.location.search)
+  const [input, setInput] = useState({
+    email: "",
+    password: ""
+  })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -27,21 +31,21 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true)
       // Dispatch the loginUser action with appropriate arguments
-      dispatch(loginUser({ input, history, setLoading, present }))
+      dispatch(
+        loginUser({
+          input,
+          history,
+          setLoading,
+          present,
+          redirectUrl: params.get("uni")
+            ? params.get("uni") + `?unitId=${params.get("unitId")}`
+            : null
+        })
+      )
     } else {
       setErrors(validationErrors)
     }
   }
-
-  // Handling the toast notification for login status
-  useEffect(() => {
-    if (loading) {
-      present({
-        message: "Logging in...",
-        duration: 2000
-      })
-    }
-  }, [loading, present])
 
   return (
     <form onSubmit={handleSubmit}>

@@ -19,11 +19,13 @@ import {
 import { PageRoute } from "./PageRoute"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
+import { useHistory } from "react-router"
 
 export default function MobileNav({ setCreateAPostPopUp, allProps }) {
   const { loggedIn } = useSelector((store) => store?.userProfile)
   const [activeTab, setActiveTab] = useState("")
-
+  const params = new URLSearchParams(window.location.search)
+  const history = useHistory()
   useEffect(() => {
     setActiveTab(window.location.pathname.split("/")[1])
   }, [])
@@ -79,7 +81,10 @@ export default function MobileNav({ setCreateAPostPopUp, allProps }) {
           <IonTabButton
             tab="post"
             onClick={() => {
-              setCreateAPostPopUp(true)
+              params.set("create", "y")
+              history.push({
+                search: params.toString()
+              })
             }}
           >
             <div
