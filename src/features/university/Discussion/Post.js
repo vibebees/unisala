@@ -7,26 +7,31 @@ import {
 import { Query } from "@apollo/client/react/components"
 import Thread from "../../../component/thread"
 import { GetUserPost } from "../../../graphql/user"
+import { cloudOffline } from "ionicons/icons"
+import { USER_SERVICE_GQL } from "servers/types"
+import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 
 export default function Review({ uniId }) {
   return (
     <Query
       query={GetUserPost}
       variables={{ unitId: uniId, page: 0, pageSize: 3 }}
-      context={{ server: "USER_SERVICE_GQL" }}
+      context={{ server: USER_SERVICE_GQL }}
     >
       {({ data, loading, fetchMore }) => {
         const Posts = data?.getUserPost?.Posts || []
+
         const totalPosts = data?.getUserPost?.totalPosts || 0
-        const [page, setPage] = useState(0)
+        const [page, setPage] = useState(3)
 
         const fetchMoreHandler = () => {
-          setPage(page + 1)
+          console.log("fetch more called")
+          setPage((prev) => prev++)
           fetchMore({
             variables: {
               unitId: uniId,
-              page: page + 1,
-              pageSize: 3
+              page: 0,
+              pageSize: page + 1
             },
             updateQuery: (prev, { fetchMoreResult }) => {
               if (!fetchMoreResult) return prev
@@ -62,14 +67,23 @@ export default function Review({ uniId }) {
                 )
               })}
 
-            {loading && <p>loading...</p>}
-            {Array.isArray(Posts) && Posts.length > 0 && (
-              <div className="flex justify-center py-7">
-                <IonButton size="small" onClick={fetchMoreHandler}>
-                  {loading ? "Loading" : "See More"}
-                </IonButton>
-              </div>
-            )}
+            <IonInfiniteScroll
+              threshold="100px"
+              onIonInfinite={(e) => {
+                console.log(e)
+                fetchMoreHandler()
+                e.target.complete()
+              }}
+            >
+              <IonInfiniteScrollContent>
+                {Array.from(3).map((_, i) => (
+                  <>
+                    <h1>heheheh</h1>
+                    <ThreadSkeleton key={i} />
+                  </>
+                ))}
+              </IonInfiniteScrollContent>
+            </IonInfiniteScroll>
           </>
         )
       }}
