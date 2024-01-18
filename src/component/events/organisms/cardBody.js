@@ -4,8 +4,10 @@ import {EventList} from "../molecules/eventList"
 
 export const EventCardBody = ({props = {}}) => {
 
-    const {event, showAlert, handleRegister, buttonColor, handleUserAcitivity, buttonText, buttonEl, animation, year, yearOptions, setButtonColor, setButtonText, setShowAlert, setSelectedYear} = props
+    const {event, showAlert, handleRegister, buttonColor, clickOptions, buttonState, buttonEl, animation, year, yearOptions, setShowAlert, activityOptions,
+        currentOptions} = props
 
+    console.log(currentOptions)
     useEffect(() => {
         animation.current = createAnimation()
             .addElement(buttonEl.current)
@@ -30,31 +32,18 @@ export const EventCardBody = ({props = {}}) => {
                 ref={buttonEl}
             >
 
-                {buttonText}
+                {buttonState.text}
             </IonButton>
-        <IonAlert
-            isOpen={showAlert}
-            className="confirmation"
-            trigger="present-alert"
-            header="Select your year in college "
-            buttons={[
-                {
-                    text: "Cancel",
-                    role: "cancel",
-                    handler: () => {
-                        setShowAlert(false)
-                    }
-                },
-                {
-                    text: "OK",
-                    role: "confirm",
-                    handler: (value) => handleUserAcitivity(value)
-                }
-            ]}
-            inputs={yearOptions}
-            onDidDismiss={() => setShowAlert(false)}
+            <IonAlert
+                isOpen={showAlert}
+                className="confirmation"
+                trigger="present-alert"
+                header= {currentOptions?.header}
+                buttons={clickOptions}
+                inputs={ currentOptions?.body}
+                onDidDismiss={() => setShowAlert(false)}
 
-        ></IonAlert>
+            ></IonAlert>
     </IonCardContent>
     )
 }

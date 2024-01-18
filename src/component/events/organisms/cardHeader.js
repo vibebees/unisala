@@ -7,7 +7,7 @@ export const EventCardHeader = ({props}) => {
     return ((
         <IonCardHeader>
         <IonCardSubtitle>
-            <IonIcon icon={calendarOutline} style={{verticalAlign: "bottom"}} /> {event.date}
+            <IonIcon icon={calendarOutline} size="medium"/> {event.date}
         </IonCardSubtitle>
         <IonCardTitle>{event.title}</IonCardTitle>
     </IonCardHeader>

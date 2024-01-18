@@ -4,19 +4,18 @@ export const EventList = ({props}) => {
     const {event} = props
     return (
         <IonList>
-        <IonItem>
-          <IonLabel >Registered</IonLabel>
+            <IonItem>
+                <IonLabel >Registered</IonLabel>
                 <IonBadge color="success">{event?.registered}</IonBadge>
-        </IonItem>
-        <IonItem>
-          <IonLabel>Major</IonLabel>
+            </IonItem>
+            <IonItem>
+                <IonLabel>Major</IonLabel>
                 <IonBadge color="secondary">{event?.major}</IonBadge>
-        </IonItem>
-        {/* <IonItem>
-          <IonLabel>🍿</IonLabel>
-          <IonBadge color="tertiary">34</IonBadge>
-        </IonItem> */}
-
-      </IonList>
+            </IonItem>
+            <IonItem>
+                <IonLabel>Days Remaining</IonLabel>
+                <IonBadge color="tertiary">{event?.dayRemaining}</IonBadge>
+            </IonItem>
+        </IonList>
     )
 }
