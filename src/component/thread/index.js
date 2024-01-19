@@ -28,6 +28,7 @@ import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
 import { EditPost, DeletePost } from "graphql/user"
 import Share from "component/Share"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -228,10 +229,10 @@ const Thread = ({ thread, refetch }) => {
           <IonSlides pager={true} options={slideOpts}>
             {images.map((image, index) => (
               <IonSlide key={index}>
-                <img
+                <ImageWithLoader
                   src={image}
                   alt={image}
-                  style={{ width: "80%", paddingBottom: "2rem" }}
+                  className={"h-[540px] object-cover"}
                 />
               </IonSlide>
             ))}

@@ -463,7 +463,7 @@ export const AddComment = gql`
   `,
   GetUserPost = gql`
     query getUserPost($userId: String, $page: Float!, $unitId: Float) {
-      getUserPost(userId: $userId, page: $page, pageSize: 0, unitId: $unitId) {
+      getUserPost(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
         totalPosts
         Posts {
           _id

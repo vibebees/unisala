@@ -15,38 +15,13 @@ export default function Review({ uniId }) {
   return (
     <Query
       query={GetUserPost}
-      variables={{ unitId: uniId, page: 0, pageSize: 3 }}
+      variables={{ unitId: uniId, page: 0, pageSize: 20 }}
       context={{ server: USER_SERVICE_GQL }}
     >
       {({ data, loading, fetchMore }) => {
         const Posts = data?.getUserPost?.Posts || []
-
         const totalPosts = data?.getUserPost?.totalPosts || 0
-        const [page, setPage] = useState(3)
-
-        const fetchMoreHandler = () => {
-          console.log("fetch more called")
-          setPage((prev) => prev++)
-          fetchMore({
-            variables: {
-              unitId: uniId,
-              page: 0,
-              pageSize: page + 1
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-              if (!fetchMoreResult) return prev
-              return Object.assign({}, prev, {
-                getUserPost: {
-                  ...prev.getUserPost,
-                  Posts: [
-                    ...prev.getUserPost.Posts,
-                    ...fetchMoreResult.getUserPost.Posts
-                  ]
-                }
-              })
-            }
-          })
-        }
+        const [page, setPage] = useState(0)
 
         return (
           <>
@@ -70,19 +45,29 @@ export default function Review({ uniId }) {
             <IonInfiniteScroll
               threshold="100px"
               onIonInfinite={(e) => {
-                console.log(e)
-                fetchMoreHandler()
-                e.target.complete()
+                setPage(page + 1)
+                fetchMore({
+                  variables: {
+                    unitId: uniId,
+                    page: page + 1
+                  },
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return prev
+                    return Object.assign({}, prev, {
+                      getUserPost: {
+                        ...prev.getUserPost,
+                        Posts: [
+                          ...prev.getUserPost.Posts,
+                          ...fetchMoreResult.getUserPost.Posts
+                        ]
+                      }
+                    })
+                  }
+                })
+                setTimeout(() => e.target.complete(), 500)
               }}
             >
-              <IonInfiniteScrollContent>
-                {Array.from(3).map((_, i) => (
-                  <>
-                    <h1>heheheh</h1>
-                    <ThreadSkeleton key={i} />
-                  </>
-                ))}
-              </IonInfiniteScrollContent>
+              <IonInfiniteScrollContent></IonInfiniteScrollContent>
             </IonInfiniteScroll>
           </>
         )
