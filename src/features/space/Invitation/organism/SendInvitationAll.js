@@ -5,7 +5,7 @@ import Header from "../atoms/Header"
 
 const SendInvitationAll = () => {
   return (
-    <IonCard className="ion-no-margin ion-no-padding shadow-none px-4 py-6">
+    <IonCard className="ion-no-margin w-full h-full ion-no-padding shadow-none px-4 py-6">
       <Header
         header={"Send Invitation All"}
         subHeader={
@@ -13,6 +13,7 @@ const SendInvitationAll = () => {
         }
       />
       <br />
+
       <FileUploader />
     </IonCard>
   )
