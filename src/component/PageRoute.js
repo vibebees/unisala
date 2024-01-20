@@ -59,7 +59,6 @@ export const PageRoute = ({ allProps }) => (
         <ProfilePage />
       </Route>
 
-
       <Route exact path="/university/:id">
         <UniversityPage />
       </Route>
@@ -67,7 +66,6 @@ export const PageRoute = ({ allProps }) => (
       <Route exact path="/thread/:id">
         <ThreadDetail />
       </Route>
-
 
       {messagingRoutes()}
       {spaceRoutes()}
