@@ -138,7 +138,7 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invite: <Invitation />
+    invite: <Invitation spaceId={spaceId} />
   }
   const SpaceBody = () => {
     return tabs[tab]

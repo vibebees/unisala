@@ -3,11 +3,11 @@ import SendInvitationAll from "./organism/SendInvitationAll"
 import { IonCard } from "@ionic/react"
 import SingleInvitation from "./organism/SingleInvitation"
 
-const Index = () => {
+const Index = ({ spaceId }) => {
   return (
     <IonCard className="h-fit shadow-none mt-1 ion-no-margin w-full">
-      <SendInvitationAll />
-      {/* <SingleInvitation /> */}
+      {/* <SendInvitationAll /> */}
+      <SingleInvitation spaceId={spaceId} />
     </IonCard>
   )
 }
