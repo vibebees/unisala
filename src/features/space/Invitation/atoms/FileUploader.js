@@ -1,23 +1,69 @@
 import React, { useState } from "react"
-import { IonButton, IonInput, IonCard } from "@ionic/react"
+import { IonCard, useIonToast } from "@ionic/react"
 import SendButton from "./SendButton"
-import InvitationTypesCheckbox from "../organism/InvitationTypesCheckbox"
+import { authInstance } from "api/axiosInstance"
+import { userServer } from "servers/endpoints"
 
 const FileUploader = () => {
   const [selectedFile, setSelectedFile] = useState(null)
-  const [invitationType, setInvitationType] = React.useState("")
+  const [present, dismiss] = useIonToast()
+  const [loading, setLoading] = useState(false)
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]
+    if (file.type !== "text/csv") {
+      present("Only CSV files are allowed", 3000)
+      return present({
+        duration: 3000,
+        message: "Only CSV files are allowed",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    }
     setSelectedFile(file)
   }
 
   const handleUpload = () => {
-    if (selectedFile) {
-      console.log("Selected file:", selectedFile)
-    } else {
-      console.log("No file selected")
+    if (!selectedFile) {
+      return present({
+        duration: 3000,
+        message: "Please select a file to upload",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
     }
+
+    const formData = new FormData()
+    setLoading(true)
+    formData.append("file", selectedFile)
+    authInstance
+      .post(`${userServer}/upload-csv`, formData)
+      .then((res) => {
+        if (res.data.success) {
+          present({
+            duration: 3000,
+            message: "Invitation sent successfully",
+            buttons: [{ text: "X", handler: () => dismiss() }],
+            color: "primary",
+            mode: "ios"
+          })
+        }
+      })
+      .catch((err) => {
+        present({
+          duration: 3000,
+          message: err?.message || " Something went wrong",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      })
+      .finally(() => {
+        setSelectedFile(null)
+        setLoading(false)
+      })
   }
   return (
     <div className="w-full h-full">
@@ -25,17 +71,15 @@ const FileUploader = () => {
         <input
           type="file"
           className="border-2 border-neutral-300 rounded-lg p-2 w-full"
-          accept=".xls, .xlsx"
+          accept=".xls, .xlsx, .csv"
           onChange={handleFileChange}
         />
-        <InvitationTypesCheckbox
-          allProps={{
-            invitationType,
-            setInvitationType,
-            admin: true
-          }}
+
+        <SendButton
+          loading={loading}
+          label="Send Invitation"
+          onclick={handleUpload}
         />
-        <SendButton label="Send Invitation" onclick={handleUpload} />
       </IonCard>
     </div>
   )
