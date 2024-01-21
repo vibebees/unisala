@@ -13,6 +13,8 @@ const Notifications = lazy(() => import("../pages/notification"))
 const StudyAbroadRoadmapInput = lazy(() => import("features/roadmap/template"))
 const Search = lazy(() => import("../pages/search"))
 const SpacePage = lazy(() => import("../pages/space"))
+const Org = lazy(() => import("../pages/org"))
+
 const UniversityPage = lazy(() => import("../features/university/index"))
 const Login = lazy(() => import("../pages/login"))
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
@@ -48,6 +50,18 @@ const spaceRoutes = () => (
   </>
 )
 
+const orgRoutes = () => (
+  <>
+    <ProtectedRoute>
+      <Switch>
+        <Route path="/org/:category" exact>
+          <Org />
+        </Route>
+      </Switch>
+    </ProtectedRoute>
+  </>
+)
+
 export const PageRoute = ({ allProps }) => (
   <Switch>
     <Suspense fallback={<PreLoader />}>
@@ -69,6 +83,7 @@ export const PageRoute = ({ allProps }) => (
 
       {messagingRoutes()}
       {spaceRoutes()}
+      {orgRoutes()}
       <Route path="/mynetwork" exact>
         <ProtectedRoute>
           <MyNetwork />
