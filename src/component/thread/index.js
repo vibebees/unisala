@@ -60,6 +60,9 @@ const Thread = ({ thread }) => {
   const BASEURL = window.location.origin
   const pathname = useLocation().pathname
 
+  // to determine if the post is in home feed or profile
+  const isHome = pathname === "/" || pathname === "/home"
+
   const [updatedData, setUpdatedData] = useState({
     postText,
     // images,
@@ -84,7 +87,7 @@ const Thread = ({ thread }) => {
       console.log({ loggedinUser })
 
       const cachedData = cache.readQuery(
-        pathname === "/" || pathname === "/home"
+        isHome
           ? {
               query: getNewsFeed,
               variables: {
@@ -103,7 +106,7 @@ const Thread = ({ thread }) => {
       console.log({ cachedData })
 
       cache.writeQuery(
-        pathname === "/" || pathname === "/home"
+        isHome
           ? {
               query: getNewsFeed,
               variables: {
@@ -174,15 +177,14 @@ const Thread = ({ thread }) => {
     update: (cache, { data }) => {
       cache.modify({
         id: cache.identify({
-          __typename: "Post",
+          __typename: isHome ? "PostNewsFeed" : "Post",
           id: _id
         }),
         fields: {
           postText() {
             return updatedData.postText
           }
-        },
-        broadcast: false
+        }
       })
     },
     onCompleted: (data) => {
@@ -291,7 +293,7 @@ const Thread = ({ thread }) => {
                 <ImageWithLoader
                   src={image}
                   alt={image}
-                  className={"h-[540px] object-cover"}
+                  className={"h-[540px] w-[400px] object-cover"}
                 />
               </IonSlide>
             ))}
@@ -340,7 +342,7 @@ const Thread = ({ thread }) => {
             </button>
 
             {showOptions && (
-              <div className="absolute w-[160px] -right-6 top-5 bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
+              <div className="absolute w-[160px] -right-6 top-5 z-[100] bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
                 <button
                   onClick={() => {
                     setEditable(true)

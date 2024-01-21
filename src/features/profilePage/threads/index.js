@@ -13,7 +13,7 @@ import { USER_SERVICE_GQL } from "servers/types"
 import { GetUserPost } from "graphql/user/"
 import Thread from "component/thread"
 import CourseCard from "component/courseCard"
-import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
+import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 
 function index({ userId, firstName }) {
   return (

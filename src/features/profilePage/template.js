@@ -165,7 +165,7 @@ const ProfilePage = () => {
     <IonContent>
       <IonGrid className="max-width-container">
         <IonRow>
-          <IonCol>
+          <IonCol className="w-2/5">
             <ProfileHeader tab={tab} setTab={setTab} data={profileHeaderData} />
             {tab === 0 && getUser?.user && (
               <ProfileBody data={profileBodyData} />
