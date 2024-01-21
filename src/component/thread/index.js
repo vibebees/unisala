@@ -18,9 +18,9 @@ import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
-import { EditPost, DeletePost } from "graphql/user"
+import { EditPost, DeletePost, GetUserPost } from "graphql/user"
 
-const Thread = ({ thread, refetch }) => {
+const Thread = ({ thread }) => {
   const [present, dismiss] = useIonToast()
   const {
     _id,
@@ -58,17 +58,45 @@ const Thread = ({ thread, refetch }) => {
   // delete thread
   const [deletePost] = useMutation(DeletePost, {
     context: { server: USER_SERVICE_GQL },
-
     variables: {
       postId: _id
     },
 
+    update: (cache, data) => {
+      console.log({ data })
+      console.log({ loggedinUser })
+      const cachedData = cache.readQuery({
+        query: GetUserPost,
+        variables: {
+          userId: loggedinUser._id,
+          page: 0
+        }
+      })
+      console.log({ cachedData })
+
+      cache.writeQuery({
+        query: GetUserPost,
+        variables: {
+          userId: loggedinUser._id,
+          page: 0
+        },
+        data: {
+          getUserPost: {
+            ...cachedData.getUserPost,
+            Posts: cachedData.getUserPost.Posts.filter(
+              (post) => post._id !== _id
+            )
+          }
+        }
+      })
+    },
+
     onCompleted: (data) => {
+      console.log("delete called")
       const { deletePost } = data
       if (deletePost.success) {
         // refetch posts
         setShowOptions(false)
-        refetch()
         present({
           duration: 3000,
           message: "Post Deleted",
