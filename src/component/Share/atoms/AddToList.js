@@ -60,7 +60,7 @@ const AddToList = ({ allProps }) => {
       }
     } catch (error) {
       present({
-        message: "Something went wrong",
+        message: error?.response?.data?.message || "Something went wrong",
         duration: 2000,
         color: "danger"
       })

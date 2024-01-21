@@ -34,7 +34,7 @@ const CreateListModal = ({ editList = false, list = {} }) => {
         mode: "ios"
       })
     }
-
+    setLoading(true)
     const res = await authInstance.patch(
       `${userServer}/update-list/${list?._id}`,
       {
@@ -65,7 +65,6 @@ const CreateListModal = ({ editList = false, list = {} }) => {
   }
 
   const handleSubmit = async (e) => {
-    setLoading(true)
     e.preventDefault()
 
     if (!input.title.trim() || !input.description.trim()) {
@@ -80,6 +79,7 @@ const CreateListModal = ({ editList = false, list = {} }) => {
     if (editList) {
       return handleEdit()
     }
+    setLoading(true)
     const res = await authInstance.post(`${userServer}/add-list`, input)
     if (res.data.success) {
       setLists([...lists, res.data.data])
