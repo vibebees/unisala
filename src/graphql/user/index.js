@@ -53,23 +53,27 @@ export const AddComment = gql`
   `,
   AddPost = gql`
     mutation addPost(
-      $postText: String
+      $postText: String!
       $unitId: Float
       $tags: [ID]
       $postTag: String
-      $id: NodeEnum
-      $levelOfStudy: LevelOfStudyEnum
+      $id: String!
+      $levelOfStudy: String
       $major: String
       $gpa: Float
       $testScore: TestScoreEnum
       $testScoreMark: TestScoreMark
       $preferredLocation: String
       $universitySearch: String
-      $rating: String
       $anonymityOption: Boolean
       $relationToMajor: Boolean
       $attendAgain: Boolean
       $reviewSubCategories: String
+      $admissionAndApplicationRating: Int
+      $financialAidAndScholarshipRating: Int
+      $academicProgramsAndDepartmentRating: Int
+      $studentLifeAndServiceRating: Int
+      $careerAndAlumniResourceRating: Int
     ) {
       addPost(
         postText: $postText
@@ -84,11 +88,15 @@ export const AddComment = gql`
         testScoreMark: $testScoreMark
         preferredLocation: $preferredLocation
         universitySearch: $universitySearch
-        rating: $rating
         anonymityOption: $anonymityOption
         relationToMajor: $relationToMajor
         attendAgain: $attendAgain
         reviewSubCategories: $reviewSubCategories
+        admissionAndApplicationRating: $admissionAndApplicationRating
+        financialAidAndScholarshipRating: $financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating: $academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating: $studentLifeAndServiceRating
+        careerAndAlumniResourceRating: $careerAndAlumniResourceRating
       ) {
         status {
           success
@@ -114,6 +122,11 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
+          # admissionAndApplicationRating
+          # financialAidAndScholarshipRating
+          # academicProgramsAndDepartmentRating
+          # studentLifeAndServiceRating
+          # careerAndAlumniResourceRating
           postImage
           date
           upVoted
@@ -456,6 +469,7 @@ export const AddComment = gql`
           _id
           images
           postText
+
           date
           upVoteCount
           postCommentsCount
@@ -809,6 +823,11 @@ export const AddComment = gql`
       fetchMyNewsFeed(userId: $userId, page: $page) {
         section
         postText
+        admissionAndApplicationRating
+        financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating
+        careerAndAlumniResourceRating
         upVoted
         upVoteCount
         postCommentsCount

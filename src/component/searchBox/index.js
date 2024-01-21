@@ -31,7 +31,7 @@ export const SearchBar = () => {
 
   const handleSearch = () => {
     if (searchValue) {
-      // GetUni({ variables: { searchValue } })
+      GetUni({ variables: { searchValue } })
       // GetUser({ variables: { searchValue } })
     }
   }
@@ -57,15 +57,16 @@ export const SearchBar = () => {
 
   return (
     <>
-      <div className="search-box ">
+      <div className="search-box">
         <IonInput
           type="text"
-          placeholder="Search universities, people..."
-          className="search-input-box !pr-10 shadow-sm max-md:shadow-neutral-400 "
+          placeholder="   Search universities, people..."
+          className="search-input-box !pr-10 "
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               setDropDownOptions(false)
               history.push(searchValue ? `/search?q=${searchValue}` : "#")
+              handleSearch(searchValue)
             }
           }}
           value={searchValue}
@@ -85,14 +86,18 @@ export const SearchBar = () => {
         >
           <IonIcon
             icon={search}
-            color="white"
-            className="search-box__icon text-2xl grid rounded-full p-1 bg-blue-500"
+            color="success"
+            size="large"
             onClick={() => setDropDownOptions(false)}
           />
         </Link>
       </div>
       {dropDownOptions && Array.isArray(options) && options.length > 0 && (
-        <div className="recommend-search" ref={dropdownRef}>
+        <div className="recommend-search" ref={dropdownRef}
+        style={{
+          zIndex: 1000 // ensure it's above other content
+        }}
+        >
           {Array.isArray(options) &&
             options.map((item, i) => (
               <SearchBarResultList

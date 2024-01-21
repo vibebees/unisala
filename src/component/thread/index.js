@@ -1,6 +1,13 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
+import {
+  IonButton,
+  IonCard,
+  IonIcon,
+  IonSlide,
+  IonSlides,
+  useIonToast
+} from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import Save from "./actions/Save"
@@ -11,6 +18,7 @@ import { Avatar } from "../Avatar"
 import ThreadExpand from "./ThreadExpand"
 import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
+import Rating from "./actions/Rating"
 
 import { useMutation } from "@apollo/client"
 import { useSelector } from "react-redux"
@@ -19,6 +27,8 @@ import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
 import { EditPost, DeletePost, GetUserPost, getNewsFeed } from "graphql/user"
+import Share from "component/Share"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
 const Thread = ({ thread }) => {
   const [present, dismiss] = useIonToast()
@@ -33,7 +43,12 @@ const Thread = ({ thread }) => {
     saved,
     user,
     tags,
-    postImage
+    postImage,
+    admissionAndApplicationRating,
+    financialAidAndScholarshipRating,
+    academicProgramsAndDepartmentRatingm,
+    studentLifeAndServiceRating,
+    careerAndAlumniResourceRating
   } = thread
 
   const { firstName, lastName, username, picture } = thread.user || {}
@@ -42,6 +57,7 @@ const Thread = ({ thread }) => {
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
   const [numberOfComments, setNumberOfComments] = useState(1)
+  const BASEURL = window.location.origin
   const pathname = useLocation().pathname
 
   const [updatedData, setUpdatedData] = useState({
@@ -262,33 +278,24 @@ const Thread = ({ thread }) => {
   }
   const renderImages = () => {
     const { images, _id } = thread
-
+    const slideOpts = {
+      initialSlide: 0,
+      speed: 400
+    }
     if (images?.length > 0) {
       return (
         <Link to={`/thread/${_id}`} className={clsx("flex")}>
-          <img
-            src={images[0]}
-            alt="Thread image"
-            className={clsx(
-              "object-cover",
-              images.length > 1 ? "w-1/2" : "w-full max-w-[500px] shadow-md"
-            )}
-          />
-
-          {images.length > 1 && (
-            <div className="w-1/2 relative">
-              <img
-                src={images[1]}
-                alt="Thread image"
-                className="shrink-0 object-cover w-max"
-              />
-              <div className="absolute grid place-content-center bg-neutral-950 z-10 bg-opacity-40 top-0 left-0 right-0 bottom-0 w-full h-full">
-                <h3 className="text-neutral-50 font-semibold text-2xl">
-                  +{images.length - 1}
-                </h3>
-              </div>
-            </div>
-          )}
+          <IonSlides pager={true} options={slideOpts}>
+            {images.map((image, index) => (
+              <IonSlide key={index}>
+                <ImageWithLoader
+                  src={image}
+                  alt={image}
+                  className={"h-[540px] object-cover"}
+                />
+              </IonSlide>
+            ))}
+          </IonSlides>
         </Link>
       )
     }
@@ -303,6 +310,19 @@ const Thread = ({ thread }) => {
         <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} />
         <Reply repliesCount={postCommentsCount} setReply={setReply} />
         <Save postId={_id} saved={saved} />
+        <Share
+          allProps={{
+            link: `${BASEURL}/thread/${_id}`,
+            btnstyle: {
+              width: "35px",
+              height: "35px"
+            },
+            Iconstyle: {
+              color: "gray"
+            },
+            showAddList: false
+          }}
+        />
       </div>
     )
   }
@@ -347,11 +367,55 @@ const Thread = ({ thread }) => {
     return null
   }
 
+  const rating = () => {
+    if (
+      admissionAndApplicationRating ||
+      financialAidAndScholarshipRating ||
+      academicProgramsAndDepartmentRatingm ||
+      studentLifeAndServiceRating ||
+      careerAndAlumniResourceRating
+    ) {
+      return (
+        <div className="flex flex-col mt-3">
+          <h2 className="font-medium text-blue-800 text-base">Rating</h2>{" "}
+          <section className="mt-1 w-[60%] flex flex-col gap-3">
+            <Rating
+              label="Admission & Application"
+              rating={admissionAndApplicationRating}
+            />
+
+            <Rating
+              label="Financial Aid & Scholarships"
+              rating={financialAidAndScholarshipRating}
+            />
+
+            <Rating
+              label="Academic Programs & Department"
+              rating={academicProgramsAndDepartmentRatingm}
+            />
+
+            <Rating
+              label="Student Life & Services"
+              rating={studentLifeAndServiceRating}
+            />
+
+            <Rating
+              label="Career & Alumni Resources"
+              rating={careerAndAlumniResourceRating}
+            />
+          </section>
+        </div>
+      )
+    }
+    return null
+  }
+
   return (
     <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
       {renderHeader()}
       <div className="thread_content !pl-16 pr-8 max-md:pr-3">
         {renderContent()}
+        {rating()}
         {renderImages()}
         {renderFooter()}
         {reply && (

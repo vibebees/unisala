@@ -3,7 +3,7 @@ import {createAvatar} from "@dicebear/core"
 import {thumbs} from "@dicebear/collection"
 import {getImage} from "servers/s3.configs"
 
-export function Avatar({profilePic, username}) {
+export function Avatar({profilePic, username = "anon"}) {
   const [profileImage, setProfileImage] = useState()
 
   useEffect(() => {

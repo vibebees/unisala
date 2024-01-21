@@ -1,54 +1,149 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
   IonInput,
   IonText,
   IonList,
-  IonRadio,
-  IonRadioGroup,
-  IonButton
+  IonTextarea,
+  IonButton,
+  useIonToast,
+  IonSpinner
 } from "@ionic/react"
+import { userServer } from "servers/endpoints"
+import { authInstance } from "api/axiosInstance"
+import { ListContext } from "component/List/index"
 
-const CreateListModal = () => {
+const CreateListModal = ({ editList = false, list = {} }) => {
+  const { setLists, lists } = useContext(ListContext)
+  const [present, dismiss] = useIonToast()
+  const [loading, setLoading] = React.useState(false)
+  const [input, setInput] = React.useState({
+    title: editList ? list?.title : "",
+    description: editList ? list?.description : ""
+  })
+
+  const handleEdit = async () => {
+    if (
+      input.title === list?.title &&
+      input?.description === list?.description
+    ) {
+      return present({
+        duration: 3000,
+        message: "No changes made!",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+    setLoading(true)
+    const res = await authInstance.patch(
+      `${userServer}/update-list/${list?._id}`,
+      {
+        title: input.title,
+        description: input.description
+      }
+    )
+    if (res.data.success) {
+      setLists((prev) =>
+        prev.map((lis) => {
+          if (lis._id === res.data.data._id) {
+            return res.data.data
+          }
+          return lis
+        })
+      )
+      present({
+        duration: 3000,
+        message: "List updated!",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "success",
+        mode: "ios"
+      })
+      const btn = document.querySelector(".modal-close-btn")
+      btn.click()
+    }
+    setLoading(false)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!input.title.trim() || !input.description.trim()) {
+      return present({
+        duration: 3000,
+        message: "Empty fields!",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+    if (editList) {
+      return handleEdit()
+    }
+    setLoading(true)
+    const res = await authInstance.post(`${userServer}/add-list`, input)
+    if (res.data.success) {
+      setLists([...lists, res.data.data])
+      present({
+        duration: 3000,
+        message: "List created!",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "success",
+        mode: "ios"
+      })
+      const btn = document.querySelector(".modal-close-btn")
+      btn.click()
+    }
+    setLoading(false)
+  }
+
   return (
     <div className="px-3">
       <IonList>
-        <form
-          action="
-        "
-        >
+        <form onSubmit={handleSubmit}>
           {" "}
           <IonList>
             <IonText>
               <h2>Name</h2>
             </IonText>
-            <IonInput placeholder="List  Name" className="mt-4"></IonInput>{" "}
+            <IonInput
+              placeholder="List  Name"
+              className="mt-4 rounded-md"
+              type="text"
+              name="title"
+              value={input.title}
+              onIonChange={(e) => {
+                setInput((pre) => {
+                  return { ...pre, title: e.target.value }
+                })
+              }}
+            ></IonInput>{" "}
           </IonList>
           <IonList className="mt-4">
             <IonText>
-              <h2>Who can see your Lists ?</h2>
+              <h2>A short description </h2>
             </IonText>
-            <IonRadioGroup className="flex mt-2 flex-col items-start justify-center gap-1 ">
-              <IonList className="flex  items-center justify-start gap-2">
-                <IonRadio slot="start" />
-                <IonText>
-                  <p>Public</p>
-                </IonText>
-              </IonList>
-              <IonList className="flex items-center justify-start gap-2">
-                <IonRadio slot="start" />
-                <IonText>
-                  <p>Private</p>
-                </IonText>
-              </IonList>
-            </IonRadioGroup>
+            <IonTextarea
+              value={input.description}
+              placeholder="Description"
+              className="mt-4 rounded-md"
+              onIonChange={(e) => {
+                setInput((pre) => {
+                  return { ...pre, description: e.target.value }
+                })
+              }}
+              rows={5}
+            ></IonTextarea>{" "}
           </IonList>
           <IonButton
-            className="mt-4 h-10 text-base capitalize"
+            className="mt-4 h-10 text-base capitalize modal-close-button"
             expand="block"
             type="submit"
             color="primary"
+            disabled={loading}
+            onSubmit={handleSubmit}
           >
-            Create
+            {editList ? "Save changes" : "Create List"}{" "}
+            {loading && <IonSpinner name="lines-small"></IonSpinner>}
           </IonButton>
         </form>
       </IonList>

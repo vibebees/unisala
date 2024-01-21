@@ -16,7 +16,6 @@ import ProfileBody from "./profileBody"
 import Threads from "./threads"
 import Guestbook from "./guestbook"
 import Saved from "./saved"
-import jwtDecode from "jwt-decode"
 import { useQuery } from "@apollo/client"
 import { getUserGql } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
@@ -25,6 +24,7 @@ import { USER_SERVICE_GQL } from "servers/types"
 import { useSelector } from "react-redux"
 import { screenGreaterThan1000 } from "../home/helper.func"
 import List from "component/List"
+import { URLgetter, URLupdate } from "utils/lib/URLupdate"
 
 const ProfilePage = () => {
   let windowWidth = useWindowWidth()
@@ -94,31 +94,35 @@ const ProfilePage = () => {
   const tabMap = {
     0: "profile",
     1: "threads",
-    2: "guestbook",
+    2: "list",
     3: "saved",
     4: "roadmap",
-    5: "List"
+    5: "guestbook"
   }
 
   // this effect is responsible to show the component(target users who probably came by following a link)
   useEffect(() => {
-    const query = new URLSearchParams(locate.search).get("tab")
+    const query = URLgetter("tab")
+
     if (!query) {
-      history.push("?tab=profile")
+      const tabURL = URLupdate("tab", "profile")
+      history.push({ search: tabURL })
     } else {
       switch (query) {
         case "threads":
           setTab(1)
           break
-        case "guestbook":
+        case "list":
           setTab(2)
           break
         case "saved":
           setTab(3)
           break
-
         case "roadmap":
           setTab(4)
+          break
+        case "guestbook":
+          setTab(5)
           break
         default:
           setTab(0)
@@ -129,7 +133,10 @@ const ProfilePage = () => {
   // this effect handles tab selections
 
   useEffect(() => {
-    history.push(`?tab=${tabMap[tab]}`)
+    if (tab) {
+      const tabURL = URLupdate("tab", tabMap[tab])
+      history.push({ search: tabURL })
+    }
   }, [tab])
 
   if (!getUser?.user) {
@@ -164,9 +171,9 @@ const ProfilePage = () => {
               <ProfileBody data={profileBodyData} />
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
-            {tab === 2 && <Guestbook userId={_id} firstName={firstName} />}
+            {tab === 2 && <List />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
-            {tab === 5 && <List />}
+            {tab === 5 && <Guestbook userId={_id} firstName={firstName} />}
           </IonCol>
 
           {windowWidth >= 1000 && views.greaterThan100}

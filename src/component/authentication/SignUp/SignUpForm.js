@@ -8,12 +8,11 @@ import { userServer } from "servers/endpoints"
 import { registerUser } from "store/action/authenticationAction"
 import { validateSignup } from "utils/components/validate"
 
-export const SignUpForm = ({ setauth }) => {
+export const SignUpForm = ({ setauth, setShowSignup = null }) => {
   const [errors, seterrors] = useState({})
   const [present, dismiss] = useIonToast()
   const [datacheck, setdatacheck] = useState(false)
   const [save, setsave] = useState(false)
-  const location = useLocation()
 
   const [input, setInput] = useState({
     firstName: "",
@@ -119,19 +118,21 @@ export const SignUpForm = ({ setauth }) => {
       >
         {save ? <IonSpinner></IonSpinner> : "Register"}
       </button>
-      {location.pathname === "/login" && (
-        <IonRow
-          onClick={() => {
-            setauth({ state: "signin" })
-          }}
-          className="auth-change mt-7 inline-flex"
-        >
-          <p className="text-blue-600 font-medium text-lg">
-            Already a member?{" "}
-            <span className="underline underline-offset-4"> sign in</span>
-          </p>
-        </IonRow>
-      )}
+
+      <IonRow
+        onClick={() => {
+          setauth({ state: "signin" })
+          if (setShowSignup) {
+            setShowSignup(false)
+          }
+        }}
+        className="auth-change mt-7 inline-flex"
+      >
+        <p className="text-blue-600 font-medium text-lg">
+          Already a member?{" "}
+          <span className="underline underline-offset-4"> sign in</span>
+        </p>
+      </IonRow>
     </form>
   )
 }
