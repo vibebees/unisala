@@ -7,7 +7,6 @@ const Tabs = () => {
   const params = new URLSearchParams(window.location.search)
   const history = useHistory()
   const q = params.get("tab")
-  console.log({ q })
   const setParams = (q) => {
     params.set("tab", q)
     history.push({
@@ -15,7 +14,7 @@ const Tabs = () => {
     })
   }
   return (
-    <div className="flex">
+    <div className="flex w-1/2 mx-auto">
       <IonButton
         className="flex-1"
         fill={q === "g" ? "solid" : "outline"}

@@ -29,7 +29,6 @@ export const UniversityBuild = ({ allProps }) => {
           UniScroll()
         }}
         style={{
-          height: "92vh",
           overflow: "auto",
           scrollBehavior: "smooth",
           backgroundColor: "#f5f5f5"
@@ -52,12 +51,7 @@ export const UniversityBuild = ({ allProps }) => {
           {q === "g" ? (
             <SideNavigator allProps={allProps} />
           ) : (
-            <div
-              style={{
-                width: "60%",
-                margin: "0 auto"
-              }}
-            >
+            <div className="w-11/12 mx-auto  lg:w-1/2 ">
               <Review
                 uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId}
               />
