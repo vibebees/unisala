@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
@@ -18,7 +18,7 @@ import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
-import { EditPost, DeletePost, GetUserPost } from "graphql/user"
+import { EditPost, DeletePost, GetUserPost, getNewsFeed } from "graphql/user"
 
 const Thread = ({ thread }) => {
   const [present, dismiss] = useIonToast()
@@ -42,6 +42,7 @@ const Thread = ({ thread }) => {
   const [showOptions, setShowOptions] = useState(false)
   const [editable, setEditable] = useState(false)
   const [numberOfComments, setNumberOfComments] = useState(1)
+  const pathname = useLocation().pathname
 
   const [updatedData, setUpdatedData] = useState({
     postText,
@@ -65,30 +66,60 @@ const Thread = ({ thread }) => {
     update: (cache, data) => {
       console.log({ data })
       console.log({ loggedinUser })
-      const cachedData = cache.readQuery({
-        query: GetUserPost,
-        variables: {
-          userId: loggedinUser._id,
-          page: 0
-        }
-      })
+
+      const cachedData = cache.readQuery(
+        pathname === "/" || pathname === "/home"
+          ? {
+              query: getNewsFeed,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              }
+            }
+          : {
+              query: GetUserPost,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              }
+            }
+      )
       console.log({ cachedData })
 
-      cache.writeQuery({
-        query: GetUserPost,
-        variables: {
-          userId: loggedinUser._id,
-          page: 0
-        },
-        data: {
-          getUserPost: {
-            ...cachedData.getUserPost,
-            Posts: cachedData.getUserPost.Posts.filter(
-              (post) => post._id !== _id
-            )
-          }
-        }
-      })
+      cache.writeQuery(
+        pathname === "/" || pathname === "/home"
+          ? {
+              query: getNewsFeed,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              },
+
+              data: {
+                fetchMyNewsFeed: {
+                  ...cachedData.fetchMyNewsFeed,
+                  ...cachedData.fetchMyNewsFeed.filter(
+                    (post) => post._id !== _id
+                  )
+                }
+              }
+            }
+          : {
+              query: GetUserPost,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              },
+              data: {
+                getUserPost: {
+                  ...cachedData.getUserPost,
+                  Posts: cachedData.getUserPost.Posts.filter(
+                    (post) => post._id !== _id
+                  )
+                }
+              }
+            }
+      )
     },
 
     onCompleted: (data) => {
