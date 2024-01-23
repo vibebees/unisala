@@ -24,8 +24,11 @@ export const EventCard = () => {
 
   return (
     <>
-      <IonCard>
-        <IonImg src={event.imageUrl}></IonImg>
+      <IonCard id="events">
+        <IonImg
+          className="h-64 object-cover w-full"
+          src={event.imageUrl}
+        ></IonImg>
         <EventCardHeader props={props} />
         <EventCardBody props={props} />
       </IonCard>

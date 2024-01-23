@@ -10,6 +10,7 @@ import {
   createAnimation
 } from "@ionic/react"
 import { EventList } from "../molecules/eventList"
+import RegisterButton from "../atoms/RegisterButton"
 
 export const EventCardBody = ({ props = {} }) => {
   const {
@@ -28,7 +29,6 @@ export const EventCardBody = ({ props = {} }) => {
     currentOptions
   } = props
 
-  console.log(currentOptions)
   useEffect(() => {
     animation.current = createAnimation()
       .addElement(buttonEl.current)
@@ -45,14 +45,7 @@ export const EventCardBody = ({ props = {} }) => {
     <IonCardContent id="up-coming-event">
       <p>{event.description}</p>
       <EventList props={props} />
-      <IonButton
-        expand="block"
-        color={buttonColor}
-        onClick={handleRegister}
-        ref={buttonEl}
-      >
-        {buttonState.text}
-      </IonButton>
+      <RegisterButton eventId={"123456789"} />
       <IonAlert
         isOpen={showAlert}
         className="confirmation"
