@@ -25,7 +25,9 @@ const SingleInvitation = ({ spaceId }) => {
     setLoading(true)
     authInstance
       .post(`${userServer}/org-invitation-request/${spaceId}`, {
-        emails: [email]
+        emails: [email],
+        role: "student",
+        description: "this is test"
       })
       .then((res) => {
         if (res.data.success) {
