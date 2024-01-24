@@ -23,12 +23,12 @@ const SingleInvitation = ({ spaceId }) => {
       })
     }
     setLoading(true)
+    let payload = {
+      emails: [email],
+      role: invitationType
+    }
     authInstance
-      .post(`${userServer}/org-invitation-request/${spaceId}`, {
-        emails: [email],
-        role: "student",
-        description: "this is test"
-      })
+      .post(`${userServer}/org-invitation-request/${spaceId}`, payload)
       .then((res) => {
         if (res.data.success) {
           present({
