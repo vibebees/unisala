@@ -13,6 +13,8 @@ const Notifications = lazy(() => import("../pages/notification"))
 const StudyAbroadRoadmapInput = lazy(() => import("features/roadmap/template"))
 const Search = lazy(() => import("../pages/search"))
 const SpacePage = lazy(() => import("../pages/space"))
+const Org = lazy(() => import("../pages/org"))
+
 const UniversityPage = lazy(() => import("../features/university/index"))
 const Login = lazy(() => import("../pages/login"))
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
@@ -48,6 +50,18 @@ const spaceRoutes = () => (
   </>
 )
 
+const orgRoutes = () => (
+  <>
+    <ProtectedRoute>
+      <Switch>
+        <Route path="/org/:category" exact>
+          <Org />
+        </Route>
+      </Switch>
+    </ProtectedRoute>
+  </>
+)
+
 export const PageRoute = ({ allProps }) => (
   <Switch>
     <Suspense fallback={<PreLoader />}>
@@ -55,16 +69,8 @@ export const PageRoute = ({ allProps }) => (
         <StudyAbroadRoadmap />
       </Route>
 
-      <Route path="/myjourney" exact>
-        <StudyAbroadRoadmapInput />
-      </Route>
-
-      <Route exact path="/home">
-        <HomePage />
-      </Route>
-
-      <Route exact path="/">
-        <HomePage propsall={allProps} />
+      <Route path="/@/:username" exact>
+        <ProfilePage />
       </Route>
 
       <Route exact path="/university/:id">
@@ -75,12 +81,9 @@ export const PageRoute = ({ allProps }) => (
         <ThreadDetail />
       </Route>
 
-      <Route path="/@/:username" exact>
-        <ProfilePage />
-      </Route>
-
       {messagingRoutes()}
       {spaceRoutes()}
+      {orgRoutes()}
       <Route path="/mynetwork" exact>
         <ProtectedRoute>
           <MyNetwork />
@@ -99,6 +102,14 @@ export const PageRoute = ({ allProps }) => (
 
       <Route path="/login" exact>
         <Login allProps={allProps} />
+      </Route>
+
+      <Route exact path="/home">
+        <HomePage />
+      </Route>
+
+      <Route exact path="/">
+        <HomePage propsall={allProps} />
       </Route>
 
       <Route path="*" exact>

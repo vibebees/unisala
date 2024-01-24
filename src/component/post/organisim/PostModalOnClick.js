@@ -87,11 +87,12 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
           <IonButtons slot="end">
             <IonButton
               onClick={() => {
-                setPostData(null)
-                setCreateAPostPopUp(false)
                 params.delete("create")
                 params.delete("type")
-                history.push({ search: params.toString() })
+                history.push({
+                  search: params.toString()
+                })
+                setCreateAPostPopUp(false)
               }}
             >
               Close
