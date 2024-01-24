@@ -8,7 +8,7 @@ import {
 import CourseCard from "component/courseCard"
 import Thread from "component/thread"
 import { Link } from "react-router-dom"
-import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
+import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { GetAllPostBySpaceCategoryID, GetUserPost } from "graphql/user"
 import { userServer } from "servers/endpoints"
@@ -17,7 +17,7 @@ import clsx from "clsx"
 
 import { USER_SERVICE_GQL } from "servers/types"
 import StateMessage from "component/stateMessage/index"
-import { EventCard } from "component/events"
+import {EventCard} from "component/events"
 export const SpaceFeed = ({ userInfo, spaceId }) => {
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
@@ -38,21 +38,6 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   //   })
   // }, [])
 
-  useEffect(() => {
-    const scrollToPost = () => {
-      const fragment = window.location.hash.substring(1)
-      const element = document.getElementById(fragment)
-
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth"
-        })
-      }
-    }
-
-    setTimeout(scrollToPost, 600)
-  }, [])
-
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }} className="ThreadContainer">
@@ -61,7 +46,7 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>
         )}
-        <EventCard />
+      <EventCard />
 
         {Array.isArray(allPosts?.posts) &&
           allPosts?.posts.map((post, index) => {
@@ -83,7 +68,8 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
             )
           })}
 
-        {/* <EventCard /> */}
+      <EventCard />
+
       </div>
 
       {/* {loading &&
