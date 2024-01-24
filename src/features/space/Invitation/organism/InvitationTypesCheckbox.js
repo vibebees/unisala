@@ -43,7 +43,7 @@ const InvitationTypesCheckbox = ({ allProps }) => {
             allProps={{
               handleCheckbox,
               invitationType,
-              label: "Alumni",
+              label: "Alumini",
               value: 11
             }}
           />
