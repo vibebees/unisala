@@ -8,6 +8,7 @@ import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
+import { useHistory } from "react-router"
 
 const StepsButtons = ({ allProps }) => {
   const { welcomeFormdata } = useContext(WelcomeData),
@@ -15,6 +16,7 @@ const StepsButtons = ({ allProps }) => {
     [present, dismiss] = useIonToast(),
     { accessToken } = useSelector((state) => state?.auth),
     decode = jwtDecode(accessToken),
+    history = useHistory,
     [users, setUsers] = useState({
       email: decode.email,
       firstName: decode.firstName,
@@ -134,6 +136,10 @@ const StepsButtons = ({ allProps }) => {
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
       )
       editProfile()
+      const spaceOrg = localStorage.getItem("org")
+      if (spaceOrg) {
+        history.push("/space/" + spaceOrg)
+      }
     } catch (error) {
       console.log(error)
     }

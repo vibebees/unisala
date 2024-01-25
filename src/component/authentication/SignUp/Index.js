@@ -6,7 +6,7 @@ import "../auth.css"
 
 export const SignUp = ({ setauth, setShowSignup = null }) => {
   return (
-    <div className="sign-content">
+    <div className="sign-content bg-white">
       <IonText className="auth-start">
         <p>Start for free.</p>
       </IonText>

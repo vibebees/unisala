@@ -14,7 +14,7 @@ const StudyAbroadRoadmapInput = lazy(() => import("features/roadmap/template"))
 const Search = lazy(() => import("../pages/search"))
 const SpacePage = lazy(() => import("../pages/space"))
 const UniversityPage = lazy(() => import("../features/university/index"))
-const Login = lazy(() => import("../pages/login"))
+const AuthPage = lazy(() => import("../pages/auth"))
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 
 const HomePage = lazy(() => import("../pages/home"))
@@ -93,12 +93,15 @@ export const PageRoute = ({ allProps }) => (
         </ProtectedRoute>
       </Route>
 
+      <Route path="/register" exact>
+        <AuthPage allProps={{ ...allProps, routeState: "signup" }} />
+      </Route>
       <Route path="/search" exact>
         <Search />
       </Route>
 
       <Route path="/login" exact>
-        <Login allProps={allProps} />
+        <AuthPage allProps={{ ...allProps, routeState: "signin" }} />
       </Route>
 
       <Route path="*" exact>
