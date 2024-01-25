@@ -17,7 +17,6 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
   const searchParams = new URLSearchParams(window.location.search)
   const spaceOrgName = searchParams.get("org")
   const email = searchParams.get("email") ?? ""
-  console.log({ spaceOrgName })
   const [input, setInput] = useState({
     firstName: "",
     lastName: "",
@@ -104,6 +103,7 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
           type="text"
           name="email"
           value={input?.email}
+          disabled={email}
         />
       </div>
       <div className="auth-input-div">

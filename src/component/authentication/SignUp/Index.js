@@ -5,6 +5,8 @@ import AppleAuth from "../AppleAuth"
 import "../auth.css"
 
 export const SignUp = ({ setauth, setShowSignup = null }) => {
+  const params = new URLSearchParams(window.location.search)
+  const isInvited = params.get("org")
   return (
     <div className="sign-content bg-white">
       <IonText className="auth-start">
@@ -16,21 +18,24 @@ export const SignUp = ({ setauth, setShowSignup = null }) => {
           Create a new account.
         </h4>
       </IonText>
-      <div className="auth-button">
-        <div
-          style={{
-            width: "234px"
-          }}
-        >
-          <GoogleAuth setauth={setauth} />
+      {!isInvited && (
+        <div className="auth-button">
+          <div
+            style={{
+              width: "234px"
+            }}
+          >
+            <GoogleAuth setauth={setauth} />
+          </div>
+          <div className="auth-or">
+            <p className="auth-or-p">OR</p>
+          </div>
         </div>
-      </div>
+      )}
       {/* <div className="auth-button">
         <AppleAuth />
       </div> */}
-      <div className="auth-or">
-        <p className="auth-or-p">OR</p>
-      </div>
+
       <SignUpForm setauth={setauth} setShowSignup={setShowSignup} />
     </div>
   )

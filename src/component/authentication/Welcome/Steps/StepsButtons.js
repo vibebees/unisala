@@ -140,6 +140,7 @@ const StepsButtons = ({ allProps }) => {
       if (spaceOrg) {
         history.push("/space/" + spaceOrg)
       }
+      localStorage.removeItem("org")
     } catch (error) {
       console.log(error)
     }
