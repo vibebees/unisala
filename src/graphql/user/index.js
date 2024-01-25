@@ -1242,4 +1242,14 @@ export const AddComment = gql`
         pictures
       }
     }
+  `,
+  RegisterUserEvent = gql`
+    mutation registeredUserByEventId($eventId: ID!, $userId: ID!) {
+      registeredUserByEventId(eventId: $eventId, userId: $userId) {
+        status {
+          success
+          message
+        }
+      }
+    }
   `

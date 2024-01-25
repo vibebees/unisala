@@ -1,5 +1,8 @@
-import { StudyAbroadRoadmap } from "./visaRoadMap"
+import {StudyAbroadRoadmap} from "./visaRoadMap"
+import { StudyAbroadRoadmapInput } from "./template"
+import React from "react"
+import Journey from "./progressReport"
 const RoadMap = (props) => {
-    return <StudyAbroadRoadmap/>
+    return <StudyAbroadRoadmapInput/>
 }
 export default RoadMap
