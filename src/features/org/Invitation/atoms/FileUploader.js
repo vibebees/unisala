@@ -39,7 +39,7 @@ const FileUploader = () => {
     setLoading(true)
     formData.append("file", selectedFile)
     authInstance
-      .post(`${userServer}/upload-csv`, formData)
+      .post(`${userServer}/org-invite-all`, formData)
       .then((res) => {
         if (res.data.success) {
           present({

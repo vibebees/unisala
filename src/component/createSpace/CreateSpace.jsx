@@ -13,6 +13,7 @@ import SpaceForm from "./form/SpaceForm"
 
 const CreateSpace = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const isOrgRoute = location.pathname.startsWith("/org")
 
   return (
     <IonCol>
@@ -20,7 +21,7 @@ const CreateSpace = () => {
       <IonModal isOpen={isOpen}>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Create Your Space</IonTitle>
+            <IonTitle>Create Your {isOrgRoute ? "Org" : "Space"}</IonTitle>
             <IonButton onClick={() => setIsOpen(false)} slot="end" fill="clear">
               Close
             </IonButton>
