@@ -1141,6 +1141,7 @@ export const AddComment = gql`
     query GetllEvent($spaceId: ID!) {
       getAllEventBySpaceId(spaceId: $spaceId) {
         event {
+          _id
           title
           eventDate
           description

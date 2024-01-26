@@ -15,7 +15,6 @@ const RegisterButton = ({ eventId }) => {
       eventId
     },
     onCompleted: (data) => {
-      console.log("data", data)
       // update uesr details in redux
       if (data?.editProfile?.status?.success) {
         present({
@@ -28,7 +27,7 @@ const RegisterButton = ({ eventId }) => {
       } else {
         present({
           duration: 3000,
-          message: data?.editProfile?.status?.message || "Something went wrong",
+          message: data?.registeredUserByEventId?.status?.message || "Something went wrong",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
