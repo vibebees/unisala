@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
 import { validateSignIn } from "utils/components/validate"
 import { loginUser } from "store/action/authenticationAction"
+import { Link } from "react-router-dom"
 
 const SignInForm = ({ setauth, setShowSignup = null }) => {
   const params = new URLSearchParams(window.location.search)
@@ -16,7 +17,7 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
-  const [present] = useIonToast()
+  const [present, dismiss] = useIonToast()
   const history = useHistory()
 
   const handleChange = (e) => {
@@ -30,7 +31,6 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
     const validationErrors = validateSignIn(input)
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true)
-      // Dispatch the loginUser action with appropriate arguments
       dispatch(
         loginUser({
           input,

@@ -8,6 +8,7 @@ import jwtDecode from "jwt-decode"
 import { getUserProfile } from "../../../../store/action/userProfile"
 import { EditProfile, getUserGql } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
+import { useHistory } from "react-router"
 
 const StepsButtons = ({ allProps }) => {
   const { welcomeFormdata } = useContext(WelcomeData),
@@ -15,6 +16,7 @@ const StepsButtons = ({ allProps }) => {
     [present, dismiss] = useIonToast(),
     { accessToken } = useSelector((state) => state?.auth),
     decode = jwtDecode(accessToken),
+    history = useHistory(),
     [users, setUsers] = useState({
       email: decode.email,
       firstName: decode.firstName,
@@ -69,8 +71,8 @@ const StepsButtons = ({ allProps }) => {
     onCompleted: (data) => {
       // update uesr details in redux
       if (data?.editProfile?.status?.success) {
+        localStorage.removeItem("newUser")
         modalRef.current.dismiss()
-
         present({
           duration: 3000,
           message: "Customizing your feed based on your profile!",
@@ -87,7 +89,6 @@ const StepsButtons = ({ allProps }) => {
           mode: "ios"
         })
       }
-      localStorage.removeItem("newUser")
       setNewUser(false)
       refetch({
         username: users?.username
@@ -106,6 +107,10 @@ const StepsButtons = ({ allProps }) => {
 
   const validationFunctions = () => {
     let typeofData = typeof welcomeFormdata[metaData[currentStep - 1].id]
+
+    if (currentStep === 1) {
+      return true
+    }
     if (typeofData === "string") {
       return welcomeFormdata[metaData[currentStep - 1].id] !== ""
     }
@@ -131,6 +136,11 @@ const StepsButtons = ({ allProps }) => {
         getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) })
       )
       editProfile()
+      const spaceOrg = localStorage.getItem("org")
+      if (spaceOrg) {
+        window.location.replace("/space/" + spaceOrg)
+      }
+      localStorage.removeItem("org")
     } catch (error) {
       console.log(error)
     }

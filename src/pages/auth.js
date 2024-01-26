@@ -1,10 +1,11 @@
 import LoginPage from "../features/login"
 import { IonCardContent } from "@ionic/react"
-const PageLogin = () => {
+const AuthPage = ({ allProps }) => {
+  console.log({ state: allProps?.routeState })
   return (
     <IonCardContent className="auth-pop min-h-[100vh] grid place-content-center bg-white">
-      <LoginPage />
+      <LoginPage allProps={allProps} />
     </IonCardContent>
   )
 }
-export default PageLogin
+export default AuthPage

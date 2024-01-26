@@ -38,21 +38,6 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   //   })
   // }, [])
 
-  useEffect(() => {
-    const scrollToPost = () => {
-      const fragment = window.location.hash.substring(1)
-      const element = document.getElementById(fragment)
-
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth"
-        })
-      }
-    }
-
-    setTimeout(scrollToPost, 600)
-  }, [])
-
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }} className="ThreadContainer">
@@ -83,7 +68,7 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
             )
           })}
 
-        {/* <EventCard /> */}
+        <EventCard />
       </div>
 
       {/* {loading &&

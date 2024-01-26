@@ -122,6 +122,11 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
+          # admissionAndApplicationRating
+          # financialAidAndScholarshipRating
+          # academicProgramsAndDepartmentRating
+          # studentLifeAndServiceRating
+          # careerAndAlumniResourceRating
           postImage
           date
           upVoted
@@ -464,6 +469,7 @@ export const AddComment = gql`
           _id
           images
           postText
+
           date
           upVoteCount
           postCommentsCount
@@ -817,6 +823,11 @@ export const AddComment = gql`
       fetchMyNewsFeed(userId: $userId, page: $page) {
         section
         postText
+        admissionAndApplicationRating
+        financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating
+        careerAndAlumniResourceRating
         upVoted
         upVoteCount
         postCommentsCount
@@ -1132,6 +1143,68 @@ export const AddComment = gql`
         spaceCategory {
           _id
           name
+        }
+      }
+    }
+  `,
+  AddSpaceEvent = gql`
+    mutation AddSpaceEvent(
+      $spaceId: ID!
+      $title: String!
+      $description: String!
+      $address: String!
+      $eventDate: String!
+    ) {
+      addOrgSpaceEvent(
+        spaceId: $spaceId
+        title: $title
+        description: $description
+        address: $address
+        eventDate: $eventDate
+      ) {
+        status {
+          success
+          message
+        }
+        event {
+          _id
+          userId
+          spaceOrgId
+          spaceId
+          title
+          description
+          address
+          eventDate
+        }
+      }
+    }
+  `,
+  GetSpaceEvents = gql`
+    query GetllEvent($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        event {
+          _id
+          title
+          eventDate
+          description
+          images
+          isRegistered
+          user {
+            _id
+            firstName
+            lastName
+          }
+          spaceOrg {
+            _id
+            name
+            description
+            profileImage
+            members {
+              _id
+              firstName
+              lastName
+            }
+          }
         }
       }
     }

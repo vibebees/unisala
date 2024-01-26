@@ -1,6 +1,13 @@
 import "./auth.css"
 
-export const AuthInput = ({ type, name, value, HandleChange, validation }) => {
+export const AuthInput = ({
+  type,
+  name,
+  value,
+  HandleChange,
+  validation,
+  disabled = false
+}) => {
   return (
     <div className="auth-input-val-div">
       <input
@@ -9,7 +16,8 @@ export const AuthInput = ({ type, name, value, HandleChange, validation }) => {
         name={name}
         value={value}
         autoComplete="off"
-        className="auth-input"
+        className="auth-input disabled:cursor-not-allowed"
+        disabled={disabled}
       />
       <div className="auth-validation-div">
         {validation && (

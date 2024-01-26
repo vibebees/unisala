@@ -12,7 +12,7 @@ import {
 import { EventList } from "../molecules/eventList"
 import RegisterButton from "../atoms/RegisterButton"
 
-export const EventCardBody = ({ props = {} }) => {
+export const EventCardBody = ({ props = {}, data }) => {
   const {
     event,
     showAlert,
@@ -43,9 +43,9 @@ export const EventCardBody = ({ props = {} }) => {
 
   return (
     <IonCardContent id="up-coming-event">
-      <p>{event.description}</p>
-      <EventList props={props} />
-      <RegisterButton eventId={"123456789"} />
+      <p dangerouslySetInnerHTML={{ __html: data?.description }}></p>
+      {/* <EventList props={props} data={data} /> */}
+      <RegisterButton eventId={data?._id} event = {data}/>
       <IonAlert
         isOpen={showAlert}
         className="confirmation"

@@ -117,7 +117,7 @@ export const Spaces = ({ allProps }) => {
                 <IonInput
                   placeholder="Enter Test Score"
                   type="number"
-                  className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
+                  className="w-fit h-3 placeholder:text-neutral-400 placeholder:text-xs placeholder:text-opacity-40"
                 ></IonInput>
               </div>
             </div>

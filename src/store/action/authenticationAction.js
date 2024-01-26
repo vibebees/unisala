@@ -30,9 +30,12 @@ export const loginUser = ({
             type: USER_LOGIN,
             payload: res?.data || {}
           })
-          window.location.replace(
-            redirectUrl ? `/university/${redirectUrl}&create=y` : "/"
-          )
+
+          if (redirectUrl) {
+            setTimeout(() => {
+              window.location.replace(`/university/${redirectUrl}&create=y`)
+            }, 1000)
+          }
         }
 
         if (!res.data.success) {
@@ -53,9 +56,9 @@ export const loginUser = ({
         setLoading(false)
         present({
           duration: 3000,
-          message: error.message,
+          message: error.response.data.message,
           buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "primary",
+          color: "danger",
           mode: "ios"
         })
         if (error.status === 302) {
@@ -95,7 +98,6 @@ export const registerUser =
       .catch((err) => {
         setsave(false) // Stop loading indication
         setdatacheck(false) // Reset data check on error
-
         // Check if the error response has the expected format
         if (err.response && err.response.data.errors) {
           // Example action dispatch on error

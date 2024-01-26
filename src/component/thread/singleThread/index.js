@@ -8,7 +8,7 @@ import Save from "../actions/Save"
 import ReplyInput from "../../ReplyInput"
 import ShowMore from "../ShowMore"
 import { Avatar } from "../../Avatar"
- import ThreadExpand from "../ThreadExpand"
+import ThreadExpand from "../ThreadExpand"
 import {
   create,
   ellipsisHorizontalOutline,
@@ -17,14 +17,15 @@ import {
 } from "ionicons/icons"
 import moment from "moment"
 import ImageCollage from "../ImageCollages"
+import RatingCircle from "../actions/Rating"
 
 import { useMutation } from "@apollo/client"
- import { useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
-import {getImage} from "servers/s3.configs"
-import {USER_SERVICE_GQL} from "servers/types"
-import {DeletePost, EditPost} from "graphql/user"
+import { getImage } from "servers/s3.configs"
+import { USER_SERVICE_GQL } from "servers/types"
+import { DeletePost, EditPost } from "graphql/user"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
@@ -34,6 +35,7 @@ const Thread = ({ thread, refetch }) => {
     _id = "",
     date = new Date(),
     postText = "",
+    admissionAndApplicationRating = 0,
     upVoteCount = 0,
     comments = [],
     postCommentsCount = 0,
@@ -198,6 +200,9 @@ const Thread = ({ thread, refetch }) => {
               <>
                 <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
                 {images.length > 0 && <ImageCollage images={images} />}
+                {/* <div className="border w-10 h-10 relative">
+                  <RatingCircle rating={3} />
+                </div> */}
               </>
             )}
           </div>
