@@ -16,7 +16,7 @@ const StepsButtons = ({ allProps }) => {
     [present, dismiss] = useIonToast(),
     { accessToken } = useSelector((state) => state?.auth),
     decode = jwtDecode(accessToken),
-    history = useHistory,
+    history = useHistory(),
     [users, setUsers] = useState({
       email: decode.email,
       firstName: decode.firstName,
@@ -71,6 +71,7 @@ const StepsButtons = ({ allProps }) => {
     onCompleted: (data) => {
       // update uesr details in redux
       if (data?.editProfile?.status?.success) {
+        localStorage.removeItem("newUser")
         modalRef.current.dismiss()
         present({
           duration: 3000,
@@ -88,7 +89,6 @@ const StepsButtons = ({ allProps }) => {
           mode: "ios"
         })
       }
-      localStorage.removeItem("newUser")
       setNewUser(false)
       refetch({
         username: users?.username
@@ -138,7 +138,7 @@ const StepsButtons = ({ allProps }) => {
       editProfile()
       const spaceOrg = localStorage.getItem("org")
       if (spaceOrg) {
-        history.push("/space/" + spaceOrg)
+        window.location.replace("/space/" + spaceOrg)
       }
       localStorage.removeItem("org")
     } catch (error) {
