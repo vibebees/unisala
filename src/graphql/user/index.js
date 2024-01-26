@@ -1031,6 +1031,7 @@ export const AddComment = gql`
           image
           user {
             username
+            _id
           }
         }
       }
