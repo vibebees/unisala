@@ -22,13 +22,16 @@ export const EventCard = ({ data }) => {
   const props = getAllProps()
   const { event } = props
 
+  const {images = []} = data
+  const [image] = images
+
   return (
     <>
       <IonCard id="events">
         <IonImg
           className="h-64 object-cover w-full"
-          src={event.imageUrl}
-        ></IonImg>
+          src= {image}
+          ></IonImg>
         <EventCardHeader props={props} data={data} />
         <EventCardBody props={props} data={data} />
       </IonCard>

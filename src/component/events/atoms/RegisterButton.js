@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { IonButton, useIonToast, IonSpinner } from "@ionic/react"
 import { useMutation } from "@apollo/client"
 import { RegisterUserEvent } from "graphql/user"
@@ -8,6 +8,10 @@ import { useSelector } from "react-redux"
 const RegisterButton = ({ eventId }) => {
   const { user } = useSelector((store) => store?.userProfile)
   const [present, dismiss] = useIonToast()
+  const [buttonDetails, setButtonDetails] = useState({
+    text: "Register Now",
+    color: "primary"
+  })
   const [RegisterUser, { loading }] = useMutation(RegisterUserEvent, {
     context: { server: USER_SERVICE_GQL },
     variables: {
@@ -16,13 +20,17 @@ const RegisterButton = ({ eventId }) => {
     },
     onCompleted: (data) => {
       // update uesr details in redux
-      if (data?.editProfile?.status?.success) {
+      if (data?.registeredUserByEventId?.status?.success) {
         present({
           duration: 3000,
-          message: "Customizing your feed based on your profile!",
+          message: data?.registeredUserByEventId?.status?.message || "You are registered successfully",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
+        })
+        setButtonDetails({
+          text: "Registered",
+          color: "success"
         })
       } else {
         present({
@@ -32,6 +40,13 @@ const RegisterButton = ({ eventId }) => {
           color: "danger",
           mode: "ios"
         })
+
+        if (data?.registeredUserByEventId?.status?.registered) {
+          setButtonDetails({
+            text: "Registered",
+            color: "danger"
+          })
+        }
       }
     },
     onError: (error) => {
@@ -48,15 +63,14 @@ const RegisterButton = ({ eventId }) => {
   const handleRegister = () => {
     RegisterUser()
   }
-
   return (
     <IonButton
       disabled={loading}
       expand="block"
-      color={"primary"}
+      color= {buttonDetails?.color}
       onClick={handleRegister}
     >
-      Register Now {loading && <IonSpinner name="lines"></IonSpinner>}
+     {buttonDetails?.text} {loading && <IonSpinner name="lines"></IonSpinner>}
     </IonButton>
   )
 }

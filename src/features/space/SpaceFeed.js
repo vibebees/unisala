@@ -51,8 +51,6 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
     }
   })
 
-  console.log({ eventsData })
-
   useEffect(() => {
     const scrollToPost = () => {
       const fragment = window.location.hash.substring(1)
