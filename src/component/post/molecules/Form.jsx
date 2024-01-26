@@ -351,6 +351,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       addEvent({
         variables: data
       })
+      /* eslint-disable */
     } else {
       if (postData?.postText?.length > 0 || files?.length > 0) {
         addPost({
