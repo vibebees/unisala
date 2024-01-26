@@ -1066,6 +1066,47 @@ export const AddComment = gql`
       }
     }
   `,
+  GetAllEventsBySpaceCategoryID = gql`
+    query getAllEventsBySpaceCategoryID($spaceId: ID) {
+      getAllEventsBySpaceCategoryID(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        event {
+          _id
+          title
+          description
+          address
+          eventDate
+          interestedUsers {
+            user {
+              _id
+              firstName
+              lastName
+              username
+              picture
+            }
+            date
+          }
+          eventLocation {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+            zipCode
+          }
+          eventHost {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
+        }
+      }
+    }
+  `,
   GetTopActiveSpaces = gql`
     query getTopActiveSpaces($limit: Int) {
       getTopActiveSpaces(limit: $limit) {
