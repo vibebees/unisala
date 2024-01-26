@@ -5,13 +5,20 @@ import { RegisterUserEvent } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
 import { useSelector } from "react-redux"
 
-const RegisterButton = ({ eventId }) => {
+const RegisterButton = ({ eventId, event }) => {
+  const {isRegistered} = event
   const { user } = useSelector((store) => store?.userProfile)
   const [present, dismiss] = useIonToast()
-  const [buttonDetails, setButtonDetails] = useState({
+  const [buttonDetails, setButtonDetails] = useState(isRegistered
+   ? {
+    text: "Registered",
+    color: "success"
+  }
+  : {
     text: "Register Now",
     color: "primary"
-  })
+  }
+  )
   const [RegisterUser, { loading }] = useMutation(RegisterUserEvent, {
     context: { server: USER_SERVICE_GQL },
     variables: {

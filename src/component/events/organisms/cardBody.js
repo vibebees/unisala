@@ -45,7 +45,7 @@ export const EventCardBody = ({ props = {}, data }) => {
     <IonCardContent id="up-coming-event">
       <p dangerouslySetInnerHTML={{ __html: data?.description }}></p>
       {/* <EventList props={props} data={data} /> */}
-      <RegisterButton eventId={data?._id} />
+      <RegisterButton eventId={data?._id} event = {data}/>
       <IonAlert
         isOpen={showAlert}
         className="confirmation"

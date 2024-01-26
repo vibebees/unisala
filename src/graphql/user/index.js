@@ -1146,6 +1146,7 @@ export const AddComment = gql`
           eventDate
           description
           images
+          isRegistered
           user {
             _id
             firstName
