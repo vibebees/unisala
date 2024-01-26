@@ -6,24 +6,49 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { userServer } from "servers/endpoints"
 import { useHistory } from "react-router"
+import { usePathName } from "hooks/usePathname"
 export const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
   const [meta, setMeta] = useState({})
   const history = useHistory()
   const params = new URLSearchParams(window.location.href.search)
+  const pathname = usePathName(0)
+
   useEffect(() => {
     const fn = async () => {
-      const res = await axios.get(userServer + "/getMetadataTags", {
-        headers: {
-          authorization: localStorage.getItem("accessToken")
+      const createAPostMetaData = await axios.get(
+        userServer + "/getMetadataTags",
+        {
+          headers: {
+            authorization: localStorage.getItem("accessToken")
+          }
         }
-      })
-      setMeta(res.data?.data)
+      )
+      setMeta(createAPostMetaData.data?.data)
+
+      if (pathname === "space") {
+        const eventMeta = await axios.get(userServer + "/get-event-metadata", {
+          headers: {
+            authorization: localStorage.getItem("accessToken")
+          }
+        })
+        setMeta((prev) => ({
+          ...prev,
+          event: {
+            id: "event",
+            name: "Event",
+            type: "tag",
+            edges: Object.keys(eventMeta?.data?.data).map((key) => ({
+              id: key,
+              ...eventMeta?.data?.data[key]
+            }))
+          }
+        }))
+      }
     }
     fn()
   }, [])
-
   return (
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />

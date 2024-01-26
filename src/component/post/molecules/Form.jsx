@@ -14,7 +14,13 @@ import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
 import SelectAtom from "../atoms/Select"
-import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
+import {
+  AddPost,
+  AddSpaceEvent,
+  GetAllPostBySpaceCategoryID,
+  GetSpaceEvents,
+  getNewsFeed
+} from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
 import { useSelector } from "react-redux"
 import { useApolloClient, useMutation } from "@apollo/client"
@@ -89,6 +95,19 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       [itemId]: value
     }))
   }
+
+  const generateDateComponent = (item) => (
+    <>
+      <IonLabel>{item.name}</IonLabel>
+      <IonInput
+        type="date"
+        value={postData?.[item?.id]}
+        onIonChange={(e) =>
+          setPostData((prev) => ({ ...prev, [item?.id]: e.target.value }))
+        }
+      />
+    </>
+  )
 
   const generateRatingComponent = (item) => {
     return (
@@ -230,6 +249,81 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   })
 
+  const [addEvent, { data }] = useMutation(AddSpaceEvent, {
+    context: {
+      server: USER_SERVICE_GQL
+    },
+
+    update: (cache, { data }) => {
+      const cachedData = cache.readQuery({
+        query: GetSpaceEvents,
+        context: {
+          server: USER_SERVICE_GQL
+        },
+        variables: {
+          spaceId: tags[0]
+        }
+      })
+      console.log({ cachedData, evet: data.addOrgSpaceEvent.event })
+
+      data &&
+        cache.writeQuery({
+          query: GetSpaceEvents,
+          context: {
+            server: USER_SERVICE_GQL
+          },
+          variables: {
+            spaceId: tags[0]
+          },
+          data: {
+            getAllEventBySpaceId: {
+              ...cachedData.getAllEventBySpaceId,
+              event: [
+                // data.addOrgSpaceEvent.event,
+                ...cachedData.getAllEventBySpaceId.event
+              ]
+            }
+          }
+        })
+    },
+    onError: (err) => {
+      present({
+        duration: 3000,
+        message: err?.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    },
+    onCompleted: async ({ addOrgSpaceEvent }) => {
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("image", files[i])
+        }
+        const res = await axios.post(
+          userServer + `/post/addPostImage/${addOrgSpaceEvent.event._id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+      }
+      present({
+        duration: 3000,
+        message: "New event created",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+      setCreateAPostPopUp(false)
+      // setfile("")
+    }
+  })
+
+  console.log({ data })
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -246,20 +340,33 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       return
     }
 
-    if (postData?.postText?.length > 0 || files?.length > 0) {
-      addPost({
-        variables: {
-          ...postData
-        }
+    if (metaData.id === "event") {
+      const data = {
+        spaceId: tags[0],
+        title: postData.title,
+        description: postData.postText,
+        address: postData.address,
+        eventDate: postData.eventDate
+      }
+      addEvent({
+        variables: data
       })
     } else {
-      present({
-        duration: 3000,
-        message: "Please include something to post",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
+      if (postData?.postText?.length > 0 || files?.length > 0) {
+        addPost({
+          variables: {
+            ...postData
+          }
+        })
+      } else {
+        present({
+          duration: 3000,
+          message: "Please include something to post",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
     }
     setCreateAPostPopUp(false)
     params.delete("create")
@@ -271,6 +378,8 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   }
 
   const generateInputTag = (item) => {
+    console.log({ item })
+
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
@@ -289,7 +398,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             setPostData((prev) => ({
               ...prev,
               postText,
-              [item.id]: parseFloat(e.target.value)
+              [item.id]: isNaN(e.target.value)
+                ? e.target.value
+                : parseFloat(e.target.value)
             }))
           }}
         />
@@ -365,12 +476,14 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           : generateSelectTag(item)
       case "textarea":
         return generateTextareaTag(item)
-
+      case "date":
+        return generateDateComponent(item)
       default:
         return null
     }
   }
 
+  console.log({ postData })
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>

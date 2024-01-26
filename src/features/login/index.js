@@ -10,12 +10,12 @@ import UserNotVerified from "../../component/authentication/Verification/UserNot
 import WelcomSteps from "../../component/authentication/Welcome"
 
 export const Login = ({ allProps }) => {
+  console.log({ allProps: allProps?.routeState })
   const [auth, setauth] = useState({
-    state: "signin",
+    state: allProps?.routeState || "signin",
     email: "",
     code: 0
   })
-
   return (
     <IonGrid className="ion-no-padding ion-no-margin">
       <IonRow style={{ overflow: "hidden" }}>

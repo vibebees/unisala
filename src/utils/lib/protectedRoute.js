@@ -7,7 +7,14 @@ function ProtectedRoute({ children }) {
 
   const [_, route, id] = location.pathname.split("/")
 
-  const allowedRoutes = ["thread", "login", "roadmap", "university", "search"]
+  const allowedRoutes = [
+    "thread",
+    "login",
+    "register",
+    "roadmap",
+    "university",
+    "search"
+  ]
 
   // Check if the route is in the allowedRoutes array and user is not logged in
   if (!loggedIn && allowedRoutes.includes(route)) {

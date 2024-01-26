@@ -7,24 +7,38 @@ import "../auth.css"
 import { userServer } from "servers/endpoints"
 import { registerUser } from "store/action/authenticationAction"
 import { validateSignup } from "utils/components/validate"
-
+import { Link } from "react-router-dom"
 export const SignUpForm = ({ setauth, setShowSignup = null }) => {
   const [errors, seterrors] = useState({})
   const [present, dismiss] = useIonToast()
   const [datacheck, setdatacheck] = useState(false)
   const [save, setsave] = useState(false)
 
+  const searchParams = new URLSearchParams(window.location.search)
+  const spaceOrgName = searchParams.get("org")
+  const email = searchParams.get("email") ?? ""
   const [input, setInput] = useState({
     firstName: "",
     lastName: "",
-    email: "",
-    password: ""
+    email: email,
+    password: "",
+    spaceOrgName,
+    type: spaceOrgName && "invitation"
   })
+
   const HandleChange = (e) => {
     const { name, value } = e.target
     setInput((pre) => {
       return { ...pre, [name]: value }
     })
+
+    // if user changes the mail from the invitation one then it will not be invited
+
+    if (name === "email" && value !== email) {
+      setInput((pre) => {
+        return { ...pre, type: null, spaceOrgName: null }
+      })
+    }
     seterrors({
       ...errors,
       [name]: ""
@@ -52,6 +66,7 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
           dismiss
         })
       )
+      localStorage.setItem("org", input.spaceOrgName)
     }
   }, [errors])
 
@@ -88,6 +103,7 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
           type="text"
           name="email"
           value={input?.email}
+          disabled={email}
         />
       </div>
       <div className="auth-input-div">

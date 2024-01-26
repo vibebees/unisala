@@ -1105,6 +1105,66 @@ export const AddComment = gql`
       }
     }
   `,
+  AddSpaceEvent = gql`
+    mutation AddSpaceEvent(
+      $spaceId: ID!
+      $title: String!
+      $description: String!
+      $address: String!
+      $eventDate: String!
+    ) {
+      addOrgSpaceEvent(
+        spaceId: $spaceId
+        title: $title
+        description: $description
+        address: $address
+        eventDate: $eventDate
+      ) {
+        status {
+          success
+          message
+        }
+        event {
+          _id
+          userId
+          spaceOrgId
+          spaceId
+          title
+          description
+          address
+          eventDate
+        }
+      }
+    }
+  `,
+  GetSpaceEvents = gql`
+    query GetllEvent($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        event {
+          title
+          eventDate
+          description
+
+          user {
+            _id
+            firstName
+            lastName
+          }
+          spaceOrg {
+            _id
+            name
+            description
+            profileImage
+            members {
+              _id
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  `,
   DeleteSpace = gql`
     mutation deleteSpaceCategoryById($id: ID!) {
       deleteSpaceCategoryById(id: $id) {
