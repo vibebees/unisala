@@ -255,6 +255,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     },
 
     update: (cache, { data }) => {
+      // Attempt to read the existing query from the cache
       const cachedData = cache.readQuery({
         query: GetSpaceEvents,
         context: {
@@ -264,10 +265,11 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           spaceId: tags[0]
         }
       })
-      console.log({ cachedData, evet: data.addOrgSpaceEvent.event })
 
-      data &&
-        cache.writeQuery({
+      // Check if cachedData and cachedData.getAllEventBySpaceId are not null
+      if (cachedData && cachedData.getAllEventBySpaceId) {
+        // Proceed to update the cache only if the data is not null
+        data && cache.writeQuery({
           query: GetSpaceEvents,
           context: {
             server: USER_SERVICE_GQL
@@ -285,8 +287,13 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }
           }
         })
+      } else {
+        // Handle the case where cachedData or getAllEventBySpaceId is null
+        console.log("Cached data is not available or invalid")
+      }
     },
     onError: (err) => {
+      console.log("-----> error", err)
       present({
         duration: 3000,
         message: err?.message,
@@ -296,6 +303,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
+
+      console.log("-----> success", addOrgSpaceEvent)
+
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append("image", files[i])
