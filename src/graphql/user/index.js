@@ -1137,6 +1137,34 @@ export const AddComment = gql`
       }
     }
   `,
+  GetSpaceEvents = gql`
+    query GetllEvent($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        event {
+          title
+          eventDate
+          description
+
+          user {
+            _id
+            firstName
+            lastName
+          }
+          spaceOrg {
+            _id
+            name
+            description
+            profileImage
+            members {
+              _id
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  `,
   DeleteSpace = gql`
     mutation deleteSpaceCategoryById($id: ID!) {
       deleteSpaceCategoryById(id: $id) {

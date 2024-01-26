@@ -10,7 +10,11 @@ import Thread from "component/thread"
 import { Link } from "react-router-dom"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { GetAllPostBySpaceCategoryID, GetUserPost } from "graphql/user"
+import {
+  GetAllPostBySpaceCategoryID,
+  GetSpaceEvents,
+  GetUserPost
+} from "graphql/user"
 import { userServer } from "servers/endpoints"
 import emptyState from "assets/emptyState.png"
 import clsx from "clsx"
@@ -38,6 +42,17 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
   //   })
   // }, [])
 
+  const { data: eventsData } = useQuery(GetSpaceEvents, {
+    context: {
+      server: USER_SERVICE_GQL
+    },
+    variables: {
+      spaceId
+    }
+  })
+
+  console.log({ eventsData })
+
   useEffect(() => {
     const scrollToPost = () => {
       const fragment = window.location.hash.substring(1)
@@ -61,7 +76,12 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>
         )}
-        <EventCard />
+
+        {eventsData?.getAllEventBySpaceId?.event?.map((item) => (
+          <div key={item?._id}>
+            <EventCard data={item} />
+          </div>
+        ))}
 
         {Array.isArray(allPosts?.posts) &&
           allPosts?.posts.map((post, index) => {

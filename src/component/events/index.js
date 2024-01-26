@@ -18,7 +18,7 @@ import { getAllProps } from "./getAllProps.js"
 import { EventCardBody } from "./organisms/cardBody"
 import { EventCardHeader } from "./organisms/cardHeader"
 
-export const EventCard = () => {
+export const EventCard = ({ data }) => {
   const props = getAllProps()
   const { event } = props
 
@@ -29,8 +29,8 @@ export const EventCard = () => {
           className="h-64 object-cover w-full"
           src={event.imageUrl}
         ></IonImg>
-        <EventCardHeader props={props} />
-        <EventCardBody props={props} />
+        <EventCardHeader props={props} data={data} />
+        <EventCardBody props={props} data={data} />
       </IonCard>
     </>
   )

@@ -18,6 +18,7 @@ import {
   AddPost,
   AddSpaceEvent,
   GetAllPostBySpaceCategoryID,
+  GetSpaceEvents,
   getNewsFeed
 } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
@@ -252,6 +253,39 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     context: {
       server: USER_SERVICE_GQL
     },
+
+    update: (cache, { data }) => {
+      const cachedData = cache.readQuery({
+        query: GetSpaceEvents,
+        context: {
+          server: USER_SERVICE_GQL
+        },
+        variables: {
+          spaceId: tags[0]
+        }
+      })
+      console.log({ cachedData, evet: data.addOrgSpaceEvent.event })
+
+      data &&
+        cache.writeQuery({
+          query: GetSpaceEvents,
+          context: {
+            server: USER_SERVICE_GQL
+          },
+          variables: {
+            spaceId: tags[0]
+          },
+          data: {
+            getAllEventBySpaceId: {
+              ...cachedData.getAllEventBySpaceId,
+              event: [
+                // data.addOrgSpaceEvent.event,
+                ...cachedData.getAllEventBySpaceId.event
+              ]
+            }
+          }
+        })
+    },
     onError: (err) => {
       present({
         duration: 3000,
@@ -262,7 +296,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
-      console.log({ data })
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append("image", files[i])

@@ -10,7 +10,31 @@ import {
 } from "@ionic/react"
 import { calendarOutline } from "ionicons/icons"
 
-export const EventList = ({ props }) => {
+export const EventList = ({ props, data }) => {
+  function daysRemaining(targetDate) {
+    // Get the current date
+    const currentDate = new Date()
+
+    // Convert both dates to UTC
+    const utcCurrentDate = Date.UTC(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    )
+    const utcTargetDate = Date.UTC(
+      targetDate.getFullYear(),
+      targetDate.getMonth(),
+      targetDate.getDate()
+    )
+
+    // Calculate the difference in milliseconds
+    const timeDifference = utcTargetDate - utcCurrentDate
+
+    // Convert the difference to days
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+
+    return daysDifference
+  }
   const { event } = props
   return (
     <IonCol className="my-5 h-full flex-col">
@@ -30,7 +54,7 @@ export const EventList = ({ props }) => {
         <IonCol className="w-full flex justify-start gap-3 ion-no-margin ion-no-padding pl-1">
           <IonIcon className="text-2xl" icon={calendarOutline} size="medium" />
           <IonText className="text-base ion-no-margin ion-no-padding font-medium text-neutral-900">
-            {event?.dayRemaining} days remaining
+            {daysRemaining(new Date(data?.eventDate))} days remaining
           </IonText>
         </IonCol>
       </IonRow>
