@@ -13,7 +13,8 @@ export const CreateAPostCard = ({ allProps }) => {
   const [meta, setMeta] = useState({})
   const history = useHistory()
   const params = new URLSearchParams(window.location.href.search)
-  const pathname = usePathName(0)
+  const pathname = usePathName(0) || "home"
+
 
   useEffect(() => {
     const fn = async () => {
@@ -25,27 +26,12 @@ export const CreateAPostCard = ({ allProps }) => {
           }
         }
       )
-      setMeta(createAPostMetaData.data?.data)
 
-      if (pathname === "space") {
-        const eventMeta = await axios.get(userServer + "/get-event-metadata", {
-          headers: {
-            authorization: localStorage.getItem("accessToken")
-          }
-        })
-        setMeta((prev) => ({
-          ...prev,
-          event: {
-            id: "event",
-            name: "Event",
-            type: "tag",
-            edges: Object.keys(eventMeta?.data?.data).map((key) => ({
-              id: key,
-              ...eventMeta?.data?.data[key]
-            }))
-          }
-        }))
-      }
+      const metaData = createAPostMetaData.data?.data || []
+      const getCurrentPageMetaData = metaData[pathname] || {}
+      const {addAPost} = getCurrentPageMetaData || {}
+      setMeta(addAPost)
+
     }
     fn()
   }, [])
