@@ -1042,6 +1042,7 @@ export const AddComment = gql`
           image
           user {
             username
+            _id
           }
         }
       }
@@ -1065,6 +1066,47 @@ export const AddComment = gql`
           upVoted
           saved
           user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
+        }
+      }
+    }
+  `,
+  GetAllEventsBySpaceCategoryID = gql`
+    query getAllEventsBySpaceCategoryID($spaceId: ID) {
+      getAllEventsBySpaceCategoryID(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        event {
+          _id
+          title
+          description
+          address
+          eventDate
+          interestedUsers {
+            user {
+              _id
+              firstName
+              lastName
+              username
+              picture
+            }
+            date
+          }
+          eventLocation {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+            zipCode
+          }
+          eventHost {
             _id
             username
             firstName

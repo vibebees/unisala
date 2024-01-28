@@ -2,7 +2,7 @@ import React from "react"
 import { IonCard, IonInput, useIonToast } from "@ionic/react"
 import SendButton from "../atoms/SendButton"
 import Header from "../atoms/Header"
-import InvitationTypesCheckbox from "../organism/InvitationTypesCheckbox"
+import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 

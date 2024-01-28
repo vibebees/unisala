@@ -2,7 +2,7 @@ import React from "react"
 import { IonCard, IonInput, useIonToast } from "@ionic/react"
 import SendButton from "../atoms/SendButton"
 import Header from "../atoms/Header"
-import InvitationTypesCheckbox from "../organism/InvitationTypesCheckbox"
+import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 
@@ -25,9 +25,7 @@ const SingleInvitation = ({ spaceId }) => {
     setLoading(true)
     authInstance
       .post(`${userServer}/org-invitation-request/${spaceId}`, {
-        emails: [email],
-        role: "student",
-        description: "this is test"
+        emails: [email]
       })
       .then((res) => {
         if (res.data.success) {

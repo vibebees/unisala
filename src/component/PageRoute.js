@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router"
 
 import PreLoader from "./preloader"
 import ProtectedRoute from "utils/lib/protectedRoute"
-import SpaceIndex from "features/space/SpaceIndex/SpaceIndex"
+import SpaceIndex from "features/org/SpaceIndex/SpaceIndex"
 
 const ProfilePage = lazy(() => import("../pages/user.profile"))
 const Messages = lazy(() => import("../pages/message"))

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import {
   IonGrid,
   IonRow,
@@ -29,6 +29,7 @@ import Invitation from "./Invitation/Index"
 
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
+
   const {
     handleResize,
     loggedIn,
@@ -72,7 +73,6 @@ export const Spaces = ({ allProps }) => {
   if (!spaceCategory) {
     return <SpaceNotFound />
   }
-
   const scrollToTop = () => {
     document
       .querySelector(".ThreadContainer")
@@ -138,7 +138,7 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invite: <Invitation spaceId={spaceId} />
+    invite: <Invitation spaceAdminId={user?._id} spaceId={spaceId} />
   }
   const SpaceBody = () => {
     return tabs[tab]
@@ -156,7 +156,7 @@ export const Spaces = ({ allProps }) => {
   )
 
   return (
-    <IonContent className="h-full" color="light">
+    <IonContent color="light">
       {width < 768 && views.lessThan768}
       <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
         <IonRow className="rowStyle">
