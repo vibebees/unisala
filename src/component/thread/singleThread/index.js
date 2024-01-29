@@ -198,7 +198,7 @@ const Thread = ({ thread, refetch }) => {
               </div>
             ) : (
               <>
-                <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
+                <ThreadExpand htmlText={postText} maxLines={8} _id={_id} thread = {thread} />
                 {images.length > 0 && <ImageCollage images={images} />}
                 {/* <div className="border w-10 h-10 relative">
                   <RatingCircle rating={3} />
