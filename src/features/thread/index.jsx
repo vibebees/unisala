@@ -26,7 +26,7 @@ const index = () => {
   if (loading) return <IonSpinner />
 
   return (
-    <IonContent className=" ">
+    <IonContent >
       <SingleThread thread={data?.getPostById.post} />
     </IonContent>
   )

@@ -4,6 +4,7 @@ import "./index.css" // Import your custom CSS
 import clsx from "clsx"
 import {LikeATag} from "component/tags"
 import {Link} from "react-router-dom"
+import {IonCard, IonModal} from "@ionic/react"
 
 const ThreadExpand = ({ htmlText, maxLines, thread = {} }) => {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -46,14 +47,28 @@ const ThreadExpand = ({ htmlText, maxLines, thread = {} }) => {
   )
   const PostBodyVideo = () => {
     return (
-      <iframe
-      src={videoURL}
-      title="YouTube video player"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen={true}
-      style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }} // Set width to 100% and height automatically adjusted to maintain aspect ratio
-    ></iframe>
+      <div className="mobile-video-style">
+         <iframe
+        src={videoURL}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen={true}
+          style={{width: "100%", height: "auto", aspectRatio: "16 / 9"}} // Set width to 100% and height automatically adjusted to maintain aspect ratio
+        ></iframe>
+      </div>
+
     )
+    // return (
+    //   <IonModal isOpen={true} cssClass="my-custom-class">
+    //     <iframe
+    //       src={videoURL}
+    //       title="YouTube video player"
+    //       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    //       allowFullScreen={true}
+    //       style={{width: "100%", height: "auto", aspectRatio: "16 / 9"}} // Set width to 100% and height automatically adjusted to maintain aspect ratio
+    //     ></iframe>
+    //   </IonModal>
+    // )
   }
 
 

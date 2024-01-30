@@ -105,3 +105,12 @@
   flex-direction: column;
   width: 100%;
 }
+
+
+/* for mobile phones for videos to play or view big*/
+@media (max-width: 768px) { /* Adjust px as needed for your target mobile screen size */
+  .mobile-video-style {
+    width: 130%;
+    margin-left: -60px;
+  }
+}
