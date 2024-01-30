@@ -1,4 +1,8 @@
-import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
+import {
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonText
+} from "@ionic/react"
 import { useSelector } from "react-redux"
 import { useQuery } from "@apollo/client"
 import Thread from "../../component/thread"
@@ -6,6 +10,7 @@ import { FeedSkeleton } from "../../component/skeleton/feedSkeleton"
 import { USER_SERVICE_GQL } from "servers/types"
 import { getNewsFeed } from "graphql/user"
 import { InterviewExperienceCard } from "../../component/interviewExperienceCard"
+import { VideoPlayer } from "component/thread/VideoPlayer"
 
 export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
@@ -85,6 +90,10 @@ export const InfinteFeed = ({ allProps }) => {
 
   return (
     <div>
+      <div className="">
+        <IonText></IonText>
+        <VideoPlayer src="https://www.youtube.com/watch?v=qIg4gbGOG_g" />
+      </div>
       {Posts?.map((item, index) => {
         let newData
         if (item.section === "elevatorInfo") {
