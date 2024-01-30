@@ -1081,6 +1081,7 @@ export const AddComment = gql`
           postCommentsCount
           upVoted
           saved
+          videoURL
           user {
             _id
             username
