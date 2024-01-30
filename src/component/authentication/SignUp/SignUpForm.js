@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react"
-import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
-import { useLocation } from "react-router"
-import AuthInput from "../AuthInput"
+import { IonRow, IonSpinner, useIonToast } from "@ionic/react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import "../auth.css"
 import { userServer } from "servers/endpoints"
 import { registerUser } from "store/action/authenticationAction"
 import { validateSignup } from "utils/components/validate"
-import { Link } from "react-router-dom"
+import AuthInput from "../AuthInput"
+import "../auth.css"
 export const SignUpForm = ({ setauth, setShowSignup = null }) => {
   const [errors, seterrors] = useState({})
   const [present, dismiss] = useIonToast()
@@ -66,7 +64,9 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
           dismiss
         })
       )
-      localStorage.setItem("org", input.spaceOrgName)
+      if (spaceOrgName) {
+        localStorage.setItem("org", spaceOrgName)
+      }
     }
   }, [errors])
 
