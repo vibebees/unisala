@@ -54,6 +54,9 @@ export const PageRoute = ({ allProps }) => (
       <Route path="/roadmap" exact>
         <StudyAbroadRoadmap />
       </Route>
+      <Route exact path="/thread/:id">
+        <ThreadDetail />
+      </Route>
 
       <Route path="/myjourney" exact>
         <StudyAbroadRoadmapInput />
@@ -71,9 +74,7 @@ export const PageRoute = ({ allProps }) => (
         <UniversityPage />
       </Route>
 
-      <Route exact path="/thread/:id">
-        <ThreadDetail />
-      </Route>
+
 
       <Route path="/@/:username" exact>
         <ProfilePage />
