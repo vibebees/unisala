@@ -4,6 +4,7 @@ import "./index.css"
 import { getAllProps } from "./getAllProps.js"
 import { EventCardBody } from "./organisms/cardBody"
 import { EventCardHeader } from "./organisms/cardHeader"
+import DeleteEvent from "./atoms/DeleteEvent"
 
 export const EventCard = ({ data }) => {
   const props = getAllProps()
@@ -14,10 +15,16 @@ export const EventCard = ({ data }) => {
 
   return (
     <>
-      <IonCard id="events">
-        <IonImg className="h-64 object-cover w-full" src={image}></IonImg>
+      <IonCard id="events" className="relative">
+        <IonImg
+          className="h-64 object-cover w-full"
+          src={
+            "https://burst.shopifycdn.com/photos/grad-students-throwing-hats-in-the-air.jpg?width=1000&format=pjpg&exif=0&iptc=0"
+          }
+        ></IonImg>
         <EventCardHeader props={props} data={data} />
         <EventCardBody props={props} data={data} />
+        <DeleteEvent />
       </IonCard>
     </>
   )
