@@ -1,18 +1,5 @@
-import React, { useEffect, useRef, useState } from "react"
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonButton,
-  IonIcon,
-  IonAlert,
-  IonImage,
-  IonImg,
-  createAnimation
-} from "@ionic/react"
-import { calendarOutline } from "ionicons/icons"
+import React from "react"
+import { IonCard, IonImg } from "@ionic/react"
 import "./index.css"
 import { getAllProps } from "./getAllProps.js"
 import { EventCardBody } from "./organisms/cardBody"
