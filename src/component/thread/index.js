@@ -225,15 +225,12 @@ const Thread = ({ thread, refetch }) => {
     }
     if (images?.length > 0) {
       return (
-        <Link to={`/thread/${_id}`} className={clsx("flex")}>
-          <IonSlides pager={true} options={slideOpts}>
+        <Link to={`/thread/${_id}`} className={clsx("")}>
+          <IonSlides pager={true} options={slideOpts} className="h-[360px]">
             {images.map((image, index) => (
               <IonSlide key={index}>
-                <ImageWithLoader
-                  src={image}
-                  alt={image}
-                  className={"h-[540px] object-cover"}
-                />
+                <ImageWithLoader src={image} alt={image} className={""} />
+                {/* <img src={image} alt="Post Image" className="object-cover" /> */}
               </IonSlide>
             ))}
           </IonSlides>
