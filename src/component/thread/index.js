@@ -229,8 +229,11 @@ const Thread = ({ thread, refetch }) => {
           <IonSlides pager={true} options={slideOpts} className="h-[360px]">
             {images.map((image, index) => (
               <IonSlide key={index}>
-                <ImageWithLoader src={image} alt={image} className={""} />
-                {/* <img src={image} alt="Post Image" className="object-cover" /> */}
+                <ImageWithLoader
+                  src={image}
+                  alt={image}
+                  className={"object-contain"}
+                />
               </IonSlide>
             ))}
           </IonSlides>
