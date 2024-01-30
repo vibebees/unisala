@@ -6,24 +6,35 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { userServer } from "servers/endpoints"
 import { useHistory } from "react-router"
+import { usePathName } from "hooks/usePathname"
 export const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
   const [meta, setMeta] = useState({})
   const history = useHistory()
   const params = new URLSearchParams(window.location.href.search)
+  const pathname = usePathName(0) || "home"
+
+
   useEffect(() => {
     const fn = async () => {
-      const res = await axios.get(userServer + "/getMetadataTags", {
-        headers: {
-          authorization: localStorage.getItem("accessToken")
+      const createAPostMetaData = await axios.get(
+        userServer + "/getMetadataTags",
+        {
+          headers: {
+            authorization: localStorage.getItem("accessToken")
+          }
         }
-      })
-      setMeta(res.data?.data)
+      )
+
+      const metaData = createAPostMetaData.data?.data || []
+      const getCurrentPageMetaData = metaData[pathname] || {}
+      const {addAPost} = getCurrentPageMetaData || {}
+      setMeta(addAPost)
+
     }
     fn()
   }, [])
-
   return (
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />

@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router"
 
 import PreLoader from "./preloader"
 import ProtectedRoute from "utils/lib/protectedRoute"
-import SpaceIndex from "features/space/SpaceIndex/SpaceIndex"
+import SpaceIndex from "features/org/SpaceIndex/SpaceIndex"
 
 const ProfilePage = lazy(() => import("../pages/user.profile"))
 const Messages = lazy(() => import("../pages/message"))
@@ -13,8 +13,10 @@ const Notifications = lazy(() => import("../pages/notification"))
 const StudyAbroadRoadmapInput = lazy(() => import("features/roadmap/template"))
 const Search = lazy(() => import("../pages/search"))
 const SpacePage = lazy(() => import("../pages/space"))
+const Org = lazy(() => import("../pages/org"))
+
 const UniversityPage = lazy(() => import("../features/university/index"))
-const Login = lazy(() => import("../pages/login"))
+const AuthPage = lazy(() => import("../pages/auth"))
 const StudyAbroadRoadmap = lazy(() => import("../pages/roadmap"))
 
 const HomePage = lazy(() => import("../pages/home"))
@@ -48,29 +50,24 @@ const spaceRoutes = () => (
   </>
 )
 
+const orgRoutes = () => (
+  <>
+    <ProtectedRoute>
+      <Switch>
+        <Route path="/org/:category" exact>
+          <Org />
+        </Route>
+      </Switch>
+    </ProtectedRoute>
+  </>
+)
+
 export const PageRoute = ({ allProps }) => (
   <Switch>
     <Suspense fallback={<PreLoader />}>
       <Route path="/roadmap" exact>
         <StudyAbroadRoadmap />
       </Route>
-
-      <Route path="/myjourney" exact>
-        <StudyAbroadRoadmapInput />
-      </Route>
-
-      <Route exact path="/home">
-        <HomePage />
-      </Route>
-
-      <Route exact path="/">
-        <HomePage propsall={allProps} />
-      </Route>
-
-      <Route exact path="/university/:id">
-        <UniversityPage />
-      </Route>
-
       <Route exact path="/thread/:id">
         <ThreadDetail />
       </Route>
@@ -79,8 +76,15 @@ export const PageRoute = ({ allProps }) => (
         <ProfilePage />
       </Route>
 
+      <Route exact path="/university/:id">
+        <UniversityPage />
+      </Route>
+
+
+
       {messagingRoutes()}
       {spaceRoutes()}
+      {orgRoutes()}
       <Route path="/mynetwork" exact>
         <ProtectedRoute>
           <MyNetwork />
@@ -93,12 +97,23 @@ export const PageRoute = ({ allProps }) => (
         </ProtectedRoute>
       </Route>
 
+      <Route path="/register" exact>
+        <AuthPage allProps={{ ...allProps, routeState: "signup" }} />
+      </Route>
       <Route path="/search" exact>
         <Search />
       </Route>
 
       <Route path="/login" exact>
-        <Login allProps={allProps} />
+        <AuthPage allProps={{ ...allProps, routeState: "signin" }} />
+      </Route>
+
+      <Route exact path="/home">
+        <HomePage />
+      </Route>
+
+      <Route exact path="/">
+        <HomePage propsall={allProps} />
       </Route>
 
       <Route path="*" exact>

@@ -236,7 +236,7 @@ const Thread = ({ thread }) => {
     )
   }
   const renderContent = () => {
-    const { postText, _id } = thread
+    const { postText, _id, videoURL } = thread
 
     // Handling for the editable state
     if (editable) {
@@ -271,10 +271,14 @@ const Thread = ({ thread }) => {
       )
     }
 
-    // Handling for the non-editable state
     return (
       <div className="thread_comment">
-        <ThreadExpand htmlText={postText} maxLines={5} _id={_id} />
+        <ThreadExpand
+          htmlText={postText}
+          maxLines={5}
+          _id={_id}
+          thread={thread}
+        />
       </div>
     )
   }
@@ -286,14 +290,14 @@ const Thread = ({ thread }) => {
     }
     if (images?.length > 0) {
       return (
-        <Link to={`/thread/${_id}`} className={clsx("flex")}>
-          <IonSlides pager={true} options={slideOpts}>
+        <Link to={`/thread/${_id}`} className={clsx("")}>
+          <IonSlides pager={true} options={slideOpts} className="h-[360px]">
             {images.map((image, index) => (
               <IonSlide key={index}>
                 <ImageWithLoader
                   src={image}
                   alt={image}
-                  className={"h-[540px] w-[400px] object-cover"}
+                  className={"object-contain"}
                 />
               </IonSlide>
             ))}

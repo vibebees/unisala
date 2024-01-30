@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
 import { validateSignIn } from "utils/components/validate"
 import { loginUser } from "store/action/authenticationAction"
+import { Link } from "react-router-dom"
 
 const SignInForm = ({ setauth, setShowSignup = null }) => {
   const params = new URLSearchParams(window.location.search)

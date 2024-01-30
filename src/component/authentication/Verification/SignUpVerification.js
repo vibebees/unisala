@@ -59,7 +59,7 @@ const SignUpVerification = ({ auth, setauth }) => {
 
           window.innerWidth < 768
             ? window.location.replace("/home")
-            : window.location.reload()
+            : window.location.replace("/")
         }
       })
       .catch((err) => {

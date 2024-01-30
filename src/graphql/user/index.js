@@ -128,7 +128,16 @@ export const AddComment = gql`
           # studentLifeAndServiceRating
           # careerAndAlumniResourceRating
           postImage
+          videoURL
           date
+          tags{
+            _id
+            name
+            parentId
+            image
+            description
+
+        }
           upVoted
           images
           upVoteCount
@@ -833,6 +842,14 @@ export const AddComment = gql`
         postCommentsCount
         type
         saved
+        videoURL
+        tags{
+          _id
+          name
+          parentId
+          image
+          description
+      }
         date
         _id
         images
@@ -1042,6 +1059,7 @@ export const AddComment = gql`
           image
           user {
             username
+            _id
           }
         }
       }
@@ -1064,6 +1082,7 @@ export const AddComment = gql`
           postCommentsCount
           upVoted
           saved
+          videoURL
           user {
             _id
             username
@@ -1071,6 +1090,33 @@ export const AddComment = gql`
             lastName
             picture
             username
+          }
+        }
+      }
+    }
+  `,
+  GetAllEventsBySpaceID = gql`
+    query getAllEventBySpaceId($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        event {
+          _id
+          title
+          description
+          address
+          eventDate
+          interestedUsers {
+            user {
+              _id
+              firstName
+              lastName
+              username
+              picture
+            }
+            date
           }
         }
       }
@@ -1101,6 +1147,68 @@ export const AddComment = gql`
         spaceCategory {
           _id
           name
+        }
+      }
+    }
+  `,
+  AddSpaceEvent = gql`
+    mutation AddSpaceEvent(
+      $spaceId: ID!
+      $title: String!
+      $description: String!
+      $address: String!
+      $eventDate: String!
+    ) {
+      addOrgSpaceEvent(
+        spaceId: $spaceId
+        title: $title
+        description: $description
+        address: $address
+        eventDate: $eventDate
+      ) {
+        status {
+          success
+          message
+        }
+        event {
+          _id
+          userId
+          spaceOrgId
+          spaceId
+          title
+          description
+          address
+          eventDate
+        }
+      }
+    }
+  `,
+  GetSpaceEvents = gql`
+    query GetllEvent($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        event {
+          _id
+          title
+          eventDate
+          description
+          images
+          isRegistered
+          user {
+            _id
+            firstName
+            lastName
+          }
+          spaceOrg {
+            _id
+            name
+            description
+            profileImage
+            members {
+              _id
+              firstName
+              lastName
+            }
+          }
         }
       }
     }
@@ -1240,6 +1348,16 @@ export const AddComment = gql`
         unitId
         name
         pictures
+      }
+    }
+  `,
+  RegisterUserEvent = gql`
+    mutation registeredUserByEventId($eventId: ID!, $userId: ID!) {
+      registeredUserByEventId(eventId: $eventId, userId: $userId) {
+        status {
+          success
+          message
+        }
       }
     }
   `
