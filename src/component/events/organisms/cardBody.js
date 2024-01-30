@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useState } from "react"
 import {
   IonAlert,
   IonBadge,
@@ -13,19 +13,13 @@ import { EventList } from "../molecules/eventList"
 import RegisterButton from "../atoms/RegisterButton"
 
 export const EventCardBody = ({ props = {}, data }) => {
+  const [interesetUsers, setIntresedUsers] = useState(data?.interestedUsers)
   const {
-    event,
     showAlert,
-    handleRegister,
-    buttonColor,
     clickOptions,
-    buttonState,
     buttonEl,
     animation,
-    year,
-    yearOptions,
     setShowAlert,
-    activityOptions,
     currentOptions
   } = props
 
@@ -44,8 +38,18 @@ export const EventCardBody = ({ props = {}, data }) => {
   return (
     <IonCardContent id="up-coming-event">
       <p dangerouslySetInnerHTML={{ __html: data?.description }}></p>
-      {/* <EventList props={props} data={data} /> */}
-      <RegisterButton eventId={data?._id} event = {data}/>
+      <EventList
+        props={{
+          ...props,
+          interesetUsers
+        }}
+        data={data}
+      />
+      <RegisterButton
+        setIntresedUsers={setIntresedUsers}
+        eventId={data?._id}
+        event={data}
+      />
       <IonAlert
         isOpen={showAlert}
         className="confirmation"

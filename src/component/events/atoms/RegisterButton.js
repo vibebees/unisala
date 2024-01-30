@@ -5,19 +5,21 @@ import { RegisterUserEvent } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
 import { useSelector } from "react-redux"
 
-const RegisterButton = ({ eventId, event }) => {
-  const {isRegistered} = event
+const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
+  const { isRegistered } = event
   const { user } = useSelector((store) => store?.userProfile)
+
   const [present, dismiss] = useIonToast()
-  const [buttonDetails, setButtonDetails] = useState(isRegistered
-   ? {
-    text: "Registered",
-    color: "success"
-  }
-  : {
-    text: "Register Now",
-    color: "primary"
-  }
+  const [buttonDetails, setButtonDetails] = useState(
+    isRegistered
+      ? {
+          text: "Registered",
+          color: "success"
+        }
+      : {
+          text: "Register Now",
+          color: "primary"
+        }
   )
   const [RegisterUser, { loading }] = useMutation(RegisterUserEvent, {
     context: { server: USER_SERVICE_GQL },
@@ -26,11 +28,12 @@ const RegisterButton = ({ eventId, event }) => {
       eventId
     },
     onCompleted: (data) => {
-      // update uesr details in redux
       if (data?.registeredUserByEventId?.status?.success) {
         present({
           duration: 3000,
-          message: data?.registeredUserByEventId?.status?.message || "You are registered successfully",
+          message:
+            data?.registeredUserByEventId?.status?.message ||
+            "You are registered successfully",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "primary",
           mode: "ios"
@@ -39,10 +42,13 @@ const RegisterButton = ({ eventId, event }) => {
           text: "Registered",
           color: "success"
         })
+        setIntresedUsers((prev) => [...prev, user])
       } else {
         present({
           duration: 3000,
-          message: data?.registeredUserByEventId?.status?.message || "Something went wrong",
+          message:
+            data?.registeredUserByEventId?.status?.message ||
+            "Something went wrong",
           buttons: [{ text: "X", handler: () => dismiss() }],
           color: "danger",
           mode: "ios"
@@ -74,10 +80,10 @@ const RegisterButton = ({ eventId, event }) => {
     <IonButton
       disabled={loading}
       expand="block"
-      color= {buttonDetails?.color}
+      color={buttonDetails?.color}
       onClick={handleRegister}
     >
-     {buttonDetails?.text} {loading && <IonSpinner name="lines"></IonSpinner>}
+      {buttonDetails?.text} {loading && <IonSpinner name="lines"></IonSpinner>}
     </IonButton>
   )
 }

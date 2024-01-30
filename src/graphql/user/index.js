@@ -1077,9 +1077,9 @@ export const AddComment = gql`
       }
     }
   `,
-  GetAllEventsBySpaceCategoryID = gql`
-    query getAllEventsBySpaceCategoryID($spaceId: ID) {
-      getAllEventsBySpaceCategoryID(spaceId: $spaceId) {
+  GetAllEventsBySpaceID = gql`
+    query getAllEventBySpaceId($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
         status {
           success
           message
@@ -1099,20 +1099,6 @@ export const AddComment = gql`
               picture
             }
             date
-          }
-          eventLocation {
-            streetAddressOrPOBox
-            city
-            stateAbbreviation
-            zipCode
-          }
-          eventHost {
-            _id
-            username
-            firstName
-            lastName
-            picture
-            username
           }
         }
       }

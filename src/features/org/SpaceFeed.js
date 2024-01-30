@@ -10,10 +10,13 @@ import Thread from "component/thread"
 import { Link } from "react-router-dom"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 import { useLazyQuery, useQuery } from "@apollo/client"
-import { GetAllPostBySpaceCategoryID, GetUserPost } from "graphql/user"
+import {
+  GetAllPostBySpaceCategoryID,
+  GetUserPost,
+  GetAllEventsBySpaceID
+} from "graphql/user"
 import { userServer } from "servers/endpoints"
 import emptyState from "assets/emptyState.png"
-import clsx from "clsx"
 
 import { USER_SERVICE_GQL } from "servers/types"
 import StateMessage from "component/stateMessage/index"
@@ -26,6 +29,13 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
     context: { server: USER_SERVICE_GQL },
     variables: { id: spaceId }
   })
+
+  const { data: EventsData } = useQuery(GetAllEventsBySpaceID, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { spaceId: spaceId }
+  })
+
+  console.log("EventsData", EventsData?.getAllEventBySpaceId?.event)
 
   const { getAllPostBySpaceCategoryID: allPosts } = data || {}
 
@@ -46,7 +56,11 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>
         )}
-        <EventCard />
+
+        {EventsData?.getAllEventBySpaceId?.event?.length > 0 &&
+          EventsData?.getAllEventBySpaceId?.event?.map((event, index) => {
+            return <EventCard key={index} data={event} />
+          })}
 
         {Array.isArray(allPosts?.posts) &&
           allPosts?.posts.map((post, index) => {
@@ -67,8 +81,6 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
               </div>
             )
           })}
-
-        <EventCard />
       </div>
 
       {/* {loading &&
