@@ -128,7 +128,16 @@ export const AddComment = gql`
           # studentLifeAndServiceRating
           # careerAndAlumniResourceRating
           postImage
+          videoURL
           date
+          tags{
+            _id
+            name
+            parentId
+            image
+            description
+
+        }
           upVoted
           images
           upVoteCount
@@ -833,6 +842,14 @@ export const AddComment = gql`
         postCommentsCount
         type
         saved
+        videoURL
+        tags{
+          _id
+          name
+          parentId
+          image
+          description
+      }
         date
         _id
         images
@@ -1065,6 +1082,7 @@ export const AddComment = gql`
           postCommentsCount
           upVoted
           saved
+          videoURL
           user {
             _id
             username

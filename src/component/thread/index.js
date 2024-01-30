@@ -175,7 +175,8 @@ const Thread = ({ thread, refetch }) => {
     )
   }
   const renderContent = () => {
-    const { postText, _id } = thread
+    const { postText, _id, videoURL } = thread
+
 
     // Handling for the editable state
     if (editable) {
@@ -210,10 +211,9 @@ const Thread = ({ thread, refetch }) => {
       )
     }
 
-    // Handling for the non-editable state
     return (
       <div className="thread_comment">
-        <ThreadExpand htmlText={postText} maxLines={5} _id={_id} />
+        <ThreadExpand htmlText={postText} maxLines={5} _id={_id} thread = {thread} />
       </div>
     )
   }
