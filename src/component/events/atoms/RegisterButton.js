@@ -8,25 +8,11 @@ import { useSelector } from "react-redux"
 const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
   const { isRegistered } = event
   const { user } = useSelector((store) => store?.userProfile)
-
+  const [isRegisteredUser, setIsRegisteredUser] = useState(isRegistered)
   const [present, dismiss] = useIonToast()
-  const [buttonDetails, setButtonDetails] = useState(
-    isRegistered
-      ? {
-          text: "Registered",
-          color: "success"
-        }
-      : {
-          text: "Register Now",
-          color: "primary"
-        }
-  )
-  const [RegisterUser, { loading }] = useMutation(RegisterUserEvent, {
+  const [RegisterUnRegisterUser, { loading }] = useMutation(RegisterUserEvent, {
     context: { server: USER_SERVICE_GQL },
-    variables: {
-      userId: user._id,
-      eventId
-    },
+
     onCompleted: (data) => {
       if (data?.registeredUserByEventId?.status?.success) {
         present({
@@ -38,11 +24,14 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
           color: "primary",
           mode: "ios"
         })
-        setButtonDetails({
-          text: "Registered",
-          color: "success"
-        })
-        setIntresedUsers((prev) => [...prev, user])
+        if (isRegisteredUser) {
+          setIsRegisteredUser(false)
+          setIntresedUsers((prev) => prev.slice(1))
+        } else {
+          setIsRegisteredUser(true)
+          setIntresedUsers((prev) => [...prev, user])
+        }
+        // setIntresedUsers((prev) => [...prev, user])
       } else {
         present({
           duration: 3000,
@@ -53,13 +42,6 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
           color: "danger",
           mode: "ios"
         })
-
-        if (data?.registeredUserByEventId?.status?.registered) {
-          setButtonDetails({
-            text: "Registered",
-            color: "danger"
-          })
-        }
       }
     },
     onError: (error) => {
@@ -74,16 +56,33 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
   })
 
   const handleRegister = () => {
-    RegisterUser()
+    if (isRegisteredUser) {
+      RegisterUnRegisterUser({
+        variables: {
+          userId: user._id,
+          eventId,
+          type: "unregistered"
+        }
+      })
+    } else {
+      RegisterUnRegisterUser({
+        variables: {
+          userId: user._id,
+          eventId
+        }
+      })
+    }
   }
   return (
     <IonButton
       disabled={loading}
       expand="block"
-      color={buttonDetails?.color}
+      color={isRegisteredUser ? "success" : "primary"}
       onClick={handleRegister}
     >
-      {buttonDetails?.text} {loading && <IonSpinner name="lines"></IonSpinner>}
+      {isRegisteredUser ? "Registered" : "Register"}
+
+      {loading && <IonSpinner name="lines"></IonSpinner>}
     </IonButton>
   )
 }

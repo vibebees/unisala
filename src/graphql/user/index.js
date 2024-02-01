@@ -130,14 +130,13 @@ export const AddComment = gql`
           postImage
           videoURL
           date
-          tags{
+          tags {
             _id
             name
             parentId
             image
             description
-
-        }
+          }
           upVoted
           images
           upVoteCount
@@ -843,13 +842,13 @@ export const AddComment = gql`
         type
         saved
         videoURL
-        tags{
+        tags {
           _id
           name
           parentId
           image
           description
-      }
+        }
         date
         _id
         images
@@ -1355,8 +1354,12 @@ export const AddComment = gql`
     }
   `,
   RegisterUserEvent = gql`
-    mutation registeredUserByEventId($eventId: ID!, $userId: ID!) {
-      registeredUserByEventId(eventId: $eventId, userId: $userId) {
+    mutation registeredUserByEventId(
+      $eventId: ID!
+      $userId: ID!
+      $type: String
+    ) {
+      registeredUserByEventId(eventId: $eventId, userId: $userId, type: $type) {
         status {
           success
           message
