@@ -55,6 +55,8 @@ export const getAllProps = ({
     searchSpaceCategory = data?.searchSpaceCategory || {},
     { spaceCategory } = searchSpaceCategory,
     spaceId = spaceCategory?._id,
+    role = spaceCategory?.role,
+    isJoined = spaceCategory?.isJoined,
     parentId = spaceCategory?.parentId // this could be null as the current space could be parent in itself
   let tags = []
   const configSegment = {
@@ -121,6 +123,8 @@ export const getAllProps = ({
     tags,
     configSegment,
     tab,
-    setTab
+    setTab,
+    role,
+    isJoined
   }
 }

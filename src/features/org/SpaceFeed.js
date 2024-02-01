@@ -1,41 +1,27 @@
-import { useState, useEffect, useRef } from "react"
-import {
-  IonText,
-  IonCard,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent
-} from "@ionic/react"
+import { useState, useContext } from "react"
+
 import CourseCard from "component/courseCard"
 import Thread from "component/thread"
 import { Link } from "react-router-dom"
-import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
-import { useLazyQuery, useQuery } from "@apollo/client"
-import {
-  GetAllPostBySpaceCategoryID,
-  GetUserPost,
-  GetAllEventsBySpaceID
-} from "graphql/user"
-import { userServer } from "servers/endpoints"
+import Events from "./Events"
+import { useQuery } from "@apollo/client"
+import { GetAllPostBySpaceCategoryID } from "graphql/user"
 import emptyState from "assets/emptyState.png"
+import { OrgContext } from "."
 
 import { USER_SERVICE_GQL } from "servers/types"
 import StateMessage from "component/stateMessage/index"
-import { EventCard } from "component/events"
-export const SpaceFeed = ({ userInfo, spaceId }) => {
+
+export const SpaceFeed = () => {
+  const { spaceId } = useContext(OrgContext)
+
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
 
-  const { data, error, refetch } = useQuery(GetAllPostBySpaceCategoryID, {
+  const { data, refetch } = useQuery(GetAllPostBySpaceCategoryID, {
     context: { server: USER_SERVICE_GQL },
     variables: { id: spaceId }
   })
-
-  const { data: EventsData } = useQuery(GetAllEventsBySpaceID, {
-    context: { server: USER_SERVICE_GQL },
-    variables: { spaceId: spaceId }
-  })
-
-  console.log("EventsData", EventsData?.getAllEventBySpaceId?.event)
 
   const { getAllPostBySpaceCategoryID: allPosts } = data || {}
 
@@ -57,10 +43,7 @@ export const SpaceFeed = ({ userInfo, spaceId }) => {
           </StateMessage>
         )}
 
-        {EventsData?.getAllEventBySpaceId?.event?.length > 0 &&
-          EventsData?.getAllEventBySpaceId?.event?.map((event, index) => {
-            return <EventCard key={index} data={event} />
-          })}
+        <Events />
 
         {Array.isArray(allPosts?.posts) &&
           allPosts?.posts.map((post, index) => {

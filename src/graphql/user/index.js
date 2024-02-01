@@ -1040,6 +1040,8 @@ export const AddComment = gql`
           parentId
           description
           image
+          role
+          isJoined
           user {
             username
             _id
@@ -1100,6 +1102,7 @@ export const AddComment = gql`
             }
             date
           }
+          isRegistered
         }
       }
     }
@@ -1336,6 +1339,16 @@ export const AddComment = gql`
   RegisterUserEvent = gql`
     mutation registeredUserByEventId($eventId: ID!, $userId: ID!) {
       registeredUserByEventId(eventId: $eventId, userId: $userId) {
+        status {
+          success
+          message
+        }
+      }
+    }
+  `,
+  DeleteEventById = gql`
+    mutation deleteEventById($eventId: ID!) {
+      deleteEventById(eventId: $eventId) {
         status {
           success
           message

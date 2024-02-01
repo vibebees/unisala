@@ -1,12 +1,13 @@
-import React from "react"
+import React, { lazy, Suspense } from "react"
+import { SpaceRole } from "utils/lib/SpaceRoles"
 import { IonCard, IonImg } from "@ionic/react"
 import "./index.css"
 import { getAllProps } from "./getAllProps.js"
 import { EventCardBody } from "./organisms/cardBody"
 import { EventCardHeader } from "./organisms/cardHeader"
-import DeleteEvent from "./atoms/DeleteEvent"
+const DeleteEvent = lazy(() => import("./atoms/DeleteEvent"))
 
-export const EventCard = ({ data }) => {
+export const EventCard = ({ data, role = null }) => {
   const props = getAllProps()
   const { event } = props
 
@@ -24,7 +25,7 @@ export const EventCard = ({ data }) => {
         ></IonImg>
         <EventCardHeader props={props} data={data} />
         <EventCardBody props={props} data={data} />
-        <DeleteEvent />
+        {role === SpaceRole.ADMIN && <DeleteEvent id={data?._id} />}
       </IonCard>
     </>
   )

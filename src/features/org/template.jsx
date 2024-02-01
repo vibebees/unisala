@@ -82,7 +82,7 @@ export const Spaces = ({ allProps }) => {
   const Feed = () => (
     <>
       <CreateAPostCard allProps={allProps} />
-      <SpaceFeed spaceId={spaceId} userInfo={user} />
+      <SpaceFeed />
     </>
   )
 

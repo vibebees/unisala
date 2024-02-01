@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client"
+import { createContext } from "react"
 import { Spaces } from "./template"
 import { USER_SERVICE_GQL } from "servers/types"
 import { getAllProps } from "./getAllProps"
@@ -10,6 +11,8 @@ import {
   GetTopActiveSpaces
 } from "graphql/user"
 import { useParams } from "react-router"
+
+export const OrgContext = createContext()
 
 export default function SpacePage({ allPropssetPopup }) {
   const params = useParams(),
@@ -40,5 +43,9 @@ export default function SpacePage({ allPropssetPopup }) {
     loading
   })
 
-  return <Spaces allProps={allProps} />
+  return (
+    <OrgContext.Provider value={allProps}>
+      <Spaces allProps={allProps} />
+    </OrgContext.Provider>
+  )
 }
