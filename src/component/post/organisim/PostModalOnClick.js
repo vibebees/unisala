@@ -1,42 +1,39 @@
-import { useState, useRef, useEffect, useLayoutEffect, useMemo } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 
 import { useSelector } from "react-redux"
 
 import {
   IonAvatar,
   IonButton,
+  IonButtons,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonModal,
   IonText,
-  IonHeader,
-  IonToolbar,
   IonTitle,
-  IonButtons
+  IonToolbar
 } from "@ionic/react"
-import { arrowBack, search, star } from "ionicons/icons"
+import { arrowBack } from "ionicons/icons"
 
 import "../index.css"
 
 import "react-quill/dist/quill.snow.css"
 
 import { Avatar } from "component/Avatar"
-import Form from "../molecules/Form"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
-import { Link, useHistory, useLocation } from "react-router-dom"
-import { htmlForEditor } from "../utils/htmlForEditor"
-import AuthTemplate from "component/authentication/template/AuthTemplate"
-import AuthModal from "component/authentication/AuthModal"
+import { useHistory, useLocation } from "react-router-dom"
+import Form from "../molecules/Form"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
   const history = useHistory()
   const params = new URLSearchParams(location.search)
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
-  const { user } = useSelector((state) => state.userProfile)
+  const { user, loggedIn } = useSelector((state) => state.userProfile)
   const [selectedTab, setSelectedTab] = useState()
-  const [allowPost, setAllowPost] = useState(user._id)
+  const [allowPost, setAllowPost] = useState(loggedIn)
   const [postData, setPostData] = useState({
     id: selectedTab
   })

@@ -1,15 +1,9 @@
-import { useState } from "react"
-import {
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
-  IonButton
-} from "@ionic/react"
 import { Query } from "@apollo/client/react/components"
+import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
+import { useState } from "react"
+import { USER_SERVICE_GQL } from "servers/types"
 import Thread from "../../../component/thread"
 import { GetUserPost } from "../../../graphql/user"
-import { cloudOffline } from "ionicons/icons"
-import { USER_SERVICE_GQL } from "servers/types"
-import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 
 export default function Review({ uniId }) {
   return (
@@ -25,7 +19,7 @@ export default function Review({ uniId }) {
 
         return (
           <>
-            {Array.isArray(Posts) &&
+            {Array.isArray(Posts) && Posts.length > 0 ? (
               Posts.map((item, index) => {
                 return (
                   <div
@@ -40,7 +34,12 @@ export default function Review({ uniId }) {
                     <Thread thread={item} id={item?._id} />
                   </div>
                 )
-              })}
+              })
+            ) : (
+              <h1 className="text-4xl font-bold text-center mt-6">
+                No reviews yet!
+              </h1>
+            )}
 
             <IonInfiniteScroll
               threshold="100px"

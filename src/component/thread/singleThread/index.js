@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
+import { IonButton, IonCard, IonIcon, useIonToast, IonModal } from "@ionic/react"
 
 import Upvote from "../actions/Upvote"
 import Reply from "../actions/Reply"
@@ -9,6 +9,7 @@ import ReplyInput from "../../ReplyInput"
 import ShowMore from "../ShowMore"
 import { Avatar } from "../../Avatar"
 import ThreadExpand from "../ThreadExpand"
+
 import {
   create,
   ellipsisHorizontalOutline,
@@ -29,6 +30,7 @@ import { DeletePost, EditPost } from "graphql/user"
 
 const Thread = ({ thread, refetch }) => {
   const [present, dismiss] = useIonToast()
+  const [showModal, setShowModal] = useState(false)
 
   // Default values added here:
   const {
@@ -198,11 +200,8 @@ const Thread = ({ thread, refetch }) => {
               </div>
             ) : (
               <>
-                <ThreadExpand htmlText={postText} maxLines={8} _id={_id} />
+                <ThreadExpand htmlText={postText} maxLines={8} _id={_id} thread={thread} />
                 {images.length > 0 && <ImageCollage images={images} />}
-                {/* <div className="border w-10 h-10 relative">
-                  <RatingCircle rating={3} />
-                </div> */}
               </>
             )}
           </div>
