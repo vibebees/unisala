@@ -34,9 +34,9 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const history = useHistory()
   const params = new URLSearchParams(location.search)
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
-  const { user } = useSelector((state) => state.userProfile)
+  const { user, loggedIn } = useSelector((state) => state.userProfile)
   const [selectedTab, setSelectedTab] = useState()
-  const [allowPost, setAllowPost] = useState(user._id)
+  const [allowPost, setAllowPost] = useState(loggedIn)
   const [postData, setPostData] = useState({
     id: selectedTab
   })
