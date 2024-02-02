@@ -15,6 +15,22 @@ export const AddComment = gql`
       ) {
         success
         message
+        comment {
+          _id
+          userId
+          postId
+          commentText
+          commentImage
+          firstName
+          lastName
+          username
+          date
+          repliesCount
+          upVoteCount
+          replyTo
+          upVoted
+          picture
+        }
       }
     }
   `,
