@@ -15,6 +15,22 @@ export const AddComment = gql`
       ) {
         success
         message
+        comment {
+          _id
+          userId
+          postId
+          commentText
+          commentImage
+          firstName
+          lastName
+          username
+          date
+          repliesCount
+          upVoteCount
+          replyTo
+          upVoted
+          picture
+        }
       }
     }
   `,
@@ -130,14 +146,13 @@ export const AddComment = gql`
           postImage
           videoURL
           date
-          tags{
+          tags {
             _id
             name
             parentId
             image
             description
-
-        }
+          }
           upVoted
           images
           upVoteCount
@@ -843,13 +858,13 @@ export const AddComment = gql`
         type
         saved
         videoURL
-        tags{
+        tags {
           _id
           name
           parentId
           image
           description
-      }
+        }
         date
         _id
         images

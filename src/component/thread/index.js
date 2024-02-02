@@ -83,9 +83,6 @@ const Thread = ({ thread }) => {
     },
 
     update: (cache, data) => {
-      console.log({ data })
-      console.log({ loggedinUser })
-
       const cachedData = cache.readQuery(
         isHome
           ? {
