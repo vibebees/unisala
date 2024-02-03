@@ -1268,26 +1268,28 @@ export const AddComment = gql`
           success
           message
         }
-        members {
-          _id
-          firstName
-          lastName
-          username
-          picture
-        }
-        alumini {
-          _id
-          firstName
-          lastName
-          username
-          picture
-        }
-        students {
-          _id
-          firstName
-          lastName
-          username
-          picture
+        memberships {
+          members {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          alumini {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          students {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
