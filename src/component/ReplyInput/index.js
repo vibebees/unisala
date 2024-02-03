@@ -43,20 +43,30 @@ function ReplyInput({
           repliesCount: (prev) => prev + 1
         }
       })
+
       const post = cache.readQuery({
         query: GetCommentList,
-        variables: parentId ? { postId, parentId } : { postId }
+        variables: {
+          postId,
+          parentId
+        }
       })
+
       post &&
         cache.writeQuery({
           query: GetCommentList,
-          variables: parentId ? { postId, parentId } : { postId },
+          variables: {
+            postId,
+            parentId
+          },
           data: {
             commentList: {
-              ...post.commentList,
+              __typename: "commentList",
+              success: true,
+              message: "comments found",
               comments: [
-                { ...addComment },
-                post.commentList.length > 0 && { ...post.commentList.comments }
+                addComment.comment,
+                ...(post.commentList.comments || [])
               ]
             }
           }

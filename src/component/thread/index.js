@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import {
   IonButton,
   IonCard,
@@ -26,11 +26,11 @@ import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import clsx from "clsx"
 import { USER_SERVICE_GQL } from "servers/types"
-import { EditPost, DeletePost } from "graphql/user"
+import { EditPost, DeletePost, GetUserPost, getNewsFeed } from "graphql/user"
 import Share from "component/Share"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
-const Thread = ({ thread, refetch }) => {
+const Thread = ({ thread }) => {
   const [present, dismiss] = useIonToast()
   const {
     _id,
@@ -58,6 +58,10 @@ const Thread = ({ thread, refetch }) => {
   const [editable, setEditable] = useState(false)
   const [numberOfComments, setNumberOfComments] = useState(1)
   const BASEURL = window.location.origin
+  const pathname = useLocation().pathname
+
+  // to determine if the post is in home feed or profile
+  const isHome = pathname === "/" || pathname === "/home"
 
   const [updatedData, setUpdatedData] = useState({
     postText,
@@ -74,17 +78,72 @@ const Thread = ({ thread, refetch }) => {
   // delete thread
   const [deletePost] = useMutation(DeletePost, {
     context: { server: USER_SERVICE_GQL },
-
     variables: {
       postId: _id
     },
 
+    update: (cache, data) => {
+      const cachedData = cache.readQuery(
+        isHome
+          ? {
+              query: getNewsFeed,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              }
+            }
+          : {
+              query: GetUserPost,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              }
+            }
+      )
+      console.log({ cachedData })
+
+      cache.writeQuery(
+        isHome
+          ? {
+              query: getNewsFeed,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              },
+
+              data: {
+                fetchMyNewsFeed: {
+                  ...cachedData.fetchMyNewsFeed,
+                  ...cachedData.fetchMyNewsFeed.filter(
+                    (post) => post._id !== _id
+                  )
+                }
+              }
+            }
+          : {
+              query: GetUserPost,
+              variables: {
+                userId: loggedinUser._id,
+                page: 0
+              },
+              data: {
+                getUserPost: {
+                  ...cachedData.getUserPost,
+                  Posts: cachedData.getUserPost.Posts.filter(
+                    (post) => post._id !== _id
+                  )
+                }
+              }
+            }
+      )
+    },
+
     onCompleted: (data) => {
+      console.log("delete called")
       const { deletePost } = data
       if (deletePost.success) {
         // refetch posts
         setShowOptions(false)
-        refetch()
         present({
           duration: 3000,
           message: "Post Deleted",
@@ -115,15 +174,14 @@ const Thread = ({ thread, refetch }) => {
     update: (cache, { data }) => {
       cache.modify({
         id: cache.identify({
-          __typename: "Post",
+          __typename: isHome ? "PostNewsFeed" : "Post",
           id: _id
         }),
         fields: {
           postText() {
             return updatedData.postText
           }
-        },
-        broadcast: false
+        }
       })
     },
     onCompleted: (data) => {
@@ -177,7 +235,6 @@ const Thread = ({ thread, refetch }) => {
   const renderContent = () => {
     const { postText, _id, videoURL } = thread
 
-
     // Handling for the editable state
     if (editable) {
       return (
@@ -213,7 +270,12 @@ const Thread = ({ thread, refetch }) => {
 
     return (
       <div className="thread_comment">
-        <ThreadExpand htmlText={postText} maxLines={5} _id={_id} thread = {thread} />
+        <ThreadExpand
+          htmlText={postText}
+          maxLines={5}
+          _id={_id}
+          thread={thread}
+        />
       </div>
     )
   }
@@ -281,7 +343,7 @@ const Thread = ({ thread, refetch }) => {
             </button>
 
             {showOptions && (
-              <div className="absolute w-[160px] -right-6 top-5 bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
+              <div className="absolute w-[160px] -right-6 top-5 z-[100] bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
                 <button
                   onClick={() => {
                     setEditable(true)
