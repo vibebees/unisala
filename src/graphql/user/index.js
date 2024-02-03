@@ -1245,6 +1245,37 @@ export const AddComment = gql`
       }
     }
   `,
+  GetAllMembersBySpaceID = gql`
+    query getAllMemberBySpaceId($spaceId: ID!) {
+      getAllMemberBySpaceId(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        members {
+          _id
+          firstName
+          lastName
+          username
+          picture
+        }
+        alumini {
+          _id
+          firstName
+          lastName
+          username
+          picture
+        }
+        students {
+          _id
+          firstName
+          lastName
+          username
+          picture
+        }
+      }
+    }
+  `,
   EditSpace = gql`
     mutation editSpaceCategoryById(
       $id: ID!
