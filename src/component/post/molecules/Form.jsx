@@ -445,16 +445,19 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
-        <ReactQuill
-          id={item.id} // Add id attribute here
-          className="h-40 mb-12 text-black relative"
-          theme="snow"
-          onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
-          value={postData?.postText}
-        />
+        <div className="h-auto min-h-200 mb-12 text-black relative">
+          <ReactQuill
+            id={item.id}
+            theme="snow"
+            onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
+            value={postData?.postText}
+          />
+        </div>
       </>
-    )
-  }
+    );
+  };
+
+
 
   const generateCheckbox = (item) => {
     return (
