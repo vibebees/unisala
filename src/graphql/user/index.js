@@ -1188,7 +1188,7 @@ export const AddComment = gql`
           success
           message
         }
-        event {
+        data {
           _id
           userId
           spaceOrgId
