@@ -1119,7 +1119,7 @@ export const AddComment = gql`
           success
           message
         }
-        event {
+        data {
           _id
           title
           description
@@ -1204,7 +1204,11 @@ export const AddComment = gql`
   GetSpaceEvents = gql`
     query GetllEvent($spaceId: ID!) {
       getAllEventBySpaceId(spaceId: $spaceId) {
-        event {
+        status {
+          success
+          message
+        }
+        data {
           _id
           title
           eventDate

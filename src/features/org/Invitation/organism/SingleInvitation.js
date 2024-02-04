@@ -25,7 +25,9 @@ const SingleInvitation = ({ spaceId }) => {
     setLoading(true)
     authInstance
       .post(`${userServer}/org-invitation-request/${spaceId}`, {
-        emails: [email]
+        emails: [email],
+        description: "invitation for space",
+        role: invitationType.toLowerCase()
       })
       .then((res) => {
         if (res.data.success) {

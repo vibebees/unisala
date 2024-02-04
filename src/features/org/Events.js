@@ -14,8 +14,8 @@ const Events = () => {
 
   return (
     <>
-      {data?.getAllEventBySpaceId?.event?.length > 0 &&
-        data?.getAllEventBySpaceId?.event?.map((event, index) => {
+      {data?.getAllEventBySpaceId?.data?.length > 0 &&
+        data?.getAllEventBySpaceId?.data?.map((event, index) => {
           return <EventCard role={role} key={index} data={event} />
         })}
     </>

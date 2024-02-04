@@ -28,7 +28,7 @@ const InvitationTypesCheckbox = ({ allProps }) => {
                 handleCheckbox,
                 invitationType,
                 label: "Members",
-                value: 10
+                value: "member"
               }}
             />
           )}
@@ -36,15 +36,16 @@ const InvitationTypesCheckbox = ({ allProps }) => {
             allProps={{
               handleCheckbox,
               invitationType,
-              label: "Students"
+              label: "Student",
+              value: "student"
             }}
           />
           <InvitationType
             allProps={{
               handleCheckbox,
               invitationType,
-              label: "Alumni",
-              value: 11
+              label: "Alumini",
+              value: "alumini"
             }}
           />
         </IonRadioGroup>
