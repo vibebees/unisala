@@ -65,8 +65,7 @@ export const Members = () => {
         <IonCardHeader>
           <IonCardTitle className="members-title">
             {memberType.toUpperCase()} :{" "}
-            {data &&
-              data?.getAllMemberBySpaceId?.memberships[memberType]?.length}
+            {data && data?.getAllMemberBySpaceId?.data[memberType]?.length}
           </IonCardTitle>
         </IonCardHeader>
         <IonRow className="bg-white">
@@ -76,31 +75,28 @@ export const Members = () => {
 
       <IonRow>
         {data &&
-          data?.getAllMemberBySpaceId?.memberships[memberType]?.map(
-            (user, index) => (
-              <IonCol
+          data?.getAllMemberBySpaceId?.data[memberType]?.map((user, index) => (
+            <IonCol
+              key={index}
+              size="12"
+              sizeSm="6"
+              sizeMd="4"
+              sizeLg="4"
+              sizeXl="4"
+            >
+              <UserCard
                 key={index}
-                size="12"
-                sizeSm="6"
-                sizeMd="4"
-                sizeLg="4"
-                sizeXl="4"
-              >
-                <UserCard
-                  key={index}
-                  profileBanner={user?.coverPicture}
-                  profileImg={user?.picture}
-                  name={user?.firstName + " " + user?.lastName}
-                  username={user?.username}
-                  loaction={user?.location}
-                  oneLineBio={memberType}
-                />
-              </IonCol>
-            )
-          )}
+                profileBanner={user?.coverPicture}
+                profileImg={user?.picture}
+                name={user?.firstName + " " + user?.lastName}
+                username={user?.username}
+                loaction={user?.location}
+                oneLineBio={memberType}
+              />
+            </IonCol>
+          ))}
         {data &&
-          data?.getAllMemberBySpaceId?.memberships[memberType]?.length ===
-            0 && (
+          data?.getAllMemberBySpaceId?.data[memberType]?.length === 0 && (
             <IonCol className="mt-16">
               <p className="w-full text-center">No members found</p>
             </IonCol>

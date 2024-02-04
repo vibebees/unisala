@@ -1268,7 +1268,7 @@ export const AddComment = gql`
           success
           message
         }
-        memberships {
+        data {
           members {
             _id
             firstName

@@ -89,7 +89,7 @@ export const Spaces = ({ allProps }) => {
   const tabs = {
     feed: <Feed />,
     org: <Members />,
-    history: <History />,
+    // history: <History />,
     apply: (
       <div className="bg-white">
         <IonCol>
@@ -108,7 +108,7 @@ export const Spaces = ({ allProps }) => {
                 /> */}
             </div>
 
-            <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
+            {/* <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
               <span className="text-sm text-neutral-400">2/10</span>
               <div className="flex items-center h-fit gap-4 py-2">
                 <label htmlFor="Gpa" className="text-sm h-fit">
@@ -133,7 +133,7 @@ export const Spaces = ({ allProps }) => {
                   className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
                 ></IonInput>
               </div>
-            </div>
+            </div> */}
           </div>
         </IonCol>
       </div>
