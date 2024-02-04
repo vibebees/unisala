@@ -1,4 +1,9 @@
-import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
+import {
+  IonCard,
+  IonChip,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
+} from "@ionic/react"
 import { useSelector } from "react-redux"
 import { useQuery } from "@apollo/client"
 import Thread from "../../component/thread"
@@ -6,6 +11,7 @@ import { FeedSkeleton } from "../../component/skeleton/feedSkeleton"
 import { USER_SERVICE_GQL } from "servers/types"
 import { getNewsFeed } from "graphql/user"
 import { InterviewExperienceCard } from "../../component/interviewExperienceCard"
+import { Chip } from "component/chips/chip"
 
 export const InfinteFeed = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
@@ -85,6 +91,12 @@ export const InfinteFeed = ({ allProps }) => {
 
   return (
     <div>
+      <IonCard className="p-5">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <Chip key={i} chip={`test ${i}`} />
+        ))}
+      </IonCard>
+
       {Posts?.map((item, index) => {
         let newData
         if (item.section === "elevatorInfo") {
