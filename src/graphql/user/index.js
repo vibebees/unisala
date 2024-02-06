@@ -1156,8 +1156,16 @@ export const AddComment = gql`
     }
   `,
   AddSpaceCategory = gql`
-    mutation addSpaceCategory($name: String!, $description: String) {
-      addSpaceCategory(name: $name, description: $description) {
+    mutation addSpaceCategory(
+      $name: String!
+      $description: String
+      $isOrgSpace: Boolean
+    ) {
+      addSpaceCategory(
+        name: $name
+        description: $description
+        isOrgSpace: $isOrgSpace
+      ) {
         status {
           success
           message

@@ -1,13 +1,15 @@
 import {
+  IonCheckbox,
   IonCol,
   IonIcon,
   IonInput,
   IonLabel,
   IonRow,
   IonText,
+  IonToggle,
   useIonToast
 } from "@ionic/react"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import SubmitSpace from "../Button/SubmitSpace"
 import { useMutation } from "@apollo/client"
 import { useHistory } from "react-router"
@@ -20,12 +22,12 @@ const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
   const [redirecting, setRedirecting] = useState(false)
   const history = useHistory()
-
+  const orgSpaceRef = useRef()
   const [file, setFile] = useState(null)
-
+  const [orgSpace, setOrgSpace] = useState(false)
   const formData = new FormData()
-  // MUTATION TO CREATE A NEW SPACE
 
+  // MUTATION TO CREATE A NEW SPACE
   const [addSpaceCategory, { error }] = useMutation(AddSpaceCategory, {
     context: { server: USER_SERVICE_GQL },
     onCompleted: async (data) => {
@@ -100,7 +102,8 @@ const SpaceForm = ({ setIsOpen }) => {
     addSpaceCategory({
       variables: {
         name: spaceNameRef?.current?.value,
-        description: descriptionRef?.current?.value
+        description: descriptionRef?.current?.value,
+        isOrgSpace: orgSpace
       }
     })
   }
@@ -123,7 +126,6 @@ const SpaceForm = ({ setIsOpen }) => {
           ></IonInput>
         </IonCol>
       </IonRow>
-
       <IonRow className="mt-4">
         <IonCol>
           <IonLabel className="font-semibold" color={"dark"}>
@@ -142,6 +144,22 @@ const SpaceForm = ({ setIsOpen }) => {
           ></IonInput>
         </IonCol>
       </IonRow>
+      <IonRow className="mt-4 flex-normal">
+        <IonCol className="flex items-center justify-normal space-x-2">
+          <IonLabel>Is this an organizational space?</IonLabel>
+          <IonCheckbox
+            onIonChange={(e) => setOrgSpace(e?.target?.checked)}
+            color="primary"
+          />
+        </IonCol>
+      </IonRow>
+
+      {orgSpace && (
+        <span className="text-xs font-bold block w-1/2 text-yellow-800">
+          You are about to create an organizational space which requires
+          verification.
+        </span>
+      )}
 
       {file ? (
         <div className="relative">
@@ -178,7 +196,6 @@ const SpaceForm = ({ setIsOpen }) => {
           />
         </IonRow>
       )}
-
       <SubmitSpace redirecting={redirecting} />
     </form>
   )
