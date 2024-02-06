@@ -69,7 +69,7 @@ export const Spaces = ({ allProps }) => {
             justifyContent: "flex-start",
             margin: "0 auto"
           }}
-          className="max-width-container"
+          className="max-width-container flex-nowrap"
         >
           {width > 768 && views.greaterThan768}
           <IonCol
