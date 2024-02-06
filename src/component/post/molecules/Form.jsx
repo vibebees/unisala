@@ -1,6 +1,7 @@
 import {
   IonButton,
   IonCheckbox,
+  IonDatetime,
   IonInput,
   IonItem,
   IonLabel,
@@ -96,14 +97,15 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }))
   }
 
+
   const generateDateComponent = (item) => (
     <>
       <IonLabel>{item.name}</IonLabel>
-      <IonInput
-        type="date"
-        value={postData?.[item?.id]}
+      <IonItem />
+      <IonDatetime
+        displayFormat="MMM DD, YYYY" // You can customize this format
         onIonChange={(e) =>
-          setPostData((prev) => ({ ...prev, [item?.id]: e.target.value }))
+          setPostData((prev) => ({ ...prev, [item?.id]: e.detail.value }))
         }
       />
     </>
@@ -282,7 +284,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
               ...cachedData.getAllEventBySpaceId,
               event: [
                 // data.addOrgSpaceEvent.event,
-                ...cachedData.getAllEventBySpaceId.event
+                ...cachedData.getAllEventBySpaceId.data
               ]
             }
           }
@@ -293,7 +295,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       }
     },
     onError: (err) => {
-      console.log("-----> error", err)
       present({
         duration: 3000,
         message: err?.message,
@@ -304,7 +305,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
 
-      console.log("-----> success", addOrgSpaceEvent)
 
       if (files) {
         for (let i = 0; i < files.length; i++) {

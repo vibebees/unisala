@@ -238,19 +238,21 @@ const Thread = ({ thread }) => {
     // Handling for the editable state
     if (editable) {
       return (
-        <div className="thread_comment">
-          <ReactQuill
-            theme="snow"
-            onChange={handleChange}
-            defaultValue={postText}
-            className="h-48 mb-8 text-black"
-          />
+        <div >
+          <div className="h-auto min-h-200 mb-12 text-black relative">
+            <ReactQuill
+              theme="snow"
+              onChange={handleChange}
+              defaultValue={postText}
+            />
+          </div>
+
           <br />
           <IonButton
             fill="clear"
             className="ion-no-padding capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
             size="small"
-            style={{ "--ripple-color": "transparent" }}
+            style={{"--ripple-color": "transparent"}}
             onClick={() => setEditable(false)}
           >
             Cancel

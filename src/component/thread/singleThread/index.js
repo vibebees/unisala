@@ -166,13 +166,7 @@ const Thread = ({ thread, refetch }) => {
           <div className="thread_comment">
             {editable ? (
               <div>
-                <ReactQuill
-                  theme="snow"
-                  onChange={handleChange}
-                  // value={postText}
-                  defaultValue={postText}
-                  className="h-48 mb-8  text-black"
-                />
+
                 <br />
 
                 <IonButton
@@ -184,7 +178,7 @@ const Thread = ({ thread, refetch }) => {
                   }}
                   onClick={() => setEditable(false)}
                 >
-                  Cancel
+                  Cancelss
                 </IonButton>
                 <IonButton
                   className=" ion-no-padding capitalize font-bold px-4 text-white bg-blue-500 rounded-2xl transition ease delay-200 hover:bg-blue-600"
