@@ -79,93 +79,46 @@ export const Spaces = ({ allProps }) => {
       .scrollIntoView({ behavior: "smooth" })
   }
 
-  const Feed = () => (
-    <>
-      <CreateAPostCard allProps={allProps} />
-      <SpaceFeed spaceId={spaceId} userInfo={user} />
-    </>
-  )
-
-  const tabs = {
-    feed: <Feed />,
-    org: <Members />,
-    history: <History />,
-    apply: (
-      <div className="bg-white">
-        <IonCol>
-          <h4 className="font-semibold pl-4">Your next steps</h4>
-          <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6">
-            <div className="flex items-center  w-full">
-              {/* <StepInput
-                  currentstep={"1/10"}
-                  label={"Enter your ILETS Test Result"}
-                  placeholder={"Enter score"}
-                  inputType={"number"}
-                  setInput={setdata}
-                  name={"stepOne"}
-                  inputValue={data.stepOne}
-                  key={1}
-                /> */}
-            </div>
-
-            <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
-              <span className="text-sm text-neutral-400">2/10</span>
-              <div className="flex items-center h-fit gap-4 py-2">
-                <label htmlFor="Gpa" className="text-sm h-fit">
-                  Enter your ILETS Test Result
-                </label>
-                <IonInput
-                  placeholder="Enter Test Score"
-                  type="number"
-                  className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
-                ></IonInput>
-              </div>
-            </div>
-            <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
-              <span className="text-sm text-neutral-400">3/10</span>
-              <div className="flex items-center h-fit gap-4 py-2">
-                <label htmlFor="Gpa" className="text-sm h-fit">
-                  Enter your ILETS Test Result
-                </label>
-                <IonInput
-                  placeholder="Enter Test Score"
-                  type="number"
-                  className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
-                ></IonInput>
-              </div>
-            </div>
-          </div>
-        </IonCol>
-      </div>
-    ),
-    invite: <Invitation spaceAdminId={user?._id} spaceId={spaceId} />
-  }
-  const SpaceBody = () => {
-    return tabs[tab]
-  }
-  const Space = () => (
-    <IonCol className="colStyle ThreadContainer">
-      <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
-      <IonRow class="bg-white">
-        <Tabs config={configSegment} />
-      </IonRow>
-      <div className="min-h-[50vh]">
-        <SpaceBody />
-      </div>
-    </IonCol>
-  )
-
   return (
     <IonContent color="light">
       {width < 768 && views.lessThan768}
-      <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
-        <IonRow className="rowStyle">
+      <IonGrid
+        style={{
+          width: width >= 768 ? "95%" : "100%",
+          margin: "auto",
+          maxWidth: "1200px"
+        }}
+      >
+        <IonRow
+          style={{
+            justifyContent: "flex-start",
+            margin: "0 auto"
+          }}
+          className="max-width-container flex-nowrap"
+        >
           {width > 768 && views.greaterThan768}
+          <IonCol
+            style={{
+              maxWidth: "700px",
+              margin: "auto",
+              minHeight: "calc(90vh)"
+            }}
+            className="ThreadContainer"
+          >
+            <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
+            {loggedIn && width >= 768 && (
+              <CreateAPostCard allProps={allProps} />
+            )}
+            {loggedIn ? (
+              <SpaceFeed spaceId={spaceId} userInfo={user} />
+            ) : (
+              <UnisalaIntro />
+            )}
+          </IonCol>
 
-          <Space />
-          {width > 1200 && (
-            <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>
-          )}
+          <IonCol className="max-w-max">
+            {width > 1000 && views.greaterThan1000}
+          </IonCol>
         </IonRow>
       </IonGrid>
       <button className="scrollButton" onClick={scrollToTop}>
