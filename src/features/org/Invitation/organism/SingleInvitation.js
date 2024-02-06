@@ -59,7 +59,7 @@ const SingleInvitation = ({ spaceId }) => {
     <div>
       <IonCard className="ion-no-margin ion-no-padding shadow-none px-4 py-6">
         <Header
-          header={"Send Invitation"}
+          header={"Send Invitation by Email"}
           subHeader={
             "Enter the email address of the person you want to invite."
           }
