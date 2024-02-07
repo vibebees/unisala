@@ -52,13 +52,11 @@ const spaceRoutes = () => (
 
 const orgRoutes = () => (
   <>
-    <ProtectedRoute>
-      <Switch>
-        <Route path="/org/:category" exact>
-          <Org />
-        </Route>
-      </Switch>
-    </ProtectedRoute>
+    <Switch>
+      <Route path="/org/:category" exact>
+        <Org />
+      </Route>
+    </Switch>
   </>
 )
 
@@ -79,8 +77,6 @@ export const PageRoute = ({ allProps }) => (
       <Route exact path="/university/:id">
         <UniversityPage />
       </Route>
-
-
 
       {messagingRoutes()}
       {spaceRoutes()}

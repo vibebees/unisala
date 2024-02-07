@@ -5,8 +5,9 @@ import Header from "../atoms/Header"
 import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
+import { SpaceRole } from "utils/lib/SpaceRoles"
 
-const SingleInvitation = ({ spaceId }) => {
+const SingleInvitation = ({ spaceId, role }) => {
   const [email, setEmail] = React.useState("")
   const [invitationType, setInvitationType] = React.useState("")
   const [present, dismiss] = useIonToast()
@@ -77,7 +78,7 @@ const SingleInvitation = ({ spaceId }) => {
           allProps={{
             invitationType,
             setInvitationType,
-            admin: false
+            admin: role === SpaceRole.ADMIN || role === SpaceRole.MEMBER
           }}
         />
         <SendButton

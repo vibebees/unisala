@@ -13,7 +13,8 @@ function ProtectedRoute({ children }) {
     "register",
     "roadmap",
     "university",
-    "search"
+    "search",
+    "org"
   ]
 
   // Check if the route is in the allowedRoutes array and user is not logged in

@@ -3,11 +3,13 @@ import { IonCard, useIonToast } from "@ionic/react"
 import SendButton from "./SendButton"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
+import { OrgContext } from "features/org"
 
 const FileUploader = () => {
   const [selectedFile, setSelectedFile] = useState(null)
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = useState(false)
+  const { spaceId } = React.useContext(OrgContext)
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]
@@ -39,7 +41,7 @@ const FileUploader = () => {
     setLoading(true)
     formData.append("file", selectedFile)
     authInstance
-      .post(`${userServer}/org-invite-all`, formData)
+      .post(`${userServer}/org-invite-all/${spaceId}`, formData)
       .then((res) => {
         if (res.data.success) {
           present({
@@ -50,6 +52,7 @@ const FileUploader = () => {
             mode: "ios"
           })
         }
+        setSelectedFile(null)
       })
       .catch((err) => {
         present({

@@ -10,7 +10,7 @@ const Index = () => {
   return (
     <IonCard className="h-fit shadow-none mt-1 ion-no-margin w-full">
       {role === SpaceRole.ADMIN && <SendInvitationAll />}
-      <SingleInvitation spaceId={spaceId} />
+      <SingleInvitation role={role} spaceId={spaceId} />
     </IonCard>
   )
 }
