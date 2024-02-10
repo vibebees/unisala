@@ -1082,6 +1082,24 @@ export const AddComment = gql`
       }
     }
   `,
+  GetOrgSpace = gql`
+    query getOrgSpaceById($id: ID, $name: String) {
+      getOrgSpaceById(id: $id, name: $name) {
+        status {
+          success
+          message
+        }
+        data {
+          name
+          _id
+          name
+          description
+          profileImage
+          coverImage
+        }
+      }
+    }
+  `,
   GetAllPostBySpaceCategoryID = gql`
     query getAllPostBySpaceCategoryID($id: ID, $limit: Int, $page: Int) {
       getAllPostBySpaceCategoryID(id: $id, limit: $limit, page: $page) {

@@ -306,20 +306,7 @@ export const screensMoreThan768 = ({
                   Top Organization
                 </h6>
               </IonText>
-
               <TopOrgs topOrgs={topOrgs} />
-              <Link to="/space" style={{ marginTop: "120px" }}>
-                <IonText
-                  className="max-w-[250px] text-[#3880FF] text-center  font-semibold"
-                  fill="solid"
-                  style={{
-                    "--background": "white",
-                    "--background-hover": "#eee"
-                  }}
-                >
-                  {/* <h1 className="py-4">Browse More Organizations</h1> */}
-                </IonText>
-              </Link>
             </IonCard>
           </IonCol>
         </>

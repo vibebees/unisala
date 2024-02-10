@@ -13,6 +13,7 @@ import TopSpaces from "../../component/TopSpaces/TopSpaces"
 import clsx from "clsx"
 
 export const screenGreaterThan1000 = ({ title, topSpaces }) => {
+  console.log({ topSpaces })
   return (
     <>
       <IonCol
@@ -25,10 +26,13 @@ export const screenGreaterThan1000 = ({ title, topSpaces }) => {
           overflow: "auto"
         }}
       >
-        {title === "Top Spaces" && <CreateSpace />}
+        {title === "Top Orgs" && <CreateSpace />}
         <IonCard className="min-w-[250px]">
           <IonText color="dark">
-            <h6 className="text-center my-2 font-semibold"> {title}</h6>
+            <h6 className="text-center my-2 font-semibold">
+              {" "}
+              Top Organizations
+            </h6>
           </IonText>
 
           {Array.isArray(topSpaces) && <TopSpaces topSpaces={topSpaces} />}

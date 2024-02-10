@@ -28,19 +28,18 @@ import { History } from "./org/history"
 import Invitation from "./Invitation/Index"
 
 export const Spaces = ({ allProps }) => {
-  // TOP SPACES
   const {
     handleResize,
     loggedIn,
-    spaceId,
-    parentId,
+    orgId,
+
     tags,
     loading,
-    spaceCategory,
-    searchSpaceCategory,
+    orgData,
     user,
     width,
     views,
+
     configSegment,
     tab,
     setTab
@@ -61,15 +60,15 @@ export const Spaces = ({ allProps }) => {
   }, [window.location.search])
 
   // condition because we do not want to send null datas to backend
-  if (spaceId && !tags.includes(spaceId)) {
-    tags.push(spaceId)
+  if (orgId && !tags.includes(orgId)) {
+    tags.push(orgId)
   }
 
   if (loading) {
     return <PreLoader />
   }
 
-  if (!spaceCategory) {
+  if (!orgData) {
     return <SpaceNotFound />
   }
 
@@ -138,14 +137,14 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invite: <Invitation spaceId={spaceId} />
+    invite: <Invitation orgId={orgId} />
   }
   const SpaceBody = () => {
     return tabs[tab]
   }
   const Space = () => (
     <IonCol className="colStyle ThreadContainer">
-      <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
+      <SpaceHeader spaceDetails={orgData} />
       <IonRow class="bg-white">
         <Tabs config={configSegment} />
       </IonRow>

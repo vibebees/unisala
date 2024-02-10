@@ -9,7 +9,7 @@ import { personCircle } from "ionicons/icons"
 
 export const getAllProps = ({
   user = {},
-  topSpaceData = {},
+  topOrgData = {},
   loggedIn = false,
   profileData = {},
   data = {},
@@ -17,7 +17,7 @@ export const getAllProps = ({
 }) => {
   useDocTitle("Unisala")
 
-  const { getTopActiveSpaces } = topSpaceData || {},
+  const { getTopOrgSpace } = topOrgData || {},
     [showTopScrollbtn, setShowTopScrollbtn] = useState(false),
     history = useHistory(),
     [width, setWidth] = useState(window.innerWidth),
@@ -31,8 +31,8 @@ export const getAllProps = ({
     [activeTab, setActiveTab] = useState(0),
     views = {
       greaterThan1000: screenGreaterThan1000({
-        title: "Top Spaces",
-        topSpaces: getTopActiveSpaces?.spaceCategory
+        title: "Top Orgs",
+        topSpaces: getTopOrgSpace?.data
       }),
       greaterThan768: screensMoreThan768({
         activeTab,
@@ -52,13 +52,17 @@ export const getAllProps = ({
     [createAPostPopUp, setCreateAPostPopUp] = useState(false),
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
     params = useParams(),
-    searchSpaceCategory = data?.searchSpaceCategory || {},
-    { spaceCategory } = searchSpaceCategory,
-    spaceId = spaceCategory?._id,
-    role = spaceCategory?.role,
-    isJoined = spaceCategory?.isJoined,
-    parentId = spaceCategory?.parentId // this could be null as the current space could be parent in itself
+    searchOrgCategory = data?.getOrgSpaceById || {},
+    { data: orgData } = searchOrgCategory,
+    orgId = orgData?._id,
+    // role = spaceCategory?.role,
+    // isJoined = spaceCategory?.isJoined,
+    parentId = orgData?.parentId // this could be null as the current space could be parent in itself
   let tags = []
+
+  console.log({
+    getTopOrgSpace
+  })
   const configSegment = {
       options: [
         {
@@ -107,7 +111,7 @@ export const getAllProps = ({
     setActiveProfile,
     user,
     loggedIn,
-    spaceId,
+    orgId,
     views,
     handleResize,
     showTopScrollbtn,
@@ -115,16 +119,16 @@ export const getAllProps = ({
     profileData,
     params,
     parentId,
-    topSpaceData,
+    getTopOrgSpace,
     data,
     loading,
-    searchSpaceCategory,
-    spaceCategory,
+    searchOrgCategory,
+    orgData,
     tags,
     configSegment,
     tab,
-    setTab,
-    role,
-    isJoined
+    setTab
+    // role,
+    // isJoined
   }
 }
