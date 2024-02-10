@@ -3,10 +3,9 @@ import React from "react"
 import { Link } from "react-router-dom"
 
 const TopOrgs = ({ topOrgs }) => {
-  console.log({ topOrgs })
   return (
     <>
-      {topOrgs?.data?.map((item, index) => (
+      {topOrgs?.map((item, index) => (
         <Link to={"/org/" + item?.name} className="" key={index}>
           <IonItem
             className="max-w-[250px]"

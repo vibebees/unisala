@@ -11,9 +11,10 @@ import { Link } from "react-router-dom"
 import CreateSpace from "../../component/createSpace/CreateSpace"
 import TopSpaces from "../../component/TopSpaces/TopSpaces"
 import clsx from "clsx"
+import TopOrgs from "./TopOrgs"
 
-export const screenGreaterThan1000 = ({ title, topSpaces }) => {
-  console.log({ topSpaces })
+export const screenGreaterThan1000 = ({ title, topOrgs }) => {
+  console.log({ topOrgs })
   return (
     <>
       <IonCol
@@ -35,7 +36,7 @@ export const screenGreaterThan1000 = ({ title, topSpaces }) => {
             </h6>
           </IonText>
 
-          {Array.isArray(topSpaces) && <TopSpaces topSpaces={topSpaces} />}
+          {Array.isArray(topOrgs) && <TopOrgs topOrgs={topOrgs} />}
         </IonCard>
       </IonCol>
     </>

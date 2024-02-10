@@ -32,7 +32,7 @@ export const getAllProps = ({
     views = {
       greaterThan1000: screenGreaterThan1000({
         title: "Top Orgs",
-        topSpaces: getTopOrgSpace?.data
+        topOrgs: getTopOrgSpace?.data
       }),
       greaterThan768: screensMoreThan768({
         activeTab,
