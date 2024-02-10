@@ -507,6 +507,11 @@ export const AddComment = gql`
           }
           saved
           upVoted
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
         }
       }
     }
