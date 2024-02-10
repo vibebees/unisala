@@ -13,8 +13,8 @@ export default function Review({ uniId }) {
       context={{ server: USER_SERVICE_GQL }}
     >
       {({ data, loading, fetchMore }) => {
-        const Posts = data?.getUserPost?.Posts || []
-        const totalPosts = data?.getUserPost?.totalPosts || 0
+        const Posts = data?.getDicussionUniWall?.Posts || []
+        const totalPosts = data?.getDicussionUniWall?.totalPosts || 0
         const [page, setPage] = useState(0)
 
         return (
@@ -53,11 +53,11 @@ export default function Review({ uniId }) {
                   updateQuery: (prev, { fetchMoreResult }) => {
                     if (!fetchMoreResult) return prev
                     return Object.assign({}, prev, {
-                      getUserPost: {
-                        ...prev.getUserPost,
+                      getDicussionUniWall: {
+                        ...prev.getDicussionUniWall,
                         Posts: [
-                          ...prev.getUserPost.Posts,
-                          ...fetchMoreResult.getUserPost.Posts
+                          ...prev.getDicussionUniWall,
+                          ...fetchMoreResult.getDicussionUniWall
                         ]
                       }
                     })

@@ -486,14 +486,12 @@ export const AddComment = gql`
     }
   `,
   GetUserPost = gql`
-    query getUserPost($userId: String, $page: Float!, $unitId: Float) {
-      getUserPost(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
-        totalPosts
-        Posts {
+    query getDicussionUniWall($userId: String, $page: Float!, $unitId: Float) {
+      getDicussionUniWall(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
+        posts{
           _id
           images
           postText
-
           date
           upVoteCount
           postCommentsCount
@@ -512,6 +510,7 @@ export const AddComment = gql`
           academicProgramsAndDepartmentRating
           studentLifeAndServiceRating
           careerAndAlumniResourceRating
+
         }
       }
     }
