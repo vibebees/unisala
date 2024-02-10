@@ -847,8 +847,12 @@ export const AddComment = gql`
     }
   `,
   getNewsFeed = gql`
-    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
-      fetchMyNewsFeed(userId: $userId, page: $page) {
+
+
+    query fetchFeedV2(
+      $feedQuery: FeedQueryInput
+    ) {
+      fetchFeedV2(feedQuery: $feedQuery) {
         section
         postText
         admissionAndApplicationRating
