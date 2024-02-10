@@ -1173,6 +1173,22 @@ export const AddComment = gql`
       }
     }
   `,
+  CreateOrgSpace = gql`
+    mutation createOrgSpace($name: String!, $description: String) {
+      createOrgSpace(name: $name, description: $description) {
+        status {
+          success
+          message
+        }
+        data {
+          name
+          description
+          profileImage
+          _id
+        }
+      }
+    }
+  `,
   GetTopOrgs = gql`
     query {
       getTopOrgSpace {

@@ -1,23 +1,22 @@
+import { useMutation } from "@apollo/client"
 import {
-  IonCheckbox,
   IonCol,
   IonIcon,
   IonInput,
   IonLabel,
   IonRow,
   IonText,
-  IonToggle,
   useIonToast
 } from "@ionic/react"
-import React, { useEffect, useRef, useState } from "react"
-import SubmitSpace from "../Button/SubmitSpace"
-import { useMutation } from "@apollo/client"
-import { useHistory } from "react-router"
-import { closeOutline, imageOutline } from "ionicons/icons"
 import axios from "axios"
-import { AddSpaceCategory } from "graphql/user"
-import { USER_SERVICE_GQL } from "servers/types"
+import { AddSpaceCategory, CreateOrgSpace } from "graphql/user"
+import { usePathName } from "hooks/usePathname"
+import { closeOutline, imageOutline } from "ionicons/icons"
+import { useRef, useState } from "react"
+import { useHistory } from "react-router"
 import { userServer } from "servers/endpoints"
+import { USER_SERVICE_GQL } from "servers/types"
+import SubmitSpace from "../Button/SubmitSpace"
 const SpaceForm = ({ setIsOpen }) => {
   const [present, dismiss] = useIonToast()
   const [redirecting, setRedirecting] = useState(false)
@@ -93,19 +92,95 @@ const SpaceForm = ({ setIsOpen }) => {
     }
   })
 
+  const [createOrg] = useMutation(CreateOrgSpace, {
+    context: { server: USER_SERVICE_GQL },
+    onCompleted: async (data) => {
+      console.log(data)
+      if (!data?.createOrgSpace?.status?.success) {
+        // SPACE CREATION UNSUCCESSFUL
+        present({
+          duration: 5000,
+          className: "text-white font-bold",
+          message: data?.createOrgSpace?.status?.message,
+          buttons: [
+            {
+              text: "Redirect?",
+              handler: () => {
+                setIsOpen(false)
+                setTimeout(() => {
+                  history.push(`/space/${spaceNameRef?.current?.value}`)
+                })
+              }
+            }
+          ],
+          color: "danger",
+          mode: "ios"
+        })
+      } else {
+        // SPACE CREATING SUCCESSFUL
+        setRedirecting(true)
+
+        if (file) {
+          formData.append("image", file[0])
+          const res = await axios.post(
+            userServer +
+              `/space/addSpaceCategoryImage/${data?.createOrgSpace?.data?._id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            }
+          )
+        }
+
+        present({
+          duration: 3000,
+          message: "Space has been created",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+        setIsOpen(false)
+        setTimeout(() => {
+          history.push("/org/" + data?.createOrgSpace?.data?.name)
+        })
+      }
+    },
+    onError: (error) => {
+      present({
+        duration: 3000,
+        message: error.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+  })
+
   const spaceNameRef = useRef(null)
   const descriptionRef = useRef(null)
 
   // handler to create new space
   const handleSubmit = (e) => {
     e.preventDefault()
-    addSpaceCategory({
-      variables: {
-        name: spaceNameRef?.current?.value,
-        description: descriptionRef?.current?.value,
-        isOrgSpace: orgSpace
-      }
-    })
+    if (location.pathname.split("/")[1] === "space") {
+      addSpaceCategory({
+        variables: {
+          name: spaceNameRef?.current?.value,
+          description: descriptionRef?.current?.value,
+          isOrgSpace: orgSpace
+        }
+      })
+    } else {
+      createOrg({
+        variables: {
+          name: spaceNameRef?.current?.value,
+          description: descriptionRef?.current?.value,
+          isOrgSpace: orgSpace
+        }
+      })
+    }
   }
 
   return (
@@ -144,20 +219,11 @@ const SpaceForm = ({ setIsOpen }) => {
           ></IonInput>
         </IonCol>
       </IonRow>
-      <IonRow className="mt-4 flex-normal">
-        <IonCol className="flex items-center justify-normal space-x-2">
-          <IonLabel>Is this an organizational space?</IonLabel>
-          <IonCheckbox
-            onIonChange={(e) => setOrgSpace(e?.target?.checked)}
-            color="primary"
-          />
-        </IonCol>
-      </IonRow>
 
-      {orgSpace && (
-        <span className="text-xs font-bold block w-1/2 text-yellow-800">
-          You are about to create an organizational space which requires
-          verification.
+      {usePathName(0) === "org" && (
+        <span className="mt-4 text-xs font-bold block w-1/2 text-yellow-800">
+          <strong>Note:</strong> You are about to create an organizational space
+          which requires verification.
         </span>
       )}
 
