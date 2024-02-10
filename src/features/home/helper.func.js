@@ -306,7 +306,7 @@ export const screensMoreThan768 = ({
                   Top Organization
                 </h6>
               </IonText>
-              <TopOrgs topOrgs={topOrgs} />
+              <TopOrgs topOrgs={topOrgs?.data} />
             </IonCard>
           </IonCol>
         </>
