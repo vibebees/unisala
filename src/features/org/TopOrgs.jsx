@@ -2,12 +2,12 @@ import { IonAvatar, IonItem, IonLabel } from "@ionic/react"
 import React from "react"
 import { Link } from "react-router-dom"
 
-const TopSpaces = ({ topSpaces }) => {
-  // console.log({ topSpaces })
+const TopOrgs = ({ topOrgs }) => {
+  console.log({ topOrgs })
   return (
     <>
-      {topSpaces?.map((item, index) => (
-        <Link to={"/space/" + item?.name} className="" key={index}>
+      {topOrgs?.data?.map((item, index) => (
+        <Link to={"/org/" + item?.name} className="" key={index}>
           <IonItem
             className="max-w-[250px]"
             fill="solid"
@@ -34,4 +34,4 @@ const TopSpaces = ({ topSpaces }) => {
   )
 }
 
-export default TopSpaces
+export default TopOrgs

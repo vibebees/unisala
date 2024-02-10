@@ -1155,6 +1155,40 @@ export const AddComment = gql`
       }
     }
   `,
+  GetTopOrgs = gql`
+    query {
+      getTopOrgSpace {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          name
+          description
+          profileImage
+          coverImage
+          admin {
+            _id
+            firstName
+            lastName
+          }
+          members {
+            firstName
+            lastName
+            _id
+            username
+          }
+          students {
+            _id
+            firstName
+            lastName
+            username
+          }
+        }
+      }
+    }
+  `,
   AddSpaceCategory = gql`
     mutation addSpaceCategory(
       $name: String!
