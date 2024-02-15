@@ -122,9 +122,10 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invite: <Invitation orgId={orgId} />
-    apply: <Apply />,
-    invite: <Invitation spaceId={spaceId} />
+    invite: (<Invitation orgId={orgId} />)
+    // ,
+    // apply: (<Apply />),
+    //
   }
   const SpaceBody = () => {
     return tabs[tab]
