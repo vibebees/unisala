@@ -138,11 +138,12 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
-          # admissionAndApplicationRating
-          # financialAidAndScholarshipRating
-          # academicProgramsAndDepartmentRating
-          # studentLifeAndServiceRating
-          # careerAndAlumniResourceRating
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
+          postType
           postImage
           videoURL
           date
@@ -486,14 +487,17 @@ export const AddComment = gql`
     }
   `,
   GetUserPost = gql`
-    query getUserPost($userId: String, $page: Float!, $unitId: Float) {
-      getUserPost(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
-        totalPosts
-        Posts {
+    query getDicussionUniWall($userId: String, $page: Float!, $unitId: Float) {
+      getDicussionUniWall(
+        userId: $userId
+        page: $page
+        pageSize: 3
+        unitId: $unitId
+      ) {
+        posts {
           _id
           images
           postText
-
           date
           upVoteCount
           postCommentsCount
@@ -848,196 +852,156 @@ export const AddComment = gql`
     }
   `,
   getNewsFeed = gql`
-    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
-      fetchMyNewsFeed(userId: $userId, page: $page) {
-        section
-        postText
-        admissionAndApplicationRating
-        financialAidAndScholarshipRating
-        academicProgramsAndDepartmentRating
-        studentLifeAndServiceRating
-        careerAndAlumniResourceRating
-        upVoted
-        upVoteCount
-        postCommentsCount
-        type
-        saved
-        videoURL
-        tags {
-          _id
-          name
-          parentId
-          image
-          description
-        }
-        date
-        _id
-        images
-        user {
-          firstName
-          lastName
-          picture
-          username
-          _id
-        }
-        elevatorInfo {
-          unitId
-          name
-          address {
-            streetAddressOrPOBox
-            city
-            stateAbbreviation
-            zipCode
+    query fetchFeedV2($feedQuery: FeedQueryInput) {
+      fetchFeedV2(feedQuery: $feedQuery) {
+        data {
+          section
+          postText
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
+          upVoted
+          upVoteCount
+          postCommentsCount
+          type
+          saved
+          videoURL
+          tags {
+            _id
+            name
+            parentId
+            image
+            description
           }
-          name
-          alias
-          highestLevelOfOffering
-          undergraduateOffering
-          graduateOffering
-          grantsMedicalDegree
-          hasHospital
-          missionStatement
-          majors {
-            title
-            pollTotalGraduates
+          date
+          _id
+          images
+          user {
+            firstName
+            lastName
+            picture
+            username
+            _id
           }
-          ownType
-          pictures
-          tags
-        }
-        studentCharges {
-          combinedChargeForRoomAndBoard
-          undergraduateApplicationFee
-          graduateApplicationFee
-          unitId
-          undergraduate {
-            inState {
-              tuition
-              requiredFees
-              perCreditHourCharge
+          elevatorInfo {
+            name
+            address {
+              streetAddressOrPOBox
+              city
+              stateAbbreviation
+              zipCode
             }
-            outOfState {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            inDistrict {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            onCampus {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
+            name
+          }
+          studentCharges {
+            combinedChargeForRoomAndBoard
+            undergraduateApplicationFee
+            graduateApplicationFee
+            unitId
+            undergraduate {
+              inState {
+                tuition
+                requiredFees
+                perCreditHourCharge
               }
-              roomAndBoard
-              otherExpenses
-            }
-            offCampusWithFamily {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
+              outOfState {
+                tuition
+                requiredFees
+                perCreditHourCharge
               }
-              roomAndBoard
-              otherExpenses
-            }
-            offCampusNotWithFamily {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
+              inDistrict {
+                tuition
+                requiredFees
+                perCreditHourCharge
               }
-              roomAndBoard
-              otherExpenses
+              onCampus {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              offCampusWithFamily {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              offCampusNotWithFamily {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              booksAndSupplies
             }
-            booksAndSupplies
+
+            graduate {
+              inState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              outOfState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              inDistrict {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+            }
           }
 
-          graduate {
-            inState {
-              tuition
-              requiredFees
-              perCreditHourCharge
+          userEvaluation {
+            unitId
+            rankings {
+              rank
+              title
+              totalPlayers
             }
-            outOfState {
-              tuition
-              requiredFees
-              perCreditHourCharge
+            report {
+              academics
+              average
+              value
+              diversity
+              campus
+              atheltics
+              partyScene
+              professors
+              location
+              dorms
+              campusFood
+              studentLife
+              safety
             }
-            inDistrict {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-          }
-        }
-        scholarships {
-          university_name
-          unitId
-          scholarship_name
-          international_specific
-          level
-          scholarship_url
-          transfer_specific
-          gpa {
-            min
-            max
-          }
-          act {
-            min
-            max
-          }
-          sat {
-            min
-            max
-          }
-          awards {
-            award_name
-            scholarship_amount {
-              amount
-              disbursement_schedule
+            reviews {
+              rating
+              type
+              votes
             }
           }
-        }
-        userEvaluation {
-          unitId
-          rankings {
-            rank
-            title
-            totalPlayers
-          }
-          report {
-            academics
-            average
-            value
-            diversity
-            campus
-            atheltics
-            partyScene
-            professors
-            location
-            dorms
-            campusFood
-            studentLife
-            safety
-          }
-          reviews {
-            rating
-            type
-            votes
-          }
-        }
 
-        unitId
-        applied_level
-        status
-        attempt
-        university
-        conversation
-        major
+          unitId
+          applied_level
+          status
+          attempt
+          university
+          conversation
+          major
+        }
       }
     }
   `,
@@ -1083,6 +1047,24 @@ export const AddComment = gql`
             username
             _id
           }
+        }
+      }
+    }
+  `,
+  GetOrgSpace = gql`
+    query getOrgSpaceById($id: ID, $name: String) {
+      getOrgSpaceById(id: $id, name: $name) {
+        status {
+          success
+          message
+        }
+        data {
+          name
+          _id
+          name
+          description
+          profileImage
+          coverImage
         }
       }
     }
@@ -1160,9 +1142,67 @@ export const AddComment = gql`
       }
     }
   `,
+  CreateOrgSpace = gql`
+    mutation createOrgSpace($name: String!, $description: String) {
+      createOrgSpace(name: $name, description: $description) {
+        status {
+          success
+          message
+        }
+        data {
+          name
+          description
+          profileImage
+          _id
+        }
+      }
+    }
+  `,
+  GetTopOrgs = gql`
+    query {
+      getTopOrgSpace {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          name
+          description
+          profileImage
+          coverImage
+          admin {
+            _id
+            firstName
+            lastName
+          }
+          members {
+            firstName
+            lastName
+            _id
+            username
+          }
+          students {
+            _id
+            firstName
+            lastName
+            username
+          }
+        }
+      }
+    }
+  `,
   AddSpaceCategory = gql`
-    mutation addSpaceCategory($name: String!, $description: String) {
-      addSpaceCategory(name: $name, description: $description) {
+    mutation addSpaceCategory(
+      $name: String!
+      $description: String
+      $isOrgSpace: Boolean
+    ) {
+      addSpaceCategory(
+        name: $name
+        description: $description
+        isOrgSpace: $isOrgSpace
+      ) {
         status {
           success
           message
@@ -1435,3 +1475,4 @@ export const AddComment = gql`
       }
     }
   `
+

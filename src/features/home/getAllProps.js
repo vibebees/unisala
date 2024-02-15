@@ -5,7 +5,7 @@ import {
   screenLessThan768,
   screensMoreThan768
 } from "./helper.func"
- import {
+import {
   book,
   documentSharp,
   helpCircleSharp,
@@ -14,10 +14,10 @@ import {
   starSharp
 } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
- import { useHistory, useLocation } from "react-router"
+import { useHistory, useLocation } from "react-router"
 import ProfilePop from "component/profilePop"
-import {USER_SERVICE_GQL} from "servers/types"
-import {GetTopActiveSpaces} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { GetTopActiveSpaces, GetTopOrgs } from "graphql/user"
 import useWindowWidth from "hooks/useWindowWidth"
 
 export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
@@ -28,7 +28,11 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
       variables: { limit: 4 },
       context: { server: USER_SERVICE_GQL }
     }),
+    { data: topOrgData } = useQuery(GetTopOrgs, {
+      context: { server: USER_SERVICE_GQL }
+    }),
     { getTopActiveSpaces } = topSpaceData || {},
+    { getTopOrgSpace } = topOrgData || {},
     views = {
       greaterThan1000: screenGreaterThan1000(),
       greaterThan768: screensMoreThan768({
@@ -36,7 +40,8 @@ export const getAllPropsHome = ({ user, loggedIn, userInfo, propsall }) => {
         setActiveTab,
         unisalaImg,
         loggedIn,
-        topSpaces: getTopActiveSpaces?.spaceCategory
+        topSpaces: getTopActiveSpaces?.spaceCategory,
+        topOrgs: getTopOrgSpace
       }),
       lessThan768: screenLessThan768({
         setActiveProfile,

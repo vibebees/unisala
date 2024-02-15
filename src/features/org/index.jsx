@@ -8,7 +8,8 @@ import SpaceIndex from "./SpaceIndex/SpaceIndex"
 import {
   getUserProfile,
   GetSpaceCategory,
-  GetTopActiveSpaces
+  GetTopOrgs,
+  GetOrgSpace
 } from "graphql/user"
 import { useParams } from "react-router"
 
@@ -16,7 +17,7 @@ export const OrgContext = createContext()
 
 export default function SpacePage({ allPropssetPopup }) {
   const params = useParams(),
-    { data: topSpaceData } = useQuery(GetTopActiveSpaces, {
+    { data: topOrgData } = useQuery(GetTopOrgs, {
       variables: { limit: 6 },
       context: { server: USER_SERVICE_GQL }
     }),
@@ -29,9 +30,9 @@ export default function SpacePage({ allPropssetPopup }) {
           username: user?.username
         }
       }),
-    { data, loading } = useQuery(GetSpaceCategory, {
+    { data, loading } = useQuery(GetOrgSpace, {
       context: { server: USER_SERVICE_GQL },
-      variables: { q: params.category }
+      variables: { name: params.category }
     })
 
   const allProps = getAllProps({
@@ -39,7 +40,7 @@ export default function SpacePage({ allPropssetPopup }) {
     loggedIn,
     profileData,
     data,
-    topSpaceData,
+    topOrgData,
     loading
   })
 

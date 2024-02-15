@@ -127,9 +127,9 @@ const Thread = ({ thread }) => {
                 page: 0
               },
               data: {
-                getUserPost: {
-                  ...cachedData.getUserPost,
-                  Posts: cachedData.getUserPost.Posts.filter(
+                getDicussionUniWall: {
+                  ...cachedData.getDicussionUniWall,
+                  Posts: cachedData.getDicussionUniWall.filter(
                     (post) => post._id !== _id
                   )
                 }

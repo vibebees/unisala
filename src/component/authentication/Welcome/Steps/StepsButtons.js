@@ -138,7 +138,7 @@ const StepsButtons = ({ allProps }) => {
       editProfile()
       const spaceOrg = localStorage.getItem("org")
       if (spaceOrg) {
-        window.location.replace("/space/" + spaceOrg)
+        window.location.replace("/org/" + spaceOrg)
       }
       localStorage.removeItem("org")
     } catch (error) {

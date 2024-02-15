@@ -22,6 +22,7 @@ import { USER_SERVICE_GQL } from "servers/types"
 import { fetchFamousUniversities } from "graphql/user"
 import CustomTrackingLink from "features/analytics/LinkTrack"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+import TopOrgs from "features/org/TopOrgs"
 
 export const screenGreaterThan1000 = () => {
   const { data: famousUniversities } = useQuery(fetchFamousUniversities, {
@@ -207,7 +208,8 @@ export const screensMoreThan768 = ({
   unisalaImg,
   profileData,
   loggedIn,
-  topSpaces
+  topSpaces,
+  topOrgs
 }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [percentage, setPercentage] = useState(30)
@@ -216,12 +218,11 @@ export const screensMoreThan768 = ({
   const dashArray = radius * Math.PI * 2
   const dataOffset = dashArray - (dashArray * percentage) / 100
   const location = useLocation()
-
   return (
     <IonCol
       size="auto"
       style={{
-        height: "100%",
+        height: "90vh",
         position: "sticky",
         top: "15px",
         overflow: "auto"
@@ -295,6 +296,17 @@ export const screensMoreThan768 = ({
                   <h1 className="py-4">Browse More Spaces</h1>
                 </IonText>
               </Link>
+            </IonCard>
+          </IonCol>
+
+          <IonCol className="mb-5">
+            <IonCard className="overflow-y-auto max-h-[348px]">
+              <IonText color="dark">
+                <h6 className="text-center my-2 font-semibold">
+                  Top Organization
+                </h6>
+              </IonText>
+              <TopOrgs topOrgs={topOrgs?.data} />
             </IonCard>
           </IonCol>
         </>

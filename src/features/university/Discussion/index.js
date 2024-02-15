@@ -55,7 +55,7 @@ export default function Discussion({ uniId }) {
         __typename: "Post"
       }
 
-      const { getUserPost } = cache.readQuery({
+      const { getDicussionUniWall } = cache.readQuery({
         query: GetUserPost,
         variables: { unitId: uniId, page: 0 },
         context: { server: "USER_SERVICE_GQL" }
@@ -66,9 +66,9 @@ export default function Discussion({ uniId }) {
         variables: { unitId: uniId, page: 0 },
         context: { server: "USER_SERVICE_GQL" },
         data: {
-          getUserPost: {
-            ...getUserPost,
-            Posts: [post, ...getUserPost.Posts]
+          getDicussionUniWall: {
+            ...getDicussionUniWall,
+            Posts: [post, ...getDicussionUniWall]
           }
         }
       })

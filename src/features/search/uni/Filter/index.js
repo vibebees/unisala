@@ -303,7 +303,7 @@ function index({ setIsLoading, filterPage }) {
 
           <div className="mt-5 grid grid-cols-1">
             <div className="search-control ">
-              <h2 className="search-control__label">Test scores</h2>
+              {/* <h2 className="search-control__label">Test scores</h2>
               <IonRow>
                 <RangeSelect
                   Label={"SAT:"}
@@ -319,7 +319,7 @@ function index({ setIsLoading, filterPage }) {
                   urlKey={"act"}
                   showDollarSign={false}
                 />
-              </IonRow>
+              </IonRow> */}
             </div>
 
             <div className="search-control">

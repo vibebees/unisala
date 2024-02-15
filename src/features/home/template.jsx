@@ -1,28 +1,21 @@
+import { IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
 import React, { useEffect, useState } from "react"
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonContent,
-  IonCard,
-  IonItem
-} from "@ionic/react"
 import { CreateAPostCard } from "../../component/post/template/index"
 
-import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
-import { InfinteFeed } from "./InfiniteScrollFeed"
+import { InfinteFeed } from "../../component/feed/Feed"
+import "./Home.css"
 
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "graphql/uni"
 
-import { FolderStructure } from "../../component/folderStructure"
-import { UnisalaLandingPage } from "./UnisalaIntro"
-import ScrollableCard from "../../component/ScrollableImageCard/organism/ScrollableCard"
 import { fetchFamousUniversities } from "graphql/user"
-import FloatingButton from "../../component/FloatingButton"
 import useDocTitle from "hooks/useDocTitile"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
+import FloatingButton from "../../component/FloatingButton"
+import ScrollableCard from "../../component/ScrollableImageCard/organism/ScrollableCard"
+import { FolderStructure } from "../../component/folderStructure"
+import { UnisalaLandingPage } from "./UnisalaIntro"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -85,7 +78,7 @@ export const Home = ({ allProps }) => {
         }}
       />
 
-      <InfinteFeed userInfo={user} allProps={allProps} />
+      <InfinteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
     </>
   )
 
@@ -131,3 +124,4 @@ export const Home = ({ allProps }) => {
     </IonContent>
   )
 }
+

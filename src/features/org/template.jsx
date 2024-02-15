@@ -13,19 +13,18 @@ import { Members } from "./org/members"
 import Invitation from "./Invitation/Index"
 import Apply from "./apply"
 export const Spaces = ({ allProps }) => {
-  // TOP SPACES
   const {
     handleResize,
     loggedIn,
-    spaceId,
-    parentId,
+    orgId,
+
     tags,
     loading,
-    spaceCategory,
-    searchSpaceCategory,
+    orgData,
     user,
     width,
     views,
+
     configSegment,
     tab,
     setTab
@@ -46,15 +45,15 @@ export const Spaces = ({ allProps }) => {
   }, [window.location.search])
 
   // condition because we do not want to send null datas to backend
-  if (spaceId && !tags.includes(spaceId)) {
-    tags.push(spaceId)
+  if (orgId && !tags.includes(orgId)) {
+    tags.push(orgId)
   }
 
   if (loading) {
     return <PreLoader />
   }
 
-  if (!spaceCategory) {
+  if (!orgData) {
     return <SpaceNotFound />
   }
 
@@ -75,6 +74,55 @@ export const Spaces = ({ allProps }) => {
     feed: <Feed />,
     org: <Members />,
     // history: <History />,
+    apply: (
+      <div className="bg-white">
+        <IonCol>
+          <h4 className="font-semibold pl-4">Your next steps</h4>
+          <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6">
+            <div className="flex items-center  w-full">
+              {/* <StepInput
+                  currentstep={"1/10"}
+                  label={"Enter your ILETS Test Result"}
+                  placeholder={"Enter score"}
+                  inputType={"number"}
+                  setInput={setdata}
+                  name={"stepOne"}
+                  inputValue={data.stepOne}
+                  key={1}
+                /> */}
+            </div>
+
+            {/* <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
+              <span className="text-sm text-neutral-400">2/10</span>
+              <div className="flex items-center h-fit gap-4 py-2">
+                <label htmlFor="Gpa" className="text-sm h-fit">
+                  Enter your ILETS Test Result
+                </label>
+                <IonInput
+                  placeholder="Enter Test Score"
+                  type="number"
+                  className="w-fit h-3 placeholder:text-neutral-400 placeholder:text-xs placeholder:text-opacity-40"
+                ></IonInput>
+              </div>
+            </div>
+            <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
+              <span className="text-sm text-neutral-400">3/10</span>
+              <div className="flex items-center h-fit gap-4 py-2">
+                <label htmlFor="Gpa" className="text-sm h-fit">
+                  Enter your ILETS Test Result
+                </label>
+                <IonInput
+                  placeholder="Enter Test Score"
+                  type="number"
+                  className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
+                ></IonInput>
+              </div>
+            </div> */}
+          </div>
+        </IonCol>
+      </div>
+    ),
+    invite: <Invitation orgId={orgId} />
     apply: <Apply />,
     invite: <Invitation spaceId={spaceId} />
   }
@@ -83,7 +131,7 @@ export const Spaces = ({ allProps }) => {
   }
   const Space = () => (
     <IonCol className="colStyle ThreadContainer">
-      <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
+      <SpaceHeader spaceDetails={orgData} />
       <IonRow class="bg-white">
         <Tabs config={configSegment} />
       </IonRow>
