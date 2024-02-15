@@ -1,14 +1,11 @@
-import React from "react"
-import SingleImageCard from "../molecules/SingleImageCard"
-import { IonCardContent, IonText, IonGrid, IonIcon } from "@ionic/react"
-import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons"
-import similarCollege from "./similarCollege.css"
+import { IonCardContent, IonGrid, IonIcon, IonText } from "@ionic/react"
 import clsx from "clsx"
 import CustomTrackingLink from "features/analytics/LinkTrack"
+import { chevronBackOutline, chevronForwardOutline } from "ionicons/icons"
+import SingleImageCard from "../molecules/SingleImageCard"
 
 const ScrollableCard = ({ allProps }) => {
   const { title, data, className } = allProps
-
   const handleRightScrollClick = () => {
     const container = document.querySelector(`.${className}`)
     container?.scrollBy({
@@ -65,3 +62,4 @@ const ScrollableCard = ({ allProps }) => {
 }
 
 export default ScrollableCard
+

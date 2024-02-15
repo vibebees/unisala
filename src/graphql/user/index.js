@@ -487,8 +487,13 @@ export const AddComment = gql`
   `,
   GetUserPost = gql`
     query getDicussionUniWall($userId: String, $page: Float!, $unitId: Float) {
-      getDicussionUniWall(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
-        posts{
+      getDicussionUniWall(
+        userId: $userId
+        page: $page
+        pageSize: 3
+        unitId: $unitId
+      ) {
+        posts {
           _id
           images
           postText
@@ -510,7 +515,6 @@ export const AddComment = gql`
           academicProgramsAndDepartmentRating
           studentLifeAndServiceRating
           careerAndAlumniResourceRating
-
         }
       }
     }
@@ -847,200 +851,156 @@ export const AddComment = gql`
     }
   `,
   getNewsFeed = gql`
-
-
-    query fetchFeedV2(
-      $feedQuery: FeedQueryInput
-    ) {
+    query fetchFeedV2($feedQuery: FeedQueryInput) {
       fetchFeedV2(feedQuery: $feedQuery) {
-        section
-        postText
-        admissionAndApplicationRating
-        financialAidAndScholarshipRating
-        academicProgramsAndDepartmentRating
-        studentLifeAndServiceRating
-        careerAndAlumniResourceRating
-        upVoted
-        upVoteCount
-        postCommentsCount
-        type
-        saved
-        videoURL
-        tags {
-          _id
-          name
-          parentId
-          image
-          description
-        }
-        date
-        _id
-        images
-        user {
-          firstName
-          lastName
-          picture
-          username
-          _id
-        }
-        elevatorInfo {
-          unitId
-          name
-          address {
-            streetAddressOrPOBox
-            city
-            stateAbbreviation
-            zipCode
+        data {
+          section
+          postText
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
+          upVoted
+          upVoteCount
+          postCommentsCount
+          type
+          saved
+          videoURL
+          tags {
+            _id
+            name
+            parentId
+            image
+            description
           }
-          name
-          alias
-          highestLevelOfOffering
-          undergraduateOffering
-          graduateOffering
-          grantsMedicalDegree
-          hasHospital
-          missionStatement
-          majors {
-            title
-            pollTotalGraduates
+          date
+          _id
+          images
+          user {
+            firstName
+            lastName
+            picture
+            username
+            _id
           }
-          ownType
-          pictures
-          tags
-        }
-        studentCharges {
-          combinedChargeForRoomAndBoard
-          undergraduateApplicationFee
-          graduateApplicationFee
-          unitId
-          undergraduate {
-            inState {
-              tuition
-              requiredFees
-              perCreditHourCharge
+          elevatorInfo {
+            name
+            address {
+              streetAddressOrPOBox
+              city
+              stateAbbreviation
+              zipCode
             }
-            outOfState {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            inDistrict {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            onCampus {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
+            name
+          }
+          studentCharges {
+            combinedChargeForRoomAndBoard
+            undergraduateApplicationFee
+            graduateApplicationFee
+            unitId
+            undergraduate {
+              inState {
+                tuition
+                requiredFees
+                perCreditHourCharge
               }
-              roomAndBoard
-              otherExpenses
-            }
-            offCampusWithFamily {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
+              outOfState {
+                tuition
+                requiredFees
+                perCreditHourCharge
               }
-              roomAndBoard
-              otherExpenses
-            }
-            offCampusNotWithFamily {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
+              inDistrict {
+                tuition
+                requiredFees
+                perCreditHourCharge
               }
-              roomAndBoard
-              otherExpenses
+              onCampus {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              offCampusWithFamily {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              offCampusNotWithFamily {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              booksAndSupplies
             }
-            booksAndSupplies
+
+            graduate {
+              inState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              outOfState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              inDistrict {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+            }
           }
 
-          graduate {
-            inState {
-              tuition
-              requiredFees
-              perCreditHourCharge
+          userEvaluation {
+            unitId
+            rankings {
+              rank
+              title
+              totalPlayers
             }
-            outOfState {
-              tuition
-              requiredFees
-              perCreditHourCharge
+            report {
+              academics
+              average
+              value
+              diversity
+              campus
+              atheltics
+              partyScene
+              professors
+              location
+              dorms
+              campusFood
+              studentLife
+              safety
             }
-            inDistrict {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-          }
-        }
-        scholarships {
-          university_name
-          unitId
-          scholarship_name
-          international_specific
-          level
-          scholarship_url
-          transfer_specific
-          gpa {
-            min
-            max
-          }
-          act {
-            min
-            max
-          }
-          sat {
-            min
-            max
-          }
-          awards {
-            award_name
-            scholarship_amount {
-              amount
-              disbursement_schedule
+            reviews {
+              rating
+              type
+              votes
             }
           }
-        }
-        userEvaluation {
-          unitId
-          rankings {
-            rank
-            title
-            totalPlayers
-          }
-          report {
-            academics
-            average
-            value
-            diversity
-            campus
-            atheltics
-            partyScene
-            professors
-            location
-            dorms
-            campusFood
-            studentLife
-            safety
-          }
-          reviews {
-            rating
-            type
-            votes
-          }
-        }
 
-        unitId
-        applied_level
-        status
-        attempt
-        university
-        conversation
-        major
+          unitId
+          applied_level
+          status
+          attempt
+          university
+          conversation
+          major
+        }
       }
     }
   `,
@@ -1514,3 +1474,4 @@ export const AddComment = gql`
       }
     }
   `
+

@@ -1,22 +1,29 @@
-import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
-import { useSelector } from "react-redux"
 import { useQuery } from "@apollo/client"
-import Thread from "../../component/thread"
-import { FeedSkeleton } from "../../component/skeleton/feedSkeleton"
-import { USER_SERVICE_GQL } from "servers/types"
+import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react"
 import { getNewsFeed } from "graphql/user"
-import { InterviewExperienceCard } from "../../component/interviewExperienceCard"
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { USER_SERVICE_GQL } from "servers/types"
+import { InterviewExperienceCard } from "../interviewExperienceCard"
+import { FeedSkeleton } from "../skeleton/feedSkeleton"
+import Thread from "../thread"
 
-export const InfinteFeed = ({ allProps }) => {
+export const InfinteFeed = ({ allProps, feedType, unitId }) => {
   const { user } = useSelector((state) => state.userProfile)
 
-  const { page, setPage } = allProps
+  const [page, setPage] = useState(0)
   const { data, loading, fetchMore } = useQuery(getNewsFeed, {
-    variables: { userId: user._id, page: 0 },
+    variables: {
+      feedQuery: {
+        feedType,
+        page: 0,
+        unitId: unitId
+      }
+    },
     context: { server: USER_SERVICE_GQL }
   })
 
-  const Posts = data?.fetchMyNewsFeed
+  const Posts = data?.fetchFeedV2?.data
 
   if (!Posts && loading) {
     return <FeedSkeleton />
@@ -31,12 +38,16 @@ export const InfinteFeed = ({ allProps }) => {
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev
+
         return {
           ...prev,
-          fetchMyNewsFeed: [
-            ...prev.fetchMyNewsFeed,
-            ...fetchMoreResult.fetchMyNewsFeed
-          ]
+          fetchFeedV2: {
+            ...prev.fetchFeedV2,
+            data: [
+              ...prev.fetchFeedV2.data,
+              ...fetchMoreResult.fetchFeedV2.data
+            ]
+          }
         }
       }
     })
@@ -169,3 +180,4 @@ export const InfinteFeed = ({ allProps }) => {
     </div>
   )
 }
+
