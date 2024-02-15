@@ -138,11 +138,12 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
-          # admissionAndApplicationRating
-          # financialAidAndScholarshipRating
-          # academicProgramsAndDepartmentRating
-          # studentLifeAndServiceRating
-          # careerAndAlumniResourceRating
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
+          postType
           postImage
           videoURL
           date
