@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react"
 import { IonApp, IonPage, IonRouterOutlet, setupIonicReact } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import { PersistGate } from "redux-persist/integration/react"
-import { persistor, store } from "./store/store"
-import { useDispatch, Provider, useSelector } from "react-redux"
 import "@ionic/react/css/core.css"
-import "@ionic/react/css/normalize.css"
-import "@ionic/react/css/structure.css"
-import "@ionic/react/css/typography.css"
-import "@ionic/react/css/padding.css"
+import "@ionic/react/css/display.css"
+import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/float-elements.css"
+import "@ionic/react/css/normalize.css"
+import "@ionic/react/css/padding.css"
+import "@ionic/react/css/structure.css"
 import "@ionic/react/css/text-alignment.css"
 import "@ionic/react/css/text-transformation.css"
-import "@ionic/react/css/flex-utils.css"
-import "@ionic/react/css/display.css"
+import "@ionic/react/css/typography.css"
+import jwtDecode from "jwt-decode"
+import { useEffect } from "react"
+import ReactGA from "react-ga4"
+import { Provider } from "react-redux"
+import { PersistGate } from "redux-persist/integration/react"
+import { getUserProfile } from "store/action/userProfile"
+import appProps from "./appProps"
+import MobileNav from "./component/MobileNav"
 import Nav from "./component/NavBar"
 import { PageRoute } from "./component/PageRoute"
-import MobileNav from "./component/MobileNav"
-import { getUserProfile } from "store/action/userProfile"
-import jwtDecode from "jwt-decode"
-import appProps from "./appProps"
-import ReactGA from "react-ga4"
+import { persistor, store } from "./store/store"
 
 /* Theme variables */
 
@@ -70,8 +70,8 @@ const App = () => {
         <IonApp>
           <IonPage className="text-black">
             <IonReactRouter>
-              {width >= 768 && <DesktopView allProps={allProps} />}
-              {width < 768 && (
+              {width >= 968 && <DesktopView allProps={allProps} />}
+              {width < 968 && (
                 <MobileView
                   allProps={allProps}
                   setCreateAPostPopUp={setCreateAPostPopUp}
@@ -86,3 +86,4 @@ const App = () => {
 }
 
 export default App
+

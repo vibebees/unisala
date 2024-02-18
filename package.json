@@ -84,7 +84,6 @@
     "openandroid": "npx cap open android",
     "ionic:build": "npm run build && ionic capacitor ",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
-
   },
   "eslintConfig": {
     "extends": [

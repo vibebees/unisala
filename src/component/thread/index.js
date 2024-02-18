@@ -1,5 +1,3 @@
-import { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
 import {
   IonButton,
   IonCard,
@@ -8,27 +6,29 @@ import {
   IonSlides,
   useIonToast
 } from "@ionic/react"
-import Upvote from "./actions/Upvote"
-import Reply from "./actions/Reply"
-import Save from "./actions/Save"
-import ReplyInput from "../ReplyInput"
-import "./index.css"
-import ShowMore from "./ShowMore"
-import { Avatar } from "../Avatar"
-import ThreadExpand from "./ThreadExpand"
 import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
+import { useState } from "react"
+import { Link, useLocation } from "react-router-dom"
+import { Avatar } from "../Avatar"
+import ReplyInput from "../ReplyInput"
+import ShowMore from "./ShowMore"
+import ThreadExpand from "./ThreadExpand"
 import Rating from "./actions/Rating"
+import Reply from "./actions/Reply"
+import Save from "./actions/Save"
+import Upvote from "./actions/Upvote"
+import "./index.css"
 
 import { useMutation } from "@apollo/client"
-import { useSelector } from "react-redux"
+import clsx from "clsx"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+import Share from "component/Share"
+import { DeletePost, EditPost, GetUserPost, getNewsFeed } from "graphql/user"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
-import clsx from "clsx"
+import { useSelector } from "react-redux"
 import { USER_SERVICE_GQL } from "servers/types"
-import { EditPost, DeletePost, GetUserPost, getNewsFeed } from "graphql/user"
-import Share from "component/Share"
-import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 
 const Thread = ({ thread }) => {
   const [present, dismiss] = useIonToast()
@@ -238,7 +238,7 @@ const Thread = ({ thread }) => {
     // Handling for the editable state
     if (editable) {
       return (
-        <div >
+        <div>
           <div className="h-auto min-h-200 mb-12 text-black relative">
             <ReactQuill
               theme="snow"
@@ -252,7 +252,7 @@ const Thread = ({ thread }) => {
             fill="clear"
             className="ion-no-padding capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
             size="small"
-            style={{"--ripple-color": "transparent"}}
+            style={{ "--ripple-color": "transparent" }}
             onClick={() => setEditable(false)}
           >
             Cancel
@@ -290,13 +290,13 @@ const Thread = ({ thread }) => {
     if (images?.length > 0) {
       return (
         <Link to={`/thread/${_id}`} className={clsx("")}>
-          <IonSlides pager={true} options={slideOpts} className="h-[360px]">
+          <IonSlides pager={true} options={slideOpts} className="">
             {images.map((image, index) => (
-              <IonSlide key={index}>
+              <IonSlide className="" key={index}>
                 <ImageWithLoader
                   src={image}
                   alt={image}
-                  className={"object-contain"}
+                  className="w-full max-h-96 object-contain"
                 />
               </IonSlide>
             ))}
@@ -418,7 +418,7 @@ const Thread = ({ thread }) => {
   return (
     <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
       {renderHeader()}
-      <div className="thread_content !pl-16 pr-8 max-md:pr-3">
+      <div className="px-4">
         {renderContent()}
         {rating()}
         {renderImages()}
@@ -447,3 +447,4 @@ const Thread = ({ thread }) => {
 }
 
 export default Thread
+

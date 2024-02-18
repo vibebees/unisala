@@ -16,8 +16,8 @@ export const InfinteFeed = ({ allProps, feedType, unitId }) => {
     variables: {
       feedQuery: {
         feedType,
-        page: 0,
-        unitId: unitId
+        page: 0
+        // unitId: unitId
       }
     },
     context: { server: USER_SERVICE_GQL }
@@ -29,16 +29,21 @@ export const InfinteFeed = ({ allProps, feedType, unitId }) => {
     return <FeedSkeleton />
   }
 
-  const loadMore = async (e) => {
-    setPage((currentPage) => currentPage + 1)
-    await fetchMore({
+  const loadMore = (e) => {
+    console.log("loading more")
+    setPage((prev) => prev + 1)
+    console.log(page)
+    fetchMore({
       variables: {
-        userId: user._id,
-        page: page + 1
+        feedQuery: {
+          userId: user._id,
+          page: page + 1,
+          unitId,
+          feedType
+        }
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev
-
         return {
           ...prev,
           fetchFeedV2: {
@@ -51,7 +56,10 @@ export const InfinteFeed = ({ allProps, feedType, unitId }) => {
         }
       }
     })
-    e.target.complete()
+    console.log
+    setTimeout(() => {
+      e.target.complete()
+    }, 500)
   }
   function transformAndStylePostData(originalData) {
     const { elevatorInfo } = originalData
