@@ -7,7 +7,6 @@ cd inside each services
 
      du -h --exclude='node_modules'
 
-
 to check node_modules only
      find . -name 'node_modules' -type d -prune -exec du -sh {} +
 
