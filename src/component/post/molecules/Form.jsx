@@ -15,6 +15,7 @@ import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
 import SelectAtom from "../atoms/Select"
+import UniversityList from "component/thread/UniversityList"
 import {
   AddPost,
   AddSpaceEvent,
@@ -38,6 +39,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
+  const [popoverOpen, setPopoverOpen] = useState(false)
   const location = useLocation()
   const histroy = useHistory()
   const params = new URLSearchParams(location.search)
@@ -96,7 +98,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       [itemId]: value
     }))
   }
-
 
   const generateDateComponent = (item) => (
     <>
@@ -271,24 +272,25 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       // Check if cachedData and cachedData.getAllEventBySpaceId are not null
       if (cachedData && cachedData.getAllEventBySpaceId) {
         // Proceed to update the cache only if the data is not null
-        data && cache.writeQuery({
-          query: GetSpaceEvents,
-          context: {
-            server: USER_SERVICE_GQL
-          },
-          variables: {
-            spaceId: tags[0]
-          },
-          data: {
-            getAllEventBySpaceId: {
-              ...cachedData.getAllEventBySpaceId,
-              event: [
-                // data.addOrgSpaceEvent.event,
-                ...cachedData.getAllEventBySpaceId.data
-              ]
+        data &&
+          cache.writeQuery({
+            query: GetSpaceEvents,
+            context: {
+              server: USER_SERVICE_GQL
+            },
+            variables: {
+              spaceId: tags[0]
+            },
+            data: {
+              getAllEventBySpaceId: {
+                ...cachedData.getAllEventBySpaceId,
+                event: [
+                  // data.addOrgSpaceEvent.event,
+                  ...cachedData.getAllEventBySpaceId.data
+                ]
+              }
             }
-          }
-        })
+          })
       } else {
         // Handle the case where cachedData or getAllEventBySpaceId is null
         console.log("Cached data is not available or invalid")
@@ -304,8 +306,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
-
-
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append("image", files[i])
@@ -451,13 +451,37 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             theme="snow"
             onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
             value={postData?.postText}
+            onKeyDown={(e) => {
+              if (e.key === "@") {
+                setPopoverOpen(true)
+              }
+            }}
+          />
+          <UniversityList
+            setPopoverOpen={setPopoverOpen}
+            popoverOpen={popoverOpen}
+            handleUniversitySelect={(e) => {
+              console.log("postdata", postData)
+              if (postData?.postText.endsWith("</p>")) {
+                setPostData((prev) => ({
+                  ...prev,
+                  postText:
+                    postData.postText.slice(0, -4) + `<strong>${e}</strong></p>`
+                }))
+              } else {
+                setPostData((prev) => ({
+                  ...prev,
+                  postText:
+                    postData.postText.slice(0, -4) +
+                    `<p><strong>${e}</strong></p>`
+                }))
+              }
+            }}
           />
         </div>
       </>
-    );
-  };
-
-
+    )
+  }
 
   const generateCheckbox = (item) => {
     return (

@@ -140,6 +140,7 @@ const index = () => {
     socket.current = messageSocket()
 
     socket.current.on("getMessage", (data) => {
+      console.log("message received", data)
       // setTypingMessage(data)
       updateChatMessages({ newMessage: data, client, user })
       //also need to update the last message on chat list

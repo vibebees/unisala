@@ -1475,4 +1475,3 @@ export const AddComment = gql`
       }
     }
   `
-

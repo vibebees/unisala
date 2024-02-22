@@ -238,7 +238,7 @@ const Thread = ({ thread }) => {
     // Handling for the editable state
     if (editable) {
       return (
-        <div >
+        <div>
           <div className="h-auto min-h-200 mb-12 text-black relative">
             <ReactQuill
               theme="snow"
@@ -252,7 +252,7 @@ const Thread = ({ thread }) => {
             fill="clear"
             className="ion-no-padding capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
             size="small"
-            style={{"--ripple-color": "transparent"}}
+            style={{ "--ripple-color": "transparent" }}
             onClick={() => setEditable(false)}
           >
             Cancel
@@ -272,12 +272,7 @@ const Thread = ({ thread }) => {
 
     return (
       <div className="thread_comment">
-        <ThreadExpand
-          htmlText={postText}
-          maxLines={5}
-          _id={_id}
-          thread={thread}
-        />
+        <ThreadExpand htmlText={postText} _id={_id} thread={thread} />
       </div>
     )
   }
@@ -416,33 +411,35 @@ const Thread = ({ thread }) => {
   }
 
   return (
-    <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
-      {renderHeader()}
-      <div className="thread_content !pl-16 pr-8 max-md:pr-3">
-        {renderContent()}
-        {rating()}
-        {renderImages()}
-        {renderFooter()}
-        {reply && (
-          <ReplyInput
-            setReply={setReply}
-            postId={_id}
-            isReply={false}
-            setNumberOfComments={setNumberOfComments}
-          />
-        )}
-        {renderOptions()}
-        {postCommentsCount > 0 && (
-          <ShowMore
-            postId={_id}
-            user={user}
-            isReply={false}
-            postCommentsCount={postCommentsCount}
-            numberOfComments={numberOfComments}
-          />
-        )}
-      </div>
-    </IonCard>
+    <>
+      <IonCard className="relative  pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
+        {renderHeader()}
+        <div className="thread_content pr-8 max-md:pr-3">
+          {renderContent()}
+          {rating()}
+          {renderImages()}
+          {renderFooter()}
+          {reply && (
+            <ReplyInput
+              setReply={setReply}
+              postId={_id}
+              isReply={false}
+              setNumberOfComments={setNumberOfComments}
+            />
+          )}
+          {renderOptions()}
+          {postCommentsCount > 0 && (
+            <ShowMore
+              postId={_id}
+              user={user}
+              isReply={false}
+              postCommentsCount={postCommentsCount}
+              numberOfComments={numberOfComments}
+            />
+          )}
+        </div>
+      </IonCard>
+    </>
   )
 }
 
