@@ -136,6 +136,7 @@ const SingleThread = ({thread, refetch}) => {
                     singlePost={singlePost}
                     reply={reply}
                 />
+                 {/* other people's replies */}
                 <ShowMore postId={thread._id} />
             </IonCard>
         </div>
