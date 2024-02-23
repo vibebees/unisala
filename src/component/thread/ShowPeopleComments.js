@@ -6,7 +6,7 @@ import Comment from "./Comment"
 import { USER_SERVICE_GQL } from "servers/types"
 import { GetCommentList } from "graphql/user"
 
-function ShowMore({
+function ShowOtherComments({
   postId = "",
   parentId = "",
   user,
@@ -88,4 +88,4 @@ function ShowMore({
   )
 }
 
-export default ShowMore
+export default ShowOtherComments

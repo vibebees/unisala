@@ -4,7 +4,6 @@ import "./index.css" // Import your custom CSS
 import clsx from "clsx"
 import { LikeATag } from "component/tags"
 import { Link } from "react-router-dom"
-import { IonCard, IonModal } from "@ionic/react"
 
 const ThreadExpand = ({ htmlText, thread = {} }) => {
   const [isExpanded, setIsExpanded] = useState(false)

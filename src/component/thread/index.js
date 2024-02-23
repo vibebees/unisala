@@ -12,7 +12,7 @@ import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Avatar } from "../Avatar"
 import ReplyInput from "../ReplyInput"
-import ShowMore from "./ShowMore"
+import ShowPeopleComments from "./ShowPeopleComments"
 import ThreadExpand from "./ThreadExpand"
 import Rating from "./actions/Rating"
 import Reply from "./actions/Reply"
@@ -427,7 +427,7 @@ const Thread = ({ thread }) => {
             />
           {renderOptions()}
           {postCommentsCount > 0 && (
-            <ShowMore
+            <ShowPeopleComments
               postId={_id}
               user={user}
               isReply={false}

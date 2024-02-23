@@ -4,7 +4,7 @@ import Upvote from "../actions/Upvote"
 import Reply from "../actions/Reply"
 import Save from "../actions/Save"
 import ReplyInput from "../../ReplyInput"
-import ShowMore from "../ShowMore"
+import ShowPeopleComments from "../ShowPeopleComments"
 import {Avatar} from "../../Avatar"
 import ThreadExpand from "../ThreadExpand"
 import {UserHeader} from "./molecules"
@@ -136,8 +136,9 @@ const SingleThread = ({thread, refetch}) => {
                     singlePost={singlePost}
                     reply={reply}
                 />
+
                  {/* other people's replies */}
-                <ShowMore postId={thread._id} />
+                <ShowPeopleComments postId={thread._id} />
             </IonCard>
         </div>
     )
