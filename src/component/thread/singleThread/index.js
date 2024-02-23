@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { IonButton, IonCard, IonIcon, useIonToast, IonModal } from "@ionic/react"
+import {
+  IonButton,
+  IonCard,
+  IonIcon,
+  useIonToast,
+  IonModal
+} from "@ionic/react"
 
 import Upvote from "../actions/Upvote"
 import Reply from "../actions/Reply"
@@ -145,7 +151,7 @@ const Thread = ({ thread, refetch }) => {
   if (!thread) return null
 
   return (
-    <div className="max-w-2xl w-full mx-auto mb-10">
+    <div className="max-w-2xl w-full mx-auto mb-10 ">
       <IonCard className=" relative mb-0 pt-4 pb-6 ">
         <Link to={`/@/${username}`} className="px-4">
           <div className="thread-header">
@@ -166,7 +172,6 @@ const Thread = ({ thread, refetch }) => {
           <div className="thread_comment">
             {editable ? (
               <div>
-
                 <br />
 
                 <IonButton
@@ -194,7 +199,12 @@ const Thread = ({ thread, refetch }) => {
               </div>
             ) : (
               <>
-                <ThreadExpand htmlText={postText} maxLines={8} _id={_id} thread={thread} />
+                <ThreadExpand
+                  htmlText={postText}
+                  maxLines={8}
+                  _id={_id}
+                  thread={thread}
+                />
                 {images.length > 0 && <ImageCollage images={images} />}
               </>
             )}

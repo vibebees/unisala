@@ -11,7 +11,8 @@ const ThreadExpand = ({ htmlText, thread = {} }) => {
   const [showSeeMore, setShowMore] = useState(true)
   const TextRef = useRef(null)
   const { tags = [], videoURL = "" } = thread
-  const [showSeeMoreOptionAtWordCount, setShowSeeMoreOptionAtWordCount] = useState(40)
+  const [showSeeMoreOptionAtWordCount, setShowSeeMoreOptionAtWordCount] =
+    useState(40)
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded)
@@ -65,7 +66,13 @@ const ThreadExpand = ({ htmlText, thread = {} }) => {
     <div className="tags-container">
       {tags?.map((tag) => (
         <Link to={`/space/${tag.name}`} key={tag._id} className="tag-link">
-          <LikeATag colorTitle="blue" colorValue="yellow" title="NSAS" value={"NSAS"} key={tag._id} />
+          <LikeATag
+            colorTitle="blue"
+            colorValue="yellow"
+            title="NSAS"
+            value={"NSAS"}
+            key={tag._id}
+          />
         </Link>
       ))}
     </div>
@@ -81,7 +88,7 @@ const ThreadExpand = ({ htmlText, thread = {} }) => {
         <button
           onClick={toggleExpand}
           className={clsx(
-            "bg-neutral-200 border border-neutral-200 px-2 my-2 py-1 rounded-md hover:bg-neutral-300 transition-colors duration-200 ease-linear text-sm text-black"
+            "bg-neutral-200 border  border-neutral-200 px-2 my-2 py-1 rounded-md hover:bg-neutral-300 transition-colors duration-200 ease-linear text-sm text-black"
           )}
         >
           {isExpanded ? "See Less" : "See More"}

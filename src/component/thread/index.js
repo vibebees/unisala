@@ -272,12 +272,7 @@ const Thread = ({ thread }) => {
 
     return (
       <div className="thread_comment">
-        <ThreadExpand
-          htmlText={postText}
-          maxLines={5}
-          _id={_id}
-          thread={thread}
-        />
+        <ThreadExpand htmlText={postText} _id={_id} thread={thread} />
       </div>
     )
   }
@@ -416,33 +411,35 @@ const Thread = ({ thread }) => {
   }
 
   return (
-    <IonCard className="relative pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
-      {renderHeader()}
-      <div className="px-4">
-        {renderContent()}
-        {rating()}
-        {renderImages()}
-        {renderFooter()}
-        {reply && (
-          <ReplyInput
-            setReply={setReply}
-            postId={_id}
-            isReply={false}
-            setNumberOfComments={setNumberOfComments}
-          />
-        )}
-        {renderOptions()}
-        {postCommentsCount > 0 && (
-          <ShowMore
-            postId={_id}
-            user={user}
-            isReply={false}
-            postCommentsCount={postCommentsCount}
-            numberOfComments={numberOfComments}
-          />
-        )}
-      </div>
-    </IonCard>
+    <>
+      <IonCard className="relative  pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
+        {renderHeader()}
+        <div className="thread_content pr-8 max-md:pr-3">
+          {renderContent()}
+          {rating()}
+          {renderImages()}
+          {renderFooter()}
+          {reply && (
+            <ReplyInput
+              setReply={setReply}
+              postId={_id}
+              isReply={false}
+              setNumberOfComments={setNumberOfComments}
+            />
+          )}
+          {renderOptions()}
+          {postCommentsCount > 0 && (
+            <ShowMore
+              postId={_id}
+              user={user}
+              isReply={false}
+              postCommentsCount={postCommentsCount}
+              numberOfComments={numberOfComments}
+            />
+          )}
+        </div>
+      </IonCard>
+    </>
   )
 }
 
