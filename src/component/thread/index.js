@@ -100,7 +100,6 @@ const Thread = ({ thread }) => {
               }
             }
       )
-      console.log({ cachedData })
 
       cache.writeQuery(
         isHome
@@ -419,14 +418,13 @@ const Thread = ({ thread }) => {
           {rating()}
           {renderImages()}
           {renderFooter()}
-          {reply && (
             <ReplyInput
               setReply={setReply}
               postId={_id}
               isReply={false}
               setNumberOfComments={setNumberOfComments}
+              reply={reply}
             />
-          )}
           {renderOptions()}
           {postCommentsCount > 0 && (
             <ShowMore

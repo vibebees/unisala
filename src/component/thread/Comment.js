@@ -220,15 +220,14 @@ function Comment({
           </div>
         </div>
 
-        {reply && (
-          <ReplyInput
+        <ReplyInput
             setReply={setReply}
             parentId={parentId ?? _id}
             postId={postId}
             isReply={true}
             replyTo={username}
+            reply={reply}
           />
-        )}
 
         {comment.username === loggedinUser?.username && (
           <div className="absolute top-2 right-5">

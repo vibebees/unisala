@@ -4,7 +4,7 @@ import { GetPostById } from "graphql/user"
 import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "servers/types"
 import { IonSpinner, IonContent, IonSkeletonText, IonPage } from "@ionic/react"
-import SingleThread from "component/thread/singleThread"
+import SingleThread from "component/thread/singleThread/index"
 import {FeedSkeleton} from "component/skeleton/feedSkeleton"
 
 const index = () => {
