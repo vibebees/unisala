@@ -26,37 +26,11 @@ const SingleThread = ({thread, refetch}) => {
         saved,
         user = {}
     } = thread || {},
-        {
-            firstName = "",
-            lastName = "",
-            username = "",
-            picture = ""
-        } = user || {},
         props = {...user, ...thread},
         [reply, setReply] = useState(false),
-        // reply = false,
-        // setReply = () => {},
-        [profilePic, setProfilePic] = useState(picture),
-        [image, setImage] = useState(postImage),
-        [showOptions, setShowOptions] = useState(false),
         [editable, setEditable] = useState(false),
-        [singlePost, setSinglePost] = useState(true),
-        [present, dismiss] = useIonToast(),
-        handleEditChange = (e) => {
-            // setEditText(e.target.value)
-        }
+        [singlePost, setSinglePost] = useState(true)
 
-    const submitEdit = () => {
-        // Assuming you have a function to submit the edited text
-        // Update the thread post text here and then...
-        setEditable(false) // Turn off edit mode
-        present({
-            message: "Post updated successfully.",
-            duration: 2000,
-            color: "success"
-        })
-        refetch() // Optionally refetch thread data if needed
-    }
 
     if (!thread) return null
     const threadContent = () => {
@@ -137,7 +111,7 @@ const SingleThread = ({thread, refetch}) => {
                     reply={reply}
                 />
 
-                 {/* other people's replies */}
+                {/* other people's replies */}
                 <ShowPeopleComments postId={thread._id} />
             </IonCard>
         </div>
