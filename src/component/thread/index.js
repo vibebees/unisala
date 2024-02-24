@@ -63,13 +63,16 @@ const Thread = ({ thread }) => {
   return (
     <>
       <IonCard className="relative  pt-4 pb-3 max-md:my-1 max-md:mx-[5px]">
-        <ThreadHeader
-          firstName={user?.firstName}
-          lastName={user?.lastName}
-          date={date}
-          profilePic={user?.profilePic}
-          username={user?.username}
-        />
+        <div className="px-4">
+          <ThreadHeader
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+            date={date}
+            profilePic={user?.profilePic}
+            username={user?.username}
+          />
+        </div>
+
         <div className="thread_content ">
           {renderContent()}
           <ThreadRating
@@ -88,6 +91,7 @@ const Thread = ({ thread }) => {
             upVoted={upVoted}
             postCommentsCount={postCommentsCount}
             saved={saved}
+            setReply={setReply}
           />
           <ReplyInput
             setReply={setReply}

@@ -10,10 +10,11 @@ import NoImageFound from "assets/no_image_found.png"
 const UniversityList = ({
   handleUniversitySelect,
   popoverOpen,
-  setPopoverOpen
+  setPopoverOpen,
+  popoverPosition,
+  searchText
 }) => {
   const popover = useRef(null)
-  const [searchTerm, setSearchTerm] = useState("")
   const [results, setResults] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -21,7 +22,7 @@ const UniversityList = ({
     setIsLoading(true)
     try {
       const res = await authInstance.get(
-        `${universityServer}/keyword/schoolname/${searchTerm.trim()}/5`
+        `${universityServer}/keyword/schoolname/${searchText.trim()}/5`
       )
       setResults(res.data)
     } catch (error) {
@@ -35,84 +36,97 @@ const UniversityList = ({
     getUniversitites()
   }
 
-  useDebouncedEffect(handleInput, [searchTerm], 2000)
+  useDebouncedEffect(handleInput, [searchText], 2000)
+
+  if (!popoverOpen) {
+    return null
+  }
 
   return (
-    <IonPopover
-      ref={popover}
-      isOpen={popoverOpen}
-      onDidDismiss={() => setPopoverOpen(false)}
+    // <IonPopover
+    //   ref={popover}
+    //   isOpen={popoverOpen}
+    //   onDidDismiss={() => setPopoverOpen(false)}
+    //   style={{
+    //     height: "300px",
+    //     position: "absolute",
+    //     top: `${popoverPosition.top}px`,
+    //     left: `${popoverPosition.left}px`
+    //   }}
+    // >
+    <section
       style={{
-        height: "300px"
+        height: "200px",
+        position: "absolute",
+        bottom: `${popoverPosition.top}px`,
+        left: `0px`
       }}
+      className="w-full h-full bg-white z-[1000] shadow-lg rounded-md "
     >
-      <section className="w-full h-full">
-        <div className="sticky top-0 flex items-center gap-1 border bg-white rounded-none">
-          <IonIcon
-            icon={arrowBackOutline}
-            className="text-xl text-neutral-400 hover:text-neutral-600 p-2"
-            onClick={() => setPopoverOpen(false)}
-          />
-          <IonInput
-            label="Default input"
-            showCancelButton="always"
-            placeholder="Search University..."
-            autofocus
-            className="h-8 w-full ion-no-margin text-xs font-normal ion-no-padding border-none"
-            value={searchTerm}
-            onIonInput={(e) => {
-              setSearchTerm(e.target.value)
-            }}
-          />
-        </div>
+      <div className="sticky top-0 flex items-center gap-1 border bg-white rounded-none">
+        <IonIcon
+          icon={arrowBackOutline}
+          className="text-xl text-neutral-400 hover:text-neutral-600 p-2"
+          onClick={() => setPopoverOpen(false)}
+        />
+        <IonInput
+          label="Default input"
+          showCancelButton="always"
+          placeholder="Search University..."
+          autofocus
+          className="h-8 w-full pointer-events-none ion-no-margin text-xs font-normal ion-no-padding border-none"
+          value={searchText}
+          disabled
+        />
+      </div>
 
-        <div className="h-full">
-          {isLoading && <SearchLoadingSkeleton />}
+      <div className="h-[calc(100%-30px)] overflow-y-auto">
+        {isLoading && <SearchLoadingSkeleton />}
+        {!isLoading &&
+          results?.length > 0 &&
+          results?.map((result, index) => (
+            <IonItem
+              key={index}
+              className="ion-no-padding ion-no-margin px-1 cursor-pointer"
+              onClick={() => {
+                handleUniversitySelect(result.name)
+                setPopoverOpen(false)
+              }}
+            >
+              {result.picture ? (
+                <ImageWithLoader
+                  src={result.picture}
+                  className={"w-10 h-10 rounded-sm"}
+                  alt={result.name}
+                />
+              ) : (
+                <img
+                  className="w-10 h-10 rounded-sm"
+                  src={NoImageFound}
+                  alt={result.name}
+                />
+              )}
+              <span className="px-1 text-xs capitalize leading-4 font-medium text-neutral-600">
+                {result?.name}
+              </span>
+            </IonItem>
+          ))}
 
-          {!isLoading &&
-            results?.length > 0 &&
-            results?.map((result, index) => (
-              <IonItem
-                key={index}
-                className="ion-no-padding ion-no-margin px-1 cursor-pointer"
-                onClick={() => {
-                  handleUniversitySelect(result.name)
-                  setPopoverOpen(false)
-                }}
-              >
-                {result.picture ? (
-                  <ImageWithLoader
-                    src={result.picture}
-                    className={"w-10 h-10 rounded-sm"}
-                    alt={result.name}
-                  />
-                ) : (
-                  <img
-                    className="w-10 h-10 rounded-sm"
-                    src={NoImageFound}
-                    alt={result.name}
-                  />
-                )}
-                <span className="px-1 text-xs capitalize leading-4 font-medium text-neutral-600">
-                  {result?.name}
-                </span>
-              </IonItem>
-            ))}
+        {!isLoading && results?.length === 0 && (
+          <div className="h-16 flex justify-center items-center">
+            <h3 className="text-neutral-600">No result found</h3>
+          </div>
+        )}
 
-          {!isLoading && results?.length === 0 && (
-            <div className="h-44 flex justify-center items-center">
-              <h3 className="text-neutral-600">No result found</h3>
-            </div>
-          )}
+        {!isLoading && !results && (
+          <div className="h-16 flex justify-center text-sm items-center">
+            <h3 className="text-neutral-600">Search for a university</h3>
+          </div>
+        )}
+      </div>
+    </section>
 
-          {!isLoading && !results && (
-            <div className="h-44 flex justify-center text-sm items-center">
-              <h3 className="text-neutral-600">Search for a university</h3>
-            </div>
-          )}
-        </div>
-      </section>
-    </IonPopover>
+    // </IonPopover>
   )
 }
 

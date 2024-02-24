@@ -5,7 +5,7 @@ import { Avatar } from "component/Avatar"
 
 const ThreadHeader = ({ username, profilePic, firstName, lastName, date }) => {
   return (
-    <Link to={`/@/${username}`} className="px-4 h-fit block max-md:px-2">
+    <Link to={`/@/${username}`} className=" h-fit block max-md:px-2">
       <div className="thread-header gap-2">
         <div className="thread_profile-pic ">
           <Avatar profilePic={profilePic} username={firstName + lastName} />
@@ -22,8 +22,12 @@ const ThreadHeader = ({ username, profilePic, firstName, lastName, date }) => {
           </h3>
           <div className="threads_username h-fit">
             <p style={{ fontSize: "12px" }}>@{username}</p>
-            <span className="block w-[4px] h-[4px] bg-neutral-300 rounded-full"></span>
-            <p className="threads_date">{moment(date).fromNow()}</p>
+            {date && (
+              <>
+                <span className="block w-[4px] h-[4px] bg-neutral-300 rounded-full"></span>
+                <p className="threads_date">{moment(date).fromNow()}</p>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useSelector } from "react-redux"
 import {
-  IonTextarea,
   IonIcon,
   useIonToast,
-  IonCard,
   IonModal,
   IonHeader,
   IonToolbar,
-  IonTitle,
   IonButton,
   IonButtons,
   IonText
@@ -21,6 +18,7 @@ import ReactQuill from "react-quill"
 import { USER_SERVICE_GQL } from "servers/types"
 import { GetCommentList, AddComment } from "graphql/user"
 import UniversityList from "component/thread/UniversityList"
+import { ThreadHeader } from "component/thread/organism"
 
 function ReplyInput({
   setReply,
@@ -36,7 +34,10 @@ function ReplyInput({
   const [commentText, setCommentText] = useState("")
   const [popoverOpen, setPopoverOpen] = useState(false)
   const [present, dismiss] = useIonToast()
+  const quillRef = useRef(null)
   const [modalOpen, setModalOpen] = useState(reply || false)
+  const [showPopover, setShowPopover] = useState(false)
+  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 })
 
   useEffect(() => {
     setModalOpen(reply)
@@ -131,6 +132,20 @@ function ReplyInput({
     addComment({ variables })
   }
 
+  const getCaretCoordinates = (element, position) => {
+    const rect = element.getBoundingClientRect()
+    const lineHeight = parseFloat(getComputedStyle(element).lineHeight)
+
+    const coordinates = {
+      top: rect.top + Math.floor(position / element.cols) * lineHeight,
+      left: rect.left + (position % element.cols) * 8 // Assuming each character width is 8px
+    }
+
+    console.log(coordinates)
+
+    return coordinates
+  }
+
   if (!reply) return null
   return (
     <IonModal isOpen={modalOpen}>
@@ -142,21 +157,40 @@ function ReplyInput({
         </IonToolbar>
       </IonHeader>
       <form
-        className="reply-input_form  h-40   block   pl-10 pr-8"
+        className="reply-input_form  h-40   block  pr-8"
         onSubmit={submitReply}
       >
-        <div className="thread_profile-pic  ">
-          <Avatar username={user.username} profilePic={user.profilePic} />
+        <div
+          className="my-3
+         "
+        >
+          <ThreadHeader
+            firstName={user.firstName}
+            username={user.username}
+            lastName={user.lastName}
+            profilePic={user.profilePic}
+          />
         </div>
-        <div className="h-auto min-h-300 mb-12 text-black relative">
+        <div className="h-60  mb-12 text-black relative">
           <ReactQuill
             theme="snow"
-            className=" text-black h-500 border-b-2 overflow-hidden w-full"
+            ref={quillRef}
+            className=" text-black h-full relative border-b-2 overflow-hidden w-full"
             onChange={(e) => {
               setCommentText(e)
             }}
             onKeyDown={(e) => {
               if (e.key === "@") {
+                console.log("commentText", commentText)
+                // const cursorIndex = e.target.selectionStart
+                const quill = quillRef.current?.getEditor()
+                const cursorIndex = quill?.getSelection()?.index
+
+                const cursorCoordinates = quill.getBounds(cursorIndex)
+
+                setPopoverPosition(cursorCoordinates)
+                setShowPopover(true)
+                setShowPopover(true)
                 setPopoverOpen(true)
               }
             }}
@@ -171,14 +205,14 @@ function ReplyInput({
         <UniversityList
           setPopoverOpen={setPopoverOpen}
           popoverOpen={popoverOpen}
+          popoverPosition={popoverPosition}
+          searchText={commentText.split("@").pop().split("<")[0]}
           handleUniversitySelect={(e) => {
-            if (commentText.endsWith("</p>")) {
-              setCommentText(
-                commentText.slice(0, -4) + `<strong>${e}</strong></p>`
-              )
-            } else {
-              setCommentText(commentText + `<p> <strong>${e}</strong></p>`)
-            }
+            const removeTextafter = commentText.split("@")[0]
+            setCommentText(
+              removeTextafter +
+                `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
+            )
           }}
         />
       </form>
