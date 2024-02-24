@@ -1,0 +1,32 @@
+import React from "react"
+import { Link } from "react-router-dom"
+import { IonSlide, IonSlides } from "@ionic/react"
+import clsx from "clsx"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+
+const ThreadImages = ({ images, _id }) => {
+  const slideOpts = {
+    initialSlide: 0,
+    speed: 400
+  }
+
+  if (images.length === 0) return null
+
+  return (
+    <Link to={`/thread/${_id}`} className={clsx("")}>
+      <IonSlides pager={true} options={slideOpts} className="">
+        {images.map((image, index) => (
+          <IonSlide className="" key={index}>
+            <ImageWithLoader
+              src={image}
+              alt={image}
+              className="w-full max-h-96 object-contain"
+            />
+          </IonSlide>
+        ))}
+      </IonSlides>
+    </Link>
+  )
+}
+
+export default ThreadImages

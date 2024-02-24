@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import ReplyInput from "../ReplyInput"
-import ShowMore from "./ShowPeopleComments"
-import { Avatar } from "../Avatar"
+import ShowMore from "./organism/ShowPeopleComments"
+import ThreadHeader from "./organism/ThreadHeader"
 import "./index.css"
 import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
@@ -139,32 +139,6 @@ function Comment({
     setUpdatedData((prev) => ({ ...prev, commentText: e }))
   }
 
-  const UserProfileLink = ({
-    username,
-    profilePic,
-    firstName,
-    lastName,
-    date
-  }) => (
-    <Link className="block h-fit" to={`/@/${username}`}>
-      <div className="thread-header !gap-2">
-        <div className="thread_profile-pic scale-75">
-          <Avatar profilePic={profilePic} username={username} />
-        </div>
-        <div className="thread_userdetails ">
-          <h3 style={{ color: "#222428" }} className="!text-sm">
-            {firstName + " " + lastName}
-          </h3>
-          <div className="threads_username text-[0.82rem]">
-            <p style={{ fontSize: "12px" }}>@{username}</p>
-            <span className="block w-[4px] h-[4px] bg-neutral-400 rounded-full"></span>
-            <p className="threads_date">{moment(date).fromNow()}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
-  )
-
   const CommentContent = ({
     editable,
     handleChange,
@@ -270,12 +244,12 @@ function Comment({
     <div className="relative mt-2 mb-4 max-md:mx-1  rounded-lg shadow-sm commentShadow mx-6">
       {/* Adjusted margins and width */}
       <div className="pt-3  pl-4 pb-2 rounded-xl relative border border-primary bg-neutral-200 commentShadow w-full">
-        <UserProfileLink
-          username={username}
-          profilePic={profilePic}
+        <ThreadHeader
+          date={date}
           firstName={firstName}
           lastName={lastName}
-          date={date}
+          profilePic={profilePic}
+          username={username}
         />
 
         <CommentContent

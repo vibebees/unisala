@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
 import linkifyHtml from "linkify-html"
-import "./index.css" // Import your custom CSS
 import clsx from "clsx"
 import { LikeATag } from "component/tags"
 import { Link } from "react-router-dom"

@@ -1,9 +1,14 @@
 import { useState } from "react"
 import { PostOptions } from "./molecules"
-import ThreadExpand from "../ThreadExpand"
+import ThreadExpand from "../organism/ThreadExpand"
 import ImageCollage from "../ImageCollages"
 
-export const ThreadContent = ({ thread, editable, setEditable, deletePost }) => {
+export const ThreadContent = ({
+  thread,
+  editable,
+  setEditable,
+  deletePost
+}) => {
   const [showOptions, setShowOptions] = useState(false)
 
   const { postText, images, _id } = thread
@@ -11,10 +16,15 @@ export const ThreadContent = ({ thread, editable, setEditable, deletePost }) => 
   return (
     <div className="thread_content">
       {editable ? (
-       "test"
+        "test"
       ) : (
         <>
-          <ThreadExpand htmlText={postText} maxLines={8} _id={_id} thread={thread} />
+          <ThreadExpand
+            htmlText={postText}
+            maxLines={8}
+            _id={_id}
+            thread={thread}
+          />
           {images.length > 0 && <ImageCollage images={images} />}
         </>
       )}

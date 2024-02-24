@@ -1,35 +1,23 @@
-import {
-  IonButton,
-  IonCard,
-  IonIcon,
-  IonSlide,
-  IonSlides,
-  useIonToast,
-  IonButtons
-} from "@ionic/react"
-import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
-import moment from "moment"
+import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
 import { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { Avatar } from "../Avatar"
+import { useLocation } from "react-router-dom"
 import ReplyInput from "../ReplyInput"
-import ShowPeopleComments from "./ShowPeopleComments"
-import ThreadExpand from "./ThreadExpand"
-import Rating from "./actions/Rating"
-import Reply from "./actions/Reply"
-import Save from "./actions/Save"
-import Upvote from "./actions/Upvote"
-import "./index.css"
-
+import {
+  ShowPeopleComments,
+  ThreadHeader,
+  ThreadImages,
+  ThreadExpand,
+  ThreadFooter,
+  ThreadRating,
+  ThreadOptions
+} from "./organism"
 import { useMutation } from "@apollo/client"
-import clsx from "clsx"
-import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
-import Share from "component/Share"
-import { DeletePost, EditPost, GetUserPost, getNewsFeed } from "graphql/user"
+import { EditPost } from "graphql/user"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { useSelector } from "react-redux"
 import { USER_SERVICE_GQL } from "servers/types"
+import "./index.css"
 
 const Thread = ({ thread }) => {
   const [present, dismiss] = useIonToast()
@@ -51,14 +39,10 @@ const Thread = ({ thread }) => {
     studentLifeAndServiceRating,
     careerAndAlumniResourceRating
   } = thread
-
-  const { firstName, lastName, username, picture } = thread.user || {}
   const [reply, setReply] = useState(false)
-  const [profilePic, setProfilePic] = useState(picture)
-  const [showOptions, setShowOptions] = useState(false)
+
   const [editable, setEditable] = useState(false)
   const [numberOfComments, setNumberOfComments] = useState(1)
-  const BASEURL = window.location.origin
   const pathname = useLocation().pathname
 
   // to determine if the post is in home feed or profile
@@ -76,96 +60,10 @@ const Thread = ({ thread }) => {
   // }, [profilePic])
   const { user: loggedinUser } = useSelector((state) => state.userProfile)
 
-  // delete thread
-  const [deletePost] = useMutation(DeletePost, {
-    context: { server: USER_SERVICE_GQL },
-    variables: {
-      postId: _id
-    },
-
-    update: (cache, data) => {
-      const cachedData = cache.readQuery(
-        isHome
-          ? {
-              query: getNewsFeed,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              }
-            }
-          : {
-              query: GetUserPost,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              }
-            }
-      )
-
-      cache.writeQuery(
-        isHome
-          ? {
-              query: getNewsFeed,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              },
-
-              data: {
-                fetchMyNewsFeed: {
-                  ...cachedData.fetchMyNewsFeed,
-                  ...cachedData.fetchMyNewsFeed.filter(
-                    (post) => post._id !== _id
-                  )
-                }
-              }
-            }
-          : {
-              query: GetUserPost,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              },
-              data: {
-                getDicussionUniWall: {
-                  ...cachedData.getDicussionUniWall,
-                  Posts: cachedData.getDicussionUniWall.filter(
-                    (post) => post._id !== _id
-                  )
-                }
-              }
-            }
-      )
-    },
-
-    onCompleted: (data) => {
-      console.log("delete called")
-      const { deletePost } = data
-      if (deletePost.success) {
-        // refetch posts
-        setShowOptions(false)
-        present({
-          duration: 3000,
-          message: "Post Deleted",
-          buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "primary",
-          mode: "ios"
-        })
-      } else {
-        present({
-          duration: 3000,
-          message: deletePost?.message
-        })
-      }
-    }
-  })
-
   const handleChange = (e) => {
     // for now handling change of text only
     setUpdatedData((prev) => ({ ...prev, postText: e }))
   }
-
-  // update thread
 
   const [editPost] = useMutation(EditPost, {
     context: { server: USER_SERVICE_GQL },
@@ -211,36 +109,6 @@ const Thread = ({ thread }) => {
     }
   })
 
-  // Refactored functions
-  const renderHeader = () => {
-    const { firstName, lastName, username, profilePic } = thread.user || {}
-
-    return (
-      <Link to={`/@/${username}`} className="px-4 h-fit block max-md:px-2">
-        <div className="thread-header gap-2">
-          <div className="thread_profile-pic ">
-            <Avatar profilePic={profilePic} username={firstName + lastName} />
-          </div>
-          <div className="thread_userdetails ">
-            <h3
-              style={{
-                color: "#222428",
-                fontSize: "14px",
-                textTransform: "capitalize"
-              }}
-            >
-              {firstName + " " + lastName}
-            </h3>
-            <div className="threads_username h-fit">
-              <p style={{ fontSize: "12px" }}>@{username}</p>
-              <span className="block w-[4px] h-[4px] bg-neutral-300 rounded-full"></span>
-              <p className="threads_date">{moment(thread?.date).fromNow()}</p>
-            </div>
-          </div>
-        </div>
-      </Link>
-    )
-  }
   const renderContent = () => {
     const { postText, _id, videoURL } = thread
 
@@ -285,151 +153,36 @@ const Thread = ({ thread }) => {
       </div>
     )
   }
-  const renderImages = () => {
-    const { images, _id } = thread
-    const slideOpts = {
-      initialSlide: 0,
-      speed: 400
-    }
-    if (images?.length > 0) {
-      return (
-        <Link to={`/thread/${_id}`} className={clsx("")}>
-          <IonSlides pager={true} options={slideOpts} className="">
-            {images.map((image, index) => (
-              <IonSlide className="" key={index}>
-                <ImageWithLoader
-                  src={image}
-                  alt={image}
-                  className="w-full max-h-96 object-contain"
-                />
-              </IonSlide>
-            ))}
-          </IonSlides>
-        </Link>
-      )
-    }
-
-    return null
-  }
-  const renderFooter = () => {
-    const { upVoteCount, postCommentsCount, upVoted, saved, _id } = thread
-
-    return (
-      <div className="thread_footer mx-9 ">
-        <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} />
-        <Reply repliesCount={postCommentsCount} setReply={setReply} />
-        <Save postId={_id} saved={saved} />
-        <IonButtons className="post-button w-full h-full max-md:scale-75">
-          <Share
-            allProps={{
-              link: `${BASEURL}/thread/${_id}`,
-              btnstyle: {
-                width: "55px",
-                height: "55px"
-              },
-              Iconstyle: {
-                color: "gray"
-              },
-              showAddList: false
-            }}
-          />
-        </IonButtons>
-      </div>
-    )
-  }
-  const renderOptions = () => {
-    const { _id, user } = thread
-    const { username } = user || {}
-
-    // Assuming 'loggedinUser' is the user currently logged into the app
-    if (loggedinUser?.username === username) {
-      return (
-        <div className="absolute top-4 right-8">
-          <div className="relative">
-            <button onClick={() => setShowOptions((prev) => !prev)}>
-              <IonIcon icon={ellipsisHorizontalOutline} className="text-2xl" />
-            </button>
-
-            {showOptions && (
-              <div className="absolute w-[160px] -right-6 top-5 z-[100] bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
-                <button
-                  onClick={() => {
-                    setEditable(true)
-                    setShowOptions(false)
-                  }}
-                  className="w-full py-1.5 rounded-lg flex justify-center items-center gap-1 text-gray font-bold hover:bg-[#f1eeee]"
-                >
-                  <IonIcon icon={create} className="text-xl" />
-                  Update
-                </button>
-                <button
-                  onClick={() => deletePost(_id)} // Assuming 'deletePost' is a function defined to handle the deletion
-                  className="w-full py-1.5 rounded-lg flex justify-center items-center gap-1.5 text-gray font-bold hover:bg-[#f1eeee]"
-                >
-                  <IonIcon icon={trash} className="text-xl" />
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )
-    }
-    return null
-  }
-
-  const rating = () => {
-    if (
-      admissionAndApplicationRating ||
-      financialAidAndScholarshipRating ||
-      academicProgramsAndDepartmentRatingm ||
-      studentLifeAndServiceRating ||
-      careerAndAlumniResourceRating
-    ) {
-      return (
-        <div className="flex flex-col mt-3">
-          <h2 className="font-medium text-blue-800 text-base">Rating</h2>{" "}
-          <section className="mt-1 w-[60%] flex flex-col gap-3">
-            <Rating
-              label="Admission & Application"
-              rating={admissionAndApplicationRating}
-            />
-
-            <Rating
-              label="Financial Aid & Scholarships"
-              rating={financialAidAndScholarshipRating}
-            />
-
-            <Rating
-              label="Academic Programs & Department"
-              rating={academicProgramsAndDepartmentRatingm}
-            />
-
-            <Rating
-              label="Student Life & Services"
-              rating={studentLifeAndServiceRating}
-            />
-
-            <Rating
-              label="Career & Alumni Resources"
-              rating={careerAndAlumniResourceRating}
-            />
-          </section>
-        </div>
-      )
-    }
-    return null
-  }
 
   return (
     <>
       <IonCard className="relative  pt-4 pb-3 max-md:my-1 max-md:mx-[5px]">
-        {renderHeader()}
+        <ThreadHeader
+          firstName={user?.firstName}
+          lastName={user?.lastName}
+          date={date}
+          profilePic={user?.profilePic}
+          username={user?.username}
+        />
         <div className="thread_content ">
           {renderContent()}
-          {rating()}
-          {renderImages()}
-          {renderFooter()}
+          <ThreadRating
+            academicProgramsAndDepartmentRatingm={
+              academicProgramsAndDepartmentRatingm
+            }
+            admissionAndApplicationRating={admissionAndApplicationRating}
+            careerAndAlumniResourceRating={careerAndAlumniResourceRating}
+            financialAidAndScholarshipRating={financialAidAndScholarshipRating}
+            studentLifeAndServiceRating={studentLifeAndServiceRating}
+          />
+          <ThreadImages _id={_id} images={images} />
+          <ThreadFooter
+            _id={_id}
+            upVoteCount={upVoteCount}
+            upVoted={upVoted}
+            postCommentsCount={postCommentsCount}
+            saved={saved}
+          />
           <ReplyInput
             setReply={setReply}
             postId={_id}
@@ -437,7 +190,12 @@ const Thread = ({ thread }) => {
             setNumberOfComments={setNumberOfComments}
             reply={reply}
           />
-          {renderOptions()}
+          <ThreadOptions
+            setEditable={setEditable}
+            loggedinUser={loggedinUser}
+            username={user?.username}
+            _id={_id}
+          />
           {postCommentsCount > 0 && (
             <ShowPeopleComments
               postId={_id}

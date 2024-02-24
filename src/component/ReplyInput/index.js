@@ -1,13 +1,25 @@
-import {useEffect, useState} from "react"
-import {useSelector} from "react-redux"
-import {IonTextarea, IonIcon, useIonToast, IonCard, IonModal, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons} from "@ionic/react"
-import {sendOutline} from "ionicons/icons"
-import {useMutation} from "@apollo/client"
-import {Avatar} from "../Avatar"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import {
+  IonTextarea,
+  IonIcon,
+  useIonToast,
+  IonCard,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton,
+  IonButtons,
+  IonText
+} from "@ionic/react"
+import { sendOutline } from "ionicons/icons"
+import { useMutation } from "@apollo/client"
+import { Avatar } from "../Avatar"
 import "./index.css"
 import ReactQuill from "react-quill"
-import {USER_SERVICE_GQL} from "servers/types"
-import {GetCommentList, AddComment} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { GetCommentList, AddComment } from "graphql/user"
 import UniversityList from "component/thread/UniversityList"
 
 function ReplyInput({
@@ -20,8 +32,7 @@ function ReplyInput({
   replyTo,
   reply = false
 }) {
-
-  const {user} = useSelector((state) => state.userProfile)
+  const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
   const [popoverOpen, setPopoverOpen] = useState(false)
   const [present, dismiss] = useIonToast()
@@ -31,8 +42,8 @@ function ReplyInput({
     setModalOpen(reply)
   }, [reply])
   const [addComment] = useMutation(AddComment, {
-    context: {server: USER_SERVICE_GQL},
-    update: (cache, {data: {addComment}}) => {
+    context: { server: USER_SERVICE_GQL },
+    update: (cache, { data: { addComment } }) => {
       cache.modify({
         id: cache.identify({
           __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
@@ -84,7 +95,7 @@ function ReplyInput({
       present({
         duration: 3000,
         message: "Comment added",
-        buttons: [{text: "X", handler: () => dismiss()}],
+        buttons: [{ text: "X", handler: () => dismiss() }],
         color: "primary",
         mode: "ios"
       })
@@ -98,7 +109,7 @@ function ReplyInput({
       present({
         duration: 3000,
         message: error.message,
-        buttons: [{text: "X", handler: () => dismiss()}],
+        buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
         mode: "ios"
       })
@@ -117,13 +128,12 @@ function ReplyInput({
       parentId && (variables.parentId = parentId)
     }
     setModalOpen(false)
-    addComment({variables})
+    addComment({ variables })
   }
 
   if (!reply) return null
   return (
     <IonModal isOpen={modalOpen}>
-
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">
@@ -141,7 +151,6 @@ function ReplyInput({
         <div className="h-auto min-h-300 mb-12 text-black relative">
           <ReactQuill
             theme="snow"
-
             className=" text-black h-500 border-b-2 overflow-hidden w-full"
             onChange={(e) => {
               setCommentText(e)
@@ -153,9 +162,10 @@ function ReplyInput({
             }}
             value={commentText}
           />
-          <button type="submit" className="reply-text_button">
+          <IonButton expand="full" shape="round" type="submit" className="mt-2">
+            <IonText className="mr-3">Reply</IonText>{" "}
             <IonIcon icon={sendOutline} />
-          </button>
+          </IonButton>
         </div>
 
         <UniversityList
@@ -173,7 +183,6 @@ function ReplyInput({
         />
       </form>
     </IonModal>
-
   )
 }
 
