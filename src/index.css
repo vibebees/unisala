@@ -12,6 +12,11 @@
   --header-primary: #131416;
   --header-secondary: #8f8e8e;
 
+  /* Border color */
+  --border-primary: #d4d4d4;
+
+  /* Background color */
+  --bg-comment: #e5e5e5
 }
 
 

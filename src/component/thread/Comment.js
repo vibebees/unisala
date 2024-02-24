@@ -146,7 +146,7 @@ function Comment({
     lastName,
     date
   }) => (
-    <Link to={`/@/${username}`}>
+    <Link className="block h-fit" to={`/@/${username}`}>
       <div className="thread-header !gap-2">
         <div className="thread_profile-pic scale-75">
           <Avatar profilePic={profilePic} username={username} />
@@ -156,8 +156,9 @@ function Comment({
             {firstName + " " + lastName}
           </h3>
           <div className="threads_username text-[0.82rem]">
-            <p>@{username}</p>
-            <p className="threads_date !text-xs">{moment(date).fromNow()}</p>
+            <p style={{ fontSize: "12px" }}>@{username}</p>
+            <span className="block w-[4px] h-[4px] bg-neutral-400 rounded-full"></span>
+            <p className="threads_date">{moment(date).fromNow()}</p>
           </div>
         </div>
       </div>
@@ -205,9 +206,11 @@ function Comment({
     } else {
       return (
         <div className="ql-editor">
-          <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
-            {replyTo && `@${replyTo}`}
-          </span>
+          {replyTo && (
+            <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
+              {`@${replyTo}`}
+            </span>
+          )}
           <p dangerouslySetInnerHTML={{ __html: commentText }} />
         </div>
       )
@@ -264,10 +267,9 @@ function Comment({
   )
 
   return (
-    <div className="relative mt-2 mb-4 ml-6 mr-2 bg-white border border-gray-300 rounded-lg shadow-sm commentShadow w-[95%] max-w-[95%]">
-      {" "}
+    <div className="relative mt-2 mb-4 max-md:mx-1  rounded-lg shadow-sm commentShadow mx-6">
       {/* Adjusted margins and width */}
-      <div className="pt-3 pl-4 pb-2 rounded-xl relative bg-neutral-200 commentShadow w-full">
+      <div className="pt-3  pl-4 pb-2 rounded-xl relative border border-primary bg-neutral-200 commentShadow w-full">
         <UserProfileLink
           username={username}
           profilePic={profilePic}

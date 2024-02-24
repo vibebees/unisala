@@ -4,7 +4,8 @@ import {
   IonIcon,
   IonSlide,
   IonSlides,
-  useIonToast
+  useIonToast,
+  IonButtons
 } from "@ionic/react"
 import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
 import moment from "moment"
@@ -215,13 +216,19 @@ const Thread = ({ thread }) => {
     const { firstName, lastName, username, profilePic } = thread.user || {}
 
     return (
-      <Link to={`/@/${username}`} className="px-4 max-md:px-2">
+      <Link to={`/@/${username}`} className="px-4 h-fit block max-md:px-2">
         <div className="thread-header gap-2">
           <div className="thread_profile-pic ">
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails ">
-            <h3 style={{ color: "#222428", fontSize: "14px" }}>
+            <h3
+              style={{
+                color: "#222428",
+                fontSize: "14px",
+                textTransform: "capitalize"
+              }}
+            >
               {firstName + " " + lastName}
             </h3>
             <div className="threads_username h-fit">
@@ -308,23 +315,25 @@ const Thread = ({ thread }) => {
     const { upVoteCount, postCommentsCount, upVoted, saved, _id } = thread
 
     return (
-      <div className="thread_footer">
+      <div className="thread_footer mx-9 ">
         <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} />
         <Reply repliesCount={postCommentsCount} setReply={setReply} />
         <Save postId={_id} saved={saved} />
-        <Share
-          allProps={{
-            link: `${BASEURL}/thread/${_id}`,
-            btnstyle: {
-              width: "35px",
-              height: "35px"
-            },
-            Iconstyle: {
-              color: "gray"
-            },
-            showAddList: false
-          }}
-        />
+        <IonButtons className="post-button w-full h-full max-md:scale-75">
+          <Share
+            allProps={{
+              link: `${BASEURL}/thread/${_id}`,
+              btnstyle: {
+                width: "55px",
+                height: "55px"
+              },
+              Iconstyle: {
+                color: "gray"
+              },
+              showAddList: false
+            }}
+          />
+        </IonButtons>
       </div>
     )
   }
@@ -414,20 +423,20 @@ const Thread = ({ thread }) => {
 
   return (
     <>
-      <IonCard className="relative  pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
+      <IonCard className="relative  pt-4 pb-3 max-md:my-1 max-md:mx-[5px]">
         {renderHeader()}
         <div className="thread_content ">
           {renderContent()}
           {rating()}
           {renderImages()}
           {renderFooter()}
-            <ReplyInput
-              setReply={setReply}
-              postId={_id}
-              isReply={false}
-              setNumberOfComments={setNumberOfComments}
-              reply={reply}
-            />
+          <ReplyInput
+            setReply={setReply}
+            postId={_id}
+            isReply={false}
+            setNumberOfComments={setNumberOfComments}
+            reply={reply}
+          />
           {renderOptions()}
           {postCommentsCount > 0 && (
             <ShowPeopleComments
@@ -445,4 +454,3 @@ const Thread = ({ thread }) => {
 }
 
 export default Thread
-

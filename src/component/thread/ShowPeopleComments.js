@@ -79,7 +79,7 @@ function ShowOtherComments({
       {!singlePost && postCommentsCount && postCommentsCount > 1 && (
         <Link
           to={`thread/${postId}`}
-          className="px-5 block  mt-3 text-blue-600 text-sm font-medium hover:text-neutral-800"
+          className=" block ml-7  mt-3 text-blue-600 text-sm font-medium hover:text-neutral-800"
         >
           View all comments
         </Link>
