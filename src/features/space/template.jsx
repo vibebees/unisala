@@ -1,31 +1,13 @@
-import { useEffect } from "react"
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonContent,
-  IonCard,
-  IonPage,
-  IonIcon,
-  IonInput
-} from "@ionic/react"
-import "./Space.css"
+import { IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react"
 import { arrowUpOutline } from "ionicons/icons"
-import clsx from "clsx"
-import { SpaceFeed } from "./SpaceFeed"
-import UnisalaIntro from "./UnisalaIntro"
-import SpaceHeader from "./SpaceHeader"
-import PreLoader from "../../component/preloader"
+import { useEffect } from "react"
 import { SpaceNotFound } from "../../component/PageNotFound"
 import { CreateAPostCard } from "../../component/post/template"
-import Tabs from "../../component/tabs"
-import { Members } from "./org/members"
-import { Event } from "./org/event"
-import { StudyAbroadRoadmapInput } from "features/roadmap/template"
-import { apply } from "ramda"
-import { SqueezeBox } from "component/squeezeBox"
-import { History } from "./org/history"
-import Invitation from "./Invitation/Index"
+import PreLoader from "../../component/preloader"
+import "./Space.css"
+import { SpaceFeed } from "./SpaceFeed"
+import SpaceHeader from "./SpaceHeader"
+import UnisalaIntro from "./UnisalaIntro"
 
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
@@ -127,3 +109,4 @@ export const Spaces = ({ allProps }) => {
     </IonContent>
   )
 }
+

@@ -1,8 +1,7 @@
-import React from "react"
-import { IonContent, IonCard } from "@ionic/react"
+import { IonCard } from "@ionic/react"
+import ApplyButton from "../atoms/ApplyButton"
 import ApplyHeader from "../atoms/ApplyHeader"
 import ApplySubHeader from "../atoms/ApplySubHeader"
-import ApplyButton from "../atoms/ApplyButton"
 
 const ApplyForm = () => {
   return (
@@ -15,3 +14,4 @@ const ApplyForm = () => {
 }
 
 export default ApplyForm
+

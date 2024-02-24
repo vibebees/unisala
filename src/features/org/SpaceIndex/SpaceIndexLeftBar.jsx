@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonPage, IonText } from "@ionic/react"
+import { IonCard, IonCol, IonText } from "@ionic/react"
 import { Avatar } from "../../../component/Avatar"
 import YourSpaces from "../../../component/YourSpaces/YourSpaces"
 
@@ -44,3 +44,4 @@ const SpaceIndexLeftBar = ({ user, data }) => {
 }
 
 export default SpaceIndexLeftBar
+

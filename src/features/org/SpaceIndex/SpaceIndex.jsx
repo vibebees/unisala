@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react"
-import { IonGrid, IonRow, IonCol, IonContent } from "@ionic/react"
-import "./Space.css"
-import { personCircle } from "ionicons/icons"
 import { useQuery } from "@apollo/client"
-import { useSelector } from "react-redux"
+import { IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
 import {
   GenerateSpaceNewsFeed,
   GetOwnSpace,
   GetTopActiveSpaces
 } from "graphql/user"
-import UnisalaIntro from "../UnisalaIntro"
-import { screenLessThan768 } from "../screens.lessThan768"
-import { screenGreaterThan1000 } from "../screens.greater.1000"
+import { personCircle } from "ionicons/icons"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 import { USER_SERVICE_GQL } from "servers/types"
-import SpaceIndexLeftBar from "./SpaceIndexLeftBar"
+import UnisalaIntro from "../UnisalaIntro"
+import { screenGreaterThan1000 } from "../screens.greater.1000"
+import { screenLessThan768 } from "../screens.lessThan768"
+import "./Space.css"
 import SpaceIndexFeed from "./SpaceIndexFeed"
+import SpaceIndexLeftBar from "./SpaceIndexLeftBar"
 
 const SpaceIndex = () => {
   const { user, loggedIn } = useSelector((store) => store?.userProfile)
@@ -112,3 +112,4 @@ const SpaceIndex = () => {
   )
 }
 export default SpaceIndex
+

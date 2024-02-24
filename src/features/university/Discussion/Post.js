@@ -1,6 +1,6 @@
-import { InfinteFeed } from "../../../component/feed/Feed"
+import { InfiniteFeed } from "../../../component/feed/Feed"
 
 export default function Review({ uniId }) {
-  return <InfinteFeed feedType="uniWall" unitId={uniId} />
+  return <InfiniteFeed feedType="uniWall" feedId={uniId} />
 }
 

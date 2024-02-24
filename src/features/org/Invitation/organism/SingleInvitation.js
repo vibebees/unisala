@@ -1,20 +1,20 @@
-import React from "react"
 import { IonCard, IonInput, useIonToast } from "@ionic/react"
-import SendButton from "../atoms/SendButton"
-import Header from "../atoms/Header"
-import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
 import { authInstance } from "api/axiosInstance"
+import React from "react"
 import { userServer } from "servers/endpoints"
 import { SpaceRole } from "utils/lib/SpaceRoles"
+import Header from "../atoms/Header"
+import SendButton from "../atoms/SendButton"
+import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
 
-const SingleInvitation = ({ spaceId, role }) => {
+const SingleInvitation = ({ orgId, role }) => {
   const [email, setEmail] = React.useState("")
   const [invitationType, setInvitationType] = React.useState("")
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = React.useState(false)
 
   const handleSendInvitation = () => {
-    if (!email || !spaceId) {
+    if (!email || !orgId) {
       return present({
         duration: 3000,
         message: "Please enter email address",
@@ -25,7 +25,7 @@ const SingleInvitation = ({ spaceId, role }) => {
     }
     setLoading(true)
     authInstance
-      .post(`${userServer}/org-invitation-request/${spaceId}`, {
+      .post(`${userServer}/org-invitation-request/${orgId}`, {
         emails: [email],
         description: "invitation for space",
         role: invitationType.toLowerCase()
@@ -92,3 +92,4 @@ const SingleInvitation = ({ spaceId, role }) => {
 }
 
 export default SingleInvitation
+

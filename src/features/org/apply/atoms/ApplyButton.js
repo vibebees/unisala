@@ -1,4 +1,3 @@
-import React from "react"
 import { IonButton } from "@ionic/react"
 
 const ApplyButton = () => {
@@ -25,3 +24,4 @@ const ApplyButton = () => {
 }
 
 export default ApplyButton
+

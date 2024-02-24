@@ -1,7 +1,7 @@
-import React from "react"
-import { IonRow, IonCol, IonButton, IonText } from "@ionic/react"
-import AddHistory from "component/timeline/atoms/AddHistory"
+import { IonButton, IonCol, IonRow, IonText } from "@ionic/react"
 import clsx from "clsx"
+import AddHistory from "component/timeline/atoms/AddHistory"
+import React from "react"
 const HistoryHeader = () => {
   const [showAddHistory, setshowAddHistory] = React.useState(false)
   return (
@@ -43,3 +43,4 @@ const HistoryHeader = () => {
 }
 
 export default HistoryHeader
+

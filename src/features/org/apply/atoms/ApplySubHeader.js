@@ -1,4 +1,3 @@
-import React from "react"
 import { IonText } from "@ionic/react"
 
 const ApplySubHeader = () => {
@@ -12,3 +11,4 @@ const ApplySubHeader = () => {
 }
 
 export default ApplySubHeader
+

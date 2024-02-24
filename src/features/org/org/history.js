@@ -1,7 +1,6 @@
 import { IonGrid } from "@ionic/react"
 import { SqueezeBox } from "component/squeezeBox"
 import { TimeLine } from "component/timeline"
-import { StudyAbroadRoadmapInput } from "features/roadmap/template"
 import HistoryHeader from "../history/atoms/HistoryHeader"
 
 export const History = () => {
@@ -72,3 +71,4 @@ export const History = () => {
     </IonGrid>
   )
 }
+

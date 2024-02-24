@@ -8,7 +8,7 @@ import { InterviewExperienceCard } from "../interviewExperienceCard"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
 import Thread from "../thread"
 
-export const InfinteFeed = ({ allProps, feedType, unitId }) => {
+export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const { user } = useSelector((state) => state.userProfile)
 
   const [page, setPage] = useState(0)
@@ -16,8 +16,8 @@ export const InfinteFeed = ({ allProps, feedType, unitId }) => {
     variables: {
       feedQuery: {
         feedType,
+        feedId,
         page: 0
-        // unitId: unitId
       }
     },
     context: { server: USER_SERVICE_GQL }
@@ -30,15 +30,12 @@ export const InfinteFeed = ({ allProps, feedType, unitId }) => {
   }
 
   const loadMore = (e) => {
-    console.log("loading more")
     setPage((prev) => prev + 1)
-    console.log(page)
     fetchMore({
       variables: {
         feedQuery: {
-          userId: user._id,
           page: page + 1,
-          unitId,
+          feedId,
           feedType
         }
       },
@@ -56,7 +53,6 @@ export const InfinteFeed = ({ allProps, feedType, unitId }) => {
         }
       }
     })
-    console.log
     setTimeout(() => {
       e.target.complete()
     }, 500)

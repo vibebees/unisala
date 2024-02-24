@@ -1,9 +1,9 @@
-import React, { useState } from "react"
 import { IonCard, useIonToast } from "@ionic/react"
-import SendButton from "./SendButton"
 import { authInstance } from "api/axiosInstance"
-import { userServer } from "servers/endpoints"
 import { OrgContext } from "features/org"
+import React, { useState } from "react"
+import { userServer } from "servers/endpoints"
+import SendButton from "./SendButton"
 
 const FileUploader = () => {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -89,3 +89,4 @@ const FileUploader = () => {
 }
 
 export default FileUploader
+

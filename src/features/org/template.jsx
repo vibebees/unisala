@@ -1,17 +1,15 @@
-import { useEffect, useRef } from "react"
-import { IonGrid, IonRow, IonCol, IonContent, IonIcon } from "@ionic/react"
-import "./Space.css"
+import { IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react"
 import { arrowUpOutline } from "ionicons/icons"
-import clsx from "clsx"
-import { SpaceFeed } from "./SpaceFeed"
-import SpaceHeader from "./SpaceHeader"
-import PreLoader from "../../component/preloader"
+import { useEffect } from "react"
 import { SpaceNotFound } from "../../component/PageNotFound"
+import { InfiniteFeed } from "../../component/feed/Feed"
 import { CreateAPostCard } from "../../component/post/template"
+import PreLoader from "../../component/preloader"
 import Tabs from "../../component/tabs"
-import { Members } from "./org/members"
 import Invitation from "./Invitation/Index"
-import Apply from "./apply"
+import "./Space.css"
+import SpaceHeader from "./SpaceHeader"
+import { Members } from "./org/members"
 export const Spaces = ({ allProps }) => {
   const {
     handleResize,
@@ -66,7 +64,7 @@ export const Spaces = ({ allProps }) => {
   const Feed = () => (
     <>
       <CreateAPostCard allProps={allProps} />
-      <SpaceFeed />
+      <InfiniteFeed feedType="specificOrg" feedId={orgId} />
     </>
   )
 
@@ -122,7 +120,7 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invite: (<Invitation orgId={orgId} />)
+    invite: <Invitation orgId={orgId} />
     // ,
     // apply: (<Apply />),
     //
@@ -161,3 +159,4 @@ export const Spaces = ({ allProps }) => {
     </IonContent>
   )
 }
+

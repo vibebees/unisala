@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { CreateAPostCard } from "../../component/post/template/index"
 
 import WelcomeSteps from "../../component/authentication/Welcome"
-import { InfinteFeed } from "../../component/feed/Feed"
+import { InfiniteFeed } from "../../component/feed/Feed"
 import "./Home.css"
 
 import { useQuery } from "@apollo/client"
@@ -78,7 +78,7 @@ export const Home = ({ allProps }) => {
         }}
       />
 
-      <InfinteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
+      <InfiniteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
     </>
   )
 

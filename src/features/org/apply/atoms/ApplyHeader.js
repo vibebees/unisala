@@ -1,4 +1,3 @@
-import React from "react"
 import { IonText } from "@ionic/react"
 
 const ApplyHeader = () => {
@@ -10,3 +9,4 @@ const ApplyHeader = () => {
 }
 
 export default ApplyHeader
+

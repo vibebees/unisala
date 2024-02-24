@@ -1,5 +1,4 @@
-import React from "react"
-import { IonText, IonCardSubtitle } from "@ionic/react"
+import { IonCardSubtitle, IonText } from "@ionic/react"
 
 const Header = ({ header, subHeader }) => {
   return (
@@ -13,3 +12,4 @@ const Header = ({ header, subHeader }) => {
 }
 
 export default Header
+

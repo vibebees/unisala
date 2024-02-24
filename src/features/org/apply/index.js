@@ -1,4 +1,3 @@
-import React from "react"
 import ApplyForm from "./organism/ApplyForm"
 
 const Apply = () => {
@@ -10,3 +9,4 @@ const Apply = () => {
 }
 
 export default Apply
+

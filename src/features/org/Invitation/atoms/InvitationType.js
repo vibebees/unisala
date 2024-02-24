@@ -1,5 +1,4 @@
-import React from "react"
-import { IonCheckbox, IonRow, IonText, IonRadio } from "@ionic/react"
+import { IonRadio, IonRow, IonText } from "@ionic/react"
 
 const InvitationType = ({ allProps }) => {
   const { handleCheckbox, label, value } = allProps
@@ -16,3 +15,4 @@ const InvitationType = ({ allProps }) => {
 }
 
 export default InvitationType
+

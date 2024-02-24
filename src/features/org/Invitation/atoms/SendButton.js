@@ -1,4 +1,3 @@
-import React from "react"
 import { IonButton, IonSpinner } from "@ionic/react"
 import clsx from "clsx"
 
@@ -18,3 +17,4 @@ const SendButton = ({ loading = false, label = "Submit", onclick }) => {
 }
 
 export default SendButton
+

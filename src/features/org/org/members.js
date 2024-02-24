@@ -1,5 +1,4 @@
-import React, { useContext } from "react"
-import UserCard from "../../../component/userCard"
+import { useQuery } from "@apollo/client"
 import {
   IonCard,
   IonCardHeader,
@@ -8,14 +7,15 @@ import {
   IonGrid,
   IonRow
 } from "@ionic/react"
-import "./members.css"
-import Tabs from "../../../component/tabs"
+import { useContext } from "react"
 import { useHistory } from "react-router"
-import { useQuery } from "@apollo/client"
+import { URLgetter, URLupdate } from "utils/lib/URLupdate"
+import { OrgContext } from ".."
+import Tabs from "../../../component/tabs"
+import UserCard from "../../../component/userCard"
 import { GetAllMembersBySpaceID } from "../../../graphql/user"
 import { USER_SERVICE_GQL } from "../../../servers/types"
-import { OrgContext } from ".."
-import { URLgetter, URLupdate } from "utils/lib/URLupdate"
+import "./members.css"
 
 export const Members = () => {
   const history = useHistory()
@@ -105,3 +105,4 @@ export const Members = () => {
     </IonGrid>
   )
 }
+
