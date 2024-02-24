@@ -1,12 +1,26 @@
-import React from "react"
+import React, { useState } from "react"
 import ReactQuill from "react-quill"
-import { IonButton } from "@ionic/react"
+import { IonButton, useIonToast } from "@ionic/react"
 import "react-quill/dist/quill.snow.css"
 import { useMutation } from "@apollo/client"
 import { EditPost } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
+import { useLocation } from "react-router-dom"
 
-const ThreadEditable = () => {
+const ThreadEditable = ({ _id, postText, setEditable }) => {
+  const pathname = useLocation().pathname
+  const [present, dismiss] = useIonToast()
+  const [updatedData, setUpdatedData] = useState({
+    postText,
+    // images,
+    postId: _id
+  })
+
+  const handleChange = (e) => {
+    setUpdatedData((prev) => ({ ...prev, postText: e }))
+  }
+
+  const isHome = pathname === "/" || pathname === "/home"
   const [editPost] = useMutation(EditPost, {
     context: { server: USER_SERVICE_GQL },
     variables: { ...updatedData },
@@ -28,9 +42,6 @@ const ThreadEditable = () => {
       const { editPost } = data
 
       if (editPost?.status?.success) {
-        // refetch posts
-        // refetch()
-        // change editable back to false
         setEditable(false)
         present({
           duration: 3000,

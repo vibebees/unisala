@@ -5,6 +5,7 @@ import ThreadExpand from "./ThreadExpand"
 import ThreadFooter from "./ThreadFooter"
 import ThreadRating from "./ThreadRating"
 import ThreadOptions from "./ThreadOptions"
+import ThreadEditable from "./ThreadEditable"
 
 export {
   ShowPeopleComments,
@@ -13,5 +14,6 @@ export {
   ThreadExpand,
   ThreadFooter,
   ThreadRating,
-  ThreadOptions
+  ThreadOptions,
+  ThreadEditable
 }
