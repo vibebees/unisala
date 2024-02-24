@@ -95,9 +95,7 @@ export const Home = ({ allProps }) => {
       {width < 768 && views.lessThan768}
       <IonGrid
         style={{
-          width: width >= 768 ? "95%" : "100%",
-          margin: "auto",
-          maxWidth: "1200px"
+          margin: "auto"
         }}
         className="max-md:px-0"
       >
@@ -108,12 +106,12 @@ export const Home = ({ allProps }) => {
           {width > 768 && views.greaterThan768}
           <IonCol
             style={{
-              maxWidth: "700px",
+              maxWidth: "900px",
               margin: "auto",
-              minHeight: "calc(90vh)",
+
               overflow: "hidden"
             }}
-            className="max-md:px-0"
+            className="max-md:px-0 "
           >
             {loggedIn ? renderLoggedInView() : UnisalaLandingPage({ allProps })}
           </IonCol>
