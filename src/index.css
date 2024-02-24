@@ -2,6 +2,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap");
 @import 'quill/dist/quill.snow.css';
 
+
+
+:root {
+  --primary-color: #3880ff;
+  --secondary-color: #3dc2ff;
+
+  /* Text color */
+  --header-primary: #131416;
+  --header-secondary: #8f8e8e;
+
+}
+
+
 * {
   /* font-family: "Bona Nova", serif !important; */
   font-family: "Manrope", sans-serif !important;

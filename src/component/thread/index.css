@@ -27,20 +27,23 @@
 }
 
 .threads_username {
-  display: inline-flex;
-  gap: 1rem;
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
   color: #8f8e8e;
+  position: relative;
 }
 
+
 .threads_date {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #999;
+  font-family: sans-serif;
 }
 
 .thread_content {
   margin-top: 0.2rem;
-  padding-left: 3.5rem;
+  /* padding-left: 3.5rem; */
 
 }
 
@@ -63,10 +66,12 @@
 }
 
 .thread_footer {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: space-between;
   margin-top: 0.8rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .comment_thread {

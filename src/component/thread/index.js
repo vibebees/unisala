@@ -222,9 +222,12 @@ const Thread = ({ thread }) => {
             <Avatar profilePic={profilePic} username={firstName + lastName} />
           </div>
           <div className="thread_userdetails ">
-            <h3 style={{ color: "#222428" }}>{firstName + " " + lastName}</h3>
-            <div className="threads_username">
-              <p>@{username}</p>
+            <h3 style={{ color: "#222428", fontSize: "14px" }}>
+              {firstName + " " + lastName}
+            </h3>
+            <div className="threads_username h-fit">
+              <p style={{ fontSize: "12px" }}>@{username}</p>
+              <span className="block w-[4px] h-[4px] bg-neutral-300 rounded-full"></span>
               <p className="threads_date">{moment(thread?.date).fromNow()}</p>
             </div>
           </div>
@@ -414,7 +417,7 @@ const Thread = ({ thread }) => {
     <>
       <IonCard className="relative  pt-4 pb-6 max-md:my-1 max-md:mx-[5px]">
         {renderHeader()}
-        <div className="thread_content pr-8 max-md:pr-3">
+        <div className="thread_content ">
           {renderContent()}
           {rating()}
           {renderImages()}

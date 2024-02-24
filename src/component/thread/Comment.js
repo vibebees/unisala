@@ -13,8 +13,8 @@ import { useMutation, useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import moment from "moment"
-import {USER_SERVICE_GQL} from "servers/types"
-import {DeleteComment, EditComment} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { DeleteComment, EditComment } from "graphql/user"
 
 function Comment({
   comment,
@@ -140,8 +140,8 @@ function Comment({
   }
 
   return (
-    <div className=" relative  mt-2 ">
-<div className ="pt-3 pl-4 pb-2 rounded-xl relative bg-neutral-200 bg-opacity-60 commentShadow w-full">
+    <div className="relative  mt-2 px-3">
+      <div className="pt-3 pl-4 pb-2 rounded-xl relative bg-neutral-200 bg-opacity-60 commentShadow w-full">
         <Link to={`/@/${username}`}>
           <div className="thread-header !gap-2">
             <div className="thread_profile-pic scale-75">
