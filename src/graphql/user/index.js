@@ -886,12 +886,14 @@ export const AddComment = gql`
             _id
           }
           elevatorInfo {
+            tags
             ownType
             name
             tags
             majors {
               title
             }
+            pictures
             address {
               streetAddressOrPOBox
               city

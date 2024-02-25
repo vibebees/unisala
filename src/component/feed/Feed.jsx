@@ -4,17 +4,23 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
+  IonCardTitle,
+  IonGrid,
+  IonIcon,
   IonInfiniteScroll,
-  IonInfiniteScrollContent
+  IonInfiniteScrollContent,
+  IonRow,
+  IonText
 } from "@ionic/react"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 import Thread from "component/thread"
 import { getNewsFeed } from "graphql/user"
+import { location } from "ionicons/icons"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
-
 export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const { user } = useSelector((state) => state.userProfile)
 
@@ -64,107 +70,6 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
       e.target.complete()
     }, 500)
   }
-  function transformAndStylePostData({ post }) {
-    const elevatorInfo = post?.elevatorInfo
-    const style = `
-      <div style="font-weight: bold; font-size: 18px;">${
-        elevatorInfo?.name
-      }</div>
-      <div style="font-size: 16px;">Type: ${elevatorInfo?.ownType}</div>
-      <div style="font-size: 16px;">Location: ${elevatorInfo?.address.city}, ${
-      elevatorInfo?.address.stateAbbreviation
-    }</div>
-      
-      <div style="font-size: 16px;">Tags: ${elevatorInfo?.tags?.join(
-        ", "
-      )}</div>
-    `
-    const postText = `
-      <div style="background-color: #f7f7f7; padding: 10px; border-radius: 5px;">
-        ${style}
-      </div>
-    `
-
-    return {
-      ...post,
-      postText,
-      images: elevatorInfo?.pictures
-    }
-  }
-
-  // {Posts?.map((item, index) => {
-  //     let newData
-  //     if (item.section === "university") {
-  //       newData = transformAndStylePostData(item)
-  //     }
-  //     if (item.type === "uni" && item.section === "elevatorInfo") {
-  //       return (
-  //         <>
-  //           <div
-  //             style={{
-  //               width: "100%",
-  //               marginTop: "10px"
-  //               // borderTop: "1px solid #e0e0e0"
-  //             }}
-  //             key={item._id + index}
-  //             className="max-md:border-none"
-  //           >
-  //             <Thread
-  //               thread={transformAndStylePostData(item)}
-  //               id={item._id}
-  //               allProps={allProps}
-  //               key={item._id + index}
-  //             />
-  //           </div>
-  //         </>
-  //       )
-  //     }
-
-  //     if (item.type === "interview") {
-  //       return (
-  //         <>
-  //           <div
-  //             style={{
-  //               width: "100%",
-  //               marginTop: "10px"
-  //               // borderTop: "1px solid #e0e0e0"
-  //             }}
-  //             key={item._id + index}
-  //             className="max-md:border-none"
-  //           >
-  //             <InterviewExperienceCard data={item} />
-  //           </div>
-  //           {/* <Link key={item._id} to={`/university/${item?.elevatorInfo?.name}`}>
-  //               <UniFeed key={index} data={item} />
-
-  //       </Link> */}
-  //         </>
-  //       )
-  //     }
-
-  //     if (item.type === "post") {
-  //       return (
-  //         <div
-  //           style={{
-  //             width: "100%",
-  //             marginTop: "10px"
-  //             // borderTop: "1px solid #e0e0e0"
-  //           }}
-  //           key={item._id + index}
-  //           className="max-md:border-none"
-  //         >
-  //           <Thread
-  //             thread={item}
-  //             id={item._id}
-  //             allProps={allProps}
-  //             key={item._id + index}
-  //           />
-  //         </div>
-  //       )
-  //     }
-
-  //     return ""
-  //   })}
 
   const Post = ({ post }) => {
     return (
@@ -186,23 +91,65 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
     )
   }
 
-  const University = (post) => (
-    <div
-      style={{
-        width: "100%",
-        marginTop: "10px"
-        // borderTop: "1px solid #e0e0e0"
-      }}
-      className="max-md:border-none"
-    >
-      <Thread
-        thread={transformAndStylePostData(post)}
-        id={post._id}
-        allProps={allProps}
-        key={post._id}
-      />
-    </div>
-  )
+  const University = ({ post }) => {
+    const { elevatorInfo } = post
+    console.log({ elevatorInfo })
+    const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
+    return (
+      <IonCard
+        style={{
+          width: "100%",
+          marginTop: "10px"
+          // borderTop: "1px solid #e0e0e0"
+        }}
+        className="max-md:border-none"
+      >
+        <IonCardHeader>
+          <IonCardTitle>Suggested University</IonCardTitle>
+        </IonCardHeader>
+        <IonGrid>
+          <IonCardContent>
+            <div className="grid grid-cols-4 gap-x-4">
+              {elevatorInfo.pictures.slice(0, 4).map((img) => (
+                <ImageWithLoader
+                  key={img}
+                  className={"object-cover h-48"}
+                  src={img}
+                />
+              ))}
+            </div>
+            <div className="mt-4">
+              <IonText color="dark">
+                <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
+              </IonText>
+              <IonRow
+                className="ion-no-padding gap-1 items-center h-fit mt-2"
+                lines="none"
+              >
+                <IonIcon
+                  className="ion-icon leading-none mt-0 text-primar text-lg"
+                  icon={location}
+                />
+                <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
+                  {formattedAddress}
+                </IonText>
+              </IonRow>
+              <IonRow className="mt-4">
+                <IonText className="text-[#55D283] font-semibold">
+                  Own Type: {elevatorInfo.ownType}
+                </IonText>
+              </IonRow>
+              <IonRow className="mt-4 font-semibold">
+                <IonText className="text-blue-600 font-semibold">
+                  Tags: {elevatorInfo.tags.join(", ")}
+                </IonText>
+              </IonRow>
+            </div>
+          </IonCardContent>
+        </IonGrid>
+      </IonCard>
+    )
+  }
 
   const SuggestedSpace = ({ data, title, type }) => {
     return (
@@ -251,7 +198,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   return (
     <div>
       {Posts?.map((post) => (
-        <>
+        <div className="mt-8" key={post._id}>
           {post.type === "post" && <Post post={post} key={post._id} />}
           {post.type === "university" && (
             <University post={post} key={post._id} />
@@ -274,7 +221,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
               type="org"
             />
           )}
-        </>
+        </div>
       ))}
       <IonInfiniteScroll threshold="100px" onIonInfinite={loadMore}>
         <IonInfiniteScrollContent loadingText="loading..." />

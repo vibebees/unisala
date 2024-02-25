@@ -1,11 +1,11 @@
 import { IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react"
+import { InfiniteFeed } from "component/feed/Feed"
 import { arrowUpOutline } from "ionicons/icons"
 import { useEffect } from "react"
 import { SpaceNotFound } from "../../component/PageNotFound"
 import { CreateAPostCard } from "../../component/post/template"
 import PreLoader from "../../component/preloader"
 import "./Space.css"
-import { SpaceFeed } from "./SpaceFeed"
 import SpaceHeader from "./SpaceHeader"
 import UnisalaIntro from "./UnisalaIntro"
 
@@ -92,7 +92,7 @@ export const Spaces = ({ allProps }) => {
               <CreateAPostCard allProps={allProps} />
             )}
             {loggedIn ? (
-              <SpaceFeed spaceId={spaceId} userInfo={user} />
+              <InfiniteFeed feedId={spaceId} feedType={"specificSpace"} />
             ) : (
               <UnisalaIntro />
             )}
