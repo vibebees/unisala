@@ -204,7 +204,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
     </div>
   )
 
-  const SuggestedSpace = ({ data, title }) => {
+  const SuggestedSpace = ({ data, title, type }) => {
     return (
       <IonCard>
         <IonCardHeader>
@@ -229,7 +229,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
                 <IonCardContent>
                   <img className="object-cover " src={space.image} alt="" />
                   <p className="pt-3 line-clamp-3">{space.description}</p>
-                  <Link to={`/space/${space.name}`}>
+                  <Link to={`/${type}/${space.name}`}>
                     <IonButton
                       type="button"
                       className="mt-4 hover:scale-[1.02] transition-all ease-linear"
@@ -262,6 +262,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
               post={post}
               title={"Suggested Space"}
               key={post._id}
+              type="space"
             />
           )}
           {post.type === "suggestedOrgs" && (
@@ -270,6 +271,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
               post={post}
               title={"Suggested Orgs"}
               key={post._id}
+              type="org"
             />
           )}
         </>
