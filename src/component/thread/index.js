@@ -418,13 +418,13 @@ const Thread = ({ thread }) => {
           {rating()}
           {renderImages()}
           {renderFooter()}
-            <ReplyInput
-              setReply={setReply}
-              postId={_id}
-              isReply={false}
-              setNumberOfComments={setNumberOfComments}
-              reply={reply}
-            />
+          <ReplyInput
+            setReply={setReply}
+            postId={_id}
+            isReply={false}
+            setNumberOfComments={setNumberOfComments}
+            reply={reply}
+          />
           {renderOptions()}
           {postCommentsCount > 0 && (
             <ShowPeopleComments

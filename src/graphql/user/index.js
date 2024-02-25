@@ -886,7 +886,12 @@ export const AddComment = gql`
             _id
           }
           elevatorInfo {
+            ownType
             name
+            tags
+            majors {
+              title
+            }
             address {
               streetAddressOrPOBox
               city
@@ -964,7 +969,26 @@ export const AddComment = gql`
               }
             }
           }
-
+          suggestedOrgs {
+            name
+            type
+            spaces {
+              _id
+              name
+              description
+              image
+            }
+          }
+          suggestedSpace {
+            type
+            name
+            spaces {
+              _id
+              name
+              description
+              image
+            }
+          }
           userEvaluation {
             unitId
             rankings {
@@ -1475,3 +1499,4 @@ export const AddComment = gql`
       }
     }
   `
+
