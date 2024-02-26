@@ -106,7 +106,7 @@ function CourseCard({ allProps }) {
     unitId
   } = allProps
   const link =
-    window.location.origin + `/university/${name.trim().split(" ").join("%20")}`
+    window.location.origin + `/university/${name.trim().split(" ")?.join("%20")}`
 
   return (
     <IonCard className="max-md:mx-0 relative">
@@ -167,7 +167,7 @@ function CourseCard({ allProps }) {
                       colorTitle="blue"
                       colorValue="blue"
                       title="tags: "
-                      value={tags.join("#")}
+                      value={tags?.join("#")}
                       skipBg={true}
                     />
                   )}

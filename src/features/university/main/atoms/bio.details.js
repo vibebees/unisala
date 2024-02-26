@@ -20,7 +20,7 @@ export const BioDetails = ({ allProps }) => {
   const { width, uniData, handleResize } = allProps
   const link =
     window.location.origin +
-    `/university/${uniData?.elevatorInfo?.name.trim().split(" ").join("%20")}`
+    `/university/${uniData?.elevatorInfo?.name.trim().split(" ")?.join("%20")}`
 
   const Iconstyle = {
     color: "grey",
