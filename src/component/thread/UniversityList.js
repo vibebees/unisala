@@ -22,7 +22,9 @@ const UniversityList = ({
     setIsLoading(true)
     try {
       const res = await authInstance.get(
-        `${universityServer}/keyword/schoolname/${searchText.trim()}/5`
+        `${universityServer}/keyword/schoolname/${
+          searchText.trim().length === 0 ? "New York" : searchText.trim()
+        }/5`
       )
       setResults(res.data)
     } catch (error) {
@@ -36,7 +38,7 @@ const UniversityList = ({
     getUniversitites()
   }
 
-  useDebouncedEffect(handleInput, [searchText], 2000)
+  useDebouncedEffect(handleInput, [searchText], 1000)
 
   if (!popoverOpen) {
     return null
@@ -55,12 +57,12 @@ const UniversityList = ({
     //   }}
     // >
     <section
-      style={{
-        height: "200px",
-        position: "absolute",
-        bottom: `${popoverPosition.top}px`,
-        left: `0px`
-      }}
+      // style={{
+      //   height: "200px",
+      //   position: "absolute",
+      //   bottom: `${popoverPosition.top}px`,
+      //   left: `0px`
+      // }}
       className="w-full h-full bg-white z-[1000] shadow-lg rounded-md "
     >
       <div className="sticky top-0 flex items-center gap-1 border bg-white rounded-none">

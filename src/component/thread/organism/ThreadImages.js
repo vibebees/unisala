@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { IonSlide, IonSlides } from "@ionic/react"
 import clsx from "clsx"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+import FullScreenImage from "component/Reusable/Image/FullScreenImage"
 
 const ThreadImages = ({ images, _id }) => {
   const slideOpts = {
@@ -13,16 +14,19 @@ const ThreadImages = ({ images, _id }) => {
   if (images.length === 0) return null
 
   return (
-    <Link to={`/thread/${_id}`} className={clsx("")}>
-      <IonSlides pager={true} options={slideOpts} className="">
+    <Link to={`/thread/${_id}`} className={clsx("static")}>
+      <IonSlides pager={true} options={slideOpts} className="static">
         {images.map((image, index) => (
-          <IonSlide className="" key={index}>
-            <ImageWithLoader
-              src={image}
-              alt={image}
-              className="w-full max-h-96 object-contain"
-            />
-          </IonSlide>
+          <>
+            <IonSlide className="" key={index}>
+              <ImageWithLoader
+                src={image}
+                alt={image}
+                fullScreenImage={true}
+                className="w-full max-h-96 object-contain"
+              />
+            </IonSlide>
+          </>
         ))}
       </IonSlides>
     </Link>

@@ -183,12 +183,12 @@ function ReplyInput({
               if (e.key === "@") {
                 console.log("commentText", commentText)
                 // const cursorIndex = e.target.selectionStart
-                const quill = quillRef.current?.getEditor()
-                const cursorIndex = quill?.getSelection()?.index
+                // const quill = quillRef.current?.getEditor()
+                // const cursorIndex = quill?.getSelection()?.index
 
-                const cursorCoordinates = quill.getBounds(cursorIndex)
+                // const cursorCoordinates = quill.getBounds(cursorIndex)
 
-                setPopoverPosition(cursorCoordinates)
+                // setPopoverPosition(cursorCoordinates)
                 setShowPopover(true)
                 setShowPopover(true)
                 setPopoverOpen(true)
@@ -196,25 +196,24 @@ function ReplyInput({
             }}
             value={commentText}
           />
+          <UniversityList
+            setPopoverOpen={setPopoverOpen}
+            popoverOpen={popoverOpen}
+            popoverPosition={popoverPosition}
+            searchText={commentText.split("@").pop().split("<")[0]}
+            handleUniversitySelect={(e) => {
+              const removeTextafter = commentText.split("@")[0]
+              setCommentText(
+                removeTextafter +
+                  `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
+              )
+            }}
+          />
           <IonButton expand="full" shape="round" type="submit" className="mt-2">
             <IonText className="mr-3">Reply</IonText>{" "}
             <IonIcon icon={sendOutline} />
           </IonButton>
         </div>
-
-        <UniversityList
-          setPopoverOpen={setPopoverOpen}
-          popoverOpen={popoverOpen}
-          popoverPosition={popoverPosition}
-          searchText={commentText.split("@").pop().split("<")[0]}
-          handleUniversitySelect={(e) => {
-            const removeTextafter = commentText.split("@")[0]
-            setCommentText(
-              removeTextafter +
-                `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
-            )
-          }}
-        />
       </form>
     </IonModal>
   )
