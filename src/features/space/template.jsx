@@ -16,16 +16,12 @@ export const Spaces = ({ allProps }) => {
     handleResize,
     loggedIn,
     spaceId,
-    parentId,
     tags,
     loading,
     spaceCategory,
     searchSpaceCategory,
-    user,
     width,
     views,
-    configSegment,
-    tab,
     setTab
   } = allProps
   useEffect(() => {
@@ -87,7 +83,7 @@ export const Spaces = ({ allProps }) => {
             }}
             className="ThreadContainer"
           >
-            <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
+            <SpaceHeader spaceDetails={searchSpaceCategory?.data} />
             {loggedIn && width >= 768 && (
               <CreateAPostCard allProps={allProps} />
             )}

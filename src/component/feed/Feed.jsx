@@ -93,7 +93,6 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
 
   const University = ({ post }) => {
     const { elevatorInfo } = post
-    console.log({ elevatorInfo })
     const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
     return (
       <IonCard
@@ -108,44 +107,46 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
           <IonCardTitle>Suggested University</IonCardTitle>
         </IonCardHeader>
         <IonGrid>
-          <IonCardContent>
-            <div className="grid grid-cols-4 gap-x-4">
-              {elevatorInfo.pictures.slice(0, 4).map((img) => (
-                <ImageWithLoader
-                  key={img}
-                  className={"object-cover h-48"}
-                  src={img}
-                />
-              ))}
-            </div>
-            <div className="mt-4">
-              <IonText color="dark">
-                <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
-              </IonText>
-              <IonRow
-                className="ion-no-padding gap-1 items-center h-fit mt-2"
-                lines="none"
-              >
-                <IonIcon
-                  className="ion-icon leading-none mt-0 text-primar text-lg"
-                  icon={location}
-                />
-                <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
-                  {formattedAddress}
+          <Link to={`/university/${elevatorInfo.name}`}>
+            <IonCardContent>
+              <div className="grid grid-cols-4 gap-x-4">
+                {elevatorInfo.pictures.slice(0, 4).map((img) => (
+                  <ImageWithLoader
+                    key={img}
+                    className={"object-cover h-48"}
+                    src={img}
+                  />
+                ))}
+              </div>
+              <div className="mt-4">
+                <IonText color="dark">
+                  <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
                 </IonText>
-              </IonRow>
-              <IonRow className="mt-4">
-                <IonText className="text-[#55D283] font-semibold">
-                  Own Type: {elevatorInfo.ownType}
-                </IonText>
-              </IonRow>
-              <IonRow className="mt-4 font-semibold">
-                <IonText className="text-blue-600 font-semibold">
-                  Tags: {elevatorInfo?.tags?.join(", ")}
-                </IonText>
-              </IonRow>
-            </div>
-          </IonCardContent>
+                <IonRow
+                  className="ion-no-padding gap-1 items-center h-fit mt-2"
+                  lines="none"
+                >
+                  <IonIcon
+                    className="ion-icon leading-none mt-0 text-primar text-lg"
+                    icon={location}
+                  />
+                  <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
+                    {formattedAddress}
+                  </IonText>
+                </IonRow>
+                <IonRow className="mt-4">
+                  <IonText className="text-[#55D283] font-semibold">
+                    Own Type: {elevatorInfo.ownType}
+                  </IonText>
+                </IonRow>
+                <IonRow className="mt-4 font-semibold">
+                  <IonText className="text-blue-600 font-semibold">
+                    Tags: {elevatorInfo.tags.join(", ")}
+                  </IonText>
+                </IonRow>
+              </div>
+            </IonCardContent>
+          </Link>
         </IonGrid>
       </IonCard>
     )

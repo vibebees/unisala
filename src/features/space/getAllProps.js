@@ -1,11 +1,11 @@
-import { useState } from "react"
-import useDocTitle from "hooks/useDocTitile"
-import { screenGreaterThan1000 } from "./screens.greater.1000"
-import { screensMoreThan768 } from "./screens.moreThan768"
-import { screenLessThan768 } from "./screens.lessThan768"
 import unisalaImg from "assets/unisala-intro.png"
-import { useHistory, useParams } from "react-router"
+import useDocTitle from "hooks/useDocTitile"
 import { personCircle } from "ionicons/icons"
+import { useState } from "react"
+import { useHistory, useParams } from "react-router"
+import { screenGreaterThan1000 } from "./screens.greater.1000"
+import { screenLessThan768 } from "./screens.lessThan768"
+import { screensMoreThan768 } from "./screens.moreThan768"
 
 export const getAllProps = ({
   user = {},
@@ -16,6 +16,8 @@ export const getAllProps = ({
   loading = true
 }) => {
   useDocTitle("Unisala")
+
+  console.log({ data })
 
   const { getTopActiveSpaces } = topSpaceData || {},
     [showTopScrollbtn, setShowTopScrollbtn] = useState(false),
@@ -53,7 +55,7 @@ export const getAllProps = ({
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
     params = useParams(),
     searchSpaceCategory = data?.searchSpaceCategory || {},
-    { spaceCategory } = searchSpaceCategory,
+    { data: spaceCategory } = searchSpaceCategory,
     spaceId = spaceCategory?._id,
     parentId = spaceCategory?.parentId // this could be null as the current space could be parent in itself
   let tags = []
@@ -124,3 +126,4 @@ export const getAllProps = ({
     setTab
   }
 }
+

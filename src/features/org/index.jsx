@@ -1,17 +1,11 @@
 import { useQuery } from "@apollo/client"
+import { GetOrgSpace, GetTopOrgs, getUserProfile } from "graphql/user"
 import { createContext } from "react"
-import { Spaces } from "./template"
+import { useSelector } from "react-redux"
+import { useParams } from "react-router"
 import { USER_SERVICE_GQL } from "servers/types"
 import { getAllProps } from "./getAllProps"
-import { useSelector } from "react-redux"
-import SpaceIndex from "./SpaceIndex/SpaceIndex"
-import {
-  getUserProfile,
-  GetSpaceCategory,
-  GetTopOrgs,
-  GetOrgSpace
-} from "graphql/user"
-import { useParams } from "react-router"
+import { Spaces } from "./template"
 
 export const OrgContext = createContext()
 
@@ -50,3 +44,4 @@ export default function SpacePage({ allPropssetPopup }) {
     </OrgContext.Provider>
   )
 }
+

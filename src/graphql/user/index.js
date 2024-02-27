@@ -1061,7 +1061,7 @@ export const AddComment = gql`
           message
           success
         }
-        spaceCategory {
+        data {
           _id
           name
           parentId
