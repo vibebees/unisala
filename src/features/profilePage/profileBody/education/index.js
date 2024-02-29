@@ -13,11 +13,7 @@ import {
 import { create, eyeOff, add, eye, trash } from "ionicons/icons"
 import EducationPop from "./EducationPop"
 import { useMutation } from "@apollo/client"
-import {
-  ToggleView,
-  DeleteEducation,
-  getUserGql
-} from "graphql/user"
+import { ToggleView, DeleteEducation, getUserGql } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
 
 function Education({ education, myProfile, username }) {
@@ -126,7 +122,7 @@ function Education({ education, myProfile, username }) {
   const [present, dismiss] = useIonToast()
 
   return (
-    <IonCard className="mb-2">
+    <IonCard className="mb-2 max-md:mx-1">
       <IonCardContent className="card-bb flex">
         <h1>Education</h1>
         {myProfile && (
