@@ -17,7 +17,6 @@ export const Spaces = ({ allProps }) => {
     handleResize,
     loggedIn,
     orgId,
-
     tags,
     loading,
     orgData,
@@ -35,6 +34,8 @@ export const Spaces = ({ allProps }) => {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  console.log("allProps", allProps)
 
   useEffect(() => {
     const queryString = window.location.search
@@ -122,7 +123,7 @@ export const Spaces = ({ allProps }) => {
         </IonCol>
       </div>
     ),
-    invite: (<Invitation orgId={orgId} />)
+    invite: <Invitation orgId={orgId} />
     // ,
     // apply: (<Apply />),
     //

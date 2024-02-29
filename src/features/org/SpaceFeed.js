@@ -5,7 +5,7 @@ import Thread from "component/thread"
 import { Link } from "react-router-dom"
 import Events from "./Events"
 import { useQuery } from "@apollo/client"
-import { GetAllPostBySpaceCategoryID } from "graphql/user"
+import { GetAllPostByOrgSpaceID } from "graphql/user"
 import emptyState from "assets/emptyState.png"
 import { OrgContext } from "."
 
@@ -13,17 +13,17 @@ import { USER_SERVICE_GQL } from "servers/types"
 import StateMessage from "component/stateMessage/index"
 
 export const SpaceFeed = () => {
-  const { spaceId } = useContext(OrgContext)
+  const { orgId } = useContext(OrgContext)
 
   const [postList, setPostList] = useState([])
   const [page, setPage] = useState(0)
 
-  const { data, refetch } = useQuery(GetAllPostBySpaceCategoryID, {
+  const { data, refetch } = useQuery(GetAllPostByOrgSpaceID, {
     context: { server: USER_SERVICE_GQL },
-    variables: { id: spaceId }
+    variables: { id: orgId, page: 1 }
   })
 
-  const { getAllPostBySpaceCategoryID: allPosts } = data || {}
+  const { getAllPostByOrgSpaceId: allPosts } = data || {}
 
   // const [getNextPage, { loading, data }] = useLazyQuery(
   //   GetUserPost(userInfo?._id, page)
@@ -37,7 +37,7 @@ export const SpaceFeed = () => {
   return (
     <>
       <div style={{ margin: "10px 0px 0px 0px" }} className="ThreadContainer">
-        {allPosts?.posts?.length === 0 && (
+        {allPosts?.data?.length === 0 && (
           <StateMessage title="Be the first one to post in this space">
             <img src={emptyState} alt="empty state" className="state-img" />
           </StateMessage>
@@ -45,9 +45,10 @@ export const SpaceFeed = () => {
 
         <Events />
 
-        {Array.isArray(allPosts?.posts) &&
-          allPosts?.posts.map((post, index) => {
+        {Array.isArray(allPosts?.data) &&
+          allPosts?.data.map((post, index) => {
             // const { post } = item
+            console.log("post", post)
             return post.type === "uni" ? (
               <Link key={index} to={`/university/${post?.name}`}>
                 <CourseCard allProps={post} />

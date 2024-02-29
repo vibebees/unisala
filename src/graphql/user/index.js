@@ -1082,6 +1082,38 @@ export const AddComment = gql`
       }
     }
   `,
+  GetAllPostByOrgSpaceID = gql`
+    query getAllPostByOrgSpaceId($id: ID!, $pageSize: Int, $page: Int) {
+      getAllPostByOrgSpaceId(id: $id, pageSize: $pageSize, page: $page) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          uniId
+          images
+          postText
+          postImage
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          videoURL
+          type
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
+        }
+      }
+    }
+  `,
   GetAllPostBySpaceCategoryID = gql`
     query getAllPostBySpaceCategoryID($id: ID, $limit: Int, $page: Int) {
       getAllPostBySpaceCategoryID(id: $id, limit: $limit, page: $page) {

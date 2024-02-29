@@ -6,11 +6,11 @@ import { OrgContext } from ".."
 import { SpaceRole } from "utils/lib/SpaceRoles"
 
 const Index = () => {
-  const { role, spaceId } = React.useContext(OrgContext)
+  const { role, orgId } = React.useContext(OrgContext)
   return (
     <IonCard className="h-fit shadow-none mt-1 ion-no-margin w-full">
       {role === SpaceRole.ADMIN && <SendInvitationAll />}
-      <SingleInvitation role={role} spaceId={spaceId} />
+      <SingleInvitation role={role} orgId={orgId} />
     </IonCard>
   )
 }
