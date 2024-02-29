@@ -31,7 +31,7 @@ const CircleRating = ({ rating }) => {
         />
       </svg>
 
-      <span className="absolute flex items-center justify-center w-full h-full text-[11px] font-bold">
+      <span className="absolute max-md:text-[9px] flex items-center justify-center w-full h-full text-[11px] font-bold">
         {rating.toFixed(1)}
       </span>
     </>

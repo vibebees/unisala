@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonIcon, useIonToast } from "@ionic/react"
+import { IonCard } from "@ionic/react"
 import { useState } from "react"
 import ReplyInput from "../ReplyInput"
 import {
@@ -75,16 +75,23 @@ const Thread = ({ thread }) => {
 
         <div className="thread_content ">
           {renderContent()}
-          <ThreadRating
-            academicProgramsAndDepartmentRatingm={
-              academicProgramsAndDepartmentRatingm
-            }
-            admissionAndApplicationRating={admissionAndApplicationRating}
-            careerAndAlumniResourceRating={careerAndAlumniResourceRating}
-            financialAidAndScholarshipRating={financialAidAndScholarshipRating}
-            studentLifeAndServiceRating={studentLifeAndServiceRating}
-          />
-          <ThreadImages _id={_id} images={images} />
+          <div className="px-4 py-2">
+            <ThreadRating
+              academicProgramsAndDepartmentRatingm={
+                academicProgramsAndDepartmentRatingm
+              }
+              admissionAndApplicationRating={admissionAndApplicationRating}
+              careerAndAlumniResourceRating={careerAndAlumniResourceRating}
+              financialAidAndScholarshipRating={
+                financialAidAndScholarshipRating
+              }
+              studentLifeAndServiceRating={studentLifeAndServiceRating}
+            />
+          </div>
+          <div>
+            <ThreadImages _id={_id} images={images} />
+          </div>
+
           <ThreadFooter
             _id={_id}
             upVoteCount={upVoteCount}

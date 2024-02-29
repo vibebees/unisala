@@ -14,7 +14,7 @@ const ThreadImages = ({ images, _id }) => {
   if (images.length === 0) return null
 
   return (
-    <Link to={`/thread/${_id}`} className={clsx("static")}>
+    <Link to={`/thread/${_id}`} className={clsx("relative")}>
       <IonSlides pager={true} options={slideOpts} className="static">
         {images.map((image, index) => (
           <>
