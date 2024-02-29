@@ -77,6 +77,8 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
         setCreateAPostPopUp(false)
       }}
       isOpen={createAPostPopUp}
+      mode="ios"
+      className="rounded-md"
     >
       <IonHeader className="">
         <IonToolbar>
