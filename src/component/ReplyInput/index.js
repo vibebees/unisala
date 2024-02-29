@@ -8,7 +8,8 @@ import {
   IonToolbar,
   IonButton,
   IonButtons,
-  IonText
+  IonText,
+  IonTitle
 } from "@ionic/react"
 import { sendOutline } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
@@ -31,10 +32,12 @@ function ReplyInput({
   const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
   const [present, dismiss] = useIonToast()
-  const [modalOpen, setModalOpen] = useState(reply || false)
+  const [modalOpen, setModalOpen] = useState(reply)
 
   useEffect(() => {
-    setModalOpen(reply)
+    if (reply) {
+      setModalOpen(true)
+    }
   }, [reply])
   const [addComment] = useMutation(AddComment, {
     context: { server: USER_SERVICE_GQL },
@@ -126,25 +129,12 @@ function ReplyInput({
     addComment({ variables })
   }
 
-  const getCaretCoordinates = (element, position) => {
-    const rect = element.getBoundingClientRect()
-    const lineHeight = parseFloat(getComputedStyle(element).lineHeight)
-
-    const coordinates = {
-      top: rect.top + Math.floor(position / element.cols) * lineHeight,
-      left: rect.left + (position % element.cols) * 8 // Assuming each character width is 8px
-    }
-
-    console.log(coordinates)
-
-    return coordinates
-  }
-
   if (!reply) return null
   return (
-    <IonModal isOpen={modalOpen}>
+    <IonModal isOpen={modalOpen} mode="ios">
       <IonHeader>
         <IonToolbar>
+          <IonTitle>Add comment</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={() => setModalOpen(false)}>Close</IonButton>
           </IonButtons>
