@@ -13,23 +13,30 @@ export const AddComment = gql`
         parentId: $parentId
         replyTo: $replyTo
       ) {
-        success
-        message
-        comment {
+        status {
+          success
+          message
+        }
+        data {
           _id
           userId
           postId
+          parentId
           commentText
           commentImage
-          firstName
-          lastName
-          username
           date
           repliesCount
           upVoteCount
           replyTo
           upVoted
-          picture
+
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
