@@ -47,10 +47,10 @@ const index = () => {
             <br />
             <br />
           </section>
-          <IonModal isOpen={isOpen} backdropDismiss={false}>
+          <IonModal mode="ios" isOpen={isOpen} backdropDismiss={false}>
             <IonHeader>
               <IonToolbar>
-                <IonTitle>Lists</IonTitle>
+                <IonTitle>Universtiy List</IonTitle>
                 <IonButtons slot="end">
                   <IonButton
                     className="ListModalCloseBtn"
