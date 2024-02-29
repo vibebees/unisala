@@ -12,13 +12,11 @@ import {
 } from "@ionic/react"
 import { sendOutline } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import { Avatar } from "../Avatar"
 import "./index.css"
-import ReactQuill from "react-quill"
 import { USER_SERVICE_GQL } from "servers/types"
 import { GetCommentList, AddComment } from "graphql/user"
-import UniversityList from "component/thread/UniversityList"
 import { ThreadHeader } from "component/thread/organism"
+import RichTextInput from "component/Input/RichTextInput"
 
 function ReplyInput({
   setReply,
@@ -32,12 +30,8 @@ function ReplyInput({
 }) {
   const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
-  const [popoverOpen, setPopoverOpen] = useState(false)
   const [present, dismiss] = useIonToast()
-  const quillRef = useRef(null)
   const [modalOpen, setModalOpen] = useState(reply || false)
-  const [showPopover, setShowPopover] = useState(false)
-  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 })
 
   useEffect(() => {
     setModalOpen(reply)
@@ -171,35 +165,12 @@ function ReplyInput({
             profilePic={user.profilePic}
           />
         </div>
-        <div className="h-60  mb-12 text-black relative">
-          <ReactQuill
-            theme="snow"
-            ref={quillRef}
-            className=" text-black h-full relative border-b-2 overflow-hidden w-full"
-            onChange={(e) => {
-              setCommentText(e)
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "@") {
-                console.log("commentText", commentText)
-                // const cursorIndex = e.target.selectionStart
-                // const quill = quillRef.current?.getEditor()
-                // const cursorIndex = quill?.getSelection()?.index
 
-                // const cursorCoordinates = quill.getBounds(cursorIndex)
-
-                // setPopoverPosition(cursorCoordinates)
-                setShowPopover(true)
-                setShowPopover(true)
-                setPopoverOpen(true)
-              }
-            }}
+        <div>
+          <RichTextInput
+            onChange={(e) => setCommentText(e)}
+            showUniversityListOnAt={true}
             value={commentText}
-          />
-          <UniversityList
-            setPopoverOpen={setPopoverOpen}
-            popoverOpen={popoverOpen}
-            popoverPosition={popoverPosition}
             searchText={commentText.split("@").pop().split("<")[0]}
             handleUniversitySelect={(e) => {
               const removeTextafter = commentText.split("@")[0]
@@ -209,6 +180,8 @@ function ReplyInput({
               )
             }}
           />
+        </div>
+        <div>
           <IonButton expand="full" shape="round" type="submit" className="mt-2">
             <IonText className="mr-3">Reply</IonText>{" "}
             <IonIcon icon={sendOutline} />

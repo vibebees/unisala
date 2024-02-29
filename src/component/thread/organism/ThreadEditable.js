@@ -64,11 +64,12 @@ const ThreadEditable = ({ _id, postText, setEditable }) => {
 
   return (
     <div>
-      <div className="h-auto min-h-200 mb-12 text-black relative">
+      <div className="h-[170px] max-[320px]:mb-20 max-md:mx-1 max-md:mb-14 mb-10 mx-3 mt-2 text-black relative">
         <ReactQuill
           theme="snow"
           onChange={handleChange}
           defaultValue={postText}
+          className="h-full "
         />
       </div>
 

@@ -11,10 +11,8 @@ const UniversityList = ({
   handleUniversitySelect,
   popoverOpen,
   setPopoverOpen,
-  popoverPosition,
   searchText
 }) => {
-  const popover = useRef(null)
   const [results, setResults] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 

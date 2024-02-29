@@ -2,13 +2,14 @@ import React, { useState } from "react"
 import { IonCard } from "@ionic/react"
 import ReplyInput from "../../ReplyInput"
 import ShowPeopleComments from "../organism/ShowPeopleComments"
-import ImageCollage from "../ImageCollages"
+import { useSelector } from "react-redux"
 import {
   ThreadHeader,
   ThreadFooter,
   ThreadExpand,
   ThreadEditable,
-  ThreadImages
+  ThreadImages,
+  ThreadOptions
 } from "../organism"
 
 const SingleThread = ({ thread, refetch }) => {
@@ -29,6 +30,7 @@ const SingleThread = ({ thread, refetch }) => {
     props = { ...user, ...thread },
     [reply, setReply] = useState(false),
     [editable, setEditable] = useState(false),
+    { user: loggedinUser } = useSelector((state) => state.userProfile),
     [singlePost, setSinglePost] = useState(true)
 
   if (!thread) return null
@@ -60,7 +62,7 @@ const SingleThread = ({ thread, refetch }) => {
   return (
     <div className="max-w-2xl w-full mx-auto mb-10">
       <IonCard className="relative mb-0 pt-4 pb-6">
-        <div className="ml-6">
+        <div className="ml-6 max-md:ml-2">
           <ThreadHeader
             date={date}
             firstName={user.firstName}
@@ -85,6 +87,13 @@ const SingleThread = ({ thread, refetch }) => {
           isReply={false}
           singlePost={singlePost}
           reply={reply}
+        />
+
+        <ThreadOptions
+          loggedinUser={loggedinUser}
+          _id={_id}
+          setEditable={setEditable}
+          username={user.username}
         />
 
         {/* other people's replies */}

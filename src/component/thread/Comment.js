@@ -243,7 +243,7 @@ function Comment({
   return (
     <div className="relative mt-2 mb-4 max-md:mx-1  rounded-lg shadow-sm commentShadow mx-6">
       {/* Adjusted margins and width */}
-      <div className="pt-3  pl-4 pb-2 rounded-xl relative border border-primary bg-neutral-200 commentShadow w-full">
+      <div className="pt-3  pl-4 max-md:pl-1 pb-2 rounded-xl relative border border-primary bg-neutral-200 commentShadow w-full">
         <ThreadHeader
           date={date}
           firstName={firstName}
