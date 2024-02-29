@@ -320,23 +320,29 @@ export const AddComment = gql`
   GetCommentList = gql`
     query commentList($postId: String!, $parentId: String) {
       commentList(postId: $postId, parentId: $parentId) {
-        success
-        message
-        comments {
+        status {
+          success
+          message
+        }
+        data {
           _id
           userId
           postId
+          parentId
           commentText
           commentImage
-          firstName
-          lastName
-          username
           date
           repliesCount
           upVoteCount
           replyTo
           upVoted
-          picture
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
