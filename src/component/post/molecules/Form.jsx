@@ -5,12 +5,9 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  IonRadioGroup,
-  IonSelect,
-  IonSelectOption,
   useIonToast
 } from "@ionic/react"
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
@@ -33,6 +30,7 @@ import ImageUpload from "./ImageUpload"
 import clsx from "clsx"
 import { htmlForEditor } from "../utils/htmlForEditor"
 import { useHistory, useLocation } from "react-router"
+import RichTextInput from "component/Input/RichTextInput"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -445,35 +443,29 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
-        <div className="h-auto min-h-200 mb-12 text-black relative">
-          <ReactQuill
+        <div>
+          <RichTextInput
             id={item.id}
-            theme="snow"
             onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
             value={postData?.postText}
-            onKeyDown={(e) => {
-              if (e.key === "@") {
-                setPopoverOpen(true)
-              }
-            }}
-          />
-          <UniversityList
-            setPopoverOpen={setPopoverOpen}
-            popoverOpen={popoverOpen}
+            showUniversityListOnAt={true}
+            searchText={postData?.postText?.split("@").pop().split("<")[0]}
             handleUniversitySelect={(e) => {
-              console.log("postdata", postData)
               if (postData?.postText.endsWith("</p>")) {
+                const removeTextafter = postData.postText.split("@")[0]
                 setPostData((prev) => ({
                   ...prev,
                   postText:
-                    postData.postText.slice(0, -4) + `<strong>${e}</strong></p>`
+                    removeTextafter +
+                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p></p>`
                 }))
               } else {
+                const removeTextafter = postData.postText.split("@")[0]
                 setPostData((prev) => ({
                   ...prev,
                   postText:
-                    postData.postText.slice(0, -4) +
-                    `<p><strong>${e}</strong></p>`
+                    removeTextafter +
+                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
                 }))
               }
             }}

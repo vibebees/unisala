@@ -106,8 +106,8 @@ const CreateListModal = ({ editList = false, list = {} }) => {
               <h2>Name</h2>
             </IonText>
             <IonInput
-              placeholder="List  Name"
-              className="mt-4 rounded-md"
+              placeholder="Enter list name"
+              className="mt-4 !px-2  text-sm rounded-md"
               type="text"
               name="title"
               value={input.title}
@@ -125,7 +125,7 @@ const CreateListModal = ({ editList = false, list = {} }) => {
             <IonTextarea
               value={input.description}
               placeholder="Description"
-              className="mt-4 rounded-md"
+              className="mt-4 px-2 text-sm rounded-md"
               onIonChange={(e) => {
                 setInput((pre) => {
                   return { ...pre, description: e.target.value }

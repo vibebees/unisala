@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { IonButton, IonSpinner } from "@ionic/react"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { Link } from "react-router-dom"
-import Comment from "./Comment"
+import Comment from "../Comment"
 import { USER_SERVICE_GQL } from "servers/types"
 import { GetCommentList } from "graphql/user"
 
@@ -79,7 +79,7 @@ function ShowOtherComments({
       {!singlePost && postCommentsCount && postCommentsCount > 1 && (
         <Link
           to={`thread/${postId}`}
-          className="px-16 block  mt-4 text-base hover:text-neutral-800"
+          className=" block ml-7  mt-3 text-blue-600 text-sm font-medium hover:text-neutral-800"
         >
           View all comments
         </Link>

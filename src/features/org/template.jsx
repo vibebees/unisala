@@ -15,7 +15,6 @@ export const Spaces = ({ allProps }) => {
     handleResize,
     loggedIn,
     orgId,
-
     tags,
     loading,
     orgData,
@@ -33,6 +32,8 @@ export const Spaces = ({ allProps }) => {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  console.log("allProps", allProps)
 
   useEffect(() => {
     const queryString = window.location.search

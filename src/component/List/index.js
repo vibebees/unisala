@@ -36,10 +36,10 @@ const index = () => {
 
   return (
     <ListContext.Provider value={{ lists, setLists }}>
-      <div className="min-h-[50vh]">
+      <div className="min-h-[50vh] max-md:mx-1 max-md:px-0">
         {/* <Listsearch /> */}
         <br />
-        <section className="px-3">
+        <section className="px-3 max-md:px-1 max-md:mx-0">
           <IonText className="text-lg mt-6 font-bold ">Your Lists</IonText>
           <section>
             <ListContainer />
@@ -47,10 +47,10 @@ const index = () => {
             <br />
             <br />
           </section>
-          <IonModal isOpen={isOpen} backdropDismiss={false}>
+          <IonModal mode="ios" isOpen={isOpen} backdropDismiss={false}>
             <IonHeader>
               <IonToolbar>
-                <IonTitle>Lists</IonTitle>
+                <IonTitle>Universtiy List</IonTitle>
                 <IonButtons slot="end">
                   <IonButton
                     className="ListModalCloseBtn"

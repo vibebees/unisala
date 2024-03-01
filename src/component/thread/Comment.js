@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import ReplyInput from "../ReplyInput"
-import ShowMore from "./ShowPeopleComments"
-import { Avatar } from "../Avatar"
+import ShowMore from "./organism/ShowPeopleComments"
+import ThreadHeader from "./organism/ThreadHeader"
 import "./index.css"
 import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
@@ -13,8 +13,8 @@ import { useMutation, useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import moment from "moment"
-import {USER_SERVICE_GQL} from "servers/types"
-import {DeleteComment, EditComment} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { DeleteComment, EditComment } from "graphql/user"
 
 function Comment({
   comment,
@@ -139,26 +139,14 @@ function Comment({
     setUpdatedData((prev) => ({ ...prev, commentText: e }))
   }
 
-  const UserProfileLink = ({ username, profilePic, firstName, lastName, date }) => (
-    <Link to={`/@/${username}`}>
-      <div className="thread-header !gap-2">
-        <div className="thread_profile-pic scale-75">
-          <Avatar profilePic={profilePic} username={username} />
-        </div>
-        <div className="thread_userdetails ">
-          <h3 style={{ color: "#222428" }} className="!text-sm">
-            {firstName + " " + lastName}
-          </h3>
-          <div className="threads_username text-[0.82rem]">
-            <p>@{username}</p>
-            <p className="threads_date !text-xs">{moment(date).fromNow()}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
-  )
-
-  const CommentContent = ({editable, handleChange, commentText, setEditable, editComment, replyTo}) => {
+  const CommentContent = ({
+    editable,
+    handleChange,
+    commentText,
+    setEditable,
+    editComment,
+    replyTo
+  }) => {
     if (editable) {
       return (
         <div className="px-5">
@@ -173,7 +161,7 @@ function Comment({
             fill="clear"
             className="ion-no-padding capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
             size="small"
-            style={{"--ripple-color": "transparent"}}
+            style={{ "--ripple-color": "transparent" }}
             onClick={() => setEditable(false)}
           >
             Cancel
@@ -183,7 +171,7 @@ function Comment({
             fill="clear"
             size="small"
             onClick={editComment}
-            style={{"--ripple-color": "transparent"}}
+            style={{ "--ripple-color": "transparent" }}
           >
             Save
           </IonButton>
@@ -192,18 +180,31 @@ function Comment({
     } else {
       return (
         <div className="ql-editor">
-          <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
-            {replyTo && `@${replyTo}`}
-          </span>
+          {replyTo && (
+            <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
+              {`@${replyTo}`}
+            </span>
+          )}
           <p dangerouslySetInnerHTML={{ __html: commentText }} />
         </div>
       )
     }
   }
 
-  const ThreadFooter = ({ upVoteCount, _id, upVoted, repliesCount, setReply }) => (
+  const ThreadFooter = ({
+    upVoteCount,
+    _id,
+    upVoted,
+    repliesCount,
+    setReply
+  }) => (
     <div className="thread_footer pl-0 -translate-x-4 scale-75">
-      <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} isReply={true} />
+      <Upvote
+        upVoteCount={upVoteCount}
+        postId={_id}
+        upVoted={upVoted}
+        isReply={true}
+      />
       <Reply repliesCount={repliesCount} setReply={setReply} />
     </div>
   )
@@ -239,17 +240,16 @@ function Comment({
     </div>
   )
 
-
-
   return (
-<div className="relative mt-2 mb-4 ml-6 mr-2 bg-white border border-gray-300 rounded-lg shadow-sm commentShadow w-[95%] max-w-[95%]"> {/* Adjusted margins and width */}
-    <div className="pt-3 pl-4 pb-2 rounded-xl relative bg-neutral-200 commentShadow w-full">
-        <UserProfileLink
-          username={username}
-          profilePic={profilePic}
+    <div className="relative mt-2 mb-4 max-md:mx-1  rounded-lg shadow-sm commentShadow mx-6">
+      {/* Adjusted margins and width */}
+      <div className="pt-3  pl-4 max-md:pl-1 pb-2 rounded-xl relative border border-primary bg-neutral-200 commentShadow w-full">
+        <ThreadHeader
+          date={date}
           firstName={firstName}
           lastName={lastName}
-          date={date}
+          profilePic={profilePic}
+          username={username}
         />
 
         <CommentContent
@@ -293,7 +293,6 @@ function Comment({
       </div>
     </div>
   )
-
 }
 
 export default Comment

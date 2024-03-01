@@ -20,8 +20,10 @@
 
 .post-button {
     cursor: pointer;
-    border-radius: 5px;
-    height: 30px;
+    border-radius: 100%;
+    height: 45px !important;
+    width: 45px !important;
+
     transition: 500ms;
 }
 

@@ -66,7 +66,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
   const dashArray = radius * Math.PI * 2
   const dataOffset = dashArray - (dashArray * percentage) / 100
   return (
-    <IonCard className="profile-header mb-2">
+    <IonCard className="profile-header mb-2 max-md:mx-1">
       <div className="user-banner">
         <div></div>
         <div className="user-banner__cover">

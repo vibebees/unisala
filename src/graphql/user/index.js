@@ -13,23 +13,30 @@ export const AddComment = gql`
         parentId: $parentId
         replyTo: $replyTo
       ) {
-        success
-        message
-        comment {
+        status {
+          success
+          message
+        }
+        data {
           _id
           userId
           postId
+          parentId
           commentText
           commentImage
-          firstName
-          lastName
-          username
           date
           repliesCount
           upVoteCount
           replyTo
           upVoted
-          picture
+
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
@@ -313,23 +320,29 @@ export const AddComment = gql`
   GetCommentList = gql`
     query commentList($postId: String!, $parentId: String) {
       commentList(postId: $postId, parentId: $parentId) {
-        success
-        message
-        comments {
+        status {
+          success
+          message
+        }
+        data {
           _id
           userId
           postId
+          parentId
           commentText
           commentImage
-          firstName
-          lastName
-          username
           date
           repliesCount
           upVoteCount
           replyTo
           upVoted
-          picture
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
@@ -1091,6 +1104,38 @@ export const AddComment = gql`
           description
           profileImage
           coverImage
+        }
+      }
+    }
+  `,
+  GetAllPostByOrgSpaceID = gql`
+    query getAllPostByOrgSpaceId($id: ID!, $pageSize: Int, $page: Int) {
+      getAllPostByOrgSpaceId(id: $id, pageSize: $pageSize, page: $page) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          uniId
+          images
+          postText
+          postImage
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          videoURL
+          type
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
+            username
+          }
         }
       }
     }

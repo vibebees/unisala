@@ -19,10 +19,10 @@ import "./members.css"
 
 export const Members = () => {
   const history = useHistory()
-  const { spaceId } = useContext(OrgContext)
+  const { orgId } = useContext(OrgContext)
   const { data, loading, error } = useQuery(GetAllMembersBySpaceID, {
     context: { server: USER_SERVICE_GQL },
-    variables: { spaceId: spaceId }
+    variables: { spaceId: orgId }
   })
 
   const myDefaultMembers = "Members"

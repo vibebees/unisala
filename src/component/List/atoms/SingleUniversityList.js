@@ -15,7 +15,15 @@ import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 import { useHistory } from "react-router-dom"
 
-const SingleUniversityList = ({ name, unitId, id, setUniversitiesList }) => {
+const SingleUniversityList = ({
+  name,
+  unitId,
+  id,
+  setUniversitiesList,
+  city,
+  streetAddressOrPOBox,
+  stateAbbreviation
+}) => {
   const [present] = useIonToast()
   const history = useHistory()
   const RemoveFromList = async (listId, unitId) => {
@@ -93,8 +101,14 @@ const SingleUniversityList = ({ name, unitId, id, setUniversitiesList }) => {
               icon={location}
             />
             <IonText>
-              <p style={{ alignSelf: "center", fontSize: "13px" }}>
-                New York, NY
+              <p
+                style={{
+                  alignSelf: "center",
+                  fontSize: "12px",
+                  marginTop: "2px"
+                }}
+              >
+                {city}, {stateAbbreviation}, {streetAddressOrPOBox}
               </p>
             </IonText>
           </IonCardContent>

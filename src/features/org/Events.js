@@ -6,10 +6,10 @@ import { OrgContext } from "."
 import { EventCard } from "component/events"
 
 const Events = () => {
-  const { spaceId, role } = useContext(OrgContext)
+  const { orgId, role } = useContext(OrgContext)
   const { data } = useQuery(GetAllEventsBySpaceID, {
     context: { server: USER_SERVICE_GQL },
-    variables: { spaceId: spaceId }
+    variables: { spaceId: orgId }
   })
 
   return (

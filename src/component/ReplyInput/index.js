@@ -1,14 +1,23 @@
-import {useEffect, useState} from "react"
-import {useSelector} from "react-redux"
-import {IonTextarea, IonIcon, useIonToast, IonCard, IonModal, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons} from "@ionic/react"
-import {sendOutline} from "ionicons/icons"
-import {useMutation} from "@apollo/client"
-import {Avatar} from "../Avatar"
+import { useEffect, useState, useRef } from "react"
+import { useSelector } from "react-redux"
+import {
+  IonIcon,
+  useIonToast,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonButton,
+  IonButtons,
+  IonText,
+  IonTitle
+} from "@ionic/react"
+import { sendOutline } from "ionicons/icons"
+import { useMutation } from "@apollo/client"
 import "./index.css"
-import ReactQuill from "react-quill"
-import {USER_SERVICE_GQL} from "servers/types"
-import {GetCommentList, AddComment} from "graphql/user"
-import UniversityList from "component/thread/UniversityList"
+import { USER_SERVICE_GQL } from "servers/types"
+import { GetCommentList, AddComment } from "graphql/user"
+import { ThreadHeader } from "component/thread/organism"
+import RichTextInput from "component/Input/RichTextInput"
 
 function ReplyInput({
   setReply,
@@ -20,19 +29,19 @@ function ReplyInput({
   replyTo,
   reply = false
 }) {
-
-  const {user} = useSelector((state) => state.userProfile)
+  const { user } = useSelector((state) => state.userProfile)
   const [commentText, setCommentText] = useState("")
-  const [popoverOpen, setPopoverOpen] = useState(false)
   const [present, dismiss] = useIonToast()
-  const [modalOpen, setModalOpen] = useState(reply || false)
+  const [modalOpen, setModalOpen] = useState(reply)
 
   useEffect(() => {
-    setModalOpen(reply)
+    if (reply) {
+      setModalOpen(true)
+    }
   }, [reply])
   const [addComment] = useMutation(AddComment, {
-    context: {server: USER_SERVICE_GQL},
-    update: (cache, {data: {addComment}}) => {
+    context: { server: USER_SERVICE_GQL },
+    update: (cache, { data: { addComment } }) => {
       cache.modify({
         id: cache.identify({
           __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
@@ -84,7 +93,7 @@ function ReplyInput({
       present({
         duration: 3000,
         message: "Comment added",
-        buttons: [{text: "X", handler: () => dismiss()}],
+        buttons: [{ text: "X", handler: () => dismiss() }],
         color: "primary",
         mode: "ios"
       })
@@ -98,7 +107,7 @@ function ReplyInput({
       present({
         duration: 3000,
         message: error.message,
-        buttons: [{text: "X", handler: () => dismiss()}],
+        buttons: [{ text: "X", handler: () => dismiss() }],
         color: "danger",
         mode: "ios"
       })
@@ -117,63 +126,59 @@ function ReplyInput({
       parentId && (variables.parentId = parentId)
     }
     setModalOpen(false)
-    addComment({variables})
+    addComment({ variables })
   }
 
   if (!reply) return null
   return (
-    <IonModal isOpen={modalOpen}>
-
+    <IonModal isOpen={modalOpen} mode="ios">
       <IonHeader>
         <IonToolbar>
+          <IonTitle>Add comment</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={() => setModalOpen(false)}>Close</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <form
-        className="reply-input_form  h-40   block   pl-10 pr-8"
+        className="reply-input_form  h-40   block  pr-8"
         onSubmit={submitReply}
       >
-        <div className="thread_profile-pic  ">
-          <Avatar username={user.username} profilePic={user.profilePic} />
-        </div>
-        <div className="h-auto min-h-300 mb-12 text-black relative">
-          <ReactQuill
-            theme="snow"
-
-            className=" text-black h-500 border-b-2 overflow-hidden w-full"
-            onChange={(e) => {
-              setCommentText(e)
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "@") {
-                setPopoverOpen(true)
-              }
-            }}
-            value={commentText}
+        <div
+          className="my-3
+         "
+        >
+          <ThreadHeader
+            firstName={user.firstName}
+            username={user.username}
+            lastName={user.lastName}
+            profilePic={user.profilePic}
           />
-          <button type="submit" className="reply-text_button">
-            <IonIcon icon={sendOutline} />
-          </button>
         </div>
 
-        <UniversityList
-          setPopoverOpen={setPopoverOpen}
-          popoverOpen={popoverOpen}
-          handleUniversitySelect={(e) => {
-            if (commentText.endsWith("</p>")) {
+        <div>
+          <RichTextInput
+            onChange={(e) => setCommentText(e)}
+            showUniversityListOnAt={true}
+            value={commentText}
+            searchText={commentText.split("@").pop().split("<")[0]}
+            handleUniversitySelect={(e) => {
+              const removeTextafter = commentText.split("@")[0]
               setCommentText(
-                commentText.slice(0, -4) + `<strong>${e}</strong></p>`
+                removeTextafter +
+                  `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
               )
-            } else {
-              setCommentText(commentText + `<p> <strong>${e}</strong></p>`)
-            }
-          }}
-        />
+            }}
+          />
+        </div>
+        <div>
+          <IonButton expand="full" shape="round" type="submit" className="mt-2">
+            <IonText className="mr-3">Reply</IonText>{" "}
+            <IonIcon icon={sendOutline} />
+          </IonButton>
+        </div>
       </form>
     </IonModal>
-
   )
 }
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
 import linkifyHtml from "linkify-html"
-import "./index.css" // Import your custom CSS
 import clsx from "clsx"
 import { LikeATag } from "component/tags"
 import { Link } from "react-router-dom"
@@ -87,7 +86,7 @@ const ThreadExpand = ({ htmlText, thread = {} }) => {
         <button
           onClick={toggleExpand}
           className={clsx(
-            "bg-neutral-200 border  border-neutral-200 px-2 my-2 py-1 rounded-md hover:bg-neutral-300 transition-colors duration-200 ease-linear text-sm text-black"
+            " text-blue-700 ml-3  px-2 my-2 py-1 rounded-md hover:underline transition-colors duration-200 ease-linear text-sm "
           )}
         >
           {isExpanded ? "See Less" : "See More"}

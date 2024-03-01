@@ -30,7 +30,7 @@ function index({ userId, firstName }) {
 
         if (!data?.getDicussionUniWall.length) {
           return (
-            <IonCard>
+            <IonCard className="max-md:mx-1">
               <StateMessage
                 title={
                   user._id === userId
