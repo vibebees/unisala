@@ -132,7 +132,7 @@ const ProfileHeader = ({ tab, setTab, data }) => {
           )}
           <IonCardSubtitle className="icon-text font-semibold">
             <IonIcon className="icon-16" icon={calendar} />
-            joined {doj.split("T")[0].split("-").join("/")}
+            joined {doj?.split("T")[0]?.split("-")?.join("/")}
           </IonCardSubtitle>
         </div>
         <IonText>

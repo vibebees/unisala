@@ -141,7 +141,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
                 </IonRow>
                 <IonRow className="mt-4 font-semibold">
                   <IonText className="text-blue-600 font-semibold">
-                    Tags: {elevatorInfo.tags.join(", ")}
+                    Tags: {elevatorInfo?.tags?.join(", ")}
                   </IonText>
                 </IonRow>
               </div>
