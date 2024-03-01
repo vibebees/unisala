@@ -75,9 +75,31 @@ const Thread = ({ thread }) => {
 
         <div className="thread_content ">
           {renderContent()}
-          {rating()}
-          {renderImages()}
-          {renderFooter()}
+          <div className="px-4 py-2">
+            <ThreadRating
+              academicProgramsAndDepartmentRatingm={
+                academicProgramsAndDepartmentRatingm
+              }
+              admissionAndApplicationRating={admissionAndApplicationRating}
+              careerAndAlumniResourceRating={careerAndAlumniResourceRating}
+              financialAidAndScholarshipRating={
+                financialAidAndScholarshipRating
+              }
+              studentLifeAndServiceRating={studentLifeAndServiceRating}
+            />
+          </div>
+          <div>
+            <ThreadImages _id={_id} images={images} />
+          </div>
+
+          <ThreadFooter
+            _id={_id}
+            upVoteCount={upVoteCount}
+            upVoted={upVoted}
+            postCommentsCount={postCommentsCount}
+            saved={saved}
+            setReply={setReply}
+          />
           <ReplyInput
             setReply={setReply}
             postId={_id}
@@ -85,7 +107,12 @@ const Thread = ({ thread }) => {
             setNumberOfComments={setNumberOfComments}
             reply={reply}
           />
-          {renderOptions()}
+          <ThreadOptions
+            setEditable={setEditable}
+            loggedinUser={loggedinUser}
+            username={user?.username}
+            _id={_id}
+          />
           {postCommentsCount > 0 && (
             <ShowPeopleComments
               postId={_id}

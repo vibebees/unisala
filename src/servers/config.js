@@ -1,4 +1,4 @@
 module.exports = {
-  NODE_ENV: "TEST"
+  NODE_ENV: "DEVELOPMENT"
 }
 
