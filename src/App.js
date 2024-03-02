@@ -24,13 +24,11 @@ import { persistor, store } from "./store/store"
 
 /* Theme variables */
 
-const R = require("ramda")
 const axios = require("axios")
 const lib = {}
 const TrackingId = "G-KDJCCKHWYC"
 ReactGA.initialize(TrackingId)
 
-lib.R = R
 lib.axios = axios
 setupIonicReact()
 
