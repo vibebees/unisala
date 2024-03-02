@@ -4,7 +4,7 @@ import { persistStore } from "redux-persist"
 import promise from "redux-promise-middleware"
 import rootReducer from "./reducer"
 
-import thunk from "redux-thunk"
+import {thunk} from "redux-thunk"
 
 const store = createStore(
     rootReducer,

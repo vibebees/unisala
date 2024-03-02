@@ -1,4 +1,6 @@
-import {IonContent, IonSlides, IonSlide, IonCard, IonCardContent, IonCol, IonRow, IonGrid} from "@ionic/react"
+import {IonContent, IonCard, IonCardContent, IonCol, IonRow, IonGrid} from "@ionic/react"
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import "./index.css"
 const slideOpts = {
     initialSlide: 0,
@@ -7,13 +9,13 @@ const slideOpts = {
 
   const ImageSlider = ({ images }) => {
     return (
-        <IonSlides pager={true} options={slideOpts}>
+        <Swiper pager={true} options={slideOpts}>
                 {images.map((image, index) => (
-                    <IonSlide key={index}>
+                    <SwiperSlide key={index}>
                         <img src={image.src} alt={image.alt} />
-                    </IonSlide>
+                    </SwiperSlide>
           ))}
-        </IonSlides>
+        </Swiper>
     )
   }
 

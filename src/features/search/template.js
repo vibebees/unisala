@@ -15,7 +15,6 @@ import SearchTab from "./atoms/SearchTab"
 import { URLgetter } from "utils/lib/URLupdate"
 import {funnelOutline, school} from "ionicons/icons"
 import { ExploreFilterPopupContext} from "./uni/ExploreUniFilterPopupContext"
-import {color} from "framer-motion"
 
 export const SearchTemplate = () => {
   const [tab, setTab] = useState("all")

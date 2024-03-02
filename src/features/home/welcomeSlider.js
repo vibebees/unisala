@@ -1,4 +1,5 @@
-import {IonContent, IonSlides, IonSlide, IonCard, IonCardContent, IonCol, IonRow, IonGrid} from "@ionic/react"
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import nir from "assets/welcome/nir.png"
 import prash from "assets/welcome/prash.png"
 import soy from "assets/welcome/soy.png"
@@ -43,13 +44,13 @@ const images = [
 
   export const ImageSlider = () => {
     return (
-        <IonSlides pager={true} options={slideOpts}>
+        <Swiper pager={true} options={slideOpts}>
                 {images.map((image, index) => (
-                    <IonSlide key={index}>
+                    <SwiperSlide key={index}>
                       <img src={image.src} alt={image.alt} style={{ width: "80%"}}/>
-                    </IonSlide>
+                    </SwiperSlide>
           ))}
-        </IonSlides>
+        </Swiper>
     )
   }
 

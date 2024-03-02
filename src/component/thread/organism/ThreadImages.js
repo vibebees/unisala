@@ -1,9 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { IonSlide, IonSlides } from "@ionic/react"
 import clsx from "clsx"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 import FullScreenImage from "component/Reusable/Image/FullScreenImage"
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 const ThreadImages = ({ images, _id }) => {
   const slideOpts = {
@@ -15,20 +16,20 @@ const ThreadImages = ({ images, _id }) => {
 
   return (
     <Link to={`/thread/${_id}`} className={clsx("relative")}>
-      <IonSlides pager={true} options={slideOpts} className="static">
+      <Swiper pager={true} options={slideOpts} className="static">
         {images.map((image, index) => (
           <>
-            <IonSlide className="" key={index}>
+            <SwiperSlide className="" key={index}>
               <ImageWithLoader
                 src={image}
                 alt={image}
                 fullScreenImage={true}
                 className="w-full max-h-96 object-contain"
               />
-            </IonSlide>
+            </SwiperSlide>
           </>
         ))}
-      </IonSlides>
+      </Swiper>
     </Link>
   )
 }

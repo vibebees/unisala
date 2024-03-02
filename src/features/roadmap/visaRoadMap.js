@@ -39,49 +39,7 @@ export const StudyAbroadRoadmap = () => {
                 <IonRow>
                     <IonCol>
                         <div className="roadmap-container">
-                            {roadmapSteps.map((step, index) => (
-                                <motion.div key={index} className="roadmap-motion-div">
-                                    <div className={`roadmap-step`} onClick={() => toggleStep(index)}>
 
-                                        <div className="step-icon-container">
-                                            <img src={step.image} alt={`Step ${index + 1}`} className="step-image" style={{ width: "100px" }} />
-                                        </div>
-
-                                        <div className="step-content">
-                                            <span className="step-number">{index + 1}</span>
-                                            <IonIcon icon={step.icon} className="step-icon" />
-                                            <div className="step-title">{step.title}</div>
-                                            <IonIcon icon={expandedStep === index ? chevronUpOutline : chevronDownOutline} className="toggle-icon" />
-                                        </div>
-                                    </div>
-
-                                    <AnimatePresence>
-                                        {expandedStep === index && (
-                                            <motion.div
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: "auto" }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                transition={{ duration: 0.3 }}
-                                                className="expandable-content"
-                                            >
-
-                                                <IonCard className="step-card">
-                                                    <IonCardContent>
-                                                        <ul className="content-list">
-                                                            {step.content.map((o, i) => (
-                                                                <li key={i} className="content-list-item">
-                                                                    {o}
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </IonCardContent>
-                                                </IonCard>
-
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </motion.div>
-                            ))}
                         </div>
                     </IonCol>
                 </IonRow>
