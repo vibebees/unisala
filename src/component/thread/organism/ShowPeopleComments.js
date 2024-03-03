@@ -44,7 +44,7 @@ function ShowOtherComments({
   if (singlePost) {
     return (
       <>
-        {data?.commentList?.comments?.map((reply, i) => {
+        {data?.commentList?.data?.map((reply, i) => {
           return (
             <Comment
               comment={reply}
@@ -62,20 +62,18 @@ function ShowOtherComments({
 
   return (
     <>
-      {data?.commentList?.comments
-        ?.slice(0, numberOfComments)
-        .map((reply, i) => {
-          return (
-            <Comment
-              comment={reply}
-              key={i}
-              singlePost={singlePost}
-              postId={postId}
-              parentId={parentId}
-              setRefetchComments={setRefetchComments}
-            />
-          )
-        })}
+      {data?.commentList?.data?.slice(0, numberOfComments).map((reply, i) => {
+        return (
+          <Comment
+            comment={reply}
+            key={i}
+            singlePost={singlePost}
+            postId={postId}
+            parentId={parentId}
+            setRefetchComments={setRefetchComments}
+          />
+        )
+      })}
       {!singlePost && postCommentsCount && postCommentsCount > 1 && (
         <Link
           to={`thread/${postId}`}

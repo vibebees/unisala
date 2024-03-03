@@ -171,7 +171,7 @@ const ProfilePage = () => {
               <ProfileBody data={profileBodyData} />
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
-            {tab === 2 && <List />}
+            {tab === 2 && <List userId={_id} />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
             {tab === 5 && <Guestbook userId={_id} firstName={firstName} />}
           </IonCol>

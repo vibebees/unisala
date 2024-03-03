@@ -44,7 +44,11 @@ function ReplyInput({
     update: (cache, { data: { addComment } }) => {
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
+          __typename: isReply
+            ? "Comment"
+            : singlePost
+            ? "PostNewsFeed"
+            : "Post",
           id: postId
         }),
         fields: {
@@ -81,10 +85,7 @@ function ReplyInput({
               __typename: "commentList",
               success: true,
               message: "comments found",
-              comments: [
-                addComment.comment,
-                ...(post.commentList.comments || [])
-              ]
+              comments: [addComment.comment, ...(post.commentList.data || [])]
             }
           }
         })

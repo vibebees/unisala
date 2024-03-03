@@ -25,9 +25,7 @@ function Comment({
 }) {
   const {
     _id,
-    firstName,
-    lastName,
-    username,
+    user,
     date,
     commentText,
     repliesCount,
@@ -48,6 +46,7 @@ function Comment({
   })
   // username of current visited profile
   const profileUsername = useParams().username
+  const { firstName, lastName, username } = user
 
   const { user: loggedinUser } = useSelector((state) => state.userProfile)
 
