@@ -1,3 +1,4 @@
+import { useApolloClient, useMutation } from "@apollo/client"
 import {
   IonButton,
   IonCheckbox,
@@ -7,12 +8,9 @@ import {
   IonLabel,
   useIonToast
 } from "@ionic/react"
-import { useState } from "react"
-import "react-quill/dist/quill.snow.css"
-import ReactQuill from "react-quill"
-import AsyncSelectAtom from "../atoms/AsyncSelect"
-import SelectAtom from "../atoms/Select"
-import UniversityList from "component/thread/UniversityList"
+import axios from "axios"
+import clsx from "clsx"
+import RichTextInput from "component/Input/RichTextInput"
 import {
   AddPost,
   AddSpaceEvent,
@@ -20,17 +18,16 @@ import {
   GetSpaceEvents,
   getNewsFeed
 } from "graphql/user"
-import { USER_SERVICE_GQL } from "servers/types"
+import { useState } from "react"
+import "react-quill/dist/quill.snow.css"
 import { useSelector } from "react-redux"
-import { useApolloClient, useMutation } from "@apollo/client"
-import TextChecker from "utils/components/TextChecker"
-import axios from "axios"
-import { userServer } from "servers/endpoints"
-import ImageUpload from "./ImageUpload"
-import clsx from "clsx"
-import { htmlForEditor } from "../utils/htmlForEditor"
 import { useHistory, useLocation } from "react-router"
-import RichTextInput from "component/Input/RichTextInput"
+import { userServer } from "servers/endpoints"
+import { USER_SERVICE_GQL } from "servers/types"
+import AsyncSelectAtom from "../atoms/AsyncSelect"
+import SelectAtom from "../atoms/Select"
+import { htmlForEditor } from "../utils/htmlForEditor"
+import ImageUpload from "./ImageUpload"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
@@ -162,19 +159,29 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         __typename: "PostNewsFeed"
       }
       if (!tags) {
-        const data = cache.readQuery({
+        console.log("no tags")
+        const cachedData = cache.readQuery({
           query: getNewsFeed,
-          variables: { userId: user._id, page: 0 },
-          context: { server: USER_SERVICE_GQL }
+          variables: {
+            feedQuery: {
+              feedType: "newsfeed",
+              page: 0
+            }
+          }
         })
-
-        data &&
+        console.log({ cachedData })
+        cachedData &&
           cache.writeQuery({
             query: getNewsFeed,
-            variables: { userId: user._id, page: 0 },
+            variables: {
+              feedQuery: {
+                feedType: "newsfeed",
+                page: 0
+              }
+            },
             context: { server: USER_SERVICE_GQL },
             data: {
-              fetchMyNewsFeed: [post, ...data.fetchMyNewsFeed]
+              fetchFeedV2: [post, ...(cachedData?.fetchFeedV2?.data || [])]
             }
           })
       } else {
@@ -532,3 +539,4 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 }
 
 export default Form
+

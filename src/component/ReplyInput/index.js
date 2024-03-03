@@ -1,23 +1,23 @@
-import { useEffect, useState, useRef } from "react"
-import { useSelector } from "react-redux"
+import { useMutation } from "@apollo/client"
 import {
-  IonIcon,
-  useIonToast,
-  IonModal,
-  IonHeader,
-  IonToolbar,
   IonButton,
   IonButtons,
+  IonHeader,
+  IonIcon,
+  IonModal,
   IonText,
-  IonTitle
+  IonTitle,
+  IonToolbar,
+  useIonToast
 } from "@ionic/react"
-import { sendOutline } from "ionicons/icons"
-import { useMutation } from "@apollo/client"
-import "./index.css"
-import { USER_SERVICE_GQL } from "servers/types"
-import { GetCommentList, AddComment } from "graphql/user"
-import { ThreadHeader } from "component/thread/organism"
 import RichTextInput from "component/Input/RichTextInput"
+import { ThreadHeader } from "component/thread/organism"
+import { AddComment, GetCommentList } from "graphql/user"
+import { sendOutline } from "ionicons/icons"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { USER_SERVICE_GQL } from "servers/types"
+import "./index.css"
 
 function ReplyInput({
   setReply,
@@ -39,12 +39,17 @@ function ReplyInput({
       setModalOpen(true)
     }
   }, [reply])
+
   const [addComment] = useMutation(AddComment, {
     context: { server: USER_SERVICE_GQL },
     update: (cache, { data: { addComment } }) => {
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
+          __typename: isReply
+            ? "Comment"
+            : singlePost
+            ? "PostComment"
+            : "PostNewsFeed",
           id: postId
         }),
         fields: {
@@ -53,22 +58,24 @@ function ReplyInput({
       })
       cache.modify({
         id: cache.identify({
-          __typename: isReply ? "Comment" : singlePost ? "PostComment" : "Post",
+          __typename: isReply
+            ? "Comment"
+            : singlePost
+            ? "PostComment"
+            : "PostNewsFeed",
           id: parentId
         }),
         fields: {
           repliesCount: (prev) => prev + 1
         }
       })
-
       const post = cache.readQuery({
         query: GetCommentList,
         variables: {
-          postId,
+          postId: postId,
           parentId
         }
       })
-
       post &&
         cache.writeQuery({
           query: GetCommentList,
@@ -81,10 +88,7 @@ function ReplyInput({
               __typename: "commentList",
               success: true,
               message: "comments found",
-              comments: [
-                addComment.comment,
-                ...(post.commentList.comments || [])
-              ]
+              comments: [addComment.data, ...(post.commentList.comments || [])]
             }
           }
         })
@@ -183,3 +187,4 @@ function ReplyInput({
 }
 
 export default ReplyInput
+
