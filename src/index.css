@@ -245,7 +245,7 @@ li {
   width: 5px;
 }
 
-.threadScroll::-webkit-scrollbar-track {
+.threadScroll::-webkit-bar-track {
   background: #f1f1f1;
 }
 

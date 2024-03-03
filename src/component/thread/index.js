@@ -62,7 +62,7 @@ const Thread = ({ thread }) => {
 
   return (
     <>
-      <IonCard className="relative  pt-4 pb-3 max-md:my-1 max-md:mx-[5px]">
+      <IonCard className="relative  pt-4 pb-3 max-md:my-1 ion-no-margin">
         <div className="px-4">
           <ThreadHeader
             firstName={user?.firstName}

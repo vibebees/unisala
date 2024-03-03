@@ -1,4 +1,4 @@
-import { IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
+import { IonCard, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
 import React, { useEffect, useState } from "react"
 import { CreateAPostCard } from "../../component/post/template/index"
 
@@ -60,25 +60,29 @@ export const Home = ({ allProps }) => {
 
   const renderLoggedInView = () => (
     <>
-      <CreateAPostCard allProps={allProps} />
-      <FolderStructure
-        allProps={{
-          ...allProps,
-          folderName: "",
-          data: userGuide,
-          popUp: false,
-          customHeight: false
-        }}
-      />
+      <div className="mx-12 ">
+        <CreateAPostCard allProps={allProps} />
+        <FolderStructure
+          allProps={{
+            ...allProps,
+            folderName: "",
+            data: userGuide,
+            popUp: false,
+            customHeight: false
+          }}
+        />
 
-      <ScrollableCard
-        allProps={{
-          data: discoverUni,
-          className: "similarschoolss"
-        }}
-      />
+        <IonCard className=" mt-4 ion-no-padding ion-no-margin">
+          <ScrollableCard
+            allProps={{
+              data: discoverUni,
+              className: "similarschoolss"
+            }}
+          />
+        </IonCard>
 
-      <InfiniteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
+        <InfiniteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
+      </div>
     </>
   )
 
@@ -122,4 +126,3 @@ export const Home = ({ allProps }) => {
     </IonContent>
   )
 }
-

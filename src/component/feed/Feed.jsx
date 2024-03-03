@@ -101,7 +101,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
           marginTop: "10px"
           // borderTop: "1px solid #e0e0e0"
         }}
-        className="max-md:border-none"
+        className="max-md:border-none ion-no-margin"
       >
         <IonCardHeader>
           <IonCardTitle>Suggested University</IonCardTitle>
@@ -154,7 +154,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
 
   const SuggestedSpace = ({ data, title, type }) => {
     return (
-      <IonCard>
+      <IonCard className="ion-no-margin">
         <IonCardHeader>
           <h4 className="text-lg text-black font-medium">{title}</h4>
         </IonCardHeader>
@@ -170,12 +170,15 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
               }}
               className="max-md:border-none  "
             >
-              <IonCard>
+              <IonCard className="border h-full">
                 <IonCardHeader className="capitalize line-clamp-1">
                   {space.name}
                 </IonCardHeader>
                 <IonCardContent>
-                  <img className="object-cover " src={space.image} alt="" />
+                  <div>
+                    <img className="object-cover " src={space.image} alt="" />
+                  </div>
+
                   <p className="pt-3 line-clamp-3">{space.description}</p>
                   <Link to={`/${type}/${space.name}`}>
                     <IonButton
@@ -197,9 +200,9 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   }
 
   return (
-    <div>
+    <div className="  ">
       {Posts?.map((post) => (
-        <div className="mt-8" key={post._id}>
+        <div className="mt-5" key={post._id}>
           {post.type === "post" && <Post post={post} key={post._id} />}
           {post.type === "university" && (
             <University post={post} key={post._id} />
@@ -230,4 +233,3 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
     </div>
   )
 }
-

@@ -11,7 +11,7 @@ const SingleImageCard = ({ allProps }) => {
   } = allProps
 
   return (
-    <IonCard className=" ion-no-margin mx-2 mb-2">
+    <IonCard className="ion-no-margin mx-2 h-full mb ">
       <CardImage image={image || defaultImage} />
       <CardText name={name} />
     </IonCard>

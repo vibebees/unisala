@@ -15,7 +15,6 @@ export const CreateAPostCard = ({ allProps }) => {
   const params = new URLSearchParams(window.location.href.search)
   const pathname = usePathName(0) || "home"
 
-
   useEffect(() => {
     const fn = async () => {
       const createAPostMetaData = await axios.get(
@@ -29,9 +28,8 @@ export const CreateAPostCard = ({ allProps }) => {
 
       const metaData = createAPostMetaData.data?.data || []
       const getCurrentPageMetaData = metaData[pathname] || {}
-      const {addAPost} = getCurrentPageMetaData || {}
+      const { addAPost } = getCurrentPageMetaData || {}
       setMeta(addAPost)
-
     }
     fn()
   }, [])
@@ -39,7 +37,7 @@ export const CreateAPostCard = ({ allProps }) => {
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />
       <IonCard
-        style={{ marginBottom: "20px" }}
+        style={{ marginBottom: "12px" }}
         onClick={() => {
           params.append("create", "y")
           if (allProps.unitId) {
@@ -50,6 +48,7 @@ export const CreateAPostCard = ({ allProps }) => {
           })
           setCreateAPostPopUp(true)
         }}
+        className="ion-no-margin ion-no-padding"
       >
         <PostCardForClick allProps={{ ...allProps, user }} />
       </IonCard>
