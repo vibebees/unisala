@@ -33,8 +33,6 @@ export const Spaces = ({ allProps }) => {
     }
   }, [])
 
-  console.log("allProps", allProps)
-
   useEffect(() => {
     const queryString = window.location.search
     const queryParams = new URLSearchParams(queryString)
@@ -63,10 +61,10 @@ export const Spaces = ({ allProps }) => {
   }
 
   const Feed = () => (
-    <>
+    <div className="mt-4">
       <CreateAPostCard allProps={allProps} />
       <InfiniteFeed feedType="specificOrg" feedId={orgId} />
-    </>
+    </div>
   )
 
   const tabs = {
@@ -132,10 +130,10 @@ export const Spaces = ({ allProps }) => {
   const Space = () => (
     <IonCol className="colStyle ThreadContainer">
       <SpaceHeader spaceDetails={orgData} />
-      <IonRow class="bg-white">
+      <IonRow class="bg-white mt-4 sticky top-0 z-40 max-md:top-16">
         <Tabs config={configSegment} />
       </IonRow>
-      <div className="min-h-[50vh]">
+      <div className="min-h-[50vh] ">
         <SpaceBody />
       </div>
     </IonCol>
@@ -149,9 +147,7 @@ export const Spaces = ({ allProps }) => {
           {width > 768 && views.greaterThan768}
 
           <Space />
-          {width > 1200 && (
-            <IonCol className="max-w-max">{views.greaterThan1000}</IonCol>
-          )}
+          {width > 1200 && <div className="pl-4">{views.greaterThan1000}</div>}
         </IonRow>
       </IonGrid>
       <button className="scrollButton" onClick={scrollToTop}>
@@ -160,4 +156,3 @@ export const Spaces = ({ allProps }) => {
     </IonContent>
   )
 }
-

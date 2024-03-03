@@ -23,6 +23,7 @@ export const screensMoreThan768 = ({
   return (
     <IonCol
       size="auto"
+      className="!mt-0 pt-0"
       style={{
         height: "100%",
         position: "sticky",
@@ -37,7 +38,7 @@ export const screensMoreThan768 = ({
               <h1>Browse Spaces</h1>
             </IonText>
           </Link> */}
-          <IonCard className="mt-6">
+          <IonCard className="mt-0 ion-no">
             <div className="aside-profile">
               <div className="user-profile-circle">
                 <Avatar
@@ -104,7 +105,7 @@ export const screensMoreThan768 = ({
               )
             })}
           </IonCard>
-          {screenGreaterThan1000({ title: "Top User" })}
+          {/* {screenGreaterThan1000({ title: "Top User" })} */}
         </>
       ) : (
         <IonCard

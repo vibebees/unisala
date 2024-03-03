@@ -18,17 +18,19 @@ export const screenGreaterThan1000 = ({ title, topOrgs }) => {
   return (
     <>
       <IonCol
+        className=" ion-no-margin ion-no-padding "
         size="auto"
         style={{
           maxWidth: "250px",
           height: "90vh",
           position: "sticky",
-          top: "5px",
+          top: "16px",
           overflow: "auto"
         }}
       >
-        {title === "Top Orgs" && <CreateSpace />}
-        <IonCard className="min-w-[250px]">
+        <div className="mt-3">{title === "Top Orgs" && <CreateSpace />}</div>
+
+        <IonCard className="min-w-[250px] mt-5 ion-no-margin ion-no-padding">
           <IonText color="dark">
             <h6 className="text-center my-2 font-semibold">
               {" "}

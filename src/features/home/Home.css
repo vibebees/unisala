@@ -143,3 +143,35 @@
     left: 45px;
 
 }
+
+.famousUniList::-webkit-scrollbar-thumb {
+    background: #ff000000;
+    border-radius: 10px;
+    cursor: pointer;
+    pointer-events: none;
+
+}
+
+.famousUniList::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+
+}
+
+
+.profileCard {
+    margin-top: 3px;
+    overflow: auto;
+
+}
+
+.profileCard::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #d5d5d5;
+    cursor: grab;
+}
+
+.profileCard::-webkit-scrollbar {
+    width: 7px;
+    background-color: #665a5a00;
+}

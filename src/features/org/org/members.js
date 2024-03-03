@@ -60,8 +60,8 @@ export const Members = () => {
   if (error) return <p>Error</p>
 
   return (
-    <IonGrid>
-      <IonCard className="members-card">
+    <IonGrid className="ion-no-padding !shadow-none bg-none ion-no-margin  mt-3">
+      <IonCard className="members-card !shadow-none  !m-0 mx-0 px-0 ion-no-margin">
         <IonCardHeader>
           <IonCardTitle className="members-title">
             {memberType.toUpperCase()} :{" "}
@@ -105,4 +105,3 @@ export const Members = () => {
     </IonGrid>
   )
 }
-

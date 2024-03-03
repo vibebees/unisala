@@ -1,14 +1,11 @@
 import { IonCard, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
 import React, { useEffect, useState } from "react"
 import { CreateAPostCard } from "../../component/post/template/index"
-
 import WelcomeSteps from "../../component/authentication/Welcome"
 import { InfiniteFeed } from "../../component/feed/Feed"
 import "./Home.css"
-
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "graphql/uni"
-
 import { fetchFamousUniversities } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
@@ -60,7 +57,7 @@ export const Home = ({ allProps }) => {
 
   const renderLoggedInView = () => (
     <>
-      <div className="mx-12 ">
+      <div className="mx-12 max-md:mx-2 max-lg:mx-5">
         <CreateAPostCard allProps={allProps} />
         <FolderStructure
           allProps={{

@@ -16,7 +16,7 @@ const CreateSpace = () => {
   const isOrgRoute = location.pathname.startsWith("/org")
 
   return (
-    <IonCol>
+    <>
       <CreateSpaceBtn setIsOpen={setIsOpen} />
       <IonModal isOpen={isOpen}>
         <IonHeader>
@@ -29,7 +29,7 @@ const CreateSpace = () => {
         </IonHeader>
         <SpaceForm setIsOpen={setIsOpen} />
       </IonModal>
-    </IonCol>
+    </>
   )
 }
 

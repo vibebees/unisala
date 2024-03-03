@@ -3,7 +3,8 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  background: #ffffff; /* Or any color that fits your design */
+  background: #ffffff;
+  /* Or any color that fits your design */
   margin: 10px;
 }
 
@@ -28,4 +29,3 @@
 .members-card .alumni-title {
   margin-bottom: 0;
 }
-

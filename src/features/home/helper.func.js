@@ -70,15 +70,16 @@ export const screenGreaterThan1000 = () => {
   return (
     <IonCol
       size="auto"
+      className="famousUniList"
       style={{
         maxWidth: "300px",
         height: "90vh",
         position: "sticky",
-        top: "15px",
+        top: "0px",
         overflow: "auto"
       }}
     >
-      <IonCard>
+      <IonCard className="my-0">
         <IonText color="dark">
           <h6 style={{ padding: "10px" }}>Famous Universities</h6>
         </IonText>
@@ -212,25 +213,26 @@ export const screensMoreThan768 = ({
   topOrgs
 }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const [percentage, setPercentage] = useState(30)
+  const [percentage, setPercentage] = useState(0)
 
   const radius = 45
   const dashArray = radius * Math.PI * 2
   const dataOffset = dashArray - (dashArray * percentage) / 100
-  const location = useLocation()
+
   return (
     <IonCol
       size="auto"
       style={{
         height: "90vh",
         position: "sticky",
-        top: "15px",
+        top: "0px",
         overflow: "auto"
       }}
+      className="profileCard"
     >
       {loggedIn ? (
         <>
-          <IonCard className="">
+          <IonCard className="my-0">
             <div className="aside-profile">
               <div className="w-24 h-24 rounded-full overflow-hidden   !border-[7px] !border-neutral-200">
                 <Avatar
@@ -277,38 +279,34 @@ export const screensMoreThan768 = ({
             </div>
           </IonCard>
 
-          <IonCol>
-            <IonCard className="overflow-y-auto max-h-[348px]">
-              <IonText color="dark">
-                <h6 className="text-center my-2 font-semibold">Top Spaces</h6>
-              </IonText>
+          <IonCard className="overflow-y-auto my-4 max-h-[348px]">
+            <IonText color="dark">
+              <h6 className="text-center my-2 font-semibold">Top Spaces</h6>
+            </IonText>
 
-              <TopSpaces topSpaces={topSpaces} />
-              <Link to="/space" style={{ marginTop: "120px" }}>
-                <IonText
-                  className="max-w-[250px] text-[#3880FF] text-center  font-semibold"
-                  fill="solid"
-                  style={{
-                    "--background": "white",
-                    "--background-hover": "#eee"
-                  }}
-                >
-                  <h1 className="py-4">Browse More Spaces</h1>
-                </IonText>
-              </Link>
-            </IonCard>
-          </IonCol>
-
-          <IonCol className="mb-5">
-            <IonCard className="overflow-y-auto max-h-[348px]">
-              <IonText color="dark">
-                <h6 className="text-center my-2 font-semibold">
-                  Top Organization
-                </h6>
+            <TopSpaces topSpaces={topSpaces} />
+            <Link to="/space" style={{ marginTop: "120px" }}>
+              <IonText
+                className="max-w-[250px] text-[#3880FF] text-center  font-semibold"
+                fill="solid"
+                style={{
+                  "--background": "white",
+                  "--background-hover": "#eee"
+                }}
+              >
+                <h1 className="py-4">Browse More Spaces</h1>
               </IonText>
-              <TopOrgs topOrgs={topOrgs?.data} />
-            </IonCard>
-          </IonCol>
+            </Link>
+          </IonCard>
+
+          <IonCard className="overflow-y-auto my-4 max-h-[348px]">
+            <IonText color="dark">
+              <h6 className="text-center my-2 font-semibold">
+                Top Organization
+              </h6>
+            </IonText>
+            <TopOrgs topOrgs={topOrgs?.data} />
+          </IonCard>
         </>
       ) : (
         <IonCard
