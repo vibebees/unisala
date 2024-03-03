@@ -5,6 +5,7 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonCol,
   IonGrid,
   IonIcon,
   IonInfiniteScroll,
@@ -15,7 +16,7 @@ import {
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 import Thread from "component/thread"
 import { getNewsFeed } from "graphql/user"
-import { location } from "ionicons/icons"
+import { location, schoolOutline } from "ionicons/icons"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -85,6 +86,8 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
           thread={post}
           id={post._id}
           allProps={allProps}
+          feedType={feedType}
+          feedId={feedId}
           key={post._id}
         />
       </div>
@@ -93,6 +96,8 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
 
   const University = ({ post }) => {
     const { elevatorInfo } = post
+    const { studentCharges } = post
+    console.log({ studentCharges })
     const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
     return (
       <IonCard
@@ -143,6 +148,64 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
                   <IonText className="text-blue-600 font-semibold">
                     Tags: {elevatorInfo?.tags?.join(", ")}
                   </IonText>
+                </IonRow>
+
+                <IonRow className="mt-4 font-semibold items-center space-x-2 ">
+                  <IonIcon
+                    className="ion-icon text-primar text-lg"
+                    icon={schoolOutline}
+                  />
+                  <IonCol className="p-0">
+                    <IonText className="text-red-600 font-semibold">
+                      Graduate Application Fee: $
+                      {studentCharges?.graduateApplicationFee ?? "N/A"}
+                    </IonText>
+                  </IonCol>
+                  <IonCol className="p-0">
+                    <IonText className="text-blue-600 font-semibold">
+                      Undergradutate Application Fee: $
+                      {studentCharges?.undergraduateApplicationFee ?? "N/A"} 📚
+                    </IonText>
+                  </IonCol>
+                </IonRow>
+
+                <IonRow className="mt-4 text-green-600">
+                  <IonCol>
+                    {studentCharges?.graduate?.inState && (
+                      <IonText className=" font-semibold">
+                        Gradutate In-State Tuition: $
+                        {studentCharges?.graduate?.inState?.tuition ?? "N/a"}
+                      </IonText>
+                    )}
+                  </IonCol>
+                  <IonCol>
+                    {studentCharges?.graduate?.outOfState && (
+                      <IonText className=" font-semibold">
+                        Gradutate Out-State Tuition: $
+                        {studentCharges?.graduate?.outOfState?.tuition ?? "N/a"}
+                      </IonText>
+                    )}
+                  </IonCol>
+                </IonRow>
+                <IonRow className="text-yellow-500">
+                  <IonCol>
+                    {studentCharges?.undergraduate?.inState && (
+                      <IonText className=" font-semibold">
+                        Undergradutate In-State Tuition: $
+                        {studentCharges?.undergraduate?.inState?.tuition ??
+                          "N/a"}
+                      </IonText>
+                    )}
+                  </IonCol>
+                  <IonCol>
+                    {studentCharges?.undergraduate?.outOfState && (
+                      <IonText className=" font-semibold">
+                        Undergradutate Out-State Tuition: $
+                        {studentCharges?.undergraduate?.outOfState?.tuition ??
+                          "N/a"}
+                      </IonText>
+                    )}
+                  </IonCol>
                 </IonRow>
               </div>
             </IonCardContent>

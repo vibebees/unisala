@@ -1,7 +1,6 @@
-import React from "react"
 import { IonButtons } from "@ionic/react"
-import { Reply, Save, Upvote } from "../actions"
 import Share from "component/Share"
+import { Reply, Save, Upvote } from "../actions"
 
 const ThreadFooter = ({
   upVoteCount,
@@ -13,7 +12,7 @@ const ThreadFooter = ({
 }) => {
   const BASEURL = window.location.origin
   return (
-    <div className="thread_footer mx-9 ">
+    <div className="thread_footer mx-9 w-4/5  flex justify-start  gap-x-12">
       <Upvote upVoteCount={upVoteCount} postId={_id} upVoted={upVoted} />
       <Reply repliesCount={postCommentsCount} setReply={setReply} />
       <Save postId={_id} saved={saved} />
@@ -37,3 +36,4 @@ const ThreadFooter = ({
 }
 
 export default ThreadFooter
+

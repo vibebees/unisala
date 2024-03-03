@@ -1,11 +1,11 @@
-import React, { useState } from "react"
-import ReactQuill from "react-quill"
-import { IonButton, useIonToast } from "@ionic/react"
-import "react-quill/dist/quill.snow.css"
 import { useMutation } from "@apollo/client"
+import { IonButton, useIonToast } from "@ionic/react"
 import { EditPost } from "graphql/user"
-import { USER_SERVICE_GQL } from "servers/types"
+import { useState } from "react"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 import { useLocation } from "react-router-dom"
+import { USER_SERVICE_GQL } from "servers/types"
 
 const ThreadEditable = ({ _id, postText, setEditable }) => {
   const pathname = useLocation().pathname
@@ -21,6 +21,8 @@ const ThreadEditable = ({ _id, postText, setEditable }) => {
   }
 
   const isHome = pathname === "/" || pathname === "/home"
+
+  console.log({ updatedData })
   const [editPost] = useMutation(EditPost, {
     context: { server: USER_SERVICE_GQL },
     variables: { ...updatedData },
@@ -97,3 +99,4 @@ const ThreadEditable = ({ _id, postText, setEditable }) => {
 }
 
 export default ThreadEditable
+

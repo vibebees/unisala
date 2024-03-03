@@ -1,20 +1,20 @@
 import { IonCard } from "@ionic/react"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 import ReplyInput from "../ReplyInput"
+import "./index.css"
 import {
   ShowPeopleComments,
-  ThreadHeader,
-  ThreadImages,
+  ThreadEditable,
   ThreadExpand,
   ThreadFooter,
-  ThreadRating,
+  ThreadHeader,
+  ThreadImages,
   ThreadOptions,
-  ThreadEditable
+  ThreadRating
 } from "./organism"
-import { useSelector } from "react-redux"
-import "./index.css"
 
-const Thread = ({ thread }) => {
+const Thread = ({ thread, feedType, feedId }) => {
   const {
     _id,
     date,
@@ -112,6 +112,8 @@ const Thread = ({ thread }) => {
             setEditable={setEditable}
             loggedinUser={loggedinUser}
             username={user?.username}
+            feedType={feedType}
+            feedId={feedId}
             _id={_id}
           />
           {postCommentsCount > 0 && (
@@ -130,3 +132,4 @@ const Thread = ({ thread }) => {
 }
 
 export default Thread
+
