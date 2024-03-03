@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react"
 import linkifyHtml from "linkify-html"
 import clsx from "clsx"
 import { LikeATag } from "component/tags"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
-const ThreadExpand = ({ htmlText, thread = {} }) => {
+const ThreadExpand = ({ htmlText, thread = {}, _id }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const history = useHistory()
   const [showSeeMore, setShowMore] = useState(true)
   const TextRef = useRef(null)
   const { tags = [], videoURL = "" } = thread
@@ -42,9 +43,17 @@ const ThreadExpand = ({ htmlText, thread = {} }) => {
 
   const PostBodyText = () => (
     <div
-      className="ql-editor"
+      className="ql-editor cursor-pointer"
       dangerouslySetInnerHTML={{ __html: linkifiedText }}
       ref={TextRef}
+      onClick={(e) => {
+        if (e.target.tagName === "A") {
+          e.preventDefault()
+          window.open(e.target.href, "_blank")
+        } else {
+          history.push(`/thread/${_id}`)
+        }
+      }}
     />
   )
 

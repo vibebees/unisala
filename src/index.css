@@ -4,6 +4,7 @@
 
 
 
+
 :root {
   --primary-color: #3880ff;
   --secondary-color: #3dc2ff;
@@ -25,9 +26,6 @@
   font-family: "Manrope", sans-serif !important;
 }
 
-a {
-  text-decoration: none !important;
-}
 
 h1,
 h2,

@@ -100,7 +100,7 @@
   background: #555;
 }
 
-.custom-link a {
+.custom-link {
   color: rgb(73, 73, 212);
   /* Set the color to blue */
   text-decoration: underline;
