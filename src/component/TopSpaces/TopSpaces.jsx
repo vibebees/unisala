@@ -3,6 +3,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 
 const TopSpaces = ({ topSpaces }) => {
+  // console.log({ topSpaces })
   return (
     <>
       {topSpaces?.map((item, index) => (

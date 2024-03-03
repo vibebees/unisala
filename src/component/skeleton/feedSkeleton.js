@@ -5,10 +5,9 @@ import {
 import {musicalNotes} from "ionicons/icons"
 import "./index.css"
 import {ThreadSkeleton} from "./threadSkeleton"
-const R = require("ramda")
 
 export const FeedSkeleton = () => {
-    const skeleton = R.range(0, 3)
+    const skeleton = [0, 1, 2, 3]
     return (
 
         <IonList>

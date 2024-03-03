@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom"
 import Upvote from "./actions/Upvote"
 import Reply from "./actions/Reply"
 import ReplyInput from "../ReplyInput"
-import ShowMore from "./ShowMore"
-import { Avatar } from "../Avatar"
+import ShowMore from "./organism/ShowPeopleComments"
+import ThreadHeader from "./organism/ThreadHeader"
 import "./index.css"
 import { IonButton, IonIcon, useIonToast } from "@ionic/react"
 import { create, trash, ellipsisHorizontalOutline } from "ionicons/icons"
@@ -13,8 +13,8 @@ import { useMutation, useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import ReactQuill from "react-quill"
 import moment from "moment"
-import {USER_SERVICE_GQL} from "servers/types"
-import {DeleteComment, EditComment} from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
+import { DeleteComment, EditComment } from "graphql/user"
 
 function Comment({
   comment,
@@ -139,130 +139,151 @@ function Comment({
     setUpdatedData((prev) => ({ ...prev, commentText: e }))
   }
 
-  return (
-    <div className=" relative  mt-2 ">
-<div className ="pt-3 pl-4 pb-2 rounded-xl relative bg-neutral-200 bg-opacity-60 commentShadow w-full">
-        <Link to={`/@/${username}`}>
-          <div className="thread-header !gap-2">
-            <div className="thread_profile-pic scale-75">
-              <Avatar profilePic={profilePic} username={username} />
-            </div>
-            <div className="thread_userdetails ">
-              <h3 style={{ color: "#222428" }} className="!text-sm">
-                {firstName + " " + lastName}
-              </h3>
-              <div className="threads_username text-[0.82rem]">
-                <p>@{username}</p>
-                <p className="threads_date !text-xs">
-                  {moment(date).fromNow()}
-                </p>
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        <div className="thread_content">
-          <div className="thread_comment">
-            {editable ? (
-              <div className="px-5">
-                <ReactQuill
-                  theme="snow"
-                  onChange={handleChange}
-                  defaultValue={commentText}
-                  className="h-48 mb-8 text-black"
-                />
-
-                <br />
-                <IonButton
-                  fill="clear"
-                  className="ion-no-padding  capitalize  px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
-                  size="small"
-                  style={{
-                    "--ripple-color": "transparent"
-                  }}
-                  onClick={() => setEditable(false)}
-                >
-                  Cancel
-                </IonButton>
-                <IonButton
-                  className=" ion-no-padding capitalize font-bold px-4 text-white bg-blue-500 rounded-2xl transition ease delay-200 hover:bg-blue-600"
-                  fill="clear"
-                  size="small"
-                  onClick={editComment}
-                  style={{
-                    "--ripple-color": "transparent"
-                  }}
-                >
-                  Save
-                </IonButton>
-              </div>
-            ) : (
-              <div className="">
-                <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
-                  {replyTo && `@${replyTo}`}
-                </span>
-                <p
-                  className="text-sm inline-flex flex-wrap pr-4"
-                  dangerouslySetInnerHTML={{ __html: commentText }}
-                />
-              </div>
-            )}
-          </div>
-          <div className="thread_footer pl-0 -translate-x-4 scale-75">
-            <Upvote
-              upVoteCount={upVoteCount}
-              postId={_id}
-              upVoted={upVoted}
-              isReply={true}
-            />
-            <Reply repliesCount={repliesCount} setReply={setReply} />
-            {/* <Save postId={postId} saved={saved} /> */}
-          </div>
-        </div>
-
-        {reply && (
-          <ReplyInput
-            setReply={setReply}
-            parentId={parentId ?? _id}
-            postId={postId}
-            isReply={true}
-            replyTo={username}
+  const CommentContent = ({
+    editable,
+    handleChange,
+    commentText,
+    setEditable,
+    editComment,
+    replyTo
+  }) => {
+    if (editable) {
+      return (
+        <div className="px-5">
+          <ReactQuill
+            theme="snow"
+            onChange={handleChange}
+            defaultValue={commentText}
+            className="h-48 mb-8 text-black"
           />
+          <br />
+          <IonButton
+            fill="clear"
+            className="ion-no-padding capitalize px-4 font-semibold text-black hover:bg-[#eae8e8] rounded-2xl transition ease delay-200"
+            size="small"
+            style={{ "--ripple-color": "transparent" }}
+            onClick={() => setEditable(false)}
+          >
+            Cancel
+          </IonButton>
+          <IonButton
+            className="ion-no-padding capitalize font-bold px-4 text-white bg-blue-500 rounded-2xl transition ease delay-200 hover:bg-blue-600"
+            fill="clear"
+            size="small"
+            onClick={editComment}
+            style={{ "--ripple-color": "transparent" }}
+          >
+            Save
+          </IonButton>
+        </div>
+      )
+    } else {
+      return (
+        <div className="ql-editor">
+          {replyTo && (
+            <span className="text-sm h-fit pr-2 text-blue-600 font-medium">
+              {`@${replyTo}`}
+            </span>
+          )}
+          <p dangerouslySetInnerHTML={{ __html: commentText }} />
+        </div>
+      )
+    }
+  }
+
+  const ThreadFooter = ({
+    upVoteCount,
+    _id,
+    upVoted,
+    repliesCount,
+    setReply
+  }) => (
+    <div className="thread_footer pl-0 -translate-x-4 scale-75">
+      <Upvote
+        upVoteCount={upVoteCount}
+        postId={_id}
+        upVoted={upVoted}
+        isReply={true}
+      />
+      <Reply repliesCount={repliesCount} setReply={setReply} />
+    </div>
+  )
+
+  const CommentOptions = ({ setEditable, setShowOptions, deleteComment }) => (
+    <div className="absolute top-2 right-5">
+      <div className="relative">
+        <button onClick={() => setShowOptions((prev) => !prev)}>
+          <IonIcon icon={ellipsisHorizontalOutline} className="text-2xl" />
+        </button>
+        {showOptions && (
+          <div className="absolute w-[160px] -right-6 top-5 bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
+            <button
+              onClick={() => {
+                setEditable(true)
+                setShowOptions(false)
+              }}
+              className="w-full py-1.5 rounded-lg flex justify-center items-center gap-1 text-gray font-bold hover:bg-[#f1eeee]"
+            >
+              <IonIcon icon={create} className="text-xl" />
+              Update
+            </button>
+            <button
+              onClick={deleteComment}
+              className="w-full py-1.5 rounded-lg flex justify-center items-center gap-1.5 text-gray font-bold hover:bg-[#f1eeee]"
+            >
+              <IonIcon icon={trash} className="text-xl" />
+              Delete
+            </button>
+          </div>
         )}
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="relative mt-2 mb-4 max-md:mx-1  rounded-lg shadow-sm commentShadow mx-6">
+      {/* Adjusted margins and width */}
+      <div className="pt-3  pl-4 max-md:pl-1 pb-2 rounded-xl relative border border-primary bg-neutral-200 commentShadow w-full">
+        <ThreadHeader
+          date={date}
+          firstName={firstName}
+          lastName={lastName}
+          profilePic={profilePic}
+          username={username}
+        />
+
+        <CommentContent
+          editable={editable}
+          handleChange={handleChange}
+          commentText={commentText}
+          setEditable={setEditable}
+          editComment={editComment}
+          replyTo={replyTo}
+        />
+
+        <ThreadFooter
+          upVoteCount={upVoteCount}
+          _id={_id}
+          upVoted={upVoted}
+          repliesCount={repliesCount}
+          setReply={setReply}
+        />
+
+        <ReplyInput
+          setReply={setReply}
+          parentId={parentId ?? _id}
+          postId={postId}
+          isReply={true}
+          replyTo={username}
+          reply={reply}
+        />
 
         {comment.username === loggedinUser?.username && (
-          <div className="absolute top-2 right-5">
-            <div className="relative">
-              <button onClick={() => setShowOptions((prev) => !prev)}>
-                <IonIcon
-                  icon={ellipsisHorizontalOutline}
-                  className="text-2xl"
-                />
-              </button>
-
-              {showOptions && (
-                <div className="absolute w-[160px] -right-6 top-5 bg-[#fafafa] rounded-xl px-6 py-4 shadow-xl">
-                  <button
-                    onClick={() => {
-                      setEditable(true)
-                      setShowOptions(false)
-                    }}
-                    className=" w-full py-1.5 rounded-lg  flex justify-center items-center gap-1 text-gray font-bold hover:bg-[#f1eeee]"
-                  >
-                    <IonIcon icon={create} className="text-xl" />
-                    Update
-                  </button>
-                  <button
-                    onClick={() => deleteComment()}
-                    className=" w-full py-1.5 rounded-lg  flex justify-center items-center gap-1.5 text-gray font-bold hover:bg-[#f1eeee]"
-                  >
-                    <IonIcon icon={trash} className="text-xl" />
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+          <CommentOptions
+            setEditable={setEditable}
+            setShowOptions={setShowOptions}
+            deleteComment={deleteComment}
+          />
         )}
       </div>
       <div className="ml-20 max-md:ml-8 max-sm:ml-4 border-l-2 max-md:pl-12 max-sm:pl-0 border-opacity-30 border-neutral-400">

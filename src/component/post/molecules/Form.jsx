@@ -1,36 +1,40 @@
+import { useApolloClient, useMutation } from "@apollo/client"
 import {
   IonButton,
   IonCheckbox,
+  IonDatetime,
   IonInput,
   IonItem,
   IonLabel,
-  IonRadioGroup,
-  IonSelect,
-  IonSelectOption,
   useIonToast
 } from "@ionic/react"
-import React, { useEffect, useState } from "react"
+import axios from "axios"
+import clsx from "clsx"
+import RichTextInput from "component/Input/RichTextInput"
+import {
+  AddPost,
+  AddSpaceEvent,
+  GetAllPostBySpaceCategoryID,
+  GetSpaceEvents,
+  getNewsFeed
+} from "graphql/user"
+import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
-import ReactQuill from "react-quill"
+import { useSelector } from "react-redux"
+import { useHistory, useLocation } from "react-router"
+import { userServer } from "servers/endpoints"
+import { USER_SERVICE_GQL } from "servers/types"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
 import SelectAtom from "../atoms/Select"
-import { AddPost, GetAllPostBySpaceCategoryID, getNewsFeed } from "graphql/user"
-import { USER_SERVICE_GQL } from "servers/types"
-import { useSelector } from "react-redux"
-import { useApolloClient, useMutation } from "@apollo/client"
-import TextChecker from "utils/components/TextChecker"
-import axios from "axios"
-import { userServer } from "servers/endpoints"
-import ImageUpload from "./ImageUpload"
-import clsx from "clsx"
 import { htmlForEditor } from "../utils/htmlForEditor"
-import { useHistory, useLocation } from "react-router"
+import ImageUpload from "./ImageUpload"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
+  const [popoverOpen, setPopoverOpen] = useState(false)
   const location = useLocation()
   const histroy = useHistory()
   const params = new URLSearchParams(location.search)
@@ -90,6 +94,19 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }))
   }
 
+  const generateDateComponent = (item) => (
+    <>
+      <IonLabel>{item.name}</IonLabel>
+      <IonItem />
+      <IonDatetime
+        displayFormat="MMM DD, YYYY" // You can customize this format
+        onIonChange={(e) =>
+          setPostData((prev) => ({ ...prev, [item?.id]: e.detail.value }))
+        }
+      />
+    </>
+  )
+
   const generateRatingComponent = (item) => {
     return (
       <>
@@ -142,19 +159,29 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         __typename: "PostNewsFeed"
       }
       if (!tags) {
-        const data = cache.readQuery({
+        console.log("no tags")
+        const cachedData = cache.readQuery({
           query: getNewsFeed,
-          variables: { userId: user._id, page: 0 },
-          context: { server: USER_SERVICE_GQL }
+          variables: {
+            feedQuery: {
+              feedType: "newsfeed",
+              page: 0
+            }
+          }
         })
-
-        data &&
+        console.log({ cachedData })
+        cachedData &&
           cache.writeQuery({
             query: getNewsFeed,
-            variables: { userId: user._id, page: 0 },
+            variables: {
+              feedQuery: {
+                feedType: "newsfeed",
+                page: 0
+              }
+            },
             context: { server: USER_SERVICE_GQL },
             data: {
-              fetchMyNewsFeed: [post, ...data.fetchMyNewsFeed]
+              fetchFeedV2: [post, ...(cachedData?.fetchFeedV2?.data || [])]
             }
           })
       } else {
@@ -230,6 +257,88 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   })
 
+  const [addEvent, { data }] = useMutation(AddSpaceEvent, {
+    context: {
+      server: USER_SERVICE_GQL
+    },
+
+    update: (cache, { data }) => {
+      // Attempt to read the existing query from the cache
+      const cachedData = cache.readQuery({
+        query: GetSpaceEvents,
+        context: {
+          server: USER_SERVICE_GQL
+        },
+        variables: {
+          spaceId: tags[0]
+        }
+      })
+
+      // Check if cachedData and cachedData.getAllEventBySpaceId are not null
+      if (cachedData && cachedData.getAllEventBySpaceId) {
+        // Proceed to update the cache only if the data is not null
+        data &&
+          cache.writeQuery({
+            query: GetSpaceEvents,
+            context: {
+              server: USER_SERVICE_GQL
+            },
+            variables: {
+              spaceId: tags[0]
+            },
+            data: {
+              getAllEventBySpaceId: {
+                ...cachedData.getAllEventBySpaceId,
+                event: [
+                  // data.addOrgSpaceEvent.event,
+                  ...cachedData.getAllEventBySpaceId.data
+                ]
+              }
+            }
+          })
+      } else {
+        // Handle the case where cachedData or getAllEventBySpaceId is null
+        console.log("Cached data is not available or invalid")
+      }
+    },
+    onError: (err) => {
+      present({
+        duration: 3000,
+        message: err?.message,
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    },
+    onCompleted: async ({ addOrgSpaceEvent }) => {
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("image", files[i])
+        }
+        const res = await axios.post(
+          userServer + `/post/addPostImage/${addOrgSpaceEvent.event._id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+      }
+      present({
+        duration: 3000,
+        message: "New event created",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+      setCreateAPostPopUp(false)
+      // setfile("")
+    }
+  })
+
+  console.log({ data })
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -246,20 +355,34 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       return
     }
 
-    if (postData?.postText?.length > 0 || files?.length > 0) {
-      addPost({
-        variables: {
-          ...postData
-        }
+    if (metaData.id === "event") {
+      const data = {
+        spaceId: tags[0],
+        title: postData.title,
+        description: postData.postText,
+        address: postData.address,
+        eventDate: postData.eventDate
+      }
+      addEvent({
+        variables: data
       })
+      /* eslint-disable */
     } else {
-      present({
-        duration: 3000,
-        message: "Please include something to post",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
+      if (postData?.postText?.length > 0 || files?.length > 0) {
+        addPost({
+          variables: {
+            ...postData
+          }
+        })
+      } else {
+        present({
+          duration: 3000,
+          message: "Please include something to post",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
     }
     setCreateAPostPopUp(false)
     params.delete("create")
@@ -271,6 +394,8 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   }
 
   const generateInputTag = (item) => {
+    console.log({ item })
+
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
@@ -289,7 +414,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             setPostData((prev) => ({
               ...prev,
               postText,
-              [item.id]: parseFloat(e.target.value)
+              [item.id]: isNaN(e.target.value)
+                ? e.target.value
+                : parseFloat(e.target.value)
             }))
           }}
         />
@@ -323,13 +450,34 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     return (
       <>
         <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
-        <ReactQuill
-          id={item.id} // Add id attribute here
-          className="h-40 mb-12 text-black relative"
-          theme="snow"
-          onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
-          value={postData?.postText}
-        />
+        <div>
+          <RichTextInput
+            id={item.id}
+            onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
+            value={postData?.postText}
+            showUniversityListOnAt={true}
+            searchText={postData?.postText?.split("@").pop().split("<")[0]}
+            handleUniversitySelect={(e) => {
+              if (postData?.postText.endsWith("</p>")) {
+                const removeTextafter = postData.postText.split("@")[0]
+                setPostData((prev) => ({
+                  ...prev,
+                  postText:
+                    removeTextafter +
+                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p></p>`
+                }))
+              } else {
+                const removeTextafter = postData.postText.split("@")[0]
+                setPostData((prev) => ({
+                  ...prev,
+                  postText:
+                    removeTextafter +
+                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
+                }))
+              }
+            }}
+          />
+        </div>
       </>
     )
   }
@@ -365,12 +513,14 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           : generateSelectTag(item)
       case "textarea":
         return generateTextareaTag(item)
-
+      case "date":
+        return generateDateComponent(item)
       default:
         return null
     }
   }
 
+  console.log({ postData })
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
@@ -389,3 +539,4 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 }
 
 export default Form
+

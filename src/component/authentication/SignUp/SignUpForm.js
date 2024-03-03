@@ -1,30 +1,42 @@
-import { useState, useEffect } from "react"
-import { IonButton, IonRow, IonSpinner, useIonToast } from "@ionic/react"
-import { useLocation } from "react-router"
-import AuthInput from "../AuthInput"
+import { IonRow, IonSpinner, useIonToast } from "@ionic/react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import "../auth.css"
 import { userServer } from "servers/endpoints"
 import { registerUser } from "store/action/authenticationAction"
 import { validateSignup } from "utils/components/validate"
-
+import AuthInput from "../AuthInput"
+import "../auth.css"
 export const SignUpForm = ({ setauth, setShowSignup = null }) => {
   const [errors, seterrors] = useState({})
   const [present, dismiss] = useIonToast()
   const [datacheck, setdatacheck] = useState(false)
   const [save, setsave] = useState(false)
 
+  const searchParams = new URLSearchParams(window.location.search)
+  const spaceOrgName = searchParams.get("org")
+  const email = searchParams.get("email") ?? ""
   const [input, setInput] = useState({
     firstName: "",
     lastName: "",
-    email: "",
-    password: ""
+    email: email,
+    password: "",
+    spaceOrgName,
+    type: spaceOrgName && "invitation"
   })
+
   const HandleChange = (e) => {
     const { name, value } = e.target
     setInput((pre) => {
       return { ...pre, [name]: value }
     })
+
+    // if user changes the mail from the invitation one then it will not be invited
+
+    if (name === "email" && value !== email) {
+      setInput((pre) => {
+        return { ...pre, type: null, spaceOrgName: null }
+      })
+    }
     seterrors({
       ...errors,
       [name]: ""
@@ -52,6 +64,9 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
           dismiss
         })
       )
+      if (spaceOrgName) {
+        localStorage.setItem("org", spaceOrgName)
+      }
     }
   }, [errors])
 
@@ -88,6 +103,7 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
           type="text"
           name="email"
           value={input?.email}
+          disabled={email}
         />
       </div>
       <div className="auth-input-div">

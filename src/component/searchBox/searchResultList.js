@@ -1,5 +1,4 @@
 import {IonAvatar, IonItem, IonLabel} from "@ionic/react"
-import {set} from "ramda"
 import {useEffect, useState} from "react"
 import {Link} from "react-router-dom"
 import {universityDefaultImage} from "servers/s3.configs"

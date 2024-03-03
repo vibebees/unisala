@@ -3,8 +3,9 @@ import { useParams, useLocation } from "react-router"
 import { GetPostById } from "graphql/user"
 import { useQuery } from "@apollo/client"
 import { USER_SERVICE_GQL } from "servers/types"
-import { IonSpinner, IonContent } from "@ionic/react"
-import SingleThread from "component/thread/singleThread"
+import { IonSpinner, IonContent, IonSkeletonText, IonPage } from "@ionic/react"
+import SingleThread from "component/thread/singleThread/index"
+import {FeedSkeleton} from "component/skeleton/feedSkeleton"
 
 const index = () => {
   const { id } = useParams()
@@ -23,12 +24,14 @@ const index = () => {
     variables: payload
   })
 
-  if (loading) return <IonSpinner />
+  if (loading || !data?.getPostById?.post) return <FeedSkeleton />
 
   return (
-    <IonContent className=" ">
+    <IonPage>
+       <IonContent >
       <SingleThread thread={data?.getPostById.post} />
     </IonContent>
+   </IonPage>
   )
 }
 

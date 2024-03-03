@@ -1,22 +1,30 @@
-import {useState} from "react"
-import useDocTitle from "hooks/useDocTitile"
-import {screenGreaterThan1000} from "./screens.greater.1000"
-import {screensMoreThan768} from "./screens.moreThan768"
-import {screenLessThan768} from "./screens.lessThan768"
 import unisalaImg from "assets/unisala-intro.png"
-import {useParams} from "react-router"
-import {personCircle, arrowUpOutline} from "ionicons/icons"
+import useDocTitle from "hooks/useDocTitile"
+import { personCircle } from "ionicons/icons"
+import { useState } from "react"
+import { useHistory, useParams } from "react-router"
+import { screenGreaterThan1000 } from "./screens.greater.1000"
+import { screenLessThan768 } from "./screens.lessThan768"
+import { screensMoreThan768 } from "./screens.moreThan768"
 
-export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, profileData = {}, data = {}, loading = true}) => {
-
+export const getAllProps = ({
+  user = {},
+  topSpaceData = {},
+  loggedIn = false,
+  profileData = {},
+  data = {},
+  loading = true
+}) => {
   useDocTitle("Unisala")
 
-  const {getTopActiveSpaces} = topSpaceData || {},
-    [showTopScrollbtn, setShowTopScrollbtn] = useState(false),
+  console.log({ data })
 
+  const { getTopActiveSpaces } = topSpaceData || {},
+    [showTopScrollbtn, setShowTopScrollbtn] = useState(false),
+    history = useHistory(),
     [width, setWidth] = useState(window.innerWidth),
     handleResize = () => {
-      const {innerWidth} = window
+      const { innerWidth } = window
       if (width !== innerWidth) {
         setWidth(innerWidth)
       }
@@ -47,10 +55,44 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     [verfiyAPostPopUp, setVerifyAPostPopUp] = useState(false),
     params = useParams(),
     searchSpaceCategory = data?.searchSpaceCategory || {},
-    {spaceCategory} = searchSpaceCategory,
+    { data: spaceCategory } = searchSpaceCategory,
     spaceId = spaceCategory?._id,
     parentId = spaceCategory?.parentId // this could be null as the current space could be parent in itself
   let tags = []
+  const configSegment = {
+      options: [
+        {
+          name: "Feed",
+          icon: "home",
+          nav: "feed"
+        },
+        {
+          name: "Org",
+          icon: "people",
+          nav: "org&mem=members"
+        },
+        {
+          name: "Apply",
+          icon: "clipboard",
+          nav: "apply"
+        },
+        {
+          name: "History",
+          icon: "time",
+          nav: "history"
+        },
+        {
+          name: "Invite",
+          icon: "people",
+          nav: "invite"
+        }
+      ],
+      onClick: (event, nav) => {
+        history.push({ search: `?address=${nav}` })
+      },
+      scrollable: false
+    },
+    [tab, setTab] = useState("feed")
 
   return {
     unisalaImg,
@@ -78,7 +120,10 @@ export const getAllProps = ({user = {}, topSpaceData = {}, loggedIn = false, pro
     loading,
     searchSpaceCategory,
     spaceCategory,
-    tags
+    tags,
+    configSegment,
+    tab,
+    setTab
   }
-
 }
+
