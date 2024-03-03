@@ -86,6 +86,8 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
           thread={post}
           id={post._id}
           allProps={allProps}
+          feedType={feedType}
+          feedId={feedId}
           key={post._id}
         />
       </div>

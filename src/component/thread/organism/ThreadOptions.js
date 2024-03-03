@@ -1,17 +1,25 @@
-import React, { useState } from "react"
-import { IonIcon, useIonToast } from "@ionic/react"
-import { ellipsisHorizontalOutline, create, trash } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
-import { USER_SERVICE_GQL } from "servers/types"
-import { DeletePost, GetUserPost, getNewsFeed } from "graphql/user"
+import { IonIcon, useIonToast } from "@ionic/react"
+import { DeletePost, getNewsFeed } from "graphql/user"
+import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
+import { useState } from "react"
 import { useLocation } from "react-router-dom"
+import { USER_SERVICE_GQL } from "servers/types"
 
-const ThreadOptions = ({ loggedinUser, username, _id, setEditable }) => {
+const ThreadOptions = ({
+  loggedinUser,
+  username,
+  _id,
+  setEditable,
+  feedType,
+  feedId
+}) => {
   const pathname = useLocation().pathname
   const [showOptions, setShowOptions] = useState(false)
   const [present, dismiss] = useIonToast()
   const isHome = pathname === "/" || pathname === "/home"
 
+  console.log({ feedType, feedId })
   const [deletePost] = useMutation(DeletePost, {
     context: { server: USER_SERVICE_GQL },
     variables: {
@@ -19,62 +27,37 @@ const ThreadOptions = ({ loggedinUser, username, _id, setEditable }) => {
     },
 
     update: (cache, data) => {
-      const cachedData = cache.readQuery(
-        isHome
-          ? {
-              query: getNewsFeed,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              }
-            }
-          : {
-              query: GetUserPost,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              }
-            }
-      )
+      const cachedData = cache.readQuery({
+        query: getNewsFeed,
+        variables: {
+          feedQuery: {
+            feedType,
+            page: 0,
+            feedId
+          }
+        }
+      })
 
-      cache.writeQuery(
-        isHome
-          ? {
-              query: getNewsFeed,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              },
+      cache.writeQuery({
+        query: getNewsFeed,
+        variables: {
+          feedQuery: {
+            feedType,
+            page: 0,
+            feedId
+          }
+        },
 
-              data: {
-                fetchMyNewsFeed: {
-                  ...cachedData.fetchMyNewsFeed,
-                  ...cachedData.fetchMyNewsFeed.filter(
-                    (post) => post._id !== _id
-                  )
-                }
-              }
-            }
-          : {
-              query: GetUserPost,
-              variables: {
-                userId: loggedinUser._id,
-                page: 0
-              },
-              data: {
-                getDicussionUniWall: {
-                  ...cachedData.getDicussionUniWall,
-                  Posts: cachedData.getDicussionUniWall.filter(
-                    (post) => post._id !== _id
-                  )
-                }
-              }
-            }
-      )
+        data: {
+          fetchFeedV2: {
+            ...(cachedData.fetchFeedV2.data || []),
+            ...cachedData.fetchFeedV2.data.filter((post) => post._id !== _id)
+          }
+        }
+      })
     },
 
     onCompleted: (data) => {
-      console.log("delete called")
       const { deletePost } = data
       if (deletePost.success) {
         // refetch posts
@@ -132,3 +115,4 @@ const ThreadOptions = ({ loggedinUser, username, _id, setEditable }) => {
 }
 
 export default ThreadOptions
+

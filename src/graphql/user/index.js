@@ -189,8 +189,8 @@ export const AddComment = gql`
     }
   `,
   EditPost = gql`
-    mutation editPost($postId: String!, $postText: String, $postImage: String) {
-      editPost(postId: $postId, postText: $postText, postImage: $postImage) {
+    mutation editPost($postId: String!, $postText: String!) {
+      editPost(postId: $postId, postText: $postText) {
         status {
           success
           message
