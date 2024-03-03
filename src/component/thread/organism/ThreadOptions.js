@@ -37,7 +37,6 @@ const ThreadOptions = ({
           }
         }
       })
-
       cache.writeQuery({
         query: getNewsFeed,
         variables: {
@@ -60,7 +59,6 @@ const ThreadOptions = ({
     onCompleted: (data) => {
       const { deletePost } = data
       if (deletePost.success) {
-        // refetch posts
         setShowOptions(false)
         present({
           duration: 3000,
