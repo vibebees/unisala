@@ -31,6 +31,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
       feedQuery: {
         feedType,
         feedId,
+        pageSize: 2,
         page: 0
       }
     },
@@ -49,6 +50,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
       variables: {
         feedQuery: {
           page: page + 1,
+          pageSize: 2,
           feedId,
           feedType
         }
@@ -69,7 +71,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
     })
     setTimeout(() => {
       e.target.complete()
-    }, 500)
+    }, 1000)
   }
 
   const Post = ({ post }) => {
@@ -290,9 +292,10 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
           )}
         </div>
       ))}
-      <IonInfiniteScroll threshold="100px" onIonInfinite={loadMore}>
+      <IonInfiniteScroll threshold="50px" onIonInfinite={loadMore}>
         <IonInfiniteScrollContent loadingText="loading..." />
       </IonInfiniteScroll>
     </div>
   )
 }
+
