@@ -60,14 +60,14 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
         return {
           ...prev,
           fetchFeedV2: {
-            ...prev.fetchFeedV2,
+            ...prev?.fetchFeedV2,
             data: [
-              ...prev.fetchFeedV2.data,
-              ...fetchMoreResult.fetchFeedV2.data
+              ...(prev?.fetchFeedV2?.data || []),
+              ...(fetchMoreResult?.fetchFeedV2?.data || [])
             ]
           }
         }
-      }
+    }
     })
     setTimeout(() => {
       e.target.complete()
@@ -90,7 +90,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
           allProps={allProps}
           feedType={feedType}
           feedId={feedId}
-          key={post._id}
+          key={post?._id || post}
         />
       </div>
     )
@@ -99,7 +99,6 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const University = ({ post }) => {
     const { elevatorInfo } = post
     const { studentCharges } = post
-    console.log({ studentCharges })
     const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
     return (
       <IonCard
@@ -265,37 +264,41 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   }
 
   return (
-    <div className="  ">
-      {Posts?.map((post) => (
-        <div className="mt-5" key={post._id}>
-          {post.type === "post" && <Post post={post} key={post._id} />}
-          {post.type === "university" && (
-            <University post={post} key={post._id} />
-          )}
-          {post.type === "suggestedSpace" && (
-            <SuggestedSpace
-              data={post?.suggestedSpace?.spaces}
-              post={post}
-              title={"Suggested Space"}
-              key={post._id}
-              type="space"
-            />
-          )}
-          {post.type === "suggestedOrgs" && (
-            <SuggestedSpace
-              data={post?.suggestedOrgs?.spaces}
-              post={post}
-              title={"Suggested Orgs"}
-              key={post._id}
-              type="org"
-            />
-          )}
-        </div>
-      ))}
+    <div>
+      {Posts?.map((post, index) => {
+        const keyBase = `post-${index}`
+        return (
+          <div className="mt-5" key={post._id || keyBase}>
+            {post.type === "post" && <Post post={post} index={index} />}
+            {post.type === "university" && (
+              <University post={post} key={`university-${keyBase}`} />
+            )}
+            {post.type === "suggestedSpace" && (
+              <SuggestedSpace
+                data={post?.suggestedSpace?.spaces}
+                post={post}
+                title={"Suggested Space"}
+                key={`suggestedSpace-${keyBase}`}
+                type="space"
+              />
+            )}
+            {post.type === "suggestedOrgs" && (
+              <SuggestedSpace
+                data={post?.suggestedOrgs?.spaces}
+                post={post}
+                title={"Suggested Orgs"}
+                key={`suggestedOrgs-${keyBase}`}
+                type="org"
+              />
+            )}
+          </div>
+        )
+      })}
       <IonInfiniteScroll threshold="50px" onIonInfinite={loadMore}>
-        <IonInfiniteScrollContent loadingText="loading..." />
+        <IonInfiniteScrollContent loadingText="Loading more posts..." />
       </IonInfiniteScroll>
     </div>
   )
+
 }
 
