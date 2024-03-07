@@ -1,12 +1,16 @@
 import React from "react"
 import Table from "component/TableCard/template/Table"
+import Typography from "component/ui/Typography"
 
 const ChargeTable = ({ allProps }) => {
   const { level } = allProps
 
   return (
     <div className="w-full">
-      <h2 className="!text-neutral-800 font-semibold">{level}</h2>
+      <Typography variant="h2" className="px-2 text-neutral-900 font-semibold">
+        {level}
+      </Typography>
+
       <Table allProps={allProps} />
     </div>
   )

@@ -8,8 +8,8 @@ const ApplicationCharge = ({ allProps }) => {
   const { studentCharges } = allProps
 
   return (
-    <IonGrid>
-      <IonCol className="w-full flex justify-start gap-4 mt-3">
+    <IonGrid className="ion-no-margin ion-no-padding">
+      <IonCol className="w-full flex justify-start gap-4 mt-2 ion-no-margin">
         <IonRow className=" flex flex-col gap-2">
           <SingleApplicationChargeLabel
             data={studentCharges.combinedChargeForRoomAndBoard}

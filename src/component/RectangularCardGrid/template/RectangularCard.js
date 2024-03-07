@@ -1,7 +1,8 @@
 import React from "react"
-import { IonCard, IonGrid, IonText } from "@ionic/react"
- import SingleCard from "../molecules/SingleCard"
-import {CardHeader} from "component/Reusable/cardHeader"
+import { IonCard, IonGrid } from "@ionic/react"
+import SingleCard from "../molecules/SingleCard"
+import { CardHeader } from "component/Reusable/cardHeader"
+import Typography from "component/ui/Typography"
 
 const RectangularCard = ({ allProps }) => {
   const { data, year } = allProps
@@ -17,9 +18,10 @@ const RectangularCard = ({ allProps }) => {
 
       <IonGrid className="ion-padding w-full shadow-none">
         <div className="bg-white h-full p-4 rounded-lg ">
-          <h2 className="text-xl font-medium mb-4 pl-2">
+          <Typography variant="h3" className="font-medium text-base">
             Financial Aid Information for {year}
-          </h2>
+          </Typography>
+          <h2 className="text-xl font-medium mb-4 pl-2"></h2>
           <IonGrid className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <SingleCard
               allProps={{

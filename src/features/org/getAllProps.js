@@ -60,9 +60,6 @@ export const getAllProps = ({
     parentId = orgData?.parentId // this could be null as the current space could be parent in itself
   let tags = []
 
-  console.log({
-    getTopOrgSpace
-  })
   const configSegment = {
       options: [
         {

@@ -7,6 +7,7 @@ import { CreateAPostCard } from "../../component/post/template"
 import PreLoader from "../../component/preloader"
 import Tabs from "../../component/tabs"
 import Invitation from "./Invitation/Index"
+import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
 import { Members } from "./org/members"
@@ -62,7 +63,12 @@ export const Spaces = ({ allProps }) => {
 
   const Feed = () => (
     <div className="mt-4">
-      <CreateAPostCard allProps={allProps} />
+      <NotJoinedWrapper
+        isJoined={orgData?.isJoined}
+        message="Please Join the orgranization to post"
+      >
+        <CreateAPostCard allProps={allProps} />
+      </NotJoinedWrapper>
       <InfiniteFeed feedType="specificOrg" feedId={orgId} />
     </div>
   )

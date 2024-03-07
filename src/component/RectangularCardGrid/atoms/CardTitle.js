@@ -1,16 +1,12 @@
 import React from "react"
 import { IonText } from "@ionic/react"
+import Typography from "component/ui/Typography"
 
 const CardTitle = ({ title }) => {
   return (
-    <IonText
-      style={{
-        textAlign: "center"
-      }}
-      color="dark"
-    >
-      <h2 className="text-sm">{title}</h2>
-    </IonText>
+    <Typography variant="h4" className="font-normal text-center">
+      {title}
+    </Typography>
   )
 }
 
