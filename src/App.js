@@ -21,6 +21,7 @@ import { getUserProfile } from "store/action/userProfile"
 import jwtDecode from "jwt-decode"
 import appProps from "./appProps"
 import ReactGA from "react-ga4"
+import { clarity } from "react-microsoft-clarity"
 
 /* Theme variables */
 
@@ -28,8 +29,9 @@ const R = require("ramda")
 const axios = require("axios")
 const lib = {}
 const TrackingId = "G-KDJCCKHWYC"
+const ClarityId = "lbvlws9sey"
 ReactGA.initialize(TrackingId)
-
+clarity.init(ClarityId)
 lib.R = R
 lib.axios = axios
 setupIonicReact()
