@@ -1104,6 +1104,15 @@ export const AddComment = gql`
           description
           profileImage
           coverImage
+          admin {
+            _id
+            firstName
+            lastName
+            picture
+            username
+          }
+          role
+          isJoined
         }
       }
     }
@@ -1546,4 +1555,3 @@ export const AddComment = gql`
       }
     }
   `
-

@@ -6,8 +6,9 @@ import { SpaceRole } from "utils/lib/SpaceRoles"
 import Header from "../atoms/Header"
 import SendButton from "../atoms/SendButton"
 import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
+import NotJoinedWrapper from "features/org/NotJoinedWrapper"
 
-const SingleInvitation = ({ orgId, role }) => {
+const SingleInvitation = ({ orgId, role, isJoined }) => {
   const [email, setEmail] = React.useState("")
   const [invitationType, setInvitationType] = React.useState("")
   const [present, dismiss] = useIonToast()
@@ -81,15 +82,19 @@ const SingleInvitation = ({ orgId, role }) => {
             admin: role === SpaceRole.ADMIN || role === SpaceRole.MEMBER
           }}
         />
-        <SendButton
-          loading={loading}
-          onclick={handleSendInvitation}
-          label="Send Invitation"
-        />
+        <NotJoinedWrapper
+          isJoined={isJoined}
+          message="Please Join the Organization to send Invitation to others"
+        >
+          <SendButton
+            loading={loading}
+            onclick={handleSendInvitation}
+            label="Send Invitation"
+          />
+        </NotJoinedWrapper>
       </IonCard>
     </div>
   )
 }
 
 export default SingleInvitation
-
