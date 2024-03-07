@@ -74,7 +74,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "serve":"ionic serve --port=3000",
+    "serve": "ionic serve --port=3000",
     "build": "GENERATE_SOURCEMAP=true set \"CI=false\" && react-scripts build",
     "build-win": "set CI=false&&react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
@@ -111,6 +111,7 @@
     "@capacitor/cli": "^4.0.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.33.0",
+    "source-map-explorer": "^2.5.3",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",

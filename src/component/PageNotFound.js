@@ -1,9 +1,6 @@
 import {
   IonButton,
-  IonCol,
   IonContent,
-  IonItem,
-  IonPage,
   IonRow,
   IonText
 } from "@ionic/react"
