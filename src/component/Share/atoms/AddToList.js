@@ -11,13 +11,15 @@ import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
 import CreateListModal from "component/List/atoms/CreateListModal"
 import Modal from "component/Reusable/Modal"
+import { useSelector } from "react-redux"
 const AddToList = ({ allProps }) => {
   const { link, showAddList = true, unitId = null } = allProps
+  const { user } = useSelector((state) => state.userProfile)
   const [isOpen, setIsOpen] = React.useState(false)
   const [lists, setLists] = React.useState([])
   const [present] = useIonToast()
   const getAllLists = async () => {
-    const res = await authInstance.get(`${userServer}/get-all-list`)
+    const res = await authInstance.get(`${userServer}/get-all-list/${user._id}`)
     if (res.data.success) {
       let newData = res.data.data.map((list) => {
         return {

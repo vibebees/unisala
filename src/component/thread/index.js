@@ -104,6 +104,7 @@ const Thread = ({ thread, feedType, feedId }) => {
             setReply={setReply}
             postId={_id}
             isReply={false}
+            singlePost={true}
             setNumberOfComments={setNumberOfComments}
             reply={reply}
           />

@@ -48,8 +48,8 @@ function ReplyInput({
           __typename: isReply
             ? "Comment"
             : singlePost
-            ? "PostComment"
-            : "PostNewsFeed",
+            ? "PostNewsFeed"
+            : "Post",
           id: postId
         }),
         fields: {
@@ -88,7 +88,7 @@ function ReplyInput({
               __typename: "commentList",
               success: true,
               message: "comments found",
-              comments: [addComment.data, ...(post.commentList.comments || [])]
+              comments: [addComment.comment, ...(post.commentList.data || [])]
             }
           }
         })
@@ -187,4 +187,3 @@ function ReplyInput({
 }
 
 export default ReplyInput
-

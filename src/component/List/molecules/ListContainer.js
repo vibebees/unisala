@@ -5,9 +5,9 @@ import { userServer } from "servers/endpoints"
 import { ListContext } from ".."
 
 const ListContainer = () => {
-  const { setLists, lists } = useContext(ListContext)
+  const { setLists, lists, userId = "", isMyProfile } = useContext(ListContext)
   const getAllLists = async () => {
-    const res = await authInstance.get(`${userServer}/get-all-list`)
+    const res = await authInstance.get(`${userServer}/get-all-list/${userId}`)
     if (res.data.success) {
       setLists(res.data.data)
     }
@@ -20,7 +20,9 @@ const ListContainer = () => {
     <div>
       {lists &&
         lists.length > 0 &&
-        lists.map((list, index) => <SingleList key={index} {...list} />)}
+        lists.map((list, index) => (
+          <SingleList key={index} {...list} isMyProfile={isMyProfile} />
+        ))}
     </div>
   )
 }
