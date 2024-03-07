@@ -29,7 +29,7 @@ const R = require("ramda")
 const axios = require("axios")
 const lib = {}
 const TrackingId = "G-KDJCCKHWYC"
-const ClarityId = "lbvlws9sey"
+const ClarityId = "lc6yzoxipb"
 ReactGA.initialize(TrackingId)
 clarity.init(ClarityId)
 lib.R = R
