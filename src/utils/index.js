@@ -5,6 +5,9 @@ import {
   updateUnreadMessages
 } from "../store/action/userProfile"
 
+import { clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
 export const lastMsgWasSentByMe = (message, user) => {
     return message?.senderId === user?._id
   },
@@ -111,3 +114,7 @@ export const lastMsgWasSentByMe = (message, user) => {
       }
     }
   }
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs))
+}

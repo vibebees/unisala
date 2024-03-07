@@ -15,12 +15,16 @@ import Modal from "component/Reusable/Modal"
 import SeeMoreButton from "component/Reusable/Buttons/SeeMoreButton"
 import ListItemValue from "component/Reusable/ListValueItem"
 import ShareButton from "component/Share"
+import Typography from "component/ui/Typography"
 
 export const BioDetails = ({ allProps }) => {
   const { width, uniData, handleResize } = allProps
   const link =
     window.location.origin +
-    `/university/${uniData?.elevatorInfo?.name?.trim()?.split(" ")?.join("%20")}`
+    `/university/${uniData?.elevatorInfo?.name
+      ?.trim()
+      ?.split(" ")
+      ?.join("%20")}`
 
   const Iconstyle = {
     color: "grey",
@@ -79,24 +83,19 @@ export const BioDetails = ({ allProps }) => {
     <IonGrid className={width > 720 ? "ion-padding" : ""}>
       <IonRow>
         <IonCol>
-          <IonCardHeader className="UniProfile-Header">
-            <h1 className="font-medium text-lg">
-              {uniData?.elevatorInfo?.name}
-            </h1>
-          </IonCardHeader>
+          <Typography
+            variant="h1"
+            className="font-semibold max-md:text-center max-md:py-3 text-xl mt-3  "
+          >
+            {uniData?.elevatorInfo?.name}
+          </Typography>
 
-          <IonCardContent>
-            <p
-              style={{
-                maxWidth: "800px",
-                minWidth: "250px"
-              }}
-            >
-              {uniData?.elevatorInfo?.bio}
-            </p>
-          </IonCardContent>
-          <div className="inline-flex">
-            <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
+          <Typography variant="p" className=" py-1 mb-2 max-md:text-center">
+            {uniData?.elevatorInfo?.bio}
+          </Typography>
+
+          <div className="inline-flex max-md:justify-center  w-full">
+            <IonCardContent style={{ display: "flex", padding: "0 0" }}>
               <IonIcon
                 style={{
                   fontSize: "20px",
@@ -105,9 +104,10 @@ export const BioDetails = ({ allProps }) => {
                 className="ion-icon"
                 icon={location}
               />
-              <p style={{ alignSelf: "center" }}>
+
+              <Typography variant="p" className="px-1">
                 {uniData?.elevatorInfo?.address?.city}
-              </p>
+              </Typography>
             </IonCardContent>
             <IonCardContent style={{ display: "flex", padding: "0 12px" }}>
               <IonIcon
@@ -119,9 +119,9 @@ export const BioDetails = ({ allProps }) => {
                 className="ion-icon"
                 icon={heart}
               />
-              <p style={{ alignSelf: "center" }}>
+              <Typography variant="p" className="px-1">
                 {useRating(uniData?.reviews || []) || "N/A"} Review
-              </p>
+              </Typography>
             </IonCardContent>
             <IonCardContent
               className="items-center gap-8"
