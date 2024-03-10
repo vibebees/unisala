@@ -445,6 +445,7 @@ export const AddComment = gql`
           role
           verified
           location
+          studyLevel
           oneLinerBio
           doj
           blocked

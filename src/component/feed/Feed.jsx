@@ -4,26 +4,32 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
+  IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonItem,
+  IonItemDivider,
   IonRow,
   IonText
 } from "@ionic/react"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 import { Event } from "component/events"
 import Thread from "component/thread"
-import { getNewsFeed } from "graphql/user"
+import { getNewsFeed, getUserGql } from "graphql/user"
 import { location, schoolOutline } from "ionicons/icons"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
-
+import { defaultUniImages } from "./default.images"
+import {Typography} from "component/ui"
+import { CardHeader } from "component/Reusable/cardHeader"
 const Post = ({ post, allProps, feedType, feedId }) => {
   return (
     <div
@@ -46,7 +52,8 @@ const Post = ({ post, allProps, feedType, feedId }) => {
   )
 }
 
-const University = ({ post }) => {
+const University = ({ post, studyLevel }) => {
+  const { user } = useSelector((state) => state.userProfile)
   const { elevatorInfo } = post
   const { studentCharges } = post
   const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
@@ -59,25 +66,44 @@ const University = ({ post }) => {
       }}
       className="max-md:border-none ion-no-margin"
     >
+
       <IonCardHeader>
-        <IonCardTitle>Suggested University</IonCardTitle>
+
+        <IonCardSubtitle >Suggested University</IonCardSubtitle>
+
       </IonCardHeader>
       <IonGrid>
         <Link to={`/university/${elevatorInfo.name}`}>
           <IonCardContent>
             <div className="grid grid-cols-4 gap-x-4">
-              {elevatorInfo.pictures.slice(0, 4).map((img) => (
-                <ImageWithLoader
-                  key={img}
-                  className={"object-cover h-48"}
-                  src={img}
-                />
-              ))}
+              {elevatorInfo?.pictures?.length > 0
+                ? elevatorInfo.pictures
+                    .slice(0, 4)
+                    .map((img) => (
+                      <ImageWithLoader
+                        key={img}
+                        className={"object-cover h-48"}
+                        src={img}
+                      />
+                    ))
+                : defaultUniImages
+                    .slice(0, 4)
+                    .map((img) => (
+                      <ImageWithLoader
+                        key={img.small}
+                        className={"object-cover h-48"}
+                        src={img.full}
+                        alt={img.alts}
+                      />
+                    ))}
             </div>
             <div className="mt-4">
-              <IonText color="dark">
-                <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
-              </IonText>
+              <IonItem>
+                <IonText color="dark">
+                  <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
+                </IonText>
+              </IonItem>
+              <IonItemDivider/>
               <IonRow
                 className="ion-no-padding gap-1 items-center h-fit mt-2"
                 lines="none"
@@ -214,6 +240,14 @@ const SuggestedSpace = ({ data, title, type }) => {
 
 export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const { user } = useSelector((state) => state.userProfile)
+  const { data: userInfoData } = useQuery(getUserGql, {
+    variables: {
+      username: user?.username
+    },
+    context: {
+      server: USER_SERVICE_GQL
+    }
+  })
 
   const [page, setPage] = useState(0)
   const { data, loading, fetchMore } = useQuery(getNewsFeed, {
@@ -265,9 +299,7 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const events = Posts?.filter(
     (post) =>
       post.type === "event" && post.event !== null && post.event !== undefined
-  )
-    ?.slice(0, 4)
-    ?.map((post) => post.event)
+  )?.map((post) => post.event)
   return (
     <div>
       <Event events={events} />
@@ -286,7 +318,11 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
               />
             )}
             {post.type === "university" && (
-              <University post={post} key={`university-${keyBase}`} />
+              <University
+                studyLevel={userInfoData?.getUser?.user?.studyLevel}
+                post={post}
+                key={`university-${keyBase}`}
+              />
             )}
             {post.type === "suggestedSpace" && (
               <SuggestedSpace
