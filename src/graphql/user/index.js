@@ -888,6 +888,9 @@ export const AddComment = gql`
             isRegistered
             address
             eventDate
+            interestedUsers {
+              userId
+            }
             images
           }
           tags {

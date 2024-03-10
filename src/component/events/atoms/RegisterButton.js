@@ -5,11 +5,11 @@ import { useState } from "react"
 import { useSelector } from "react-redux"
 import { USER_SERVICE_GQL } from "servers/types"
 
-const RegisterButton = ({ eventId, event }) => {
-  const { isRegistered } = event
+const RegisterButton = ({ event }) => {
   const { user } = useSelector((store) => store?.userProfile)
+
   const [isRegisteredUser, setIsRegisteredUser] = useState(
-    Boolean(isRegistered)
+    event.interestedUsers.find((u) => u?.userId === user?._id)
   )
   const [present, dismiss] = useIonToast()
   const [RegisterUnRegisterUser, { loading }] = useMutation(RegisterUserEvent, {
@@ -58,7 +58,7 @@ const RegisterButton = ({ eventId, event }) => {
       RegisterUnRegisterUser({
         variables: {
           userId: user._id,
-          eventId,
+          eventId: event._id,
           type: "unregistered"
         }
       })
