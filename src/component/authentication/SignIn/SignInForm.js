@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react"
-import { IonButton, IonSpinner, IonRow, useIonToast } from "@ionic/react"
-
+import { useState } from "react"
+import { IonSpinner, IonRow, useIonToast } from "@ionic/react"
+import { Typography, Button } from "component/ui"
 import AuthInput from "../AuthInput"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
 import { validateSignIn } from "utils/components/validate"
 import { loginUser } from "store/action/authenticationAction"
-import { Link } from "react-router-dom"
 
-const SignInForm = ({ setauth, setShowSignup = null }) => {
+const SignInForm = ({
+  setauth,
+  setShowSignup = null,
+  setActiveNavDrop = () => {}
+}) => {
   const params = new URLSearchParams(window.location.search)
   const [input, setInput] = useState({
     email: "",
@@ -37,6 +40,7 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
           history,
           setLoading,
           present,
+          setActiveNavDrop,
           redirectUrl: params.get("uni")
             ? params.get("uni") + `?unitId=${params.get("unitId")}`
             : null
@@ -72,23 +76,25 @@ const SignInForm = ({ setauth, setShowSignup = null }) => {
         />
       </div>
       <div className="auth-policy">
-        <p
+        <Typography
           style={{ color: "#3880ff", cursor: "pointer" }}
           onClick={() => {
             setauth({ state: "emailVerify" })
           }}
+          variant="p"
         >
           Forgot Password?
-        </p>
+        </Typography>
       </div>
-      <button
+      <Button
         disabled={loading}
         type="submit"
+        shape="round"
         onSubmit={handleSubmit}
-        className="block text-center bg-blue-600 w-full outline-none text-sm text-white uppercase rounded-2xl tracking-wide py-2 text-opacity-90 hover:opacity-90"
+        className="block text-center  w-full outline-none text-sm text-white uppercase rounded-2xl tracking-wide  text-opacity-90 hover:opacity-90"
       >
         {loading ? <IonSpinner></IonSpinner> : "Login"}
-      </button>
+      </Button>
 
       <IonRow
         onClick={() => {

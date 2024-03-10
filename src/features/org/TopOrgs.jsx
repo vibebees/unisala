@@ -1,6 +1,7 @@
-import { IonAvatar, IonItem, IonLabel } from "@ionic/react"
+import { IonAvatar, IonItem } from "@ionic/react"
 import React from "react"
 import { Link } from "react-router-dom"
+import { Typography } from "component/ui"
 
 const TopOrgs = ({ topOrgs }) => {
   return (
@@ -23,9 +24,9 @@ const TopOrgs = ({ topOrgs }) => {
                 }
               />
             </IonAvatar>
-            <IonLabel className="ion-text-wrap">
-              <h2 className="capitalize">{item.name}</h2>
-            </IonLabel>
+            <Typography color="dark" className="capitalize">
+              {item.name}
+            </Typography>
           </IonItem>
         </Link>
       ))}

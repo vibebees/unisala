@@ -8,7 +8,7 @@ import clsx from "clsx"
 import LoginText from "./LoginText"
 import AuthTemplate from "./template/AuthTemplate"
 
-const Authentication = () => {
+const Authentication = ({ setActiveNavDrop = () => {} }) => {
   const [showSignup, setShowSignup] = useState(false)
   const [auth, setauth] = useState({
     state: "signin",
@@ -38,7 +38,12 @@ const Authentication = () => {
           auth={auth}
           setauth={setauth}
         >
-          <SignIn setauth={setauth} auth={auth} setShowSignup={setShowSignup} />
+          <SignIn
+            setauth={setauth}
+            auth={auth}
+            setActiveNavDrop={setActiveNavDrop}
+            setShowSignup={setShowSignup}
+          />
         </AuthTemplate>
         {width > 764 && auth.state !== "welcomeForm" && (
           <AuthTemplate

@@ -16,7 +16,7 @@ export const AuthModal = ({ allProps }) => {
         }
         className="auth-pop "
       >
-        <Authentication />
+        <Authentication setActiveNavDrop={setActiveNavDrop} />
       </IonPopover>
       <div
         style={{

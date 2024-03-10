@@ -13,7 +13,8 @@ export const loginUser = ({
   dismiss,
   setauth,
   history,
-  redirectUrl
+  redirectUrl,
+  setActiveNavDrop
 }) => {
   return (dispatch) => {
     axios
@@ -25,6 +26,7 @@ export const loginUser = ({
             localStorage.setItem("accessToken", res?.data?.accessToken)
           res?.data?.refreshToken &&
             localStorage.setItem("refreshToken", res?.data?.refreshToken)
+          setActiveNavDrop({ profile: false })
 
           dispatch({
             type: USER_LOGIN,
@@ -123,7 +125,8 @@ export const googleAuthAction = ({
   present,
   dismiss,
   credential,
-  redirectUrl
+  redirectUrl,
+  setActiveNavDrop
 }) => {
   return (dispatch) =>
     axios
@@ -144,12 +147,14 @@ export const googleAuthAction = ({
             type: LOGIN,
             payload: res.data
           })
+          setActiveNavDrop({ profile: false })
         }
         if (!res.data.success) {
           dispatch({
             type: USER_LOGIN_ERROR,
             payload: res.data
           })
+
           present({
             duration: 3000,
             message: res.data.message,
