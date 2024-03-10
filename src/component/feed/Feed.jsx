@@ -7,6 +7,7 @@ import {
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
@@ -22,7 +23,8 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
-
+import {defaultUniImages} from "./default.images"
+import index from "component/tabs"
 
 const Post = ({ post, allProps, feedType, feedId}) => {
   return (
@@ -47,117 +49,55 @@ const Post = ({ post, allProps, feedType, feedId}) => {
 }
 
 const University = ({ post }) => {
-  const { elevatorInfo } = post
-  const { studentCharges } = post
+  const { elevatorInfo, studentCharges } = post
   const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
   return (
-    <IonCard
-      style={{
-        width: "100%",
-        marginTop: "10px"
-        // borderTop: "1px solid #e0e0e0"
-      }}
-      className="max-md:border-none ion-no-margin"
-    >
-      <IonCardHeader>
-        <IonCardTitle>Suggested University</IonCardTitle>
-      </IonCardHeader>
+    <IonCard className="mt-2.5 shadow-lg max-w-md mx-auto">
+
       <IonGrid>
-        <Link to={`/university/${elevatorInfo.name}`}>
+        <Link to={`/university/${elevatorInfo.name}`} className="no-underline">
           <IonCardContent>
-            <div className="grid grid-cols-4 gap-x-4">
-              {elevatorInfo.pictures.slice(0, 4).map((img) => (
-                <ImageWithLoader
-                  key={img}
-                  className={"object-cover h-48"}
-                  src={img}
-                />
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+              {elevatorInfo?.pictures.slice(0, 4).map((img) => {
+                const randomImage = defaultUniImages[Math.floor(Math.random() * defaultUniImages.length)]
+                  if (img === "") {
+                    return <ImageWithLoader key={index} src= {randomImage} alt="university" />
+                  } else {
+                    return <ImageWithLoader key={index} src={img} alt="university" />
+                  }
+              })}
             </div>
-            <div className="mt-4">
-              <IonText color="dark">
-                <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
-              </IonText>
-              <IonRow
-                className="ion-no-padding gap-1 items-center h-fit mt-2"
-                lines="none"
-              >
-                <IonIcon
-                  className="ion-icon leading-none mt-0 text-primar text-lg"
-                  icon={location}
-                />
-                <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
-                  {formattedAddress}
-                </IonText>
-              </IonRow>
-              <IonRow className="mt-4">
-                <IonText className="text-[#55D283] font-semibold">
-                  Own Type: {elevatorInfo.ownType}
-                </IonText>
-              </IonRow>
-              <IonRow className="mt-4 font-semibold">
-                <IonText className="text-blue-600 font-semibold">
-                  Tags: {elevatorInfo?.tags?.join(", ")}
-                </IonText>
-              </IonRow>
+            <div className="mt-4 px-4">
+              <IonHeader color="dark">
+                <h2 className="text-2xl font-bold text-gray-800">{elevatorInfo.name}</h2>
+              </IonHeader>
+              <IonRow>
+                <IonCol>
+              <IonIcon icon={location} className="text-primary mr-2" />
 
-              <IonRow className="mt-4 font-semibold items-center space-x-2 ">
-                <IonIcon
-                  className="ion-icon text-primar text-lg"
-                  icon={schoolOutline}
-                />
-                <IonCol className="p-0">
-                  <IonText className="text-red-600 font-semibold">
-                    Graduate Application Fee: $
-                    {studentCharges?.graduateApplicationFee ?? "N/A"}
-                  </IonText>
                 </IonCol>
-                <IonCol className="p-0">
-                  <IonText className="text-blue-600 font-semibold">
-                    Undergradutate Application Fee: $
-                    {studentCharges?.undergraduateApplicationFee ?? "N/A"} 📚
-                  </IonText>
-                </IonCol>
-              </IonRow>
 
-              <IonRow className="mt-4 text-green-600">
                 <IonCol>
-                  {studentCharges?.graduate?.inState && (
-                    <IonText className=" font-semibold">
-                      Gradutate In-State Tuition: $
-                      {studentCharges?.graduate?.inState?.tuition ?? "N/a"}
-                    </IonText>
-                  )}
-                </IonCol>
-                <IonCol>
-                  {studentCharges?.graduate?.outOfState && (
-                    <IonText className=" font-semibold">
-                      Gradutate Out-State Tuition: $
-                      {studentCharges?.graduate?.outOfState?.tuition ?? "N/a"}
-                    </IonText>
-                  )}
+                {formattedAddress}
                 </IonCol>
               </IonRow>
-              <IonRow className="text-yellow-500">
-                <IonCol>
-                  {studentCharges?.undergraduate?.inState && (
-                    <IonText className=" font-semibold">
-                      Undergradutate In-State Tuition: $
-                      {studentCharges?.undergraduate?.inState?.tuition ??
-                        "N/a"}
-                    </IonText>
-                  )}
-                </IonCol>
-                <IonCol>
-                  {studentCharges?.undergraduate?.outOfState && (
-                    <IonText className=" font-semibold">
-                      Undergradutate Out-State Tuition: $
-                      {studentCharges?.undergraduate?.outOfState?.tuition ??
-                        "N/a"}
-                    </IonText>
-                  )}
-                </IonCol>
-              </IonRow>
+              <p className="font-semibold text-gray-600"></p>
+              <div className="mt-4">
+                <p className="text-primary font-semibold">Own Type: {elevatorInfo.ownType}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-blue-600 font-semibold">Tags: {elevatorInfo?.tags?.join(", ")}</p>
+              </div>
+              <div className="flex flex-wrap justify-between items-center mt-4">
+                <p className="text-red-600 font-semibold">Graduate Application Fee: ${studentCharges?.graduateApplicationFee ?? "N/A"}</p>
+                <p className="text-blue-600 font-semibold">Undergraduate Application Fee: ${studentCharges?.undergraduateApplicationFee ?? "N/A"} 📚</p>
+              </div>
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <p className="font-semibold text-green-600">Graduate In-State Tuition: ${studentCharges?.graduate?.inState?.tuition ?? "N/A"}</p>
+                <p className="font-semibold text-green-600">Graduate Out-State Tuition: ${studentCharges?.graduate?.outOfState?.tuition ?? "N/A"}</p>
+                <p className="font-semibold text-yellow-500">Undergraduate In-State Tuition: ${studentCharges?.undergraduate?.inState?.tuition ?? "N/A"}</p>
+                <p className="font-semibold text-yellow-500">Undergraduate Out-State Tuition: ${studentCharges?.undergraduate?.outOfState?.tuition ?? "N/A"}</p>
+              </div>
             </div>
           </IonCardContent>
         </Link>
