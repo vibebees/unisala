@@ -4,12 +4,16 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
+  IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonItem,
+  IonItemDivider,
   IonRow,
   IonText
 } from "@ionic/react"
@@ -24,7 +28,8 @@ import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
 import { defaultUniImages } from "./default.images"
-
+import {Typography} from "component/ui"
+import { CardHeader } from "component/Reusable/cardHeader"
 const Post = ({ post, allProps, feedType, feedId }) => {
   return (
     <div
@@ -61,8 +66,11 @@ const University = ({ post, studyLevel }) => {
       }}
       className="max-md:border-none ion-no-margin"
     >
+
       <IonCardHeader>
-        <IonCardTitle className="text-lg">Suggested University</IonCardTitle>
+
+        <IonCardSubtitle >Suggested University</IonCardSubtitle>
+
       </IonCardHeader>
       <IonGrid>
         <Link to={`/university/${elevatorInfo.name}`}>
@@ -90,9 +98,12 @@ const University = ({ post, studyLevel }) => {
                     ))}
             </div>
             <div className="mt-4">
-              <IonText color="dark">
-                <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
-              </IonText>
+              <IonItem>
+                <IonText color="dark">
+                  <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
+                </IonText>
+              </IonItem>
+              <IonItemDivider/>
               <IonRow
                 className="ion-no-padding gap-1 items-center h-fit mt-2"
                 lines="none"
@@ -115,7 +126,7 @@ const University = ({ post, studyLevel }) => {
                   Tags: {elevatorInfo?.tags?.join(", ")}
                 </IonText>
               </IonRow>
-              {}
+
               <IonRow className="mt-4 font-semibold items-center space-x-2 ">
                 <IonIcon
                   className="ion-icon text-primar text-lg"
