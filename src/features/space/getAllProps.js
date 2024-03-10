@@ -17,7 +17,6 @@ export const getAllProps = ({
 }) => {
   useDocTitle("Unisala")
 
-  console.log({ data })
 
   const { getTopActiveSpaces } = topSpaceData || {},
     [showTopScrollbtn, setShowTopScrollbtn] = useState(false),

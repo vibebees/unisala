@@ -337,7 +337,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   })
 
-  console.log({ data })
 
   const handleSubmit = (e) => {
     e.preventDefault()

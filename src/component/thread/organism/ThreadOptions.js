@@ -19,7 +19,6 @@ const ThreadOptions = ({
   const [present, dismiss] = useIonToast()
   const isHome = pathname === "/" || pathname === "/home"
 
-  console.log({ feedType, feedId })
   const [deletePost] = useMutation(DeletePost, {
     context: { server: USER_SERVICE_GQL },
     variables: {

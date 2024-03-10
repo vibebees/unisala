@@ -68,8 +68,8 @@ const App = () => {
         <IonApp>
           <IonPage className="text-black">
             <IonReactRouter>
-              {width >= 968 && <DesktopView allProps={allProps} />}
-              {width < 968 && (
+              {width > 968 && <DesktopView allProps={allProps} />}
+              {width <= 968 && (
                 <MobileView
                   allProps={allProps}
                   setCreateAPostPopUp={setCreateAPostPopUp}
