@@ -14,6 +14,7 @@ import {
   IonText
 } from "@ionic/react"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+import { Event } from "component/events"
 import Thread from "component/thread"
 import { getNewsFeed } from "graphql/user"
 import { location, schoolOutline } from "ionicons/icons"
@@ -23,8 +24,7 @@ import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
 
-
-const Post = ({ post, allProps, feedType, feedId}) => {
+const Post = ({ post, allProps, feedType, feedId }) => {
   return (
     <div
       style={{
@@ -143,8 +143,7 @@ const University = ({ post }) => {
                   {studentCharges?.undergraduate?.inState && (
                     <IonText className=" font-semibold">
                       Undergradutate In-State Tuition: $
-                      {studentCharges?.undergraduate?.inState?.tuition ??
-                        "N/a"}
+                      {studentCharges?.undergraduate?.inState?.tuition ?? "N/a"}
                     </IonText>
                   )}
                 </IonCol>
@@ -213,7 +212,6 @@ const SuggestedSpace = ({ data, title, type }) => {
   )
 }
 
-
 export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const { user } = useSelector((state) => state.userProfile)
 
@@ -223,7 +221,6 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
       feedQuery: {
         feedType,
         feedId,
-        pageSize: 2,
         page: 0
       }
     },
@@ -242,7 +239,6 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
       variables: {
         feedQuery: {
           page: page + 1,
-          pageSize: 2,
           feedId,
           feedType
         }
@@ -259,20 +255,36 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
             ]
           }
         }
-    }
+      }
     })
     setTimeout(() => {
       e.target.complete()
     }, 1000)
   }
 
+  const events = Posts?.filter(
+    (post) =>
+      post.type === "event" && post.event !== null && post.event !== undefined
+  )
+    ?.slice(0, 4)
+    ?.map((post) => post.event)
   return (
     <div>
+      <Event events={events} />
+
       {Posts?.map((post, index) => {
         const keyBase = `post-${index}`
         return (
           <div className="mt-5" key={post._id || keyBase}>
-            {post.type === "post" && <Post post={post} index={index} allProps ={ allProps} feedType ={feedType} feedId={feedId}/>}
+            {post.type === "post" && (
+              <Post
+                post={post}
+                index={index}
+                allProps={allProps}
+                feedType={feedType}
+                feedId={feedId}
+              />
+            )}
             {post.type === "university" && (
               <University post={post} key={`university-${keyBase}`} />
             )}
@@ -302,6 +314,5 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
       </IonInfiniteScroll>
     </div>
   )
-
 }
 

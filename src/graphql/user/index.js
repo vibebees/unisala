@@ -881,6 +881,15 @@ export const AddComment = gql`
           type
           saved
           videoURL
+          event {
+            _id
+            title
+            description
+            isRegistered
+            address
+            eventDate
+            images
+          }
           tags {
             _id
             name
@@ -1555,3 +1564,4 @@ export const AddComment = gql`
       }
     }
   `
+
