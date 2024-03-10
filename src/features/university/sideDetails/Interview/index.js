@@ -3,24 +3,21 @@ import { IonCard, IonButton } from "@ionic/react"
 import { useQuery } from "@apollo/client"
 import { GetInterviewExperience } from "graphql/user"
 import { USER_SERVICE_GQL } from "servers/types"
-import {CardHeader} from "component/Reusable/cardHeader"
-import {InterviewExperienceCard} from "component/interviewExperienceCard"
-
+import { CardHeader } from "component/Reusable/cardHeader"
+import { InterviewExperienceCard } from "component/interviewExperienceCard"
+import { Button } from "component/ui"
 
 export default function index({ unitId }) {
   const [page, setPage] = useState(1)
   const { data, loading, fetchMore } = useQuery(GetInterviewExperience, {
-    variables: { unitId, page: 1, pageSize: 1 },
-    context: { server: USER_SERVICE_GQL }
-  }),
-  [interviewExperiences, setInterviewExperiences] = useState([])
-
-
+      variables: { unitId, page: 1, pageSize: 1 },
+      context: { server: USER_SERVICE_GQL }
+    }),
+    [interviewExperiences, setInterviewExperiences] = useState([])
 
   useEffect(() => {
     setInterviewExperiences(data?.getInterviewExperience?.interviewExperience)
-  },
-   [data])
+  }, [data])
   const fetchMoreHandler = () => {
     setPage(page + 1)
     fetchMore({
@@ -45,10 +42,7 @@ export default function index({ unitId }) {
   }
 
   return (
-    <IonCard
-      style={{ margin: "15px 0px 0px 0px" }}
-      className="ion-margin-top"
-    >
+    <IonCard style={{ margin: "15px 0px 0px 0px" }} className="ion-margin-top">
       <CardHeader header={"Interview Experience"} />
       <div
         style={{
@@ -68,18 +62,14 @@ export default function index({ unitId }) {
           </h1>
         )}
         {interviewExperiences?.length > 0 &&
-          interviewExperiences.map(
-            (data, index) => {
-              return (
-                <InterviewExperienceCard key={index} data={data} />
-              )
-            }
-          )}
+          interviewExperiences.map((data, index) => {
+            return <InterviewExperienceCard key={index} data={data} />
+          })}
 
         <div className="flex justify-center pb-4">
-          <IonButton size="small" onClick={fetchMoreHandler}>
+          <Button size="small" onClick={fetchMoreHandler}>
             {loading ? "Loading" : "See More"}
-          </IonButton>
+          </Button>
         </div>
       </div>
     </IonCard>

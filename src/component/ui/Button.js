@@ -12,4 +12,4 @@ const Button = forwardRef(({ children, className, ...rest }, ref) => {
 
 Button.displayName = "Button"
 
-export { Button }
+export default Button

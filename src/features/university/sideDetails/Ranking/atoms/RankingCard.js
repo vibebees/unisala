@@ -1,6 +1,6 @@
 import React from "react"
-
 import { IonCol } from "@ionic/react"
+import Typography from "component/ui/Typography"
 
 const RankingCard = ({ item }) => {
   let src
@@ -12,19 +12,22 @@ const RankingCard = ({ item }) => {
   }
 
   return (
-    <IonCol className=" py-3  bg-neutral-100 px-0 shadow-md rounded-md flex justify-center flex-col items-center w-16 overflow-hidden  !shrink-0  ">
-      <div className="w-full h-36 ">
+    <IonCol className=" py-3 max-md:w-full  bg-neutral-100 px-0 shadow-md rounded-md flex justify-center flex-col items-center w-16 overflow-hidden  !shrink-0  ">
+      <div className="w-full h-36 max-md:h-12 ">
         <img src={src} alt="" className="w-full h-full object-contain" />
       </div>
 
       <div>
-        <h3 className="text-center px-5 py-3 leading-5 text-lg !font-medium text-neutral-600">
+        <Typography
+          variant="h3"
+          className="py-2 max-md:py-2 max-md:px-1 max-md:text-xs text-neutral-600 font-semibold text-center px-3"
+        >
           {item.title}
-        </h3>
-        <h2 className=" text-center flex justify-center font-medium text-base items-center">
-          Rank :
-          <p className="text-center pt-1 px-1 text-blue-500">{item.rank}</p>
-        </h2>
+        </Typography>
+
+        <Typography className="text-center">
+          Rank : <span className="text-blue-500 font-medium">{item.rank}</span>
+        </Typography>
       </div>
     </IonCol>
   )

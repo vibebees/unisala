@@ -1,4 +1,5 @@
 import { IonCardContent, IonIcon, IonItem, IonLabel } from "@ionic/react"
+import { Typography } from "component/ui"
 import { barChart } from "ionicons/icons"
 
 export const PollHeader = ({ allProps }) => {
@@ -8,11 +9,12 @@ export const PollHeader = ({ allProps }) => {
       style={{ borderBottom: "1px solid #C4C4C4" }}
       className="flex"
     >
-      <h1>{pollHeader}</h1>
+      <Typography variant="h1">{pollHeader}</Typography>
+
       <IonItem lines="none">
         <IonIcon icon={barChart} />
         <IonLabel className="ion-padding-start">
-          <h2>Poll</h2>
+          <Typography variant="p">Poll</Typography>
         </IonLabel>
       </IonItem>
     </IonCardContent>

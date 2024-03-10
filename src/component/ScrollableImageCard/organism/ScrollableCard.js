@@ -4,6 +4,7 @@ import CustomTrackingLink from "features/analytics/LinkTrack"
 import { chevronBackOutline, chevronForwardOutline } from "ionicons/icons"
 import SingleImageCard from "../molecules/SingleImageCard"
 import "./similarCollege.css"
+import { Typography } from "component/ui"
 
 const ScrollableCard = ({ allProps }) => {
   const { title, data, className } = allProps
@@ -24,7 +25,9 @@ const ScrollableCard = ({ allProps }) => {
   }
   return (
     <IonCardContent className="p-0 ion-no-padding mt-4  ion-no-margin w-full ">
-      <IonText className="text-lg px-12 h-fit py-0  ">{title}</IonText>
+      <Typography variant="h2" className="text-lg px-12 h-fit py-0">
+        {title}
+      </Typography>
       <IonGrid className=" flex ion-no-padding h-full gap-0 ion-no-margin">
         <button
           onClick={handleLeftScrollClick}

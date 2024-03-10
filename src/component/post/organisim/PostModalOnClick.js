@@ -4,7 +4,6 @@ import { useSelector } from "react-redux"
 
 import {
   IonAvatar,
-  IonButton,
   IonButtons,
   IonHeader,
   IonIcon,
@@ -16,7 +15,6 @@ import {
   IonToolbar
 } from "@ionic/react"
 import { arrowBack } from "ionicons/icons"
-import { Button } from "component/ui/Button"
 
 import "../index.css"
 
@@ -26,7 +24,7 @@ import { Avatar } from "component/Avatar"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 import { useHistory, useLocation } from "react-router-dom"
 import Form from "../molecules/Form"
-import Typography from "component/ui/Typography"
+import { Typography, Button } from "component/ui"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
