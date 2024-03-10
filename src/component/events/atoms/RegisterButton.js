@@ -1,18 +1,19 @@
-import React, { useState } from "react"
-import { IonButton, useIonToast, IonSpinner } from "@ionic/react"
 import { useMutation } from "@apollo/client"
+import { IonButton, IonSpinner, useIonToast } from "@ionic/react"
 import { RegisterUserEvent } from "graphql/user"
-import { USER_SERVICE_GQL } from "servers/types"
+import { useState } from "react"
 import { useSelector } from "react-redux"
+import { USER_SERVICE_GQL } from "servers/types"
 
-const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
-  const { isRegistered } = event
+const RegisterButton = ({ event }) => {
   const { user } = useSelector((store) => store?.userProfile)
-  const [isRegisteredUser, setIsRegisteredUser] = useState(isRegistered)
+
+  const [isRegisteredUser, setIsRegisteredUser] = useState(
+    event.interestedUsers.find((u) => u?.userId === user?._id)
+  )
   const [present, dismiss] = useIonToast()
   const [RegisterUnRegisterUser, { loading }] = useMutation(RegisterUserEvent, {
     context: { server: USER_SERVICE_GQL },
-
     onCompleted: (data) => {
       if (data?.registeredUserByEventId?.status?.success) {
         present({
@@ -26,12 +27,9 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
         })
         if (isRegisteredUser) {
           setIsRegisteredUser(false)
-          setIntresedUsers((prev) => prev.slice(1))
         } else {
           setIsRegisteredUser(true)
-          setIntresedUsers((prev) => [...prev, user])
         }
-        // setIntresedUsers((prev) => [...prev, user])
       } else {
         present({
           duration: 3000,
@@ -54,13 +52,13 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
       })
     }
   })
-
+  console.log({ eventId: event._id })
   const handleRegister = () => {
     if (isRegisteredUser) {
       RegisterUnRegisterUser({
         variables: {
           userId: user._id,
-          eventId,
+          eventId: event._id,
           type: "unregistered"
         }
       })
@@ -68,7 +66,7 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
       RegisterUnRegisterUser({
         variables: {
           userId: user._id,
-          eventId
+          eventId: event._id
         }
       })
     }
@@ -88,3 +86,4 @@ const RegisterButton = ({ eventId, event, setIntresedUsers }) => {
 }
 
 export default RegisterButton
+
