@@ -85,6 +85,7 @@ const University = ({ post, studyLevel }) => {
                         key={img.small}
                         className={"object-cover h-48"}
                         src={img.full}
+                        alt={img.alts}
                       />
                     ))}
             </div>
