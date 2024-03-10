@@ -1,16 +1,5 @@
-import { useQuery } from "@apollo/client"
-import {
-  IonCard,
-  IonText,
-  IonCol,
-  IonItem,
-  IonAvatar,
-  IonLabel
-} from "@ionic/react"
-import { Link } from "react-router-dom"
+import { IonCard, IonCol, IonText } from "@ionic/react"
 import CreateSpace from "../../component/createSpace/CreateSpace"
-import TopSpaces from "../../component/TopSpaces/TopSpaces"
-import clsx from "clsx"
 import TopOrgs from "./TopOrgs"
 
 export const screenGreaterThan1000 = ({ title, topOrgs }) => {
@@ -18,14 +7,11 @@ export const screenGreaterThan1000 = ({ title, topOrgs }) => {
   return (
     <>
       <IonCol
-        className=" ion-no-margin ion-no-padding "
-        size="auto"
+        className=" ion-no-margin ion-no-padding bg-red-600 "
         style={{
-          maxWidth: "250px",
           height: "90vh",
           position: "sticky",
-          top: "16px",
-          overflow: "auto"
+          top: "16px"
         }}
       >
         <div className="mt-3">{title === "Top Orgs" && <CreateSpace />}</div>
@@ -44,3 +30,4 @@ export const screenGreaterThan1000 = ({ title, topOrgs }) => {
     </>
   )
 }
+
