@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux"
-import { PostModalOnClick } from "../organisim/PostModalOnClick"
-import { PostCardForClick } from "../organisim/PostCardForClick"
-import { IonCard, IonTitle } from "@ionic/react"
-import { useEffect, useState } from "react"
+import { IonCard } from "@ionic/react"
 import axios from "axios"
-import { userServer } from "servers/endpoints"
-import { useHistory } from "react-router"
 import { usePathName } from "hooks/usePathname"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { useHistory } from "react-router"
+import { userServer } from "servers/endpoints"
+import { PostCardForClick } from "../organisim/PostCardForClick"
+import { PostModalOnClick } from "../organisim/PostModalOnClick"
 export const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
@@ -55,3 +55,4 @@ export const CreateAPostCard = ({ allProps }) => {
     </>
   )
 }
+

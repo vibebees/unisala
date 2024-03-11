@@ -3,7 +3,8 @@ import React from "react"
 import { IonButton, IonCard, IonText } from "@ionic/react"
 import IonWebPop from "./IonWebPop"
 import { useSelector } from "react-redux"
-import {CardHeader} from "component/Reusable/cardHeader"
+import { CardHeader } from "component/Reusable/cardHeader"
+import { Typography, Button } from "component/ui"
 
 const VisitWebsite = () => {
   const [popup, setPopup] = React.useState(false)
@@ -46,25 +47,14 @@ const VisitWebsite = () => {
                         alt=""
                         src="https://cdn-icons.flaticon.com/png/512/954/premium/954574.png?token=exp=1651841888~hmac=257d862bf1dca15bbef3b9ac9a87ee64"
                     /> */}
-            <IonText color="dark">
-              <h3
-                style={{
-                  margin: 0
-                }}
-              >
-                Load our website
-              </h3>
-            </IonText>
-            <IonText>
-              <h6
-                style={{
-                  margin: 0
-                }}
-              >
-                for easy apply
-              </h6>
-            </IonText>
-            <IonButton
+            <Typography variant="h3" className="text-neutral-900">
+              Load our website
+            </Typography>
+
+            <Typography variant="p" className="text-neutral-500">
+              for easy apply
+            </Typography>
+            <Button
               onClick={() => setPopup(true)}
               style={{
                 margin: "10px 0px 0px 0px"
@@ -72,7 +62,7 @@ const VisitWebsite = () => {
               fill="outline"
             >
               Load now
-            </IonButton>
+            </Button>
             <IonWebPop
               setPopup={setPopup}
               urls={uniData?.elevatorInfo?.urls}

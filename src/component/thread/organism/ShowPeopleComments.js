@@ -26,18 +26,24 @@ function ShowOtherComments({
   )
 
   useEffect(() => {
-    getCommentList({
-      variables: {
-        postId,
-        parentId
-      }
-    })
-  }, [postId, parentId])
+    // Check if postId and parentId are not null/undefined before executing the query
+    if (postId !== null && parentId !== null) {
+      getCommentList({
+        variables: {
+          postId,
+          parentId
+        }
+      })
+    }
+  }, [postId, parentId, getCommentList])
+
 
   useEffect(() => {
-    refetch()
-    setRefetchComments(false)
-  }, [refetchComments])
+    if (refetchComments) {
+      refetch()
+      setRefetchComments(false)
+    }
+  }, [refetchComments, refetch])
 
   if (loading) return <IonSpinner />
 

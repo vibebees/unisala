@@ -17,7 +17,7 @@ const SingleStatCard = ({ allProps }) => {
                 ...CardStyle
               }}
               className={clsx(
-                "ion-padding py-2 max-lg:px-1 ",
+                "ion-padding  py-2 max-lg:px-1 ",
                 index === 2 && "col-span-2"
               )}
             >

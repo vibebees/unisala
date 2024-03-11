@@ -16,18 +16,18 @@ export default function SpacePage({ allPropssetPopup }) {
       context: { server: USER_SERVICE_GQL }
     }),
     { user, loggedIn } = useSelector((store) => store?.userProfile),
-    profileData =
-      loggedIn &&
-      useQuery(getUserProfile, {
-        context: { server: USER_SERVICE_GQL },
-        variables: {
-          username: user?.username
-        }
-      }),
+    profileDataQuery = useQuery(getUserProfile, {
+      context: { server: USER_SERVICE_GQL },
+      variables: {
+        username: user?.username
+      }
+    }),
     { data, loading } = useQuery(GetOrgSpace, {
       context: { server: USER_SERVICE_GQL },
-      variables: { name: params.category }
+      variables: { name: params?.category }
     })
+
+  const profileData = loggedIn ? profileDataQuery.data : null
 
   const allProps = getAllProps({
     user,
@@ -44,4 +44,3 @@ export default function SpacePage({ allPropssetPopup }) {
     </OrgContext.Provider>
   )
 }
-

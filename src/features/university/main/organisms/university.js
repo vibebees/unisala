@@ -37,7 +37,7 @@ export const UniversityBuild = ({ allProps }) => {
         {/* {loading && <h1>loading</h1>} */}
         <HeaderNavigator allProps={allProps} />
         <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
-          <div ref={profile}>
+          <div ref={profile} className="mb-2">
             <UniversityHeader allProps={allProps} />
           </div>
 

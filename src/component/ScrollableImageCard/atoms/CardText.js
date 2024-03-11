@@ -1,11 +1,14 @@
-import { IonText } from "@ionic/react"
+import { Typography } from "component/ui"
 import React from "react"
 
 const CardText = ({ name }) => {
   return (
-    <p className="!w-48 px-4   text-center py-2 text-neutral-800 overflow-hidden break-words">
+    <Typography
+      variant="h5"
+      className=" text-xs  leading-5  text-center py-2 text-neutral-800 overflow-hidden break-words"
+    >
       {name}
-    </p>
+    </Typography>
   )
 }
 

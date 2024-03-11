@@ -6,8 +6,7 @@ import {
   IonHeader,
   IonContent,
   IonToolbar,
-  IonTitle,
-  IonPage
+  IonTitle
 } from "@ionic/react"
 
 function SeeMoreModal({ ModalButton, ModalData = "No Data", scholarshipName = ""}) {

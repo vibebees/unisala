@@ -3,12 +3,6 @@ import clsx from "clsx"
 import {
   IonContent,
   IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonTextarea,
-  IonInput,
-  IonButton,
   IonRow,
   IonCol,
   IonText

@@ -1,9 +1,9 @@
 import React from "react"
-import { IonCol, IonCard, IonText, IonAvatar, IonIcon } from "@ionic/react"
-import { Avatar } from "../../Avatar"
-import { star, starOutline } from "ionicons/icons"
+import { IonCol, IonCard } from "@ionic/react"
+
 import StarRating from "../atoms/StarRating"
 import ProfessorAvatar from "../atoms/ProfessorAvatar"
+import { Typography } from "component/ui"
 
 const ProfessorCard = ({ data }) => {
   const emoji = {
@@ -24,8 +24,9 @@ const ProfessorCard = ({ data }) => {
               overallRating={data.overallRating}
               professorName={data.professorName}
             />
-            <IonText color="medium" className="flex">
-              <p>{data.subject}</p>
+            <div className="flex">
+              <Typography variant="p">{data.subject}</Typography>
+
               <div className="flex justify-content-center">
                 <p>{data.overallRating}</p>
                 <img
@@ -34,7 +35,7 @@ const ProfessorCard = ({ data }) => {
                   src={emoji[Math.trunc(data.overallRating)]}
                 />
               </div>
-            </IonText>
+            </div>
           </div>
         </IonCard>
       </IonCol>

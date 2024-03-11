@@ -311,12 +311,14 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
+      console.log({ files, addOrgSpaceEvent })
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append("image", files[i])
         }
         const res = await axios.post(
-          userServer + `/post/addPostImage/${addOrgSpaceEvent.event._id}`,
+          userServer +
+            `/spaceOrg/addSpaceEventImage/${addOrgSpaceEvent.data._id}`,
           formData,
           {
             headers: {
@@ -324,6 +326,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }
           }
         )
+        console.log({ res })
       }
       present({
         duration: 3000,
@@ -336,8 +339,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       // setfile("")
     }
   })
-
-  console.log({ data })
 
   const handleSubmit = (e) => {
     e.preventDefault()

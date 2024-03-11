@@ -7,7 +7,7 @@ import { googleAuthAction } from "store/action/authenticationAction"
 import { useHistory } from "react-router"
 import { useScript } from "hooks/useScript"
 
-export const GoogleAuth = ({ setauth }) => {
+export const GoogleAuth = ({ setauth, setActiveNavDrop = () => {} }) => {
   const [present, dismiss] = useIonToast()
   const googlebuttonref = useRef(),
     dispatch = useDispatch(),
@@ -22,6 +22,7 @@ export const GoogleAuth = ({ setauth }) => {
         present,
         dismiss,
         credential,
+        setActiveNavDrop,
         redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`
       })
     )

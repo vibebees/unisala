@@ -7,6 +7,7 @@ import { CreateAPostCard } from "../../component/post/template"
 import PreLoader from "../../component/preloader"
 import Tabs from "../../component/tabs"
 import Invitation from "./Invitation/Index"
+import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
 import { Members } from "./org/members"
@@ -62,7 +63,12 @@ export const Spaces = ({ allProps }) => {
 
   const Feed = () => (
     <div className="mt-4">
-      <CreateAPostCard allProps={allProps} />
+      <NotJoinedWrapper
+        isJoined={orgData?.isJoined}
+        message="Please Join the orgranization to post"
+      >
+        <CreateAPostCard allProps={allProps} />
+      </NotJoinedWrapper>
       <InfiniteFeed feedType="specificOrg" feedId={orgId} />
     </div>
   )
@@ -130,7 +136,7 @@ export const Spaces = ({ allProps }) => {
   const Space = () => (
     <IonCol className="colStyle ThreadContainer">
       <SpaceHeader spaceDetails={orgData} />
-      <IonRow class="bg-white mt-4 sticky top-0 z-40 max-md:top-16">
+      <IonRow class="bg-white mt-4 sticky top-0 z-[1000] max-md:top-16">
         <Tabs config={configSegment} />
       </IonRow>
       <div className="min-h-[50vh] ">
@@ -142,8 +148,8 @@ export const Spaces = ({ allProps }) => {
   return (
     <IonContent className="h-full" color="light">
       {width < 768 && views.lessThan768}
-      <IonGrid className={width >= 768 ? "gridStyle" : "gridStyleFull"}>
-        <IonRow className="rowStyle">
+      <IonGrid className="gridStyle">
+        <IonRow className="flex flex-nowrap">
           {width > 768 && views.greaterThan768}
 
           <Space />
@@ -156,3 +162,4 @@ export const Spaces = ({ allProps }) => {
     </IonContent>
   )
 }
+

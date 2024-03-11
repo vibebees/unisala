@@ -21,7 +21,6 @@ const ThreadImages = ({ images, _id }) => {
         className="static w-1/2 max-md:w-full"
       >
         {images.map((image, index) => (
-          <>
             <IonSlide className=" w-20 overflow-hidden" key={index}>
               <ImageWithLoader
                 src={image}
@@ -36,7 +35,6 @@ const ThreadImages = ({ images, _id }) => {
                 }}
               />
             </IonSlide>
-          </>
         ))}
       </IonSlides>
     </Link>
