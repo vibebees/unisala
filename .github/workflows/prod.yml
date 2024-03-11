@@ -45,7 +45,6 @@ jobs:
             cd unisala-web/build
             sudo rm -rf /var/www/html/* 
             sudo cp -r * /var/www/html
-            rm -rf ~/unisala-web
 
   deploy-to-md-t3:
     if: github.ref == 'refs/heads/release'
@@ -87,4 +86,3 @@ jobs:
             cd unisala-web/build
             sudo rm -rf /var/www/html/* 
             sudo cp -r * /var/www/html
-            rm -rf ~/unisala-web
