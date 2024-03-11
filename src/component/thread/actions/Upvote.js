@@ -2,9 +2,9 @@ import { useCallback, useState } from "react"
 import { IonIcon, IonButtons, IonText, useIonToast } from "@ionic/react"
 import { arrowUpCircle } from "ionicons/icons"
 import { useMutation } from "@apollo/client"
- import clsx from "clsx"
-import {USER_SERVICE_GQL} from "servers/types"
-import {UpVote} from "graphql/user"
+import clsx from "clsx"
+import { USER_SERVICE_GQL } from "servers/types"
+import { UpVote } from "graphql/user"
 
 function Upvote({ upVoteCount, postId, upVoted, isReply }) {
   const [present, dismiss] = useIonToast()
@@ -69,10 +69,10 @@ function Upvote({ upVoteCount, postId, upVoted, isReply }) {
       <IonIcon
         color={voted.upVoted ? "primary" : "medium"}
         style={{
-          margin: "0px",
-          fontSize: "23px"
+          margin: "0px"
         }}
         icon={arrowUpCircle}
+        className="text-2xl max-md:text-lg"
       />
       <IonText style={{ marginLeft: "5px" }}>
         <p

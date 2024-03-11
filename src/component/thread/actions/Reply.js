@@ -10,10 +10,10 @@ function Reply({ repliesCount, setReply }) {
       <IonIcon
         color="medium"
         style={{
-          margin: "0px",
-          fontSize: "23px"
+          margin: "0px"
         }}
         icon={chatbubble}
+        className="text-2xl max-md:text-lg"
       />
       <IonText style={{ marginLeft: "5px" }}>
         <p

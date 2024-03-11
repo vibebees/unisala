@@ -1,19 +1,19 @@
 import React from "react"
 import { IonText } from "@ionic/react"
 import useIsData from "hooks/useIsData"
+import Typography from "component/ui/Typography"
 
 const CardBody = ({ value, percentage }) => {
   return (
-    <IonText style={{ textAlign: "center" }} color="dark">
-      <IonText className="">
-        <h1 className="my-1 text-neutral-700 text-lg font-semibold">
-          {value.toString() === "-1" ? "N/A" : useIsData(value)}{" "}
-          {percentage && (
-            <span className="font-normal text-base ml-1">({percentage}%)</span>
-          )}
-        </h1>
-      </IonText>
-    </IonText>
+    <Typography
+      variant="h3"
+      className="font-medium text-neutral-900 text-base text-center py-1"
+    >
+      {value.toString() === "-1" ? "N/A" : useIsData(value)}{" "}
+      {percentage && (
+        <span className="font-normal text-base ml-1">({percentage}%)</span>
+      )}
+    </Typography>
   )
 }
 

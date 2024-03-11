@@ -1,9 +1,10 @@
-import {IonAvatar, IonCard} from "@ionic/react"
-import {Avatar} from "component/Avatar"
+import { IonAvatar, IonCard } from "@ionic/react"
+import { Avatar } from "component/Avatar"
+import { Typography } from "component/ui"
 
-export const InterviewExperienceCard = ({data = {}, key = 0}) => {
-    return (
-      <div key={key} className="interview">
+export const InterviewExperienceCard = ({ data = {}, key = 0 }) => {
+  return (
+    <div key={key} className="interview">
       <IonCard
         style={{
           padding: "10px 20px 10px 20px"
@@ -43,7 +44,8 @@ export const InterviewExperienceCard = ({data = {}, key = 0}) => {
             maxWidth: "600px"
           }}
         >
-          {data?.conversation?.split(/me\s*:|vo\s*:|me\s+:|vo\s+-/i)
+          {data?.conversation
+            ?.split(/me\s*:|vo\s*:|me\s+:|vo\s+-/i)
             .map((item, key) => {
               if (!item || item.trim() === "") return null
               return (
@@ -56,27 +58,20 @@ export const InterviewExperienceCard = ({data = {}, key = 0}) => {
                   }}
                 >
                   <IonAvatar
+                    className="shrink-0"
                     style={{
                       width: "30px",
                       height: "30px"
                     }}
                   >
-                    <Avatar
-                      username={key % 2 === 0 ? "VO" : "ME"}
-                    />
+                    <Avatar username={key % 2 === 0 ? "VO" : "ME"} />
                   </IonAvatar>
-                  <p
-                    style={{
-                      width: "fit-content"
-                    }}
-                  >
-                    {item}
-                  </p>
+                  <Typography variant="p">{item}</Typography>
                 </div>
               )
             })}
         </div>
       </IonCard>
     </div>
-    )
-  }
+  )
+}

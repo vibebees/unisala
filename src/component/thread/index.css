@@ -3,7 +3,7 @@
 }
 
 .thread-header {
-  display: inline-flex;
+  display: flex;
   align-items: center;
 }
 
@@ -27,20 +27,23 @@
 }
 
 .threads_username {
-  display: inline-flex;
-  gap: 1rem;
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
   color: #8f8e8e;
+  position: relative;
 }
 
+
 .threads_date {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #999;
+  font-family: sans-serif;
 }
 
 .thread_content {
   margin-top: 0.2rem;
-  padding-left: 3.5rem;
+  /* padding-left: 3.5rem; */
 
 }
 
@@ -63,10 +66,10 @@
 }
 
 .thread_footer {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-top: 0.8rem;
+  justify-content: space-between;
+
 }
 
 .comment_thread {
@@ -96,10 +99,14 @@
 .imageModal::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-.custom-link a {
-  color: rgb(73, 73, 212); /* Set the color to blue */
-  text-decoration: underline; /* Underline the link for clarity */
+
+.custom-link {
+  color: rgb(73, 73, 212);
+  /* Set the color to blue */
+  text-decoration: underline;
+  /* Underline the link for clarity */
 }
+
 .post-card-container {
   display: flex;
   flex-direction: column;
@@ -108,9 +115,37 @@
 
 
 /* for mobile phones for videos to play or view big*/
-@media (max-width: 768px) { /* Adjust px as needed for your target mobile screen size */
+@media (max-width: 768px) {
+
+  /* Adjust px as needed for your target mobile screen size */
   .mobile-video-style {
     width: 130%;
     margin-left: -60px;
   }
+}
+
+.ql-editor ul.ql-list {
+  list-style-type: disc;
+  /* or circle, square, etc., depending on the bullet style you prefer */
+  padding-left: 1.5em;
+  /* Adjust as needed */
+}
+
+.ql-editor ul.ql-list li.ql-indent-1 {
+  padding-left: 3em;
+}
+
+.ql-editor ul.ql-list li.ql-indent-2 {
+  padding-left: 6em;
+}
+
+.ql-editor ul.ql-list li.ql-indent-3 {
+  padding-left: 9em;
+}
+
+.ql-editor ol.ql-list {
+  list-style-type: decimal;
+  /* or lower-alpha, upper-alpha, etc., for different numbering styles */
+  padding-left: 1.5em;
+  /* Adjust as needed */
 }

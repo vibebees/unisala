@@ -34,7 +34,7 @@ const CreateListModal = ({ editList = false, list = {} }) => {
         mode: "ios"
       })
     }
-
+    setLoading(true)
     const res = await authInstance.patch(
       `${userServer}/update-list/${list?._id}`,
       {
@@ -65,7 +65,6 @@ const CreateListModal = ({ editList = false, list = {} }) => {
   }
 
   const handleSubmit = async (e) => {
-    setLoading(true)
     e.preventDefault()
 
     if (!input.title.trim() || !input.description.trim()) {
@@ -80,6 +79,7 @@ const CreateListModal = ({ editList = false, list = {} }) => {
     if (editList) {
       return handleEdit()
     }
+    setLoading(true)
     const res = await authInstance.post(`${userServer}/add-list`, input)
     if (res.data.success) {
       setLists([...lists, res.data.data])
@@ -106,8 +106,8 @@ const CreateListModal = ({ editList = false, list = {} }) => {
               <h2>Name</h2>
             </IonText>
             <IonInput
-              placeholder="List  Name"
-              className="mt-4 rounded-md"
+              placeholder="Enter list name"
+              className="mt-4 !px-2  text-sm rounded-md"
               type="text"
               name="title"
               value={input.title}
@@ -125,7 +125,7 @@ const CreateListModal = ({ editList = false, list = {} }) => {
             <IonTextarea
               value={input.description}
               placeholder="Description"
-              className="mt-4 rounded-md"
+              className="mt-4 px-2 text-sm rounded-md"
               onIonChange={(e) => {
                 setInput((pre) => {
                   return { ...pre, description: e.target.value }

@@ -1,27 +1,27 @@
+import { useMutation } from "@apollo/client"
 import {
   IonButton,
   IonCard,
-  IonCardContent,
   IonCardHeader,
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
   IonModal,
   IonPopover,
   IonTitle,
   IonToolbar,
   useIonToast
 } from "@ionic/react"
-import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
-import { useSelector } from "react-redux"
-import { DeleteSpace } from "graphql/user"
-import { USER_SERVICE_GQL } from "servers/types"
-import { useMutation } from "@apollo/client"
-import { useHistory } from "react-router"
-import { useState } from "react"
-import UpdateSpaceForm from "component/updateSpace/UpdateSpaceForm"
 import SpaceHeaderImg from "assets/space-header.jpg"
+import UpdateSpaceForm from "component/updateSpace/UpdateSpaceForm"
+import { DeleteSpace } from "graphql/user"
+import { create, ellipsisHorizontalOutline, trash } from "ionicons/icons"
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { useHistory } from "react-router"
+import { USER_SERVICE_GQL } from "servers/types"
+import "./Space.css"
+
 const linearGradientStyle = {
   background: "linear-gradient(90deg, rgba(0,0,0) 20%, rgba(99,96,96,1) 62%)"
 }
@@ -34,7 +34,6 @@ const SpaceHeader = ({ spaceDetails }) => {
   const [present, dismiss] = useIonToast()
   const history = useHistory()
   const [isOpen, setIsOpen] = useState(false)
-
   //  delete space
   const [deleteSpace] = useMutation(DeleteSpace, {
     context: { server: USER_SERVICE_GQL },
@@ -72,81 +71,68 @@ const SpaceHeader = ({ spaceDetails }) => {
     }
   })
 
+  const OptionsEditSpace = () =>
+    loggedinUser?.username === user?.username && (
+      <>
+        <IonButton className="popover-button" fill="clear" id="popover-trigger">
+          <IonIcon icon={ellipsisHorizontalOutline} />
+        </IonButton>
+        <IonPopover trigger="popover-trigger" triggerAction="click" size="auto">
+          <IonContent className="popover-content">
+            <IonButton
+              expand="full"
+              fill="clear"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <IonIcon slot="start" icon={create} />
+              Update Space
+            </IonButton>
+            <IonButton expand="full" fill="clear" onClick={deleteSpace}>
+              <IonIcon slot="start" icon={trash} />
+              Delete Space
+            </IonButton>
+          </IonContent>
+        </IonPopover>
+
+        <IonModal isOpen={isOpen}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle className="modal-title">Update Your Space</IonTitle>
+              <IonButton
+                onClick={() => setIsOpen(false)}
+                slot="end"
+                fill="clear"
+              >
+                Close
+              </IonButton>
+            </IonToolbar>
+          </IonHeader>
+          <UpdateSpaceForm spaceDetails={spaceDetails} setIsOpen={setIsOpen} />
+        </IonModal>
+      </>
+    )
+
   return (
-    <IonCard className="profile-header">
-      <IonCardHeader className="ion-no-padding">
+    <IonCard>
+      <IonCardHeader>
         <img
-          className="w-full aspect-video"
+          className="profile-header-img"
           src={spaceDetails?.image || SpaceHeaderImg}
-          alt=""
+          alt={`${spaceDetails?.name} Header`}
+          style={{ height: "auto", maxWidth: "100%", borderRadius: "10px" }}
         />
       </IonCardHeader>
 
-      <div
-        style={linearGradientStyle}
-        className="relative p-4 bg-gradient-to-r from-black from-40% via-[#282828] via-60% to-black to-100% text-white"
-      >
-        <h1 className="text-lg capitalize font-extrabold ">
-          {spaceDetails?.name}
-        </h1>
-        <p className="font-medium ">{spaceDetails?.description}</p>
-
-        {loggedinUser?.username === user?.username && (
-          <>
-            <IonButton className="absolute right-5 top-2" fill="clear" id="pop">
-              <IonIcon
-                className="text-2xl text-white cursor-pointer"
-                icon={ellipsisHorizontalOutline}
-              />
-            </IonButton>
-            <IonPopover trigger="pop" triggerAction="click" size="auto">
-              <IonContent>
-                <IonButton
-                  expand="full"
-                  fill="clear"
-                  className="text-black font-normal"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  <IonIcon slot="start" icon={create} />
-                  Update Space
-                </IonButton>
-
-                <IonModal isOpen={isOpen}>
-                  <IonHeader>
-                    <IonToolbar>
-                      <IonTitle>Update Your Space</IonTitle>
-                      <IonButton
-                        onClick={() => setIsOpen(false)}
-                        slot="end"
-                        fill="clear"
-                      >
-                        Close
-                      </IonButton>
-                    </IonToolbar>
-                  </IonHeader>
-
-                  <UpdateSpaceForm
-                    spaceDetails={spaceDetails}
-                    setIsOpen={setIsOpen}
-                  />
-                </IonModal>
-
-                <IonButton
-                  expand="full"
-                  fill="clear"
-                  className="text-black font-normal"
-                  onClick={deleteSpace}
-                >
-                  <IonIcon slot="start" icon={trash} />
-                  Delete Space
-                </IonButton>
-              </IonContent>
-            </IonPopover>
-          </>
-        )}
+      <div className="profile-header-gradient">
+        <h2 className="space-name">{spaceDetails?.name}</h2>
+        <p className="space-description" style={{ fontSize: "16px" }}>
+          {spaceDetails?.description}
+        </p>
+        <OptionsEditSpace />
       </div>
     </IonCard>
   )
 }
 
 export default SpaceHeader
+

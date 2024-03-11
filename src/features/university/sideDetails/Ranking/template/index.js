@@ -2,6 +2,7 @@ import React from "react"
 import Ranking from "../molecules/Ranking"
 import { useSelector } from "react-redux"
 import { IonCard } from "@ionic/react"
+import { CardHeader } from "component/Reusable/cardHeader"
 
 const index = () => {
   const { uniData } = useSelector((store) => store?.university)
@@ -16,9 +17,8 @@ const index = () => {
       }}
       className="flex flex-col"
     >
-      <h2 className="font-normal border-b border-neutral-300 text-neutral-700 px-2 text-lg py-2">
-        Ranking
-      </h2>
+      <CardHeader header={"Ranking"} />
+
       <div>
         <Ranking data={ranking} />
       </div>

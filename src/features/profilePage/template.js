@@ -144,7 +144,7 @@ const ProfilePage = () => {
       <IonContent>
         <IonCard
           style={{ textAlign: "center", marginInline: "auto" }}
-          className="max-width-container"
+          className="max-width-container "
         >
           <img alt="unisala: no results found" src={noResultsFound} />
           <IonCardHeader>
@@ -163,15 +163,15 @@ const ProfilePage = () => {
 
   return (
     <IonContent>
-      <IonGrid className="max-width-container">
+      <IonGrid className="max-width-container max-md:px-0">
         <IonRow>
-          <IonCol>
+          <IonCol className="w-2/5 max-md:px-0">
             <ProfileHeader tab={tab} setTab={setTab} data={profileHeaderData} />
             {tab === 0 && getUser?.user && (
               <ProfileBody data={profileBodyData} />
             )}
             {tab === 1 && <Threads userId={_id} firstName={firstName} />}
-            {tab === 2 && <List />}
+            {tab === 2 && <List userId={_id} />}
             {tab === 3 && <Saved userId={_id} firstName={firstName} />}
             {tab === 5 && <Guestbook userId={_id} firstName={firstName} />}
           </IonCol>

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 import { IonButton, IonSpinner } from "@ionic/react"
 import { useLazyQuery, useQuery } from "@apollo/client"
 import { Link } from "react-router-dom"
-import Comment from "./Comment"
+import Comment from "../Comment"
 import { USER_SERVICE_GQL } from "servers/types"
 import { GetCommentList } from "graphql/user"
 
-function ShowMore({
+function ShowOtherComments({
   postId = "",
   parentId = "",
   user,
@@ -26,25 +26,31 @@ function ShowMore({
   )
 
   useEffect(() => {
-    getCommentList({
-      variables: {
-        postId,
-        parentId
-      }
-    })
-  }, [postId, parentId])
+    // Check if postId and parentId are not null/undefined before executing the query
+    if (postId !== null && parentId !== null) {
+      getCommentList({
+        variables: {
+          postId,
+          parentId
+        }
+      })
+    }
+  }, [postId, parentId, getCommentList])
+
 
   useEffect(() => {
-    refetch()
-    setRefetchComments(false)
-  }, [refetchComments])
+    if (refetchComments) {
+      refetch()
+      setRefetchComments(false)
+    }
+  }, [refetchComments, refetch])
 
   if (loading) return <IonSpinner />
 
   if (singlePost) {
     return (
       <>
-        {data?.commentList?.comments?.map((reply, i) => {
+        {data?.commentList?.data?.map((reply, i) => {
           return (
             <Comment
               comment={reply}
@@ -62,24 +68,22 @@ function ShowMore({
 
   return (
     <>
-      {data?.commentList?.comments
-        ?.slice(0, numberOfComments)
-        .map((reply, i) => {
-          return (
-            <Comment
-              comment={reply}
-              key={i}
-              singlePost={singlePost}
-              postId={postId}
-              parentId={parentId}
-              setRefetchComments={setRefetchComments}
-            />
-          )
-        })}
+      {data?.commentList?.data?.slice(0, numberOfComments).map((reply, i) => {
+        return (
+          <Comment
+            comment={reply}
+            key={i}
+            singlePost={singlePost}
+            postId={postId}
+            parentId={parentId}
+            setRefetchComments={setRefetchComments}
+          />
+        )
+      })}
       {!singlePost && postCommentsCount && postCommentsCount > 1 && (
         <Link
           to={`thread/${postId}`}
-          className="px-16 block  mt-4 text-base hover:text-neutral-800"
+          className=" block ml-7  mt-3 text-blue-600 text-sm font-medium hover:text-neutral-800"
         >
           View all comments
         </Link>
@@ -88,4 +92,4 @@ function ShowMore({
   )
 }
 
-export default ShowMore
+export default ShowOtherComments

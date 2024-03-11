@@ -16,7 +16,7 @@ export const PollBody = ({ allProps }) => {
                   style={{ width: ratingPercentage + "%" }}
                   className="bar-value"
                 ></div>
-                <h3 style={{ color: "black" }}>{type.split("_").join(" ")}</h3>
+                <h3 style={{ color: "black" }}>{type.split("_")?.join(" ")}</h3>
                 <h2>{useIsData(ratingPercentage)}%</h2>
               </div>
             </IonRow>

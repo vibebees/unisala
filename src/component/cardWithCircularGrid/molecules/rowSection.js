@@ -1,4 +1,5 @@
 import { IonCardContent, IonCol, IonGrid, IonRow, IonText } from "@ionic/react"
+import Typography from "component/ui/Typography"
 
 export const RowSection = ({ allProps, testScore, type }) => {
   const { uniData, isSideBar, useIsData, width, subHeader, generator } =
@@ -10,11 +11,7 @@ export const RowSection = ({ allProps, testScore, type }) => {
       title = subHeader.sat
     }
 
-    return (
-      <IonText color="dark">
-        <h2>{title}</h2>
-      </IonText>
-    )
+    return <Typography variant="h2">{title}</Typography>
   }
   return (
     <IonCardContent>
@@ -69,7 +66,7 @@ export const RowSection = ({ allProps, testScore, type }) => {
                         textAlign: "center"
                       }}
                     >
-                      <IonText color="dark">
+                      <Typography variant="h2">
                         {width < 720 ? (
                           <h2
                             style={{
@@ -93,9 +90,9 @@ export const RowSection = ({ allProps, testScore, type }) => {
                             {useIsData(item.max)}
                           </h1>
                         )}
-                      </IonText>
+                      </Typography>
 
-                      <p>{item.title}</p>
+                      <Typography variant="p">{item.title}</Typography>
                     </div>
                   </div>
                 </div>

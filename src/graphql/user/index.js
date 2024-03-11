@@ -13,8 +13,31 @@ export const AddComment = gql`
         parentId: $parentId
         replyTo: $replyTo
       ) {
-        success
-        message
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          userId
+          postId
+          parentId
+          commentText
+          commentImage
+          date
+          repliesCount
+          upVoteCount
+          replyTo
+          upVoted
+
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+        }
       }
     }
   `,
@@ -122,22 +145,22 @@ export const AddComment = gql`
           _id
           postText
           postCommentsCount
-          # admissionAndApplicationRating
-          # financialAidAndScholarshipRating
-          # academicProgramsAndDepartmentRating
-          # studentLifeAndServiceRating
-          # careerAndAlumniResourceRating
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
+          postType
           postImage
           videoURL
           date
-          tags{
+          tags {
             _id
             name
             parentId
             image
             description
-
-        }
+          }
           upVoted
           images
           upVoteCount
@@ -166,8 +189,8 @@ export const AddComment = gql`
     }
   `,
   EditPost = gql`
-    mutation editPost($postId: String!, $postText: String, $postImage: String) {
-      editPost(postId: $postId, postText: $postText, postImage: $postImage) {
+    mutation editPost($postId: String!, $postText: String!) {
+      editPost(postId: $postId, postText: $postText) {
         status {
           success
           message
@@ -297,23 +320,29 @@ export const AddComment = gql`
   GetCommentList = gql`
     query commentList($postId: String!, $parentId: String) {
       commentList(postId: $postId, parentId: $parentId) {
-        success
-        message
-        comments {
+        status {
+          success
+          message
+        }
+        data {
           _id
           userId
           postId
+          parentId
           commentText
           commentImage
-          firstName
-          lastName
-          username
           date
           repliesCount
           upVoteCount
           replyTo
           upVoted
-          picture
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
@@ -416,6 +445,7 @@ export const AddComment = gql`
           role
           verified
           location
+          studyLevel
           oneLinerBio
           doj
           blocked
@@ -471,14 +501,17 @@ export const AddComment = gql`
     }
   `,
   GetUserPost = gql`
-    query getUserPost($userId: String, $page: Float!, $unitId: Float) {
-      getUserPost(userId: $userId, page: $page, pageSize: 3, unitId: $unitId) {
-        totalPosts
-        Posts {
+    query getDicussionUniWall($userId: String, $page: Float!, $unitId: Float) {
+      getDicussionUniWall(
+        userId: $userId
+        page: $page
+        pageSize: 3
+        unitId: $unitId
+      ) {
+        posts {
           _id
           images
           postText
-
           date
           upVoteCount
           postCommentsCount
@@ -492,6 +525,11 @@ export const AddComment = gql`
           }
           saved
           upVoted
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
         }
       }
     }
@@ -828,196 +866,194 @@ export const AddComment = gql`
     }
   `,
   getNewsFeed = gql`
-    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
-      fetchMyNewsFeed(userId: $userId, page: $page) {
-        section
-        postText
-        admissionAndApplicationRating
-        financialAidAndScholarshipRating
-        academicProgramsAndDepartmentRating
-        studentLifeAndServiceRating
-        careerAndAlumniResourceRating
-        upVoted
-        upVoteCount
-        postCommentsCount
-        type
-        saved
-        videoURL
-        tags{
-          _id
-          name
-          parentId
-          image
-          description
-      }
-        date
-        _id
-        images
-        user {
-          firstName
-          lastName
-          picture
-          username
-          _id
-        }
-        elevatorInfo {
-          unitId
-          name
-          address {
-            streetAddressOrPOBox
-            city
-            stateAbbreviation
-            zipCode
-          }
-          name
-          alias
-          highestLevelOfOffering
-          undergraduateOffering
-          graduateOffering
-          grantsMedicalDegree
-          hasHospital
-          missionStatement
-          majors {
+    query fetchFeedV2($feedQuery: FeedQueryInput) {
+      fetchFeedV2(feedQuery: $feedQuery) {
+        data {
+          section
+          postText
+          admissionAndApplicationRating
+          financialAidAndScholarshipRating
+          academicProgramsAndDepartmentRating
+          studentLifeAndServiceRating
+          careerAndAlumniResourceRating
+          upVoted
+          upVoteCount
+          postCommentsCount
+          type
+          saved
+          videoURL
+          event {
+            _id
             title
-            pollTotalGraduates
+            description
+            isRegistered
+            address
+            eventDate
+            interestedUsers {
+              userId
+            }
+            images
           }
-          ownType
-          pictures
-          tags
-        }
-        studentCharges {
-          combinedChargeForRoomAndBoard
-          undergraduateApplicationFee
-          graduateApplicationFee
-          unitId
-          undergraduate {
-            inState {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            outOfState {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            inDistrict {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            onCampus {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
-              }
-              roomAndBoard
-              otherExpenses
-            }
-            offCampusWithFamily {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
-              }
-              roomAndBoard
-              otherExpenses
-            }
-            offCampusNotWithFamily {
-              costOfAttendance {
-                inDistrict
-                inState
-                outOfState
-              }
-              roomAndBoard
-              otherExpenses
-            }
-            booksAndSupplies
+          tags {
+            _id
+            name
+            parentId
+            image
+            description
           }
+          date
+          _id
+          images
+          user {
+            firstName
+            lastName
+            picture
+            username
+            _id
+          }
+          elevatorInfo {
+            tags
+            ownType
+            name
+            tags
+            majors {
+              title
+            }
+            pictures
+            address {
+              streetAddressOrPOBox
+              city
+              stateAbbreviation
+              zipCode
+            }
+            name
+          }
+          studentCharges {
+            combinedChargeForRoomAndBoard
+            undergraduateApplicationFee
+            graduateApplicationFee
+            unitId
+            undergraduate {
+              inState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              outOfState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              inDistrict {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              onCampus {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              offCampusWithFamily {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              offCampusNotWithFamily {
+                costOfAttendance {
+                  inDistrict
+                  inState
+                  outOfState
+                }
+                roomAndBoard
+                otherExpenses
+              }
+              booksAndSupplies
+            }
 
-          graduate {
-            inState {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            outOfState {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-            inDistrict {
-              tuition
-              requiredFees
-              perCreditHourCharge
-            }
-          }
-        }
-        scholarships {
-          university_name
-          unitId
-          scholarship_name
-          international_specific
-          level
-          scholarship_url
-          transfer_specific
-          gpa {
-            min
-            max
-          }
-          act {
-            min
-            max
-          }
-          sat {
-            min
-            max
-          }
-          awards {
-            award_name
-            scholarship_amount {
-              amount
-              disbursement_schedule
+            graduate {
+              inState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              outOfState {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
+              inDistrict {
+                tuition
+                requiredFees
+                perCreditHourCharge
+              }
             }
           }
-        }
-        userEvaluation {
-          unitId
-          rankings {
-            rank
-            title
-            totalPlayers
-          }
-          report {
-            academics
-            average
-            value
-            diversity
-            campus
-            atheltics
-            partyScene
-            professors
-            location
-            dorms
-            campusFood
-            studentLife
-            safety
-          }
-          reviews {
-            rating
+          suggestedOrgs {
+            name
             type
-            votes
+            spaces {
+              _id
+              name
+              description
+              image
+            }
           }
-        }
+          suggestedSpace {
+            type
+            name
+            spaces {
+              _id
+              name
+              description
+              image
+            }
+          }
+          userEvaluation {
+            unitId
+            rankings {
+              rank
+              title
+              totalPlayers
+            }
+            report {
+              academics
+              average
+              value
+              diversity
+              campus
+              atheltics
+              partyScene
+              professors
+              location
+              dorms
+              campusFood
+              studentLife
+              safety
+            }
+            reviews {
+              rating
+              type
+              votes
+            }
+          }
 
-        unitId
-        applied_level
-        status
-        attempt
-        university
-        conversation
-        major
+          unitId
+          applied_level
+          status
+          attempt
+          university
+          conversation
+          major
+        }
       }
     }
   `,
@@ -1051,13 +1087,75 @@ export const AddComment = gql`
           message
           success
         }
-        spaceCategory {
+        data {
           _id
           name
           parentId
           description
           image
+          role
+          isJoined
           user {
+            username
+            _id
+          }
+        }
+      }
+    }
+  `,
+  GetOrgSpace = gql`
+    query getOrgSpaceById($id: ID, $name: String) {
+      getOrgSpaceById(id: $id, name: $name) {
+        status {
+          success
+          message
+        }
+        data {
+          name
+          _id
+          name
+          description
+          profileImage
+          coverImage
+          admin {
+            _id
+            firstName
+            lastName
+            picture
+            username
+          }
+          role
+          isJoined
+        }
+      }
+    }
+  `,
+  GetAllPostByOrgSpaceID = gql`
+    query getAllPostByOrgSpaceId($id: ID!, $pageSize: Int, $page: Int) {
+      getAllPostByOrgSpaceId(id: $id, pageSize: $pageSize, page: $page) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          uniId
+          images
+          postText
+          postImage
+          date
+          upVoteCount
+          postCommentsCount
+          upVoted
+          saved
+          videoURL
+          type
+          user {
+            _id
+            username
+            firstName
+            lastName
+            picture
             username
           }
         }
@@ -1094,6 +1192,34 @@ export const AddComment = gql`
       }
     }
   `,
+  GetAllEventsBySpaceID = gql`
+    query getAllEventBySpaceId($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          title
+          description
+          address
+          eventDate
+          interestedUsers {
+            user {
+              _id
+              firstName
+              lastName
+              username
+              picture
+            }
+            date
+          }
+          isRegistered
+        }
+      }
+    }
+  `,
   GetTopActiveSpaces = gql`
     query getTopActiveSpaces($limit: Int) {
       getTopActiveSpaces(limit: $limit) {
@@ -1109,9 +1235,67 @@ export const AddComment = gql`
       }
     }
   `,
+  CreateOrgSpace = gql`
+    mutation createOrgSpace($name: String!, $description: String) {
+      createOrgSpace(name: $name, description: $description) {
+        status {
+          success
+          message
+        }
+        data {
+          name
+          description
+          profileImage
+          _id
+        }
+      }
+    }
+  `,
+  GetTopOrgs = gql`
+    query {
+      getTopOrgSpace {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          name
+          description
+          profileImage
+          coverImage
+          admin {
+            _id
+            firstName
+            lastName
+          }
+          members {
+            firstName
+            lastName
+            _id
+            username
+          }
+          students {
+            _id
+            firstName
+            lastName
+            username
+          }
+        }
+      }
+    }
+  `,
   AddSpaceCategory = gql`
-    mutation addSpaceCategory($name: String!, $description: String) {
-      addSpaceCategory(name: $name, description: $description) {
+    mutation addSpaceCategory(
+      $name: String!
+      $description: String
+      $isOrgSpace: Boolean
+    ) {
+      addSpaceCategory(
+        name: $name
+        description: $description
+        isOrgSpace: $isOrgSpace
+      ) {
         status {
           success
           message
@@ -1119,6 +1303,72 @@ export const AddComment = gql`
         spaceCategory {
           _id
           name
+        }
+      }
+    }
+  `,
+  AddSpaceEvent = gql`
+    mutation AddSpaceEvent(
+      $spaceId: ID!
+      $title: String!
+      $description: String!
+      $address: String!
+      $eventDate: String!
+    ) {
+      addOrgSpaceEvent(
+        spaceId: $spaceId
+        title: $title
+        description: $description
+        address: $address
+        eventDate: $eventDate
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          userId
+          spaceOrgId
+          spaceId
+          title
+          description
+          address
+          eventDate
+        }
+      }
+    }
+  `,
+  GetSpaceEvents = gql`
+    query GetllEvent($spaceId: ID!) {
+      getAllEventBySpaceId(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          title
+          eventDate
+          description
+          images
+          isRegistered
+          user {
+            _id
+            firstName
+            lastName
+          }
+          spaceOrg {
+            _id
+            name
+            description
+            profileImage
+            members {
+              _id
+              firstName
+              lastName
+            }
+          }
         }
       }
     }
@@ -1149,6 +1399,39 @@ export const AddComment = gql`
           description
           qnsNumber
           nextQuestion
+        }
+      }
+    }
+  `,
+  GetAllMembersBySpaceID = gql`
+    query getAllMemberBySpaceId($spaceId: ID!) {
+      getAllMemberBySpaceId(spaceId: $spaceId) {
+        status {
+          success
+          message
+        }
+        data {
+          members {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          alumini {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+          students {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
@@ -1260,4 +1543,29 @@ export const AddComment = gql`
         pictures
       }
     }
+  `,
+  RegisterUserEvent = gql`
+    mutation registeredUserByEventId(
+      $eventId: ID!
+      $userId: ID!
+      $type: String
+    ) {
+      registeredUserByEventId(eventId: $eventId, userId: $userId, type: $type) {
+        status {
+          success
+          message
+        }
+      }
+    }
+  `,
+  DeleteEventById = gql`
+    mutation deleteEventById($eventId: ID!) {
+      deleteEventById(eventId: $eventId) {
+        status {
+          success
+          message
+        }
+      }
+    }
   `
+

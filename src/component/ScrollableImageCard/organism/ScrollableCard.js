@@ -1,14 +1,13 @@
-import React from "react"
-import SingleImageCard from "../molecules/SingleImageCard"
-import { IonCardContent, IonText, IonGrid, IonIcon } from "@ionic/react"
-import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons"
-import similarCollege from "./similarCollege.css"
+import { IonCardContent, IonGrid, IonIcon, IonText } from "@ionic/react"
 import clsx from "clsx"
 import CustomTrackingLink from "features/analytics/LinkTrack"
+import { chevronBackOutline, chevronForwardOutline } from "ionicons/icons"
+import SingleImageCard from "../molecules/SingleImageCard"
+import "./similarCollege.css"
+import { Typography } from "component/ui"
 
 const ScrollableCard = ({ allProps }) => {
   const { title, data, className } = allProps
-
   const handleRightScrollClick = () => {
     const container = document.querySelector(`.${className}`)
     container?.scrollBy({
@@ -25,12 +24,14 @@ const ScrollableCard = ({ allProps }) => {
     })
   }
   return (
-    <IonCardContent className="p-0 ion-no-padding mt-4 ion-no-margin w-full ">
-      <IonText className="text-lg px-12 h-fit py-0  ">{title}</IonText>
+    <IonCardContent className="p-0 ion-no-padding mt-4  ion-no-margin w-full ">
+      <Typography variant="h2" className="text-lg px-12 h-fit py-0">
+        {title}
+      </Typography>
       <IonGrid className=" flex ion-no-padding h-full gap-0 ion-no-margin">
         <button
           onClick={handleLeftScrollClick}
-          className="bg-neutral-50 active:bg-neutral-200 duration-200 ease-linear transition-all w-6 flex justify-center items-center hover:bg-neutral-100 "
+          className=" active:bg-neutral-200 duration-200 ease-linear transition-all w-6 flex justify-center items-center hover:bg-neutral-100 "
         >
           <IonIcon size="large" icon={chevronBackOutline} />
         </button>
@@ -47,6 +48,7 @@ const ScrollableCard = ({ allProps }) => {
                 key={index}
                 destination={"/university"}
                 title={"clicked on university card"}
+                className="h-full py-2"
               >
                 <SingleImageCard key={index} allProps={item} />
               </CustomTrackingLink>
@@ -55,7 +57,7 @@ const ScrollableCard = ({ allProps }) => {
         </div>
         <button
           onClick={handleRightScrollClick}
-          className="bg-neutral-50 active:bg-neutral-200 duration-200 ease-linear transition-all w-6 flex justify-center items-center hover:bg-opacity-60 "
+          className=" active:bg-neutral-200 duration-200 ease-linear transition-all w-6 flex justify-center items-center hover:bg-opacity-60 "
         >
           <IonIcon size="large" icon={chevronForwardOutline} />
         </button>

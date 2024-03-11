@@ -21,14 +21,14 @@ import "./index.css"
 import { receivedGuestbookList } from "graphql/user"
 import AddGuestBookPop from "./AddGuestBookPop"
 import MorePop from "./MorePop"
- import { USER_SERVICE_GQL } from "servers/types"
- import {useSelector} from "react-redux"
-import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
-import {Avatar} from "component/Avatar"
+import { USER_SERVICE_GQL } from "servers/types"
+import { useSelector } from "react-redux"
+import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
+import { Avatar } from "component/Avatar"
 
 function index({ userId, firstName }) {
   const [page, setPage] = useState(0)
-  const {accessToken} = useSelector((state) => state?.auth)
+  const { accessToken } = useSelector((state) => state?.auth)
   const decode = accessToken && jwtDecode(accessToken)
   const [isOpen, setIsOpen] = useState(false)
   const [guestbookList, setGuestbookList] = useState([])
@@ -92,7 +92,7 @@ function index({ userId, firstName }) {
   return (
     <>
       {userId !== decode?._id && (
-        <IonCard className="mb-2">
+        <IonCard className="mb-2 max-md:mx-1">
           <IonCardContent className="card-bb">
             <h1>Guestbook</h1>
           </IonCardContent>

@@ -13,11 +13,22 @@ import {
 import { location, closeOutline } from "ionicons/icons"
 import { authInstance } from "api/axiosInstance"
 import { userServer } from "servers/endpoints"
-import { useHistory } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
+import { useSelector } from "react-redux"
 
-const SingleUniversityList = ({ name, unitId, id, setUniversitiesList }) => {
+const SingleUniversityList = ({
+  name,
+  unitId,
+  id,
+  setUniversitiesList,
+  city,
+  streetAddressOrPOBox,
+  stateAbbreviation
+}) => {
   const [present] = useIonToast()
   const history = useHistory()
+  const { username } = useParams()
+  const { user: loggedInUser } = useSelector((state) => state.userProfile)
   const RemoveFromList = async (listId, unitId) => {
     try {
       const res = await authInstance.patch(
@@ -93,22 +104,33 @@ const SingleUniversityList = ({ name, unitId, id, setUniversitiesList }) => {
               icon={location}
             />
             <IonText>
-              <p style={{ alignSelf: "center", fontSize: "13px" }}>
-                New York, NY
+              <p
+                style={{
+                  alignSelf: "center",
+                  fontSize: "12px",
+                  marginTop: "2px"
+                }}
+              >
+                {city}, {stateAbbreviation}, {streetAddressOrPOBox}
               </p>
             </IonText>
           </IonCardContent>
         </IonCol>
         <IonCol size="auto" className="ion-no-padding ion-no-margin">
-          <IonButton
-            className="hidden  hover:bg-red-50 group-hover:block h-full ion-no-margin ion-no-padding w-10 "
-            fill="clear"
-            color="dark"
-            style={{ alignSelf: "center" }}
-            onClick={() => RemoveFromList(id, unitId)}
-          >
-            <IonIcon className="text-2xl   text-red-500" icon={closeOutline} />
-          </IonButton>
+          {username === loggedInUser.username && (
+            <IonButton
+              className="hidden  hover:bg-red-50 group-hover:block h-full ion-no-margin ion-no-padding w-10 "
+              fill="clear"
+              color="dark"
+              style={{ alignSelf: "center" }}
+              onClick={() => RemoveFromList(id, unitId)}
+            >
+              <IonIcon
+                className="text-2xl   text-red-500"
+                icon={closeOutline}
+              />
+            </IonButton>
+          )}
         </IonCol>
       </IonRow>
     </IonCard>

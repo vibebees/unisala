@@ -10,7 +10,16 @@ const HomeFeed = ({userInfo}) => {
   const {user} = useSelector((store) => store?.userProfile)
   const {data, loading, error} = useQuery(getNewsFeed, {
     context: {server: USER_SERVICE_GQL},
-    variables: {userId: user._id}
+    variables: {
+      feedQuery: {
+        userId: user._id,
+        page: 1,
+        pageSize: 10,
+        feedType: "newsfeed"
+        // include other necessary fields as per FeedQueryInput definition
+      }
+    }
+
   })
 
   return (

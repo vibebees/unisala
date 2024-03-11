@@ -1,19 +1,12 @@
-import { useSelector } from "react-redux"
-import { PostModalOnClick } from "../organisim/PostModalOnClick"
-import { PostCardForClick } from "../organisim/PostCardForClick"
-import { IonCard, IonTitle } from "@ionic/react"
-import { useEffect, useState } from "react"
+import { IonCard } from "@ionic/react"
 import axios from "axios"
+import { usePathName } from "hooks/usePathname"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { useHistory } from "react-router"
 import { userServer } from "servers/endpoints"
-import {useHistory} from "react-router"
-
-const usePathName = (index) => {
-  let currPath = window.location.pathname.split("/").filter((str) => str !== "")
-  const selectedSegment = currPath[index] || ""
-
-  return selectedSegment
-}
-
+import { PostCardForClick } from "../organisim/PostCardForClick"
+import { PostModalOnClick } from "../organisim/PostModalOnClick"
 export const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
@@ -24,25 +17,27 @@ export const CreateAPostCard = ({ allProps }) => {
 
   useEffect(() => {
     const fn = async () => {
-      const res = await axios.get(userServer + "/getMetadataTags", {
-        headers: {
-          authorization: localStorage.getItem("accessToken")
+      const createAPostMetaData = await axios.get(
+        userServer + "/getMetadataTags",
+        {
+          headers: {
+            authorization: localStorage.getItem("accessToken")
+          }
         }
-      })
-      const metaData = res.data?.data || []
+      )
+
+      const metaData = createAPostMetaData.data?.data || []
       const getCurrentPageMetaData = metaData[pathname] || {}
-      const {addAPost} = getCurrentPageMetaData || {}
+      const { addAPost } = getCurrentPageMetaData || {}
       setMeta(addAPost)
     }
-
     fn()
   }, [])
-
   return (
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />
       <IonCard
-        style={{ marginBottom: "20px" }}
+        style={{ marginBottom: "12px" }}
         onClick={() => {
           params.append("create", "y")
           if (allProps.unitId) {
@@ -53,9 +48,11 @@ export const CreateAPostCard = ({ allProps }) => {
           })
           setCreateAPostPopUp(true)
         }}
+        className="ion-no-margin ion-no-padding"
       >
         <PostCardForClick allProps={{ ...allProps, user }} />
       </IonCard>
     </>
   )
 }
+

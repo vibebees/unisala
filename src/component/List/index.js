@@ -14,16 +14,19 @@ import {
   IonContent
 } from "@ionic/react"
 import ListContainer from "./molecules/ListContainer"
-import { useHistory } from "react-router"
+import { useHistory, useParams } from "react-router"
 import { URLgetter, URLdelete } from "utils/lib/URLupdate"
 import Lists from "./molecules/Lists"
-
+import { useSelector } from "react-redux"
 export const ListContext = createContext()
 
-const index = () => {
+const index = ({ userId }) => {
   const history = useHistory()
   const [isOpen, setIsOpen] = React.useState(false)
   const [lists, setLists] = React.useState([])
+  const { username } = useParams()
+  const { user: loggedInUser } = useSelector((state) => state.userProfile)
+  const isMyProfile = loggedInUser?.username === username
 
   React.useEffect(() => {
     const data = URLgetter("id")
@@ -35,22 +38,24 @@ const index = () => {
   }, [history.location.search])
 
   return (
-    <ListContext.Provider value={{ lists, setLists }}>
-      <div className="min-h-[50vh]">
+    <ListContext.Provider value={{ lists, setLists, userId, isMyProfile }}>
+      <div className="min-h-[50vh] max-md:mx-1 max-md:px-0">
         {/* <Listsearch /> */}
         <br />
-        <section className="px-3">
-          <IonText className="text-lg mt-6 font-bold ">Your Lists</IonText>
+        <section className="px-3 max-md:px-1 max-md:mx-0">
+          <IonText className="text-lg mt-6 font-bold ">
+            {isMyProfile ? "Your" : ""} Lists
+          </IonText>
           <section>
             <ListContainer />
             <br />
             <br />
             <br />
           </section>
-          <IonModal isOpen={isOpen} backdropDismiss={false}>
+          <IonModal mode="ios" isOpen={isOpen} backdropDismiss={false}>
             <IonHeader>
               <IonToolbar>
-                <IonTitle>Lists</IonTitle>
+                <IonTitle>Universtiy List</IonTitle>
                 <IonButtons slot="end">
                   <IonButton
                     className="ListModalCloseBtn"
@@ -73,11 +78,13 @@ const index = () => {
         <br />
         <br />
         <br />
-        <FloatingButton
-          Icon={addOutline}
-          ModalData={CreateListModal}
-          header="Create a List"
-        />
+        {isMyProfile && (
+          <FloatingButton
+            Icon={addOutline}
+            ModalData={CreateListModal}
+            header="Create a List"
+          />
+        )}
       </div>
     </ListContext.Provider>
   )

@@ -5,7 +5,7 @@ import ActionButton from "./ActionButton"
 import { URLupdate } from "utils/lib/URLupdate"
 import { useHistory } from "react-router"
 
-const SingleList = ({ _id, description, title }) => {
+const SingleList = ({ _id, description, title, isMyProfile = false }) => {
   const history = useHistory()
   return (
     <IonCard className="mx-0 group">
@@ -44,12 +44,14 @@ const SingleList = ({ _id, description, title }) => {
             </IonCol>
           </IonRow>
         </IonCol>
-        <IonCol
-          size="1"
-          className=" items-center flex justify-center border-black"
-        >
-          <ActionButton _id={_id} />
-        </IonCol>
+        {isMyProfile && (
+          <IonCol
+            size="1"
+            className=" items-center flex justify-center border-black"
+          >
+            <ActionButton _id={_id} />
+          </IonCol>
+        )}
       </IonRow>
     </IonCard>
   )

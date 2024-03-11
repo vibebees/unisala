@@ -6,10 +6,21 @@ import { HeaderNavigator } from "../molecules/headerNavigator"
 import { SideNavigator } from "../molecules/sideNavigator"
 import { UniversityHeader } from "../molecules/header"
 import { CreateAPostCard } from "component/post/template"
+import Tabs from "../molecules/Tabs"
+import { useHistory } from "react-router"
 
 export const UniversityBuild = ({ allProps }) => {
   const { data, app, profile, UniScroll } = allProps
+  const params = new URLSearchParams(window.location.search)
+  const history = useHistory()
+  const q = params.get("tab")
 
+  if (!q) {
+    params.set("tab", "g")
+    history.push({
+      search: params.toString()
+    })
+  }
   return (
     <IonContent>
       <section
@@ -18,7 +29,6 @@ export const UniversityBuild = ({ allProps }) => {
           UniScroll()
         }}
         style={{
-          height: "92vh",
           overflow: "auto",
           scrollBehavior: "smooth",
           backgroundColor: "#f5f5f5"
@@ -27,28 +37,26 @@ export const UniversityBuild = ({ allProps }) => {
         {/* {loading && <h1>loading</h1>} */}
         <HeaderNavigator allProps={allProps} />
         <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
-          <div ref={profile}>
+          <div ref={profile} className="mb-2">
             <UniversityHeader allProps={allProps} />
           </div>
 
           <CreateAPostCard
-              allProps={{
-                ...allProps,
-                unitId: data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId
-              }}
-            />
-          <SideNavigator allProps={allProps} />
-          <div
-            style={{
-              width: "97%",
-              margin: "0 auto"
+            allProps={{
+              ...allProps,
+              unitId: data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId
             }}
-          >
-            {/* <Discussion
-              uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId}
-            /> */}
-            <Review uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId} />
-          </div>
+          />
+          <Tabs />
+          {q === "g" ? (
+            <SideNavigator allProps={allProps} />
+          ) : (
+            <div className="w-11/12 mx-auto  lg:w-1/2 ">
+              <Review
+                uniId={data?.getUpdatedSchoolInfo?.elevatorInfo?.unitId}
+              />
+            </div>
+          )}
         </div>
       </section>
     </IonContent>

@@ -1,22 +1,13 @@
-import { useEffect } from "react"
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonContent,
-  IonCard,
-  IonPage,
-  IonIcon
-} from "@ionic/react"
-import "./Space.css"
+import { IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react"
+import { InfiniteFeed } from "component/feed/Feed"
 import { arrowUpOutline } from "ionicons/icons"
-import clsx from "clsx"
-import { SpaceFeed } from "./SpaceFeed"
-import UnisalaIntro from "./UnisalaIntro"
-import SpaceHeader from "./SpaceHeader"
-import PreLoader from "../../component/preloader"
+import { useEffect } from "react"
 import { SpaceNotFound } from "../../component/PageNotFound"
 import { CreateAPostCard } from "../../component/post/template"
+import PreLoader from "../../component/preloader"
+import "./Space.css"
+import SpaceHeader from "./SpaceHeader"
+import UnisalaIntro from "./UnisalaIntro"
 
 export const Spaces = ({ allProps }) => {
   // TOP SPACES
@@ -25,14 +16,13 @@ export const Spaces = ({ allProps }) => {
     handleResize,
     loggedIn,
     spaceId,
-    parentId,
     tags,
     loading,
     spaceCategory,
     searchSpaceCategory,
-    user,
     width,
-    views
+    views,
+    setTab
   } = allProps
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -40,6 +30,14 @@ export const Spaces = ({ allProps }) => {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  useEffect(() => {
+    const queryString = window.location.search
+    const queryParams = new URLSearchParams(queryString)
+    const flagValue = queryParams.get("address") || "feed"
+
+    setTab(flagValue)
+  }, [window.location.search])
 
   // condition because we do not want to send null datas to backend
   if (spaceId && !tags.includes(spaceId)) {
@@ -52,6 +50,11 @@ export const Spaces = ({ allProps }) => {
 
   if (!spaceCategory) {
     return <SpaceNotFound />
+  }
+  const scrollToTop = () => {
+    document
+      .querySelector(".ThreadContainer")
+      .scrollIntoView({ behavior: "smooth" })
   }
 
   return (
@@ -80,12 +83,12 @@ export const Spaces = ({ allProps }) => {
             }}
             className="ThreadContainer"
           >
-            <SpaceHeader spaceDetails={searchSpaceCategory?.spaceCategory} />
+            <SpaceHeader spaceDetails={searchSpaceCategory?.data} />
             {loggedIn && width >= 768 && (
               <CreateAPostCard allProps={allProps} />
             )}
             {loggedIn ? (
-              <SpaceFeed spaceId={spaceId} userInfo={user} />
+              <InfiniteFeed feedId={spaceId} feedType={"specificSpace"} />
             ) : (
               <UnisalaIntro />
             )}
@@ -96,20 +99,10 @@ export const Spaces = ({ allProps }) => {
           </IonCol>
         </IonRow>
       </IonGrid>
-      <button
-        className={clsx(
-          "w-10 h-10 rounded-full hover:shadow-lg hover:bg-neutral-300 duration-200 transition-all ease-linear bg-neutral-200 grid place-content-center fixed right-10 bottom-6"
-        )}
-        onClick={() => {
-          let ThreadContainer = document.querySelector(".ThreadContainer")
-          ThreadContainer.scrollIntoView({ behavior: "smooth" })
-        }}
-      >
-        <IonIcon
-          icon={arrowUpOutline}
-          class="text-neutral-700 text-lg"
-        ></IonIcon>
+      <button className="scrollButton" onClick={scrollToTop}>
+        <IonIcon icon={arrowUpOutline} className="scrollIcon" />
       </button>
     </IonContent>
   )
 }
+

@@ -18,7 +18,7 @@ const index = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
         <div onClick={() => setIsOpen(true)} className="cursor-pointer p-0">
           {ModalButton}
         </div>
-        <IonModal isOpen={isOpen}>
+        <IonModal mode="ios" isOpen={isOpen}>
           <IonHeader>
             <IonToolbar>
               <IonTitle>{header}</IonTitle>

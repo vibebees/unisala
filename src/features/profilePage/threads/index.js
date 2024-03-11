@@ -13,7 +13,7 @@ import { USER_SERVICE_GQL } from "servers/types"
 import { GetUserPost } from "graphql/user/"
 import Thread from "component/thread"
 import CourseCard from "component/courseCard"
-import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
+import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
 
 function index({ userId, firstName }) {
   return (
@@ -23,14 +23,14 @@ function index({ userId, firstName }) {
       context={{ server: USER_SERVICE_GQL }}
     >
       {({ data, loading, fetchMore, refetch }) => {
-        const { Posts } = data?.getUserPost || []
-        const { totalPosts } = data?.getUserPost || 0
+        const { Posts } = data?.getDicussionUniWall || []
+        const { totalPosts } = data?.getDicussionUniWall || 0
         const { user } = useSelector((state) => state.userProfile)
         const [page, setPage] = useState(0)
 
-        if (!data?.getUserPost.Posts.length) {
+        if (!data?.getDicussionUniWall.length) {
           return (
-            <IonCard>
+            <IonCard className="max-md:mx-1">
               <StateMessage
                 title={
                   user._id === userId
@@ -85,11 +85,11 @@ function index({ userId, firstName }) {
                     updateQuery: (prev, { fetchMoreResult }) => {
                       if (!fetchMoreResult) return prev
                       return Object.assign({}, prev, {
-                        getUserPost: {
-                          ...prev.getUserPost,
+                        getDicussionUniWall: {
+                          ...prev.getDicussionUniWall,
                           Posts: [
-                            ...prev.getUserPost.Posts,
-                            ...fetchMoreResult.getUserPost.Posts
+                            ...prev.getDicussionUniWall.Posts,
+                            ...fetchMoreResult.getDicussionUniWall.Posts
                           ]
                         }
                       })

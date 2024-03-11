@@ -132,7 +132,7 @@ function AboutUser({ about, myProfile, username }) {
 
   return (
     <>
-      <IonCard className="mb-2">
+      <IonCard className="mb-2 max-md:mx-1">
         <IonCardContent className="card-bb flex">
           <h1>About</h1>
           {myProfile && (

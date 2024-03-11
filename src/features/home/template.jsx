@@ -1,28 +1,18 @@
+import { IonCard, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
 import React, { useEffect, useState } from "react"
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonContent,
-  IonCard,
-  IonItem
-} from "@ionic/react"
 import { CreateAPostCard } from "../../component/post/template/index"
-
-import "./Home.css"
 import WelcomeSteps from "../../component/authentication/Welcome"
-import { InfinteFeed } from "./InfiniteScrollFeed"
-
+import { InfiniteFeed } from "../../component/feed/Feed"
+import "./Home.css"
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "graphql/uni"
-
-import { FolderStructure } from "../../component/folderStructure"
-import { UnisalaLandingPage } from "./UnisalaIntro"
-import ScrollableCard from "../../component/ScrollableImageCard/organism/ScrollableCard"
 import { fetchFamousUniversities } from "graphql/user"
-import FloatingButton from "../../component/FloatingButton"
 import useDocTitle from "hooks/useDocTitile"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
+import FloatingButton from "../../component/FloatingButton"
+import ScrollableCard from "../../component/ScrollableImageCard/organism/ScrollableCard"
+import { FolderStructure } from "../../component/folderStructure"
+import { UnisalaLandingPage } from "./UnisalaIntro"
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")
@@ -67,25 +57,29 @@ export const Home = ({ allProps }) => {
 
   const renderLoggedInView = () => (
     <>
-      <CreateAPostCard allProps={allProps} />
-      <FolderStructure
-        allProps={{
-          ...allProps,
-          folderName: "",
-          data: userGuide,
-          popUp: false,
-          customHeight: false
-        }}
-      />
+      <div className="mx-12 max-md:mx-2 max-lg:mx-5">
+        <CreateAPostCard allProps={allProps} />
+        <FolderStructure
+          allProps={{
+            ...allProps,
+            folderName: "",
+            data: userGuide,
+            popUp: false,
+            customHeight: false
+          }}
+        />
 
-      <ScrollableCard
-        allProps={{
-          data: discoverUni,
-          className: "similarschoolss"
-        }}
-      />
+        <IonCard className=" mt-4 ion-no-padding ion-no-margin">
+          <ScrollableCard
+            allProps={{
+              data: discoverUni,
+              className: "similarschoolss"
+            }}
+          />
+        </IonCard>
 
-      <InfinteFeed userInfo={user} allProps={allProps} />
+        <InfiniteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
+      </div>
     </>
   )
 
@@ -102,9 +96,7 @@ export const Home = ({ allProps }) => {
       {width < 768 && views.lessThan768}
       <IonGrid
         style={{
-          width: width >= 768 ? "95%" : "100%",
-          margin: "auto",
-          maxWidth: "1200px"
+          margin: "auto"
         }}
         className="max-md:px-0"
       >
@@ -115,12 +107,12 @@ export const Home = ({ allProps }) => {
           {width > 768 && views.greaterThan768}
           <IonCol
             style={{
-              maxWidth: "700px",
+              maxWidth: "900px",
               margin: "auto",
-              minHeight: "calc(90vh)",
+
               overflow: "hidden"
             }}
-            className="max-md:px-0"
+            className="max-md:px-0 "
           >
             {loggedIn ? renderLoggedInView() : UnisalaLandingPage({ allProps })}
           </IonCol>

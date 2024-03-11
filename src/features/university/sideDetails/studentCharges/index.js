@@ -4,6 +4,8 @@ import { IonCard } from "@ionic/react"
 import TableOne from "./template/TableOne"
 import TableTwo from "./template/TableTwo"
 import ApplicationCharge from "./template/ApplicationCharge"
+import Typography from "component/ui/Typography"
+import { CardHeader } from "component/Reusable/cardHeader"
 
 const index = () => {
   const { uniData } = useSelector((store) => store?.university)
@@ -18,10 +20,7 @@ const index = () => {
         }}
         className="flex flex-col"
       >
-        <h2 className="font-normal border-b border-neutral-300 text-neutral-700 px-2 text-lg py-2">
-          Student Charges
-        </h2>
-
+        <CardHeader header="Student Charges" />
         <section className="w-full max-md:flex-col gap-3 flex px-5 py-4">
           <TableOne
             data={studentCharges?.undergraduate}
@@ -40,7 +39,10 @@ const index = () => {
           <TableTwo data={studentCharges?.graduate} level={"Graduate"} />
         </section>
         <IonCard className="px-6 max-md:px-2 py-3 mb-10 bg-blue-400 text-white">
-          <h2 className=" px-3 text-lg font-semibold">Application Charges</h2>
+          <Typography variant="h3" className="font-semibold text-lg">
+            Application Charges
+          </Typography>
+
           <ApplicationCharge allProps={{ studentCharges: studentCharges }} />
         </IonCard>
       </IonCard>

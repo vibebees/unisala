@@ -1,33 +1,30 @@
-import { useState, useRef, useEffect, useLayoutEffect, useMemo } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 
 import { useSelector } from "react-redux"
 
 import {
   IonAvatar,
-  IonButton,
+  IonButtons,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonModal,
   IonText,
-  IonHeader,
-  IonToolbar,
   IonTitle,
-  IonButtons
+  IonToolbar
 } from "@ionic/react"
-import { arrowBack, search, star } from "ionicons/icons"
+import { arrowBack } from "ionicons/icons"
 
 import "../index.css"
 
 import "react-quill/dist/quill.snow.css"
 
 import { Avatar } from "component/Avatar"
-import Form from "../molecules/Form"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
-import { Link, useHistory, useLocation } from "react-router-dom"
-import { htmlForEditor } from "../utils/htmlForEditor"
-import AuthTemplate from "component/authentication/template/AuthTemplate"
-import AuthModal from "component/authentication/AuthModal"
+import { useHistory, useLocation } from "react-router-dom"
+import Form from "../molecules/Form"
+import { Typography, Button } from "component/ui"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
@@ -80,22 +77,25 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
         setCreateAPostPopUp(false)
       }}
       isOpen={createAPostPopUp}
+      mode="ios"
+      className="rounded-md"
     >
       <IonHeader className="">
         <IonToolbar>
           <IonTitle>Start a Discussion</IonTitle>
           <IonButtons slot="end">
-            <IonButton
+            <Button
               onClick={() => {
-                setPostData(null)
-                setCreateAPostPopUp(false)
                 params.delete("create")
                 params.delete("type")
-                history.push({ search: params.toString() })
+                history.push({
+                  search: params.toString()
+                })
+                setCreateAPostPopUp(false)
               }}
             >
               Close
-            </IonButton>
+            </Button>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -107,20 +107,20 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
               {metaData &&
                 Object.keys(metaData).map((item, i) => (
                   <div key={i}>
-                    <IonButton
+                    <Button
                       className={`mt-0 hover:scale-95 transition-all ease-in`}
                       onClick={() => handleTabSelection(item)}
                       color={metaData[item]?.color}
                     >
                       {metaData[item]?.name}
-                    </IonButton>
+                    </Button>
                   </div>
                 ))}
             </div>
           ) : (
             <>
               <div className="relative">
-                <IonButton
+                <Button
                   fill="clear"
                   className="absolute left-0 -top-2"
                   onClick={() => {
@@ -131,12 +131,13 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                   }}
                 >
                   <IonIcon icon={arrowBack} />
-                </IonButton>
-                <IonText>
-                  <h1 className="text-center mt-2 text-xl">
-                    {metaData[selectedTab]?.name}
-                  </h1>
-                </IonText>
+                </Button>
+                <Typography variant="h1" className="text-center">
+                  {metaData[selectedTab]?.name}
+                </Typography>
+                {/* <IonText>
+                  <h1 className="text-center mt-2 text-xl"></h1>
+                </IonText> */}
               </div>
 
               <IonItem className="ion-no-padding" lines="none">
@@ -173,7 +174,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
             </h1>
           </IonText>
 
-          <IonButton
+          <Button
             expand="block"
             className="mt-4 w-4/5"
             onClick={() => {
@@ -191,9 +192,9 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
             }}
           >
             Login
-          </IonButton>
+          </Button>
 
-          <IonButton
+          <Button
             color={"warning"}
             className="mt-4 w-4/5"
             onClick={() => {
@@ -202,7 +203,7 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
             }}
           >
             Continue without logging in
-          </IonButton>
+          </Button>
         </div>
       )}
     </IonModal>

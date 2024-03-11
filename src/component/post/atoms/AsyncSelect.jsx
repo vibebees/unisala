@@ -1,16 +1,15 @@
 import axios from "axios"
-import React, { useEffect, useRef } from "react"
-import { universityServer } from "servers/endpoints"
-import AsyncSelect from "react-select/async"
-import { UniSearchDataList } from "graphql/uni"
-import { tryCatch } from "ramda"
-import { useLazyQuery, useQuery } from "@apollo/client"
-import { UNIVERSITY_SERVICE_GQL } from "servers/types"
-import { htmlForEditor } from "../utils/htmlForEditor"
+import { useEffect, useRef } from "react"
 import { useLocation } from "react-router"
+import AsyncSelect from "react-select/async"
+import { universityServer } from "servers/endpoints"
+import { htmlForEditor } from "../utils/htmlForEditor"
 
 const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   const ref = useRef()
+  const majorController = useRef()
+  const uniController = useRef()
+
   const universityName = useLocation().pathname.split("university/")[1]
   const params = new URLSearchParams(window.location.href)
   const customStyles = {
@@ -43,9 +42,16 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   }, [])
 
   const fetchMajor = async (majorQuery = " ") => {
+    if (majorController.current) {
+      majorController.current.abort()
+    }
+    majorController.current = new AbortController()
     try {
       const response = await axios.get(
-        `${universityServer}/keyword/majors/${majorQuery}/5`
+        `${universityServer}/keyword/majors/${majorQuery}/5`,
+        {
+          signal: majorController.current.signal
+        }
       )
       return response.data.map((i) => ({
         value: i.name,
@@ -58,9 +64,16 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
   }
 
   const fetechUni = async (uni = " ") => {
+    if (uniController.current) {
+      uniController.current.abort()
+    }
+    uniController.current = new AbortController()
     try {
       const response = await axios.get(
-        `${universityServer}/keyword/schoolName/${uni}/5`
+        `${universityServer}/keyword/schoolName/${uni}/5`,
+        {
+          signal: uniController.current.signal
+        }
       )
       return response.data.map((i) => ({
         value: i.name,
@@ -120,3 +133,4 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 }
 
 export default AsyncSelectAtom
+

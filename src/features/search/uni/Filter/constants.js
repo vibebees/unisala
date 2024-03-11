@@ -111,32 +111,32 @@ export const COA = [
     max: 5000
   },
   {
-    min: 5000,
+    min: 0,
     max: 10000
   },
   {
-    min: 10000,
+    min: 0,
     max: 15000
   },
   {
-    min: 15000,
+    min: 0,
     max: 20000
   },
   {
-    min: 20000,
+    min: 0,
     max: 25000
   },
   {
-    min: 25000,
+    min: 0,
     max: 30000
   },
   {
-    min: 30000,
+    min: 0,
     max: 35000
   },
   {
-    min: 35000,
-    max: null
+    min: 0,
+    max: 50000
   }
 ]
 

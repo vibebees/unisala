@@ -47,12 +47,12 @@ export const FolderStructure = ({ allProps = {} }) => {
 
   return (
     <IonCard style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
-      <CardHeader header={folderName} />
+      {folderName && <CardHeader header={folderName} />}
       <IonCardContent key={"index"} className="w-full">
         <IonGrid className="w-full gap-3 flex flex-wrap">
           <IonRow
             className={clsx(
-              "transition-all w-full duration-150 ease-linear",
+              "transition-all w-full gap-3 duration-150 ease-linear",
               showMore && customHeight
                 ? "h-full "
                 : "h-[328px] overflow-hidden",

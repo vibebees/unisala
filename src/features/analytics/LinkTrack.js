@@ -6,7 +6,8 @@ const CustomTrackingLink = ({
   children,
   title = "",
   destination,
-  customFunction
+  customFunction,
+  className
 }) => {
   const history = useHistory()
   const location = useLocation()
@@ -26,7 +27,13 @@ const CustomTrackingLink = ({
   }
 
   return (
-    <div className="cursor-pointer" onClick={trackDestination}>
+    <div
+      style={{
+        cursor: "pointer"
+      }}
+      className={className}
+      onClick={trackDestination}
+    >
       {children}
     </div>
   )

@@ -25,15 +25,10 @@ import { clarity } from "react-microsoft-clarity"
 
 /* Theme variables */
 
-const R = require("ramda")
-const axios = require("axios")
-const lib = {}
 const TrackingId = "G-KDJCCKHWYC"
 const ClarityId = "lc6yzoxipb"
 ReactGA.initialize(TrackingId)
 clarity.init(ClarityId)
-lib.R = R
-lib.axios = axios
 setupIonicReact()
 
 const DesktopView = ({ allProps }) => {

@@ -137,7 +137,7 @@ const ScholarshipCard = ({
                 colorTitle="blue"
                 colorValue="blue"
                 title="tags: "
-                value={tags.join("#")}
+                value={tags?.join("#")}
                 skipBg={true}
               />
             )}
