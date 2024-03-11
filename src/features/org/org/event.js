@@ -1,5 +1,5 @@
 import { IonCol, IonGrid, IonRow } from "@ionic/react"
-
+import { defaultEventsImages } from "component/feed/default.images"
 const events = [
   {
     id: 1,
@@ -63,13 +63,15 @@ export const EventCard = ({
   location,
   interestCount,
   goingCount
-}) => (
-  <div className="event-card">
-    <img src={image} alt={title} />
+}) => {
+const eventImg = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MzgzNTl8MHwxfHNlYXJjaHwyfHxjb2xsZWdlfGVufDB8fHx8MTcxMDA4NDAwNHww&ixlib=rb-4.0.3&q=80&w=400"
+  return (
+    <div className="event-card">
+    <img src={eventImg} alt={title} />
     <div className="event-info">
       <h2>{title}</h2>
       <p>{date}</p>
-      <p>{location}</p>
+      <p>{location}</p>FADSFSA
       <div className="event-stats">
         <span>{interestCount} interested</span>
         <span>{goingCount} going</span>
@@ -77,5 +79,5 @@ export const EventCard = ({
     </div>
     <button className="interested-button">Interested</button>
   </div>
-)
-
+  )
+}

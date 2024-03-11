@@ -288,11 +288,7 @@ export const defaultUniImages = [{
     alts: "woman in pink blazer and blue denim skirt standing on sidewalk during daytime"
   }]
 
-
-
-
-
-  const eventsImages = [
+  export const defaultEventsImages = [
     {
       raw: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixid=M3w0MzgzNTl8MHwxfHNlYXJjaHwyfHxjb2xsZWdlfGVufDB8fHx8MTcxMDA4NDAwNHww&ixlib=rb-4.0.3",
       full: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0MzgzNTl8MHwxfHNlYXJjaHwyfHxjb2xsZWdlfGVufDB8fHx8MTcxMDA4NDAwNHww&ixlib=rb-4.0.3&q=85",

@@ -64,7 +64,7 @@ export const Spaces = ({ allProps }) => {
   const Feed = () => (
     <div className="mt-4">
       <NotJoinedWrapper
-        isJoined={orgData?.isJoined}
+        isJoined={true}
         message="Please Join the orgranization to post"
       >
         <CreateAPostCard allProps={allProps} />
