@@ -5,7 +5,7 @@ import Review from "../../Discussion/Post"
 import { HeaderNavigator } from "../molecules/headerNavigator"
 import { SideNavigator } from "../molecules/sideNavigator"
 import { UniversityHeader } from "../molecules/header"
-import { CreateAPostCard } from "component/post/template"
+import CreateAPostCard from "component/post/template"
 import Tabs from "../molecules/Tabs"
 import { useHistory } from "react-router"
 

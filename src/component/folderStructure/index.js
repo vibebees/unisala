@@ -25,7 +25,7 @@ const RenderFolder = ({
     />
   )
 }
-export const FolderStructure = ({ allProps = {} }) => {
+const FolderStructure = ({ allProps = {} }) => {
   const { folderName = "", customStyles = {}, customHeight = true } = allProps
   const [popUp, setPopup] = useState(allProps?.popUp || false)
   const [currentURL, setCurrentURL] = useState("")
@@ -98,3 +98,5 @@ export const FolderStructure = ({ allProps = {} }) => {
     </IonCard>
   )
 }
+
+export default FolderStructure

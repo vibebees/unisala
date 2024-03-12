@@ -1,7 +1,7 @@
-import React from "react"
+import React, { lazy } from "react"
 import { IonFab, IonFabButton, IonIcon } from "@ionic/react"
 import { helpOutline } from "ionicons/icons"
-import Modal from "../Reusable/Modal"
+import Modal from "component/ui/Modal"
 import Feedback from "./organism/Feedback"
 import { ButtonTrack } from "features/analytics/ButtonTrack"
 
