@@ -5,7 +5,7 @@ import AuthInput from "../AuthInput"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
 import { validateSignIn } from "utils/components/validate"
-import { loginUser } from "store/action/authenticationAction"
+import {loginUser} from "store/action/authenticationAction"
 
 const SignInForm = ({
   setauth,
@@ -13,9 +13,13 @@ const SignInForm = ({
   setActiveNavDrop = () => {}
 }) => {
   const params = new URLSearchParams(window.location.search)
+  const emailFromUrl = params.get("email") ?? "" // Retrieve email from URL if available
+  const spaceOrgName = params.get("org")
   const [input, setInput] = useState({
-    email: "",
-    password: ""
+    email: emailFromUrl,
+    password: "",
+    spaceOrgName,
+    type: spaceOrgName && "invitation"
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -26,9 +30,9 @@ const SignInForm = ({
   const handleChange = (e) => {
     const { name, value } = e.target
     setInput((prev) => ({ ...prev, [name]: value }))
-    // Clear the error for the current input field when the user starts correcting it
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }))
   }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const validationErrors = validateSignIn(input)
@@ -53,6 +57,7 @@ const SignInForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Email input */}
       <div className="auth-input-div">
         <label className="auth-label">Email</label>
         <br />
