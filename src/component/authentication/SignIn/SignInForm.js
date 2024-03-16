@@ -13,13 +13,13 @@ const SignInForm = ({
   setActiveNavDrop = () => {}
 }) => {
   const params = new URLSearchParams(window.location.search)
-  const emailFromUrl = params.get("email") ?? "" // Retrieve email from URL if available
   const spaceOrgName = params.get("org")
   const [input, setInput] = useState({
-    email: emailFromUrl,
+    email: params.get("email"),
     password: "",
     spaceOrgName,
-    type: spaceOrgName && "invitation"
+    type: spaceOrgName && "invitation",
+    code: params.get("code")
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
