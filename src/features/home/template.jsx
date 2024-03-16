@@ -1,18 +1,24 @@
 import { IonCard, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
-import React, { useEffect, useState } from "react"
-import { CreateAPostCard } from "../../component/post/template/index"
-import WelcomeSteps from "../../component/authentication/Welcome"
-import { InfiniteFeed } from "../../component/feed/Feed"
+import React, { useEffect, useState, lazy } from "react"
 import "./Home.css"
 import { useQuery } from "@apollo/client"
 import { getUpdatedSchoolInfo } from "graphql/uni"
 import { fetchFamousUniversities } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
-import FloatingButton from "../../component/FloatingButton"
-import ScrollableCard from "../../component/ScrollableImageCard/organism/ScrollableCard"
-import { FolderStructure } from "../../component/folderStructure"
 import { UnisalaLandingPage } from "./UnisalaIntro"
+const FloatingButton = lazy(() => import("../../component/FloatingButton"))
+const CreateAPostCard = lazy(() => import("../../component/post/template"))
+const WelcomeSteps = lazy(() =>
+  import("../../component/authentication/Welcome")
+)
+const InfiniteFeed = lazy(() => import("../../component/feed/Feed"))
+const ScrollableCard = lazy(() =>
+  import("../../component/ScrollableImageCard/organism/ScrollableCard")
+)
+const FolderStructure = lazy(() =>
+  import("../../component/folderStructure/index")
+)
 
 export const Home = ({ allProps }) => {
   useDocTitle("Unisala")

@@ -7,7 +7,7 @@ import { useHistory } from "react-router"
 import { userServer } from "servers/endpoints"
 import { PostCardForClick } from "../organisim/PostCardForClick"
 import { PostModalOnClick } from "../organisim/PostModalOnClick"
-export const CreateAPostCard = ({ allProps }) => {
+const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
   const [meta, setMeta] = useState({})
@@ -56,3 +56,4 @@ export const CreateAPostCard = ({ allProps }) => {
   )
 }
 
+export default CreateAPostCard

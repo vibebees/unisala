@@ -15,15 +15,25 @@ export const GoogleAuth = ({ setauth, setActiveNavDrop = () => {} }) => {
 
   const params = new URLSearchParams(window.location.search)
 
+
+
   const onGoogleSignIn = (user) => {
     const { credential } = user
+    let payload = {
+      email: params.get("email"),
+      spaceOrgName: params.get("org"),
+      code: params.get("code"),
+      token: credential,
+      type: params.get("org") && "invitation"
+    }
     dispatch(
       googleAuthAction({
         present,
         dismiss,
-        credential,
+        payload,
         setActiveNavDrop,
-        redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`
+        redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`,
+        showPopForUser: "test"
       })
     )
   }

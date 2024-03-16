@@ -2,8 +2,8 @@ import { IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react"
 import { arrowUpOutline } from "ionicons/icons"
 import { useEffect } from "react"
 import { SpaceNotFound } from "../../component/PageNotFound"
-import { InfiniteFeed } from "../../component/feed/Feed"
-import { CreateAPostCard } from "../../component/post/template"
+import InfiniteFeed from "../../component/feed/Feed"
+import CreateAPostCard from "../../component/post/template"
 import PreLoader from "../../component/preloader"
 import Tabs from "../../component/tabs"
 import Invitation from "./Invitation/Index"
@@ -162,4 +162,3 @@ export const Spaces = ({ allProps }) => {
     </IonContent>
   )
 }
-

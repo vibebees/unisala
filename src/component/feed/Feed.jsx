@@ -28,7 +28,7 @@ import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
 import { defaultUniImages } from "./default.images"
-import {Typography} from "component/ui"
+import { Typography } from "component/ui"
 import { CardHeader } from "component/Reusable/cardHeader"
 const Post = ({ post, allProps, feedType, feedId }) => {
   return (
@@ -66,11 +66,8 @@ const University = ({ post, studyLevel }) => {
       }}
       className="max-md:border-none ion-no-margin"
     >
-
       <IonCardHeader>
-
-        <IonCardSubtitle >Suggested University</IonCardSubtitle>
-
+        <IonCardSubtitle>Suggested University</IonCardSubtitle>
       </IonCardHeader>
       <IonGrid>
         <Link to={`/university/${elevatorInfo.name}`}>
@@ -103,7 +100,7 @@ const University = ({ post, studyLevel }) => {
                   <IonCardTitle>{elevatorInfo.name}</IonCardTitle>
                 </IonText>
               </IonItem>
-              <IonItemDivider/>
+              <IonItemDivider />
               <IonRow
                 className="ion-no-padding gap-1 items-center h-fit mt-2"
                 lines="none"
@@ -238,7 +235,7 @@ const SuggestedSpace = ({ data, title, type }) => {
   )
 }
 
-export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
+const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { data: userInfoData } = useQuery(getUserGql, {
     variables: {
@@ -352,3 +349,4 @@ export const InfiniteFeed = ({ allProps, feedType, feedId }) => {
   )
 }
 
+export default InfiniteFeed
