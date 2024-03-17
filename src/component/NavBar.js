@@ -119,12 +119,15 @@ const Nav = ({ allProps }) => {
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "center" }}>
-                        <IonIcon
+                        {/* <IonIcon
                           style={{
                             fontSize: "25px"
                           }}
                           color={active === item.link ? "dark" : "medium"}
                           icon={item.icon}
+                        /> */}
+                        <item.Icon
+                          fill={active === item.link ? "blue" : "#747372"}
                         />
                         {item.name === "Messages" && item.count > 0 && (
                           <IonBadge>{item.count}</IonBadge>

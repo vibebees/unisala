@@ -1,3 +1,7 @@
+import ExploreIcon from "Icons/ExploreIcon"
+import HomeIcon from "Icons/HomeIcon"
+import MessageIcon from "Icons/MessageIcon"
+import PeopleIcon from "Icons/PeopleIcon"
 const { default: useWindowWidth } = require("hooks/useWindowWidth")
 const {
   home,
@@ -16,22 +20,22 @@ export default function AppProps() {
     navigation = [
       {
         name: "Home",
-        icon: home,
+        Icon: HomeIcon,
         link: "/home"
       },
       {
         name: "Explore Universities",
-        icon: navigateCircle,
+        Icon: ExploreIcon,
         link: "/search?tab=uni"
       },
       {
         name: "My Network",
-        icon: people,
+        Icon: PeopleIcon,
         link: "/mynetwork"
       },
       {
         name: "Messages",
-        icon: chatbubbles,
+        Icon: MessageIcon,
         link: "/messages",
         count: 0
       }

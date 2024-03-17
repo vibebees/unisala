@@ -3,6 +3,8 @@ import { Avatar } from "../../Avatar"
 import { imageOutline } from "ionicons/icons"
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router"
+import { Col } from "component/ui"
+import GalleryIcon from "Icons/GalleryIcon"
 
 export const PostCardForClick = ({ allProps = {} }) => {
   const { userInfo = {} } = allProps
@@ -43,11 +45,12 @@ export const PostCardForClick = ({ allProps = {} }) => {
           className="searchInput bg-transparent border-none outline-none"
         />
 
-        <IonCol size="auto">
+        <Col size="auto">
           <IonItem lines="none">
-            <IonIcon icon={imageOutline} />
+            <GalleryIcon />
+            {/* <IonIcon icon={imageOutline} /> */}
           </IonItem>
-        </IonCol>
+        </Col>
       </IonItem>
     </div>
   )

@@ -7,6 +7,7 @@ import { useHistory } from "react-router"
 import { userServer } from "servers/endpoints"
 import { PostCardForClick } from "../organisim/PostCardForClick"
 import { PostModalOnClick } from "../organisim/PostModalOnClick"
+import { Card } from "component/ui"
 const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
@@ -36,7 +37,7 @@ const CreateAPostCard = ({ allProps }) => {
   return (
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />
-      <IonCard
+      <Card
         style={{ marginBottom: "12px" }}
         onClick={() => {
           params.append("create", "y")
@@ -51,7 +52,7 @@ const CreateAPostCard = ({ allProps }) => {
         className="ion-no-margin ion-no-padding"
       >
         <PostCardForClick allProps={{ ...allProps, user }} />
-      </IonCard>
+      </Card>
     </>
   )
 }

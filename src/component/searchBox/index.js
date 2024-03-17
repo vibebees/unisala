@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
-import { IonInput, IonIcon } from "@ionic/react"
-import { search } from "ionicons/icons"
+import { IonInput } from "@ionic/react"
 import { useLazyQuery } from "@apollo/client"
 import { UniSearchDataList } from "graphql/uni"
 
@@ -12,6 +11,7 @@ import { useSelector } from "react-redux"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
 import { userSearch } from "graphql/user"
 import { useDebouncedEffect } from "hooks/useDebouncedEffect"
+import SearchIcon from "Icons/SearchIcon"
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
@@ -84,19 +84,16 @@ export const SearchBar = () => {
           to={searchValue ? `/search?q=${searchValue}` : "#"}
           className="search-box__search-icon flex justify-center items-center "
         >
-          <IonIcon
-            icon={search}
-            color="success"
-            size="large"
-            onClick={() => setDropDownOptions(false)}
-          />
+          <SearchIcon onClick={() => setDropDownOptions(false)} />
         </Link>
       </div>
       {dropDownOptions && Array.isArray(options) && options.length > 0 && (
-        <div className="recommend-search" ref={dropdownRef}
-        style={{
-          zIndex: 1000 // ensure it's above other content
-        }}
+        <div
+          className="recommend-search"
+          ref={dropdownRef}
+          style={{
+            zIndex: 1000 // ensure it's above other content
+          }}
         >
           {Array.isArray(options) &&
             options.map((item, i) => (
