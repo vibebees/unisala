@@ -1117,6 +1117,7 @@ export const AddComment = gql`
           description
           profileImage
           coverImage
+          image
           admin {
             _id
             firstName
