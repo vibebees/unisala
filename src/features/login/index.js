@@ -10,7 +10,6 @@ import UserNotVerified from "../../component/authentication/Verification/UserNot
 import WelcomSteps from "../../component/authentication/Welcome"
 
 export const Login = ({ allProps }) => {
-  console.log({ allProps: allProps?.routeState })
   const [auth, setauth] = useState({
     state: allProps?.routeState || "signin",
     email: "",

@@ -37,6 +37,8 @@ export const loginUser = ({
             setTimeout(() => {
               window.location.replace(`/university/${redirectUrl}&create=y`)
             }, 1000)
+          } else {
+            history.push("/home")
           }
         }
 
@@ -126,44 +128,44 @@ export const googleAuthAction = ({
   dismiss,
   payload,
   redirectUrl,
+  history,
   setActiveNavDrop
 }) => {
+  return (dispatch) =>
+    axios.post(userServer + `/auth/google`, payload).then((res) => {
+      if (res.data.success) {
+        localStorage.setItem("accessToken", res?.data?.accessToken)
+        localStorage.setItem("refreshToken", res?.data?.refreshToken)
 
-   return (dispatch) => axios
-  .post(userServer + `/auth/google`, payload)
-  .then((res) => {
-    if (res.data.success) {
-      localStorage.setItem("accessToken", res?.data?.accessToken)
-      localStorage.setItem("refreshToken", res?.data?.refreshToken)
-
-      if (res?.data.isFirstLogin) {
-        localStorage.setItem("newUser", "true")
+        if (res?.data.isFirstLogin) {
+          localStorage.setItem("newUser", "true")
+        }
+        dispatch({
+          type: USER_LOGIN,
+          payload: res.data
+        })
+        dispatch({
+          type: LOGIN,
+          payload: res.data
+        })
+        setActiveNavDrop({ profile: false })
+        history?.push("/home")
       }
-      dispatch({
-        type: USER_LOGIN,
-        payload: res.data
-      })
-      dispatch({
-        type: LOGIN,
-        payload: res.data
-      })
-      setActiveNavDrop({ profile: false })
-    }
-    if (!res.data.success) {
-      dispatch({
-        type: USER_LOGIN_ERROR,
-        payload: res.data
-      })
+      if (!res.data.success) {
+        dispatch({
+          type: USER_LOGIN_ERROR,
+          payload: res.data
+        })
 
-      present({
-        duration: 3000,
-        message: res.data.message,
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "primary",
-        mode: "ios"
-      })
-    }
-  })
+        present({
+          duration: 3000,
+          message: res.data.message,
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "primary",
+          mode: "ios"
+        })
+      }
+    })
 }
 
 const getNewRefreshToken = (refreshToken) => {

@@ -5,7 +5,7 @@ import AuthInput from "../AuthInput"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
 import { validateSignIn } from "utils/components/validate"
-import {loginUser} from "store/action/authenticationAction"
+import { loginUser } from "store/action/authenticationAction"
 
 const SignInForm = ({
   setauth,

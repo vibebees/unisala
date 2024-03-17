@@ -15,8 +15,6 @@ export const GoogleAuth = ({ setauth, setActiveNavDrop = () => {} }) => {
 
   const params = new URLSearchParams(window.location.search)
 
-
-
   const onGoogleSignIn = (user) => {
     const { credential } = user
     let payload = {
@@ -32,6 +30,7 @@ export const GoogleAuth = ({ setauth, setActiveNavDrop = () => {} }) => {
         dismiss,
         payload,
         setActiveNavDrop,
+        history,
         redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`,
         showPopForUser: "test"
       })
