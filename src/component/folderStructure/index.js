@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { FolderGeneral } from "./organisms/folder"
 import { CardHeader } from "component/Reusable/cardHeader"
 import clsx from "clsx"
+import { Card } from "component/ui"
 
 // Create a function to render a folder based on conditions
 const RenderFolder = ({
@@ -46,7 +47,7 @@ const FolderStructure = ({ allProps = {} }) => {
   if (allProps?.data?.length === 0) return null
 
   return (
-    <IonCard style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
+    <Card style={{ margin: "10px 0px 0px 0px" }} className="flex flex-col">
       {folderName && <CardHeader header={folderName} />}
       <IonCardContent key={"index"} className="w-full">
         <IonGrid className="w-full gap-3 flex flex-wrap">
@@ -95,7 +96,7 @@ const FolderStructure = ({ allProps = {} }) => {
           )}
         </IonGrid>
       </IonCardContent>
-    </IonCard>
+    </Card>
   )
 }
 

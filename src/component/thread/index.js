@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useSelector } from "react-redux"
 import ReplyInput from "../ReplyInput"
 import "./index.css"
+import { Card } from "component/ui"
 import {
   ShowPeopleComments,
   ThreadEditable,
@@ -62,7 +63,7 @@ const Thread = ({ thread, feedType, feedId }) => {
 
   return (
     <>
-      <IonCard className="relative  pt-4 pb-3 max-md:my-1 ion-no-margin">
+      <Card className="relative  pt-4 pb-3 max-md:my-1 ion-no-margin">
         <div className="px-4">
           <ThreadHeader
             firstName={user?.firstName}
@@ -126,10 +127,9 @@ const Thread = ({ thread, feedType, feedId }) => {
             />
           )}
         </div>
-      </IonCard>
+      </Card>
     </>
   )
 }
 
 export default Thread
-

@@ -1,20 +1,14 @@
 import { useQuery } from "@apollo/client"
 import {
-  IonButton,
-  IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonCol,
-  IonGrid,
-  IonHeader,
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonItem,
   IonItemDivider,
-  IonRow,
   IonText
 } from "@ionic/react"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
@@ -28,7 +22,7 @@ import { Link } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
 import { FeedSkeleton } from "../skeleton/feedSkeleton"
 import { defaultUniImages } from "./default.images"
-import { Typography } from "component/ui"
+import { Typography, Grid, Card, Col, Row, Button } from "component/ui"
 import { CardHeader } from "component/Reusable/cardHeader"
 const Post = ({ post, allProps, feedType, feedId }) => {
   return (
@@ -58,7 +52,7 @@ const University = ({ post, studyLevel }) => {
   const { studentCharges } = post
   const formattedAddress = `${elevatorInfo.address.city}, ${elevatorInfo.address.stateAbbreviation}, ${elevatorInfo.address.streetAddressOrPOBox}`
   return (
-    <IonCard
+    <Card
       style={{
         width: "100%",
         marginTop: "10px"
@@ -69,7 +63,7 @@ const University = ({ post, studyLevel }) => {
       <IonCardHeader>
         <IonCardSubtitle>Suggested University</IonCardSubtitle>
       </IonCardHeader>
-      <IonGrid>
+      <Grid>
         <Link to={`/university/${elevatorInfo.name}`}>
           <IonCardContent>
             <div className="grid grid-cols-4 gap-x-4">
@@ -101,7 +95,7 @@ const University = ({ post, studyLevel }) => {
                 </IonText>
               </IonItem>
               <IonItemDivider />
-              <IonRow
+              <Row
                 className="ion-no-padding gap-1 items-center h-fit mt-2"
                 lines="none"
               >
@@ -112,65 +106,65 @@ const University = ({ post, studyLevel }) => {
                 <IonText className="text-sm leading-none m-0 h-fit ion-no-padding font-semibold text-gray-600">
                   {formattedAddress}
                 </IonText>
-              </IonRow>
-              <IonRow className="mt-4">
+              </Row>
+              <Row className="mt-4">
                 <IonText className="text-[#55D283] font-semibold">
                   Own Type: {elevatorInfo.ownType}
                 </IonText>
-              </IonRow>
-              <IonRow className="mt-4 font-semibold">
+              </Row>
+              <Row className="mt-4 font-semibold">
                 <IonText className="text-blue-600 font-semibold">
                   Tags: {elevatorInfo?.tags?.join(", ")}
                 </IonText>
-              </IonRow>
+              </Row>
 
-              <IonRow className="mt-4 font-semibold items-center space-x-2 ">
+              <Row className="mt-4 font-semibold items-center space-x-2 ">
                 <IonIcon
                   className="ion-icon text-primar text-lg"
                   icon={schoolOutline}
                 />
-                <IonCol className="p-0">
+                <Col className="p-0">
                   <IonText className="text-red-600 font-semibold">
                     Graduate Application Fee: $
                     {studentCharges?.graduateApplicationFee ?? "N/A"}
                   </IonText>
-                </IonCol>
-                <IonCol className="p-0">
+                </Col>
+                <Col className="p-0">
                   <IonText className="text-blue-600 font-semibold">
                     Undergradutate Application Fee: $
                     {studentCharges?.undergraduateApplicationFee ?? "N/A"} 📚
                   </IonText>
-                </IonCol>
-              </IonRow>
+                </Col>
+              </Row>
 
-              <IonRow className="mt-4 text-green-600">
-                <IonCol>
+              <Row className="mt-4 text-green-600">
+                <Col>
                   {studentCharges?.graduate?.inState && (
                     <IonText className=" font-semibold">
                       Gradutate In-State Tuition: $
                       {studentCharges?.graduate?.inState?.tuition ?? "N/a"}
                     </IonText>
                   )}
-                </IonCol>
-                <IonCol>
+                </Col>
+                <Col>
                   {studentCharges?.graduate?.outOfState && (
                     <IonText className=" font-semibold">
                       Gradutate Out-State Tuition: $
                       {studentCharges?.graduate?.outOfState?.tuition ?? "N/a"}
                     </IonText>
                   )}
-                </IonCol>
-              </IonRow>
-              <IonRow className="text-yellow-500">
-                <IonCol>
+                </Col>
+              </Row>
+              <Row className="text-yellow-500">
+                <Col>
                   {studentCharges?.undergraduate?.inState && (
                     <IonText className=" font-semibold">
                       Undergradutate In-State Tuition: $
                       {studentCharges?.undergraduate?.inState?.tuition ?? "N/a"}
                     </IonText>
                   )}
-                </IonCol>
-                <IonCol>
+                </Col>
+                <Col>
                   {studentCharges?.undergraduate?.outOfState && (
                     <IonText className=" font-semibold">
                       Undergradutate Out-State Tuition: $
@@ -178,19 +172,19 @@ const University = ({ post, studyLevel }) => {
                         "N/a"}
                     </IonText>
                   )}
-                </IonCol>
-              </IonRow>
+                </Col>
+              </Row>
             </div>
           </IonCardContent>
         </Link>
-      </IonGrid>
-    </IonCard>
+      </Grid>
+    </Card>
   )
 }
 
 const SuggestedSpace = ({ data, title, type }) => {
   return (
-    <IonCard className="ion-no-margin">
+    <Card className="ion-no-margin">
       <IonCardHeader>
         <h4 className="text-lg text-black font-medium">{title}</h4>
       </IonCardHeader>
@@ -206,7 +200,7 @@ const SuggestedSpace = ({ data, title, type }) => {
             }}
             className="max-md:border-none  "
           >
-            <IonCard className="border h-full">
+            <Card className="border h-full">
               <IonCardHeader className="capitalize line-clamp-1">
                 {space.name}
               </IonCardHeader>
@@ -217,21 +211,21 @@ const SuggestedSpace = ({ data, title, type }) => {
 
                 <p className="pt-3 line-clamp-3">{space.description}</p>
                 <Link to={`/${type}/${space.name}`}>
-                  <IonButton
+                  <Button
                     type="button"
                     className="mt-4 hover:scale-[1.02] transition-all ease-linear"
                     fill="outline"
                     expand="block"
                   >
                     View
-                  </IonButton>
+                  </Button>
                 </Link>
               </IonCardContent>
-            </IonCard>
+            </Card>
           </div>
         ))}
       </div>
-    </IonCard>
+    </Card>
   )
 }
 

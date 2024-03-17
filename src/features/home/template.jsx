@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonContent, IonGrid, IonRow } from "@ionic/react"
+import { IonContent } from "@ionic/react"
 import React, { useEffect, useState, lazy } from "react"
 import "./Home.css"
 import { useQuery } from "@apollo/client"
@@ -7,6 +7,7 @@ import { fetchFamousUniversities } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
 import { UnisalaLandingPage } from "./UnisalaIntro"
+import { Card, Col, Grid, Row } from "component/ui"
 const FloatingButton = lazy(() => import("../../component/FloatingButton"))
 const CreateAPostCard = lazy(() => import("../../component/post/template"))
 const WelcomeSteps = lazy(() =>
@@ -75,14 +76,14 @@ export const Home = ({ allProps }) => {
           }}
         />
 
-        <IonCard className=" mt-4 ion-no-padding ion-no-margin">
+        <Card className=" mt-4 ion-no-padding ion-no-margin">
           <ScrollableCard
             allProps={{
               data: discoverUni,
               className: "similarschoolss"
             }}
           />
-        </IonCard>
+        </Card>
 
         <InfiniteFeed userInfo={user} allProps={allProps} feedType="newsfeed" />
       </div>
@@ -100,18 +101,18 @@ export const Home = ({ allProps }) => {
     <IonContent color="light">
       <FloatingButton />
       {width < 768 && views.lessThan768}
-      <IonGrid
+      <Grid
         style={{
           margin: "auto"
         }}
         className="max-md:px-0"
       >
-        <IonRow
+        <Row
           style={{ justifyContent: "flex-start", margin: "0 auto" }}
           className="max-width-container"
         >
           {width > 768 && views.greaterThan768}
-          <IonCol
+          <Col
             style={{
               maxWidth: "900px",
               margin: "auto",
@@ -121,11 +122,11 @@ export const Home = ({ allProps }) => {
             className="max-md:px-0 "
           >
             {loggedIn ? renderLoggedInView() : UnisalaLandingPage({ allProps })}
-          </IonCol>
+          </Col>
           {width > 1000 && views.greaterThan1000}
           {renderNewUserView()}
-        </IonRow>
-      </IonGrid>
+        </Row>
+      </Grid>
     </IonContent>
   )
 }
