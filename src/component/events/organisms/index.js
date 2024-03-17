@@ -31,7 +31,7 @@ export const EventCard = ({ event }) => {
     setButtonColor("success")
   }
 
-  const randomEventImage = defaultEventsImages[Math.floor(Math.random() * defaultEventsImages.length)]
+  const randomEventImage = defaultEventsImages[10]
   return (
     <section>
       <IonCard>
