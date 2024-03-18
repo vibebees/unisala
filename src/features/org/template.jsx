@@ -10,7 +10,6 @@ import Invitation from "./Invitation/Index"
 import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
-import Events from "./Events"
 import { Members } from "./org/members"
 import { History } from "./org/history"
 export const Spaces = ({ allProps }) => {
@@ -71,7 +70,6 @@ export const Spaces = ({ allProps }) => {
       >
         <CreateAPostCard allProps={allProps} />
       </NotJoinedWrapper>
-
       <InfiniteFeed feedType="specificOrg" feedId={orgId} />
     </div>
   )
