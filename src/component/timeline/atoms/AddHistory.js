@@ -25,7 +25,7 @@ const AddHistory = ({ setData }) => {
     },
 
     onCompleted: () => {
-      setData({ date: Date.now(), description: "" })
+      setdata({ date: Date.now(), description: "" })
       present({
         duration: 3000,
         message: "History added successfully",
