@@ -1,3 +1,5 @@
+import { useQuery } from "@apollo/client"
+
 import {
   IonAccordion,
   IonAccordionGroup,
@@ -5,10 +7,18 @@ import {
   IonLabel
 } from "@ionic/react"
 import { TimeLine } from "component/timeline"
-import { useEffect, useRef } from "react"
-
+import { OrgContext } from "features/org"
+import { GetAllHistoryYear } from "graphql/user"
+import { useContext, useEffect, useRef } from "react"
+import { USER_SERVICE_GQL } from "servers/types"
 import "./index.css"
-export const SqueezeBox = ({ data }) => {
+export const SqueezeBox = () => {
+  const { orgData } = useContext(OrgContext)
+  const { data, loading, fetchMore } = useQuery(GetAllHistoryYear, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { orgSpaceId: orgData?._id }
+  })
+
   const accordionGroup = useRef(null)
   useEffect(() => {
     if (!accordionGroup.current) {
@@ -17,29 +27,32 @@ export const SqueezeBox = ({ data }) => {
 
     accordionGroup.current.value = ["2024"]
   }, [])
+
   return (
     <IonAccordionGroup
       className="ion-no-margin ion-no-padding w-full "
       ref={accordionGroup}
       expand="inset"
     >
-      {data.map((item, index) => (
-        <IonAccordion
-          className="ion-no-margin ion-no-padding "
-          value={item.title}
-          key={index}
-        >
-          <IonItem slot="header">
-            <IonLabel>{item.title}</IonLabel>
-          </IonItem>
-          <div className="ion-no-padding " slot="content">
-            {/* {item.content} */}
+      {data &&
+        data?.getAllHistoryYear?.data &&
+        data.getAllHistoryYear?.data.map((item, index) => (
+          <IonAccordion
+            className="ion-no-margin ion-no-padding "
+            value={item}
+            key={index}
+          >
+            <IonItem slot="header">
+              <IonLabel>{item}</IonLabel>
+            </IonItem>
+            <div className="ion-no-padding " slot="content">
+              {/* {item.content} */}
 
-            <TimeLine data={item.child} />
-            {/* <IonTextarea value={item.content} style={{ height: "300px" }} /> */}
-          </div>
-        </IonAccordion>
-      ))}
+              <TimeLine year={item} />
+              {/* <IonTextarea value={item.content} style={{ height: "300px" }} /> */}
+            </div>
+          </IonAccordion>
+        ))}
     </IonAccordionGroup>
   )
 }

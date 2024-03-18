@@ -1568,5 +1568,58 @@ export const AddComment = gql`
         }
       }
     }
+  `,
+  GetAllHistoryYear = gql`
+    query GetAllHistoryYear($orgSpaceId: ID!) {
+      getAllHistoryYear(orgSpaceId: $orgSpaceId) {
+        status {
+          success
+          message
+        }
+        data
+      }
+    }
+  `,
+  GetAllHistory = gql`
+    query GetAllHistory($orgSpaceId: ID!, $year: Int) {
+      getAllHistory(orgSpaceId: $orgSpaceId, year: $year) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          title
+          description
+          date
+        }
+      }
+    }
+  `,
+  AddNewHistory = gql`
+    mutation createHistory(
+      $orgSpaceId: ID!
+      $title: String!
+      $description: String!
+      $date: String!
+    ) {
+      createHistory(
+        orgSpaceId: $orgSpaceId
+        title: $title
+        description: $description
+        date: $date
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          userId
+          title
+          description
+          date
+        }
+      }
+    }
   `
-

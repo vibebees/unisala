@@ -1,34 +1,40 @@
-import { IonCol, IonInput, IonRow } from "@ionic/react"
+import { useMutation } from "@apollo/client"
+import { IonCol, IonInput, IonRow, useIonToast } from "@ionic/react"
+import { OrgContext } from "features/org"
+import { AddNewHistory } from "graphql/user"
 import moment from "moment"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { USER_SERVICE_GQL } from "servers/types"
 import SaveButton from "./SaveButton"
 
 const AddHistory = ({ setData }) => {
+  const { orgData } = useContext(OrgContext)
+  const [present, dismiss] = useIonToast()
   const [data, setdata] = useState({
     date: Date.now(),
     description: ""
   })
 
-  const addHistory = () => {
-    let content = {
-      date: data.date,
-      content: data.description
-    }
-    setData((prev) => {
-      const newData = prev.map((item) => {
-        if (item.title === "2024") {
-          return {
-            ...item,
-            child: [...item.child, content]
-          }
-        }
-        return item
-      })
-      return newData
-    })
-    setdata({ date: Date.now(), description: "" })
-  }
+  const [addHistoryMutation] = useMutation(AddNewHistory, {
+    context: { server: USER_SERVICE_GQL },
+    variables: {
+      orgSpaceId: orgData._id,
+      title: data.description,
+      description: data.description,
+      date: moment(data.date).format("YYYY-MM-DD")
+    },
 
+    onCompleted: () => {
+      setData({ date: Date.now(), description: "" })
+      present({
+        duration: 3000,
+        message: "History added successfully",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "primary",
+        mode: "ios"
+      })
+    }
+  })
   return (
     <IonRow className="ion-no-padding h-11 ion-no-margin  mb-8 mt-4  justify-between rounded-md bg-neutral-200">
       <IonCol size="2" className="bg-white rounded-md pl-3 ">
@@ -55,7 +61,7 @@ const AddHistory = ({ setData }) => {
       </IonCol>
 
       <IonCol size="auto" className="ion-no-margin ion-no-padding">
-        <SaveButton label="Save" loading={false} onClick={addHistory} />
+        <SaveButton label="Save" loading={false} onClick={addHistoryMutation} />
       </IonCol>
     </IonRow>
   )
