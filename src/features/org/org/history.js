@@ -1,74 +1,147 @@
 import { IonGrid } from "@ionic/react"
 import { SqueezeBox } from "component/squeezeBox"
-import { TimeLine } from "component/timeline"
+import { useState } from "react"
 import HistoryHeader from "../history/atoms/HistoryHeader"
 
 export const History = () => {
-  const data = [
+  const [data, setData] = useState([
     {
       title: "2024",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content:
         "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
     },
     {
       title: "2023",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content:
         "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
     },
     {
       title: "2022",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content:
         "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
     },
     {
       title: "2021",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content:
         "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
     },
     {
       title: "2020",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content: "The St. Tam"
     },
     {
       title: "2019",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content:
         "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
     },
     {
       title: "2018",
-      child: <TimeLine />,
+      child: [
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        },
+        {
+          date: "2022 sep 23",
+          content: "Sonja joined the team"
+        }
+      ],
       content:
         "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
-    },
-    {
-      title: "2017",
-      child: <TimeLine />,
-      content:
-        "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
-    },
-    {
-      title: "2016",
-      child: <TimeLine />,
-      content:
-        "The St. Tammany Parish Tourist Commission is the official destination marketing organization for St. Tammany Parish. The commission is charged with promoting St. Tammany Parish as a tourism destination and is funded by a 3% hotel occupancy tax paid by visitors to the parish. The commission is governed by a board of directors appointed by the St. Tammany Parish President and Parish Council. The commission is a member of the Louisiana Association of Convention and Visitors Bureaus and the Louisiana Travel Promotion Association."
-    },
-    {
-      title: "2015",
-      child: <TimeLine />,
-      content: "The St. Tam"
     }
-  ]
+  ])
   return (
     <IonGrid style={{ maxWidth: "900px", margin: "auto" }}>
-      <HistoryHeader />
+      <HistoryHeader setData={setData} />
       <SqueezeBox data={data} />
     </IonGrid>
   )
 }
-

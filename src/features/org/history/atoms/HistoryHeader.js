@@ -2,7 +2,7 @@ import { IonButton, IonCol, IonRow, IonText } from "@ionic/react"
 import clsx from "clsx"
 import AddHistory from "component/timeline/atoms/AddHistory"
 import React from "react"
-const HistoryHeader = () => {
+const HistoryHeader = ({ setData }) => {
   const [showAddHistory, setshowAddHistory] = React.useState(false)
   return (
     <IonRow className={clsx("flex-col", showAddHistory ? "mb-0" : "mb-5")}>
@@ -35,7 +35,7 @@ const HistoryHeader = () => {
         )}
       >
         <IonCol className="w-full ion-no-margin ion-no-padding border-none">
-          <AddHistory />
+          <AddHistory setData={setData} />
         </IonCol>
       </IonRow>
     </IonRow>
@@ -43,4 +43,3 @@ const HistoryHeader = () => {
 }
 
 export default HistoryHeader
-

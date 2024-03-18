@@ -1,14 +1,13 @@
-import React, { useEffect, useRef } from "react"
 import {
   IonAccordion,
   IonAccordionGroup,
-  IonInput,
   IonItem,
-  IonLabel,
-  IonTextarea
+  IonLabel
 } from "@ionic/react"
+import { TimeLine } from "component/timeline"
+import { useEffect, useRef } from "react"
+
 import "./index.css"
-import { StudyAbroadRoadmapInput } from "features/roadmap/template"
 export const SqueezeBox = ({ data }) => {
   const accordionGroup = useRef(null)
   useEffect(() => {
@@ -36,7 +35,7 @@ export const SqueezeBox = ({ data }) => {
           <div className="ion-no-padding " slot="content">
             {/* {item.content} */}
 
-            {item.child}
+            <TimeLine data={item.child} />
             {/* <IonTextarea value={item.content} style={{ height: "300px" }} /> */}
           </div>
         </IonAccordion>
