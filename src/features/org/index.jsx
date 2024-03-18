@@ -33,9 +33,9 @@ export default function SpacePage({ allPropssetPopup }) {
     user,
     loggedIn,
     profileData,
-    data,
     topOrgData,
-    loading
+    loading,
+    data
   })
 
   return (

@@ -10,7 +10,9 @@ import Invitation from "./Invitation/Index"
 import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
+import Events from "./Events"
 import { Members } from "./org/members"
+import { History } from "./org/history"
 export const Spaces = ({ allProps }) => {
   const {
     handleResize,
@@ -22,7 +24,7 @@ export const Spaces = ({ allProps }) => {
     user,
     width,
     views,
-
+    isJoined,
     configSegment,
     tab,
     setTab
@@ -64,11 +66,12 @@ export const Spaces = ({ allProps }) => {
   const Feed = () => (
     <div className="mt-4">
       <NotJoinedWrapper
-        isJoined={true}
+        isJoined={orgData?.isJoined}
         message="Please Join the orgranization to post"
       >
         <CreateAPostCard allProps={allProps} />
       </NotJoinedWrapper>
+
       <InfiniteFeed feedType="specificOrg" feedId={orgId} />
     </div>
   )
@@ -76,7 +79,7 @@ export const Spaces = ({ allProps }) => {
   const tabs = {
     feed: <Feed />,
     org: <Members />,
-    // history: <History />,
+    history: <History />,
     apply: (
       <div className="bg-white">
         <IonCol>

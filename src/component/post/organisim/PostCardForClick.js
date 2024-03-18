@@ -48,7 +48,6 @@ export const PostCardForClick = ({ allProps = {} }) => {
         <Col size="auto">
           <IonItem lines="none">
             <GalleryIcon />
-            {/* <IonIcon icon={imageOutline} /> */}
           </IonItem>
         </Col>
       </IonItem>
