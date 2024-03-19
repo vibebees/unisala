@@ -1,4 +1,4 @@
-import React, { useState, lazy } from "react"
+import {lazy, useState} from "react"
 import ReactQuill from "react-quill"
 const UniversityList = lazy(() => import("component/thread/UniversityList"))
 
@@ -17,7 +17,6 @@ const RichTextInput = ({
         <ReactQuill
           theme="snow"
           id={id}
-          className=" text-black h-40 border-b-2 overflow-y-auto w-full"
           value={value}
           onChange={(e) => {
             onChange(e)

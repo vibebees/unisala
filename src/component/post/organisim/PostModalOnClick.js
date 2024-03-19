@@ -1,30 +1,26 @@
-import { useEffect, useLayoutEffect, useState } from "react"
+import {useEffect, useLayoutEffect, useState} from "react"
 
-import { useSelector } from "react-redux"
+import {useSelector} from "react-redux"
 
 import {
-  IonAvatar,
   IonButtons,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
   IonModal,
   IonText,
   IonTitle,
   IonToolbar
 } from "@ionic/react"
-import { arrowBack } from "ionicons/icons"
+import {arrowBack} from "ionicons/icons"
 
 import "../index.css"
 
 import "react-quill/dist/quill.snow.css"
 
-import { Avatar } from "component/Avatar"
-import { ButtonTrack } from "features/analytics/ButtonTrack"
-import { useHistory, useLocation } from "react-router-dom"
+import {Button, Typography} from "component/ui"
+import {ButtonTrack} from "features/analytics/ButtonTrack"
+import {useHistory, useLocation} from "react-router-dom"
 import Form from "../molecules/Form"
-import { Typography, Button } from "component/ui"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
@@ -140,14 +136,6 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
                 </IonText> */}
               </div>
 
-              <IonItem className="ion-no-padding" lines="none">
-                <IonAvatar>
-                  <Avatar username={user.username} profilePic={profilePic} />
-                </IonAvatar>
-                <IonLabel className="ion-padding-start">
-                  <h2 className="font-semibold">{user.username}</h2>
-                </IonLabel>
-              </IonItem>
 
               {metaData && (
                 <Form
