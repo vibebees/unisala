@@ -1,13 +1,12 @@
-import { IonCard } from "@ionic/react"
 import axios from "axios"
-import { usePathName } from "hooks/usePathname"
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { useHistory } from "react-router"
-import { userServer } from "servers/endpoints"
-import { PostCardForClick } from "../organisim/PostCardForClick"
-import { PostModalOnClick } from "../organisim/PostModalOnClick"
-import { Card } from "component/ui"
+import {Card} from "component/ui"
+import {usePathName} from "hooks/usePathname"
+import {useEffect, useState} from "react"
+import {useSelector} from "react-redux"
+import {useHistory} from "react-router"
+import {userServer} from "servers/endpoints"
+import {PostCardForClick} from "../organisim/PostCardForClick"
+import {PostModalOnClick} from "../organisim/PostModalOnClick"
 const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
@@ -17,23 +16,39 @@ const CreateAPostCard = ({ allProps }) => {
   const pathname = usePathName(0) || "home"
 
   useEffect(() => {
-    const fn = async () => {
-      const createAPostMetaData = await axios.get(
-        userServer + "/getMetadataTags",
-        {
-          headers: {
-            authorization: localStorage.getItem("accessToken")
-          }
-        }
-      )
+    const cacheKey = `metadata`
+    const cachedMeta = localStorage.getItem(cacheKey)
 
-      const metaData = createAPostMetaData.data?.data || []
-      const getCurrentPageMetaData = metaData[pathname] || {}
-      const { addAPost } = getCurrentPageMetaData || {}
-      setMeta(addAPost)
+    const fn = async () => {
+      if (cachedMeta) {
+        const cachedData = JSON.parse(cachedMeta)
+        setMeta(cachedData)
+      } else {
+        try {
+          const createAPostMetaData = await axios.get(
+            userServer + "/getMetadataTags",
+            {
+              headers: {
+                authorization: localStorage.getItem("accessToken")
+              }
+            }
+          )
+
+          const metaData = createAPostMetaData.data?.data || []
+          const getCurrentPageMetaData = metaData[pathname] || {}
+          const { addAPost } = getCurrentPageMetaData || {}
+
+          setMeta(addAPost)
+          localStorage.setItem(cacheKey, JSON.stringify(addAPost))
+        } catch (error) {
+          console.error("Failed to fetch metadata", error)
+        }
+      }
     }
+
     fn()
-  }, [])
+  }, [pathname])
+
   return (
     <>
       <PostModalOnClick allProps={allProps} metaData={meta} />
