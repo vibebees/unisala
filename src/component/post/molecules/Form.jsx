@@ -519,7 +519,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   }
 
-  console.log({ postData })
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>

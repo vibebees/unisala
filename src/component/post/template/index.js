@@ -16,7 +16,7 @@ const CreateAPostCard = ({ allProps }) => {
   const pathname = usePathName(0) || "home"
 
   useEffect(() => {
-    const cacheKey = `metadata`
+    const cacheKey = `metadata-${pathname}`
     const cachedMeta = localStorage.getItem(cacheKey)
 
     const fn = async () => {
