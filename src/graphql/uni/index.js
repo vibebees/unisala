@@ -27,6 +27,13 @@ export const GetProfessor = gql`
     gql`
       query getUpdatedSchoolInfo($unitId: Float, $name: String) {
         getUpdatedSchoolInfo(unitId: $unitId, name: $name) {
+          departmentRatings {
+            unitId
+            ratings_list
+            subject
+            overall_rating
+            overall_rating
+          }
           elevatorInfo {
             unitId
             name
@@ -607,3 +614,4 @@ export const GetProfessor = gql`
       }
     }
   `
+
