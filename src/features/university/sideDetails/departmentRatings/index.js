@@ -1,15 +1,30 @@
 import { IonCardContent } from "@ionic/react"
 import { CardHeader } from "component/Reusable/cardHeader"
 import { Button, Card, Typography } from "component/ui"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Rating } from "./atoms/Rating"
+import { Search } from "./atoms/Search"
 
 export const DepartmentRating = ({ ratings }) => {
-  const [ratingItems, setRatingItems] = useState(ratings.slice(0, 8))
-
+  const [ratingItems, setRatingItems] = useState(ratings.slice(0, 9))
+  const inputRef = useRef()
   const handleDepartmentChange = () => {
-    console.log("button clicked")
     setRatingItems(() => ratings.slice(0, ratingItems.length + 5))
+  }
+
+  const setSearch = () => {
+    if (inputRef?.current?.value) {
+      const regex = new RegExp(inputRef.current.value, "i")
+      const findDepartment = ratingItems.filter((item) =>
+        regex.test(item.subject)
+      )
+      setRatingItems(findDepartment)
+    }
+  }
+
+  const resetSearch = () => {
+    inputRef.current.value = null
+    setRatingItems(ratings.slice(0, 9))
   }
 
   return (
@@ -17,7 +32,12 @@ export const DepartmentRating = ({ ratings }) => {
       <CardHeader header={"Department Rating"} />
 
       <IonCardContent>
-        <div className="grid grid-cols-3">
+        <Search
+          inputRef={inputRef}
+          setSearch={setSearch}
+          resetSearch={resetSearch}
+        />
+        <div className="grid grid-cols-1 md:grid-cols-3">
           {ratingItems.map((item, index) => (
             <Card key={index} className="py-4">
               <Typography variant="h5" className="text-center">

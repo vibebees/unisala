@@ -18,6 +18,13 @@ export const Rating = ({ rating }) => {
       <Typography variant="h5" className="text-center block pt-2">
         {rating} out of 5
       </Typography>
+
+      <Typography
+        variant="h5"
+        className="text-center py-1 rounded-sm mx-auto space-y-1 bg-[#eee]"
+      >
+        100 students ratings
+      </Typography>
     </>
   )
 }
