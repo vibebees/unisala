@@ -1,65 +1,26 @@
-import { IonCard, IonInput, useIonToast } from "@ionic/react"
-import { authInstance } from "api/axiosInstance"
+import {IonInput, useIonToast} from "@ionic/react"
+import NotJoinedWrapper from "features/org/NotJoinedWrapper"
 import React from "react"
-import { userServer } from "servers/endpoints"
-import { SpaceRole } from "utils/lib/SpaceRoles"
+import {SpaceRole} from "utils/lib/SpaceRoles"
+import Card from "../../../../component/ui/Card"
 import Header from "../atoms/Header"
 import SendButton from "../atoms/SendButton"
+import {handleSendInvitation} from "../utility"
 import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
-import NotJoinedWrapper from "features/org/NotJoinedWrapper"
 
-const SingleInvitation = ({ orgId, role, isJoined }) => {
+
+const SingleInvitation = ({orgId, role, isJoined}) => {
   const [email, setEmail] = React.useState("")
   const [invitationType, setInvitationType] = React.useState("")
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = React.useState(false)
 
-  const handleSendInvitation = () => {
-    if (!email || !orgId) {
-      return present({
-        duration: 3000,
-        message: "Please enter email address",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-    }
-    setLoading(true)
-    authInstance
-      .post(`${userServer}/org-invitation-request/${orgId}`, {
-        emails: [email],
-        description: "invitation for space",
-        role: invitationType.toLowerCase()
-      })
-      .then((res) => {
-        if (res.data.success) {
-          present({
-            duration: 3000,
-            message: "Invitation sent successfully",
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-        }
-        setEmail("")
-      })
-      .catch((err) => {
-        present({
-          duration: 3000,
-          message: err?.response?.data?.message || " Something went wrong",
-          buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "danger",
-          mode: "ios"
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
+
+
 
   return (
     <div>
-      <IonCard className="ion-no-margin ion-no-padding shadow-none px-4 py-6">
+      <Card className="ion-no-margin ion-no-padding shadow-none px-4 py-6">
         <Header
           header={"Send Invitation by Email"}
           subHeader={
@@ -88,11 +49,11 @@ const SingleInvitation = ({ orgId, role, isJoined }) => {
         >
           <SendButton
             loading={loading}
-            onclick={handleSendInvitation}
+            onclick={() => handleSendInvitation({ email, orgId, invitationType, setLoading, present, dismiss, setEmail })}
             label="Send Invitation"
           />
         </NotJoinedWrapper>
-      </IonCard>
+      </Card>
     </div>
   )
 }
