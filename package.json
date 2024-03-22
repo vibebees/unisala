@@ -28,7 +28,6 @@
     "chart.js": "^3.7.1",
     "clsx": "^2.0.0",
     "eslint-plugin-promise": "^6.1.1",
-    "framer-motion": "^10.12.12",
     "graphql": "^16.6.0",
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
