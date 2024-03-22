@@ -8,16 +8,18 @@ import SingleInvitation from "./organism/SingleInvitation"
 
 const Index = () => {
   const {orgId, orgData} = React.useContext(OrgContext)
+  const {isJoined = false} = orgData
   return (
     <Card className="h-fit shadow-none mt-1 ion-no-margin w-full">
       {(orgData?.role === SpaceRole.ADMIN ||
         orgData?.role === SpaceRole.MEMBER) && <SendInvitationAll />}
-      { <SingleInvitation orgId={orgId} role={orgData?.role} isJoined={orgData?.isJoined}/>}
-
-      <RequestToJoin
+      {isJoined
+        ? <SingleInvitation orgId={orgId} role={orgData?.role} isJoined={isJoined} />
+        : <RequestToJoin
         isJoined={orgData.isJoined}
         orgData ={orgData}
         orgId={orgId} />
+      }
 
 
     </Card>

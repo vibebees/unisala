@@ -21,7 +21,6 @@ export const handleSendInvitation = ({
       })
     }
   setLoading(true)
-  if (localStorage.getItem(`${email}-${orgId}`)) {
     present({
       duration: 3000,
       message: "Invitation already sent",
@@ -30,9 +29,6 @@ export const handleSendInvitation = ({
       mode: "ios"
     })
     setEmail("")
-    done()
-    return
-  }
     authInstance
       .post(`${userServer}/org-invitation-request/${orgId}`, {
         emails: [email],
@@ -48,11 +44,9 @@ export const handleSendInvitation = ({
             color: "primary",
             mode: "ios"
           })
-          localStorage.setItem(`${email}-${orgId}`, true)
 
         }
         setEmail("")
-        done()
       })
       .catch((err) => {
         present({
@@ -62,8 +56,11 @@ export const handleSendInvitation = ({
           color: "danger",
           mode: "ios"
         })
+
       })
       .finally(() => {
         setLoading(false)
+        done()
+
       })
   }

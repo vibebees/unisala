@@ -1,16 +1,19 @@
 import {useIonToast} from "@ionic/react"
 import {authInstance} from "api/axiosInstance"
 import React from "react"
+import {useSelector} from "react-redux"
 import {userServer} from "servers/endpoints"
 import Card from "../../../../component/ui/Card"
 import Input from "../../../../component/ui/Input"
 import SendButton from "../atoms/SendButton"
 import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
 const JoinOrganizationRequest = ({orgId, orgData}) => {
-    const [email, setEmail] = React.useState("")
     const [present, dismiss] = useIonToast()
     const [loading, setLoading] = React.useState(false)
     const [invitationType, setInvitationType] = React.useState("")
+    const {user, loggedIn} = useSelector((state) => state.userProfile),
+    [email, setEmail] = React.useState(user?.email || "")
+
 
     const {name = "Community!"} = orgData
     const handleRequestToJoin = () => {
@@ -86,10 +89,11 @@ const JoinOrganizationRequest = ({orgId, orgData}) => {
                     Join {name}
                 </h2>
                 <p className="text-center text-sm mt-2">
-                    Alone we can do so little; together we can do so much. – Helen Keller
+                Connect, Engage, Inspire: Join the NSAS Network Today!
                 </p>
                 <div className="mt-6">
-                    <Input
+                    {!loggedIn && (
+                        <Input
                         type="email"
                         className="bg-gray-100 border-none w-full p-3 rounded-lg"
                         placeholder="Your email address"
@@ -97,6 +101,7 @@ const JoinOrganizationRequest = ({orgId, orgData}) => {
                         onIonChange={(e) => setEmail(e.detail.value)}
                     />
 
+                    )}
                     <InvitationTypesCheckbox
                         allProps={{
                             invitationType,

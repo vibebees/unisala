@@ -12,6 +12,7 @@ export const InvitationRequest = () => {
         history.push(`/org/${category}`)
     }
     useEffect(() => {
+
         handleSendInvitation({
             email: requestor,
             orgId: orgId,
