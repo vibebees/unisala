@@ -1,14 +1,13 @@
-import { IonCard } from "@ionic/react"
 import React from "react"
-import { SpaceRole } from "utils/lib/SpaceRoles"
-import { OrgContext } from ".."
+import {SpaceRole} from "utils/lib/SpaceRoles"
+import {OrgContext} from ".."
+import Card from "../../../component/ui/Card"
 import SendInvitationAll from "./organism/SendInvitationAll"
 import SingleInvitation from "./organism/SingleInvitation"
-
 const Index = () => {
   const { orgId, orgData } = React.useContext(OrgContext)
   return (
-    <IonCard className="h-fit shadow-none mt-1 ion-no-margin w-full">
+    <Card className="h-fit shadow-none mt-1 ion-no-margin w-full">
       {(orgData?.role === SpaceRole.ADMIN ||
         orgData?.role === SpaceRole.MEMBER) && <SendInvitationAll />}
       <SingleInvitation
@@ -16,7 +15,7 @@ const Index = () => {
         role={orgData?.role}
         orgId={orgId}
       />
-    </IonCard>
+    </Card>
   )
 }
 
