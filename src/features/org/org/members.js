@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client"
+import {useQuery} from "@apollo/client"
 import {
   IonCard,
   IonCardHeader,
@@ -7,14 +7,15 @@ import {
   IonGrid,
   IonRow
 } from "@ionic/react"
-import { useContext } from "react"
-import { useHistory } from "react-router"
-import { URLgetter, URLupdate } from "utils/lib/URLupdate"
-import { OrgContext } from ".."
+import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
+import {useContext} from "react"
+import {useHistory} from "react-router"
+import {URLgetter, URLupdate} from "utils/lib/URLupdate"
+import {OrgContext} from ".."
 import Tabs from "../../../component/tabs"
 import UserCard from "../../../component/userCard"
-import { GetAllMembersBySpaceID } from "../../../graphql/user"
-import { USER_SERVICE_GQL } from "../../../servers/types"
+import {GetAllMembersBySpaceID} from "../../../graphql/user"
+import {USER_SERVICE_GQL} from "../../../servers/types"
 import "./members.css"
 
 export const Members = () => {
@@ -56,7 +57,7 @@ export const Members = () => {
 
   const memberType = URLgetter("mem") || myDefaultMembers
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <p><ThreadSkeleton/></p>
   if (error) return <p>Error</p>
 
   return (

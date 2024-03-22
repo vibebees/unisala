@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import {gql} from "@apollo/client"
 
 export const AddComment = gql`
     mutation addComment(
@@ -1622,4 +1622,12 @@ export const AddComment = gql`
         }
       }
     }
-  `
+  `,
+  InvitationRequestHandler = gql`
+  query requestToJoinOrg($orgId: ID!, $status:String!, $email:String!) {
+    requestToJoinOrg(orgId: $orgId, status: $status, email: $email) {
+      data
+    }
+  }
+`
+
