@@ -1,18 +1,19 @@
-import { IonButton, IonSpinner } from "@ionic/react"
+import {IonSpinner} from "@ionic/react"
 import clsx from "clsx"
+import Button from "../../../../component/ui/Button"
 
 const SendButton = ({ loading = false, label = "Submit", onclick }) => {
   return (
-    <IonButton
+    <Button
       onClick={onclick}
-      color="dark"
+      color="primary"
       className={clsx(
         "mt-6 h-10 text-base capitalize w-full",
         loading && "opacity-50 pointer-events-none cursor-not-allowed"
       )}
     >
       {loading ? <IonSpinner></IonSpinner> : label}
-    </IonButton>
+    </Button>
   )
 }
 
