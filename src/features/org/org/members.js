@@ -1,4 +1,4 @@
-import {useQuery} from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import {
   IonCard,
   IonCardHeader,
@@ -7,15 +7,16 @@ import {
   IonGrid,
   IonRow
 } from "@ionic/react"
-import {ThreadSkeleton} from "component/skeleton/threadSkeleton"
-import {useContext} from "react"
-import {useHistory} from "react-router"
-import {URLgetter, URLupdate} from "utils/lib/URLupdate"
-import {OrgContext} from ".."
+import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
+import { Row } from "component/ui"
+import { useContext } from "react"
+import { useHistory } from "react-router"
+import { URLgetter, URLupdate } from "utils/lib/URLupdate"
+import { OrgContext } from ".."
 import Tabs from "../../../component/tabs"
-import UserCard from "../../../component/userCard"
-import {GetAllMembersBySpaceID} from "../../../graphql/user"
-import {USER_SERVICE_GQL} from "../../../servers/types"
+import { GetAllMembersBySpaceID } from "../../../graphql/user"
+import { USER_SERVICE_GQL } from "../../../servers/types"
+import MemberList from "./memberList"
 import "./members.css"
 
 export const Members = () => {
@@ -57,7 +58,14 @@ export const Members = () => {
 
   const memberType = URLgetter("mem") || myDefaultMembers
 
-  if (loading) return <p><ThreadSkeleton/></p>
+  if (loading) {
+    return (
+      <p>
+        <ThreadSkeleton />
+      </p>
+    )
+  }
+
   if (error) return <p>Error</p>
 
   return (
@@ -74,27 +82,11 @@ export const Members = () => {
         </IonRow>
       </IonCard>
 
-      <IonRow>
+      <br />
+      <Row className="w-full">
         {data &&
           data?.getAllMemberBySpaceId?.data[memberType]?.map((user, index) => (
-            <IonCol
-              key={index}
-              size="12"
-              sizeSm="6"
-              sizeMd="4"
-              sizeLg="4"
-              sizeXl="4"
-            >
-              <UserCard
-                key={index}
-                profileBanner={user?.coverPicture}
-                profileImg={user?.picture}
-                name={user?.firstName + " " + user?.lastName}
-                username={user?.username}
-                loaction={user?.location}
-                oneLineBio={memberType}
-              />
-            </IonCol>
+            <MemberList key={index} {...user} />
           ))}
         {data &&
           data?.getAllMemberBySpaceId?.data[memberType]?.length === 0 && (
@@ -102,7 +94,7 @@ export const Members = () => {
               <p className="w-full text-center">No members found</p>
             </IonCol>
           )}
-      </IonRow>
+      </Row>
     </IonGrid>
   )
 }
