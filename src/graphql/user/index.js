@@ -1330,7 +1330,7 @@ export const AddComment = gql`
         data {
           _id
           userId
-          spaceOrgId
+          orgId
           spaceId
           title
           description
@@ -1570,8 +1570,8 @@ export const AddComment = gql`
     }
   `,
   GetAllHistoryYear = gql`
-    query GetAllHistoryYear($orgSpaceId: ID!) {
-      getAllHistoryYear(orgSpaceId: $orgSpaceId) {
+    query GetAllHistoryYear($orgId: ID!) {
+      getAllHistoryYear(orgId: $orgId) {
         status {
           success
           message
@@ -1581,8 +1581,8 @@ export const AddComment = gql`
     }
   `,
   GetAllHistory = gql`
-    query GetAllHistory($orgSpaceId: ID!, $year: Int) {
-      getAllHistory(orgSpaceId: $orgSpaceId, year: $year) {
+    query GetAllHistory($orgId: ID!, $year: Int) {
+      getAllHistory(orgId: $orgId, year: $year) {
         status {
           success
           message
@@ -1598,13 +1598,13 @@ export const AddComment = gql`
   `,
   AddNewHistory = gql`
     mutation createHistory(
-      $orgSpaceId: ID!
+      $orgId: ID!
       $title: String!
       $description: String!
       $date: String!
     ) {
       createHistory(
-        orgSpaceId: $orgSpaceId
+        orgId: $orgId
         title: $title
         description: $description
         date: $date
@@ -1620,6 +1620,13 @@ export const AddComment = gql`
           description
           date
         }
+      }
+    }
+  `,
+  InvitationRequestHandler = gql`
+    query requestToJoinOrg($orgId: ID!, $status: String!, $email: String!) {
+      requestToJoinOrg(orgId: $orgId, status: $status, email: $email) {
+        data
       }
     }
   `

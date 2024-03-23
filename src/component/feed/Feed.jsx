@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client"
+import {useQuery} from "@apollo/client"
 import {
   IonCardContent,
   IonCardHeader,
@@ -12,18 +12,17 @@ import {
   IonText
 } from "@ionic/react"
 import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
-import { Event } from "component/events"
+import {Event} from "component/events"
 import Thread from "component/thread"
-import { getNewsFeed, getUserGql } from "graphql/user"
-import { location, schoolOutline } from "ionicons/icons"
-import { useState } from "react"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { USER_SERVICE_GQL } from "servers/types"
-import { FeedSkeleton } from "../skeleton/feedSkeleton"
-import { defaultUniImages } from "./default.images"
-import { Typography, Grid, Card, Col, Row, Button } from "component/ui"
-import { CardHeader } from "component/Reusable/cardHeader"
+import {Button, Card, Col, Grid, Row} from "component/ui"
+import {getNewsFeed, getUserGql} from "graphql/user"
+import {location, schoolOutline} from "ionicons/icons"
+import {useState} from "react"
+import {useSelector} from "react-redux"
+import {Link} from "react-router-dom"
+import {USER_SERVICE_GQL} from "servers/types"
+import {FeedSkeleton} from "../skeleton/feedSkeleton"
+import {defaultUniImages} from "./default.images"
 const Post = ({ post, allProps, feedType, feedId }) => {
   return (
     <div

@@ -1,12 +1,11 @@
-import React, { useState } from "react"
-import { IonContent, IonCard, IonCardContent, IonIcon, IonGrid, IonRow, IonCol } from "@ionic/react"
+import {IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonIcon, IonRow} from "@ionic/react"
+import {roadmapSteps} from "data/roadmap"
 import {
     chevronDownOutline,
     chevronUpOutline
 } from "ionicons/icons"
-import { motion, AnimatePresence } from "framer-motion"
- import "./styles.css"
-import {roadmapSteps} from "data/roadmap"
+import {useState} from "react"
+import "./styles.css"
 
 export const StudyAbroadRoadmap = () => {
     const [expandedStep, setExpandedStep] = useState(null)
@@ -40,7 +39,7 @@ export const StudyAbroadRoadmap = () => {
                     <IonCol>
                         <div className="roadmap-container">
                             {roadmapSteps.map((step, index) => (
-                                <motion.div key={index} className="roadmap-motion-div">
+                                <div key={index} className="roadmap-div">
                                     <div className={`roadmap-step`} onClick={() => toggleStep(index)}>
 
                                         <div className="step-icon-container">
@@ -55,13 +54,9 @@ export const StudyAbroadRoadmap = () => {
                                         </div>
                                     </div>
 
-                                    <AnimatePresence>
                                         {expandedStep === index && (
-                                            <motion.div
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: "auto" }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                transition={{ duration: 0.3 }}
+                                            <div
+
                                                 className="expandable-content"
                                             >
 
@@ -77,10 +72,9 @@ export const StudyAbroadRoadmap = () => {
                                                     </IonCardContent>
                                                 </IonCard>
 
-                                            </motion.div>
+                                            </div>
                                         )}
-                                    </AnimatePresence>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </IonCol>

@@ -1,10 +1,9 @@
+import {IonCard, IonInput, useIonToast} from "@ionic/react"
+import {handleSendInvitation} from "features/org/Invitation/utility"
 import React from "react"
-import { IonCard, IonInput, useIonToast } from "@ionic/react"
-import SendButton from "../atoms/SendButton"
 import Header from "../atoms/Header"
+import SendButton from "../atoms/SendButton"
 import InvitationTypesCheckbox from "./InvitationTypesCheckbox"
-import { authInstance } from "api/axiosInstance"
-import { userServer } from "servers/endpoints"
 
 const SingleInvitation = ({ spaceId }) => {
   const [email, setEmail] = React.useState("")
@@ -12,48 +11,6 @@ const SingleInvitation = ({ spaceId }) => {
   const [present, dismiss] = useIonToast()
   const [loading, setLoading] = React.useState(false)
 
-  const handleSendInvitation = () => {
-    if (!email || !spaceId) {
-      return present({
-        duration: 3000,
-        message: "Please enter email address",
-        buttons: [{ text: "X", handler: () => dismiss() }],
-        color: "danger",
-        mode: "ios"
-      })
-    }
-    setLoading(true)
-    let payload = {
-      emails: [email],
-      role: invitationType
-    }
-    authInstance
-      .post(`${userServer}/org-invitation-request/${spaceId}`, payload)
-      .then((res) => {
-        if (res.data.success) {
-          present({
-            duration: 3000,
-            message: "Invitation sent successfully",
-            buttons: [{ text: "X", handler: () => dismiss() }],
-            color: "primary",
-            mode: "ios"
-          })
-        }
-        setEmail("")
-      })
-      .catch((err) => {
-        present({
-          duration: 3000,
-          message: err?.response?.data?.message || " Something went wrong",
-          buttons: [{ text: "X", handler: () => dismiss() }],
-          color: "danger",
-          mode: "ios"
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
 
   return (
     <div>
@@ -82,7 +39,7 @@ const SingleInvitation = ({ spaceId }) => {
         />
         <SendButton
           loading={loading}
-          onclick={handleSendInvitation}
+          onclick={() => handleSendInvitation({ email, spaceId, invitationType, setLoading, present, dismiss, setEmail })}
           label="Send Invitation"
         />
       </IonCard>

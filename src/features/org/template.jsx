@@ -6,11 +6,12 @@ import InfiniteFeed from "../../component/feed/Feed"
 import CreateAPostCard from "../../component/post/template"
 import PreLoader from "../../component/preloader"
 import Tabs from "../../component/tabs"
-import Invitation from "./Invitation/Index"
+import Invitation from "./Invitation/Invitations"
 import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
 import { History } from "./org/history"
+import { InvitationRequest } from "./org/invitationRequest"
 import { Members } from "./org/members"
 export const Spaces = ({ allProps }) => {
   const {
@@ -82,51 +83,12 @@ export const Spaces = ({ allProps }) => {
       <div className="bg-white">
         <IonCol>
           <h4 className="font-semibold pl-4">Your next steps</h4>
-          <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6">
-            <div className="flex items-center  w-full">
-              {/* <StepInput
-                  currentstep={"1/10"}
-                  label={"Enter your ILETS Test Result"}
-                  placeholder={"Enter score"}
-                  inputType={"number"}
-                  setInput={setdata}
-                  name={"stepOne"}
-                  inputValue={data.stepOne}
-                  key={1}
-                /> */}
-            </div>
-
-            {/* <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
-              <span className="text-sm text-neutral-400">2/10</span>
-              <div className="flex items-center h-fit gap-4 py-2">
-                <label htmlFor="Gpa" className="text-sm h-fit">
-                  Enter your ILETS Test Result
-                </label>
-                <IonInput
-                  placeholder="Enter Test Score"
-                  type="number"
-                  className="w-fit h-3 placeholder:text-neutral-400 placeholder:text-xs placeholder:text-opacity-40"
-                ></IonInput>
-              </div>
-            </div>
-            <div className="border-b border-neutral-400 border-opacity-40 pb-2 ">
-              <span className="text-sm text-neutral-400">3/10</span>
-              <div className="flex items-center h-fit gap-4 py-2">
-                <label htmlFor="Gpa" className="text-sm h-fit">
-                  Enter your ILETS Test Result
-                </label>
-                <IonInput
-                  placeholder="Enter Test Score"
-                  type="number"
-                  className="w-fit h-3  placeholder:text-neutral-400   placeholder:text-xs placeholder:text-opacity-40"
-                ></IonInput>
-              </div>
-            </div> */}
-          </div>
+          <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6"></div>
         </IonCol>
       </div>
     ),
-    invite: <Invitation orgId={orgId} />
+    invite: <Invitation orgId={orgId} />,
+    invitationRequest: <InvitationRequest />
     // ,
     // apply: (<Apply />),
     //
