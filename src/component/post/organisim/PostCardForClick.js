@@ -1,28 +1,12 @@
-import { IonAvatar, IonCol, IonIcon, IonItem, IonLabel } from "@ionic/react"
-import { Avatar } from "../../Avatar"
-import { imageOutline } from "ionicons/icons"
-import { useEffect, useState } from "react"
-import { useLocation } from "react-router"
-import { Col } from "component/ui"
+import { IonAvatar, IonItem } from "@ionic/react"
 import GalleryIcon from "Icons/GalleryIcon"
+import { Col } from "component/ui"
+import { useSelector } from "react-redux"
+import { Avatar } from "../../Avatar"
 
-export const PostCardForClick = ({ allProps = {} }) => {
-  const { userInfo = {} } = allProps
-  const { userStatus = "looking" } = userInfo || {}
-  const [placeholder, setPlaceholder] = useState("Suggest me university ...")
-  const pathname = useLocation().pathname.split("/")[1]
+export const PostCardForClick = () => {
+  const { user } = useSelector((store) => store?.userProfile)
 
-  useEffect(() => {
-    if (pathname === "university") {
-      setPlaceholder("Review University 🏛️ ")
-      return
-    }
-    const value = ["looking", "applying"].includes(userStatus)
-      ? "Suggest me university 🏛️ ..."
-      : "Review university 🏛️ ..."
-    setPlaceholder(value)
-  }, [userStatus])
-  const { user } = allProps
   return (
     <div
       style={{
@@ -37,11 +21,11 @@ export const PostCardForClick = ({ allProps = {} }) => {
             alignSelf: "center"
           }}
         >
-          <Avatar username={user.username} profilePic={user?.picture} />
+          <Avatar username={user?.username} profilePic={user?.picture} />
         </IonAvatar>
         <input
           type="text"
-          placeholder={placeholder}
+          placeholder={"suggest univeristy"}
           className="searchInput bg-transparent border-none outline-none"
         />
 

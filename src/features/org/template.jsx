@@ -10,8 +10,8 @@ import Invitation from "./Invitation/Index"
 import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
-import { Members } from "./org/members"
 import { History } from "./org/history"
+import { Members } from "./org/members"
 export const Spaces = ({ allProps }) => {
   const {
     handleResize,
@@ -65,7 +65,7 @@ export const Spaces = ({ allProps }) => {
   const Feed = () => (
     <div className="mt-4">
       <NotJoinedWrapper
-        isJoined={orgData?.isJoined}
+        isJoined={true}
         message="Please Join the orgranization to post"
       >
         <CreateAPostCard allProps={allProps} />
