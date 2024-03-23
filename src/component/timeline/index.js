@@ -11,7 +11,7 @@ export const TimeLine = ({ year }) => {
   const { orgData } = useContext(OrgContext)
   const { data, loading, fetchMore } = useQuery(GetAllHistory, {
     context: { server: USER_SERVICE_GQL },
-    variables: { orgSpaceId: orgData?._id, year: year }
+    variables: { orgId: orgData?._id, year: year }
   })
   return (
     <Grid

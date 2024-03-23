@@ -16,7 +16,7 @@ export const SqueezeBox = () => {
   const { orgData } = useContext(OrgContext)
   const { data, loading, fetchMore } = useQuery(GetAllHistoryYear, {
     context: { server: USER_SERVICE_GQL },
-    variables: { orgSpaceId: orgData?._id }
+    variables: { orgId: orgData?._id }
   })
 
   const accordionGroup = useRef(null)
