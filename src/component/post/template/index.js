@@ -1,13 +1,13 @@
 import axios from "axios"
-import { Card } from "component/ui"
+import {Card} from "component/ui"
 import Modal from "component/ui/Modal"
-import { usePathName } from "hooks/usePathname"
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { useHistory } from "react-router"
-import { userServer } from "servers/endpoints"
-import { PostCardForClick } from "../organisim/PostCardForClick"
-import { PostModalOnClick } from "../organisim/PostModalOnClick"
+import {usePathName} from "hooks/usePathname"
+import {useEffect, useState} from "react"
+import {useSelector} from "react-redux"
+import {useHistory} from "react-router"
+import {userServer} from "servers/endpoints"
+import {PostCardForClick} from "../organisim/PostCardForClick"
+import {PostModalOnClick} from "../organisim/PostModalOnClick"
 const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
   const { setCreateAPostPopUp } = allProps
