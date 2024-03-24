@@ -18,7 +18,7 @@ const AddHistory = ({ setData }) => {
   const [addHistoryMutation] = useMutation(AddNewHistory, {
     context: { server: USER_SERVICE_GQL },
     variables: {
-      orgSpaceId: orgData._id,
+      orgId: orgData._id,
       title: data.description,
       description: data.description,
       date: moment(data.date).format("YYYY-MM-DD")

@@ -11,6 +11,7 @@ import {
 import axios from "axios"
 import clsx from "clsx"
 import RichTextInput from "component/Input/RichTextInput"
+import { Typography } from "component/ui"
 import {
   AddPost,
   AddSpaceEvent,
@@ -96,7 +97,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 
   const generateDateComponent = (item) => (
     <>
-      <IonLabel>{item.name}</IonLabel>
+      <Typography variant="p">{item.name}</Typography>
       <IonItem />
       <IonDatetime
         displayFormat="MMM DD, YYYY" // You can customize this format
@@ -341,8 +342,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    console.log("Submitting postData:", postData) // Log the postData here
-
     if (files?.length > 4) {
       present({
         duration: 3000,
@@ -383,13 +382,15 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         })
       }
     }
-    setCreateAPostPopUp(false)
-    params.delete("create")
-    params.delete("type")
+    const btn = document.querySelector(".modal-close-btn")
+    btn.click()
+    // setCreateAPostPopUp(false)
+    // params.delete("create")
+    // params.delete("type")
 
-    histroy.push({
-      search: params.toString()
-    })
+    // histroy.push({
+    //   search: params.toString()
+    // })
   }
 
   const generateInputTag = (item) => {
@@ -397,13 +398,13 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 
     return (
       <>
-        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+        <Typography className="text-sm">{item.name}</Typography>
         <IonInput
           id={item.id} // Add id attribute here
           name={item.name}
           type={item.type}
           placeholder={item.placeholder || ""}
-          className="border border-[#bdbdbd] rounded-sm"
+          className="border border-[#bdbdbd]  !px-2 text-sm rounded-sm "
           onIonChange={(e) => {
             const postText = htmlForEditor(
               postData?.postText,
@@ -426,12 +427,15 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const generateSelectTag = (item) => {
     return (
       <>
-        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+        <Typography variant="p" className="text-sm">
+          {item.name}
+        </Typography>
         {item.api ? (
           <AsyncSelectAtom
             item={item}
             setPostData={setPostData}
             postData={postData}
+            className="text-sm"
           />
         ) : (
           <SelectAtom
@@ -439,6 +443,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             item={item}
             setPostData={setPostData}
             postData={postData}
+            className="text-sm"
           />
         )}
       </>
@@ -448,7 +453,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const generateTextareaTag = (item) => {
     return (
       <>
-        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+        <Typography className="text-sm mb-1">{item.name}</Typography>
         <div>
           <RichTextInput
             id={item.id}
@@ -537,4 +542,3 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 }
 
 export default Form
-

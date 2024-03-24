@@ -1,7 +1,7 @@
-import {IonCol, IonContent, IonGrid, IonIcon, IonRow} from "@ionic/react"
-import {arrowUpOutline} from "ionicons/icons"
-import {useEffect} from "react"
-import {SpaceNotFound} from "../../component/PageNotFound"
+import { IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react"
+import { arrowUpOutline } from "ionicons/icons"
+import { useEffect } from "react"
+import { SpaceNotFound } from "../../component/PageNotFound"
 import InfiniteFeed from "../../component/feed/Feed"
 import CreateAPostCard from "../../component/post/template"
 import PreLoader from "../../component/preloader"
@@ -10,9 +10,9 @@ import Invitation from "./Invitation/Invitations"
 import NotJoinedWrapper from "./NotJoinedWrapper"
 import "./Space.css"
 import SpaceHeader from "./SpaceHeader"
-import {History} from "./org/history"
-import {InvitationRequest} from "./org/invitationRequest"
-import {Members} from "./org/members"
+import { History } from "./org/history"
+import { InvitationRequest } from "./org/invitationRequest"
+import { Members } from "./org/members"
 export const Spaces = ({ allProps }) => {
   const {
     handleResize,
@@ -66,7 +66,7 @@ export const Spaces = ({ allProps }) => {
   const Feed = () => (
     <div className="mt-4">
       <NotJoinedWrapper
-        isJoined={orgData?.isJoined}
+        isJoined={true}
         message="Please Join the orgranization to post"
       >
         <CreateAPostCard allProps={allProps} />
@@ -83,13 +83,12 @@ export const Spaces = ({ allProps }) => {
       <div className="bg-white">
         <IonCol>
           <h4 className="font-semibold pl-4">Your next steps</h4>
-          <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6">
-          </div>
+          <div className="h-full mt-4 px-4 border border-neutral-400 border-opacity-20 rounded-md py-6"></div>
         </IonCol>
       </div>
     ),
     invite: <Invitation orgId={orgId} />,
-    invitationRequest: <InvitationRequest/>
+    invitationRequest: <InvitationRequest />
     // ,
     // apply: (<Apply />),
     //

@@ -1,21 +1,20 @@
 import {
   ApolloClient,
-  InMemoryCache,
   HttpLink,
-  split,
-  fromPromise
+  InMemoryCache,
+  fromPromise,
+  split
 } from "@apollo/client"
-import { setContext } from "@apollo/client/link/context"
+import {setContext} from "@apollo/client/link/context"
+import {onError} from "@apollo/client/link/error"
+import {getNewToken} from "api/authentication"
+import {io} from "socket.io-client"
 import urls from "."
-import { onError } from "@apollo/client/link/error"
-import axios from "axios"
 import {
   MESSAGE_SERVICE_GQL,
   UNIVERSITY_SERVICE_GQL,
   USER_SERVICE_GQL
 } from "./types"
-import { io } from "socket.io-client"
-import {getNewToken} from "api/authentication"
 
 const config = require("./config"),
   {
@@ -26,12 +25,16 @@ const config = require("./config"),
     callSocketAddress
   } = urls,
 
-  errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+
+  errorLink = onError(({graphQLErrors, networkError, operation, forward}) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
+      graphQLErrors.forEach(({message, locations, path}) => {
+        if (message === "You are not logged in. Please login") {
+          localStorage.removeItem("accessToken")
+          localStorage.removeItem("refreshToken")
+          window.location.href = "/login"
+        }
+      }
       )
     }
     try {
