@@ -14,6 +14,7 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
 
   const searchParams = new URLSearchParams(window.location.search)
   const spaceOrgName = searchParams.get("org")
+  const code = searchParams.get("code")
   const email = searchParams.get("email") ?? ""
   const [input, setInput] = useState({
     firstName: "",
@@ -21,7 +22,8 @@ export const SignUpForm = ({ setauth, setShowSignup = null }) => {
     email: email,
     password: "",
     spaceOrgName,
-    type: spaceOrgName && "invitation"
+    type: spaceOrgName && "invitation",
+    code: code && code
   })
 
   const HandleChange = (e) => {
