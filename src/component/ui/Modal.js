@@ -1,13 +1,13 @@
-import React, { useState } from "react"
-import Button from "./Button"
 import {
   IonButtons,
-  IonModal,
-  IonHeader,
   IonContent,
-  IonToolbar,
-  IonTitle
+  IonHeader,
+  IonModal,
+  IonTitle,
+  IonToolbar
 } from "@ionic/react"
+import { useState } from "react"
+import Button from "./Button"
 
 const Modal = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
   const [isOpen, setIsOpen] = useState(false)
