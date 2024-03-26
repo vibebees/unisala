@@ -1,14 +1,13 @@
-import React from "react"
-import { IonCheckbox, IonRow, IonText, IonRadio } from "@ionic/react"
+import { IonRadio, IonRow, IonText } from "@ionic/react"
 
 const InvitationType = ({ allProps }) => {
   const { handleCheckbox, label, value } = allProps
   return (
     <IonRow className="flex flex-row items-center">
-      <IonRadio onIonFocus={handleCheckbox} value={label} className="mr-2">
+      <IonRadio onIonFocus={handleCheckbox} value={label} className="mr-2 radio-button-custom">
         {""}
       </IonRadio>
-      <IonText className="text-sm  font-medium  text-neutral-600">
+      <IonText className="text-sm font-medium text-neutral-600">
         {label}
       </IonText>
     </IonRow>
