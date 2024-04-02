@@ -262,3 +262,7 @@ li {
   /* max-height: 400px;
   overflow: auto; */
 }
+
+.mention {
+  background-color: transparent !important;
+}

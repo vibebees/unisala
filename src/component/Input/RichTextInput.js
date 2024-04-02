@@ -3,7 +3,7 @@
 import { authInstance } from "api/axiosInstance"
 import "quill-mention"
 import "quill-mention/dist/quill.mention.css"
-import { lazy, useMemo, useRef, useState } from "react"
+import { lazy, useMemo, useRef } from "react"
 import ReactQuill, { Quill } from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { universityServer } from "servers/endpoints"
@@ -75,7 +75,6 @@ const RichTextInput = ({
   handleUniversitySelect,
   searchText
 }) => {
-  const [popoverOpen, setPopoverOpen] = useState(false)
   const quillRef = useRef(null)
 
   const mention = useMemo(
@@ -87,12 +86,15 @@ const RichTextInput = ({
         const data = await getUniversitites(searchTerm)
         renderList(data, searchTerm)
       },
-      onSelect: (item) => {
+      onSelect: (item, insertItem) => {
         const editor = quillRef.current.getEditor()
+        insertItem({
+          denotationChar: "",
+          value: ""
+        })
         const cursorPosition = editor.getSelection().index
-        editor.deleteText(cursorPosition - 1, 1)
-        editor.insertText(cursorPosition, item.value, "link", item.link)
-        editor.setSelection(cursorPosition + item.value.length)
+        editor.insertText(cursorPosition - 2, item.value, "link", item.link)
+        editor.setSelection(cursorPosition)
       }
     }),
     []
@@ -141,13 +143,6 @@ const RichTextInput = ({
           modules={modules}
           onChange={(e) => {
             onChange(e)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "@") {
-              if (showUniversityListOnAt) {
-                setPopoverOpen(true)
-              }
-            }
           }}
         />
       </div>
