@@ -1628,8 +1628,24 @@ export const AddComment = gql`
       search(q: $q) {
         totalItems
         items {
-          type
           name
+          type
+          username
+        }
+        spaces {
+          name
+          description
+        }
+        users {
+          firstName
+          lastName
+          username
+          oneLinerBio
+          picture
+        }
+        orgs {
+          name
+          description
         }
       }
     }

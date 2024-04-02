@@ -12,7 +12,7 @@ export const SearchBarResultList = ({ item, key, setShow }) => {
 
   switch (item.type) {
     case "user":
-      link = `profile${"Test"}`
+      link = `@/${item.username}`
       break
     case "university":
       link = `/university/${item?.name}`

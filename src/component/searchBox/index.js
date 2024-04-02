@@ -10,9 +10,10 @@ import { Search } from "graphql/user"
 import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 import SearchIcon from "Icons/SearchIcon"
 import { Button, Typography } from "component/ui"
+import { URLgetter } from "utils/lib/URLupdate"
 
 export const SearchBar = () => {
-  const [searchValue, setSearchValue] = useState("")
+  const [searchValue, setSearchValue] = useState(URLgetter("q") ?? "")
   const [show, setShow] = useState(false)
   const [dropDownOptions, setDropDownOptions] = useState(null)
   const [recentSearch, setRecentSearch] = useState(
@@ -59,7 +60,7 @@ export const SearchBar = () => {
       <div className="search-box">
         <IonInput
           type="text"
-          placeholder="   Search universities, people..."
+          placeholder="Search universities, people..."
           className="search-input-box !pr-10 "
           // onKeyUp={(e) => {
           // if (e.key === "Enter") {
