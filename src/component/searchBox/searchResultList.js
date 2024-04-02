@@ -1,26 +1,50 @@
-import {IonAvatar, IonItem, IonLabel} from "@ionic/react"
-import {useEffect, useState} from "react"
-import {Link} from "react-router-dom"
-import {universityDefaultImage} from "servers/s3.configs"
+import { IonItem, IonLabel } from "@ionic/react"
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { universityDefaultImage } from "servers/s3.configs"
 
-export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
-  const [profileImage, setProfileImage] = useState(item?.pictures?.[0] || item?.picture || universityDefaultImage)
+export const SearchBarResultList = ({ item, key, setShow }) => {
+  const [profileImage, setProfileImage] = useState(
+    item?.pictures?.[0] || item?.picture || universityDefaultImage
+  )
 
+  let link
+
+  switch (item.type) {
+    case "user":
+      link = `@/${item.username}`
+      break
+    case "university":
+      link = `/university/${item?.name}`
+      break
+    case "org":
+      link = `/org/${item?.name}`
+      break
+
+    case "space":
+      link = `/space/${item?.name}`
+      break
+    default:
+      return
+  }
 
   return (
     <Link
-      to={
-        item?.username
-          ? `/@/${item?.username}`
-          : `/university/${item?.name}`
-      }
+      to={link}
       key={key}
-      onClick={() => setDropDownOptions(false)}
+      onClick={() => {
+        const recentSearches =
+          JSON.parse(localStorage.getItem("recentSearch")) ?? []
+        console.log({ recentSearches })
+        localStorage.setItem(
+          "recentSearch",
+          JSON.stringify([item, ...recentSearches])
+        )
+
+        setShow(false)
+      }}
     >
-      <IonItem
-        lines="none"
-        key={key}
-      >
+      <IonItem key={key}>
         {/* <IonAvatar slot="start">
           <img
             src={
@@ -29,24 +53,12 @@ export const SearchBarResultList = ({item, key, setDropDownOptions}) => {
             }
           />
         </IonAvatar> */}
-        <IonLabel >
-          <h2
-            style={{
-              margin: 0,
-              width: "100%"
-            }}
-          >
-            {item?.name || `${item?.firstName} ${item?.lastName}`}
-          </h2>
-          <p
-            style={{
-              margin: 0
-            }}
-          >
-            {item?.city || item?.location}
-          </p>
+        <IonLabel>
+          <h2 className="m-0 capitalize">{item?.name}</h2>
+          <h5 className="bg-[#eee] opacity-75 w-fit px-2">{item?.type}</h5>
         </IonLabel>
       </IonItem>
     </Link>
   )
 }
+
