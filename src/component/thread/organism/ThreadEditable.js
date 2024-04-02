@@ -6,9 +6,11 @@ import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { useLocation } from "react-router-dom"
 import { USER_SERVICE_GQL } from "servers/types"
+import ImageUpload from "../../post/molecules/ImageUpload"
 
-const ThreadEditable = ({ _id, postText, setEditable }) => {
+const ThreadEditable = ({ _id, postText, setEditable, images = [] }) => {
   const pathname = useLocation().pathname
+  const [files, setFiles] = useState(images)
   const [present, dismiss] = useIonToast()
   const [updatedData, setUpdatedData] = useState({
     postText,
@@ -22,7 +24,6 @@ const ThreadEditable = ({ _id, postText, setEditable }) => {
 
   const isHome = pathname === "/" || pathname === "/home"
 
-  console.log({ updatedData })
   const [editPost] = useMutation(EditPost, {
     context: { server: USER_SERVICE_GQL },
     variables: { ...updatedData },
@@ -74,6 +75,11 @@ const ThreadEditable = ({ _id, postText, setEditable }) => {
           className="h-full "
         />
       </div>
+      <br />
+
+      <div className="mx-3 rounded-md py-8 mt-2 grid place-content-center border px-3">
+        <ImageUpload files={files} setFiles={setFiles} isEdited={true} />
+      </div>
 
       <br />
       <IonButton
@@ -99,4 +105,3 @@ const ThreadEditable = ({ _id, postText, setEditable }) => {
 }
 
 export default ThreadEditable
-

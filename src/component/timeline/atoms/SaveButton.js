@@ -1,15 +1,25 @@
-import { IonButton, IonSpinner } from "@ionic/react"
+import { IonSpinner } from "@ionic/react"
+import { Button } from "component/ui"
+import { cn } from "utils"
 
-const SaveButton = ({ loading = false, label = "Save", onClick }) => {
+const HistoryButton = ({
+  loading = false,
+  label = "Save",
+  onClick,
+  className
+}) => {
   return (
-    <IonButton
-      color={"medium"}
+    <Button
+      color={"primary"}
       onClick={onClick}
-      className="h-full ion-no-margin capitalize  shadow-none"
+      className={cn(
+        " ion-no-margin  capitalize ion-no-padding  shadow-none",
+        className
+      )}
     >
       {loading ? <IonSpinner name="lines" /> : label}
-    </IonButton>
+    </Button>
   )
 }
 
-export default SaveButton
+export default HistoryButton

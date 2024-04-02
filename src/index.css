@@ -256,3 +256,9 @@ li {
 .threadScroll::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.ql-editor {
+  min-height: 130px;
+  /* max-height: 400px;
+  overflow: auto; */
+}

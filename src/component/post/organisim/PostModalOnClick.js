@@ -1,7 +1,6 @@
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import "react-quill/dist/quill.snow.css"
-import { useSelector } from "react-redux"
-import { useHistory, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import "../index.css"
 import Form from "../molecules/Form"
 import FormAvatar from "../molecules/FormAvatar"
@@ -11,22 +10,20 @@ import SelectionTab from "./SelectionTab"
 
 export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
-  const history = useHistory()
   const params = new URLSearchParams(location.search)
-  const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
-  const { user, loggedIn } = useSelector((state) => state.userProfile)
+  const { tags } = allProps
   const [selectedTab, setSelectedTab] = useState(null)
   const [allowPost, setAllowPost] = useState(true)
   const [postData, setPostData] = useState({
     id: selectedTab
   })
 
-  useLayoutEffect(() => {
-    if (params.get("create")) {
-      setCreateAPostPopUp(true)
-      setSelectedTab(params.get("type"))
-    }
-  }, [params, createAPostPopUp])
+  // useLayoutEffect(() => {
+  //   if (params.get("create")) {
+  //     setCreateAPostPopUp(true)
+  //     setSelectedTab(params.get("type"))
+  //   }
+  // }, [params, createAPostPopUp])
 
   useEffect(() => {
     setPostData((prevPostData) => {

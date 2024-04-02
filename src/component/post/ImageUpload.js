@@ -1,10 +1,8 @@
 import { useState } from "react"
-
 const S3_BUCKET = "unisala-test"
 const REGION = "ap-south-1"
 
 let AWS = {}
-
 
 const myBucket = new AWS.S3({
   params: { Bucket: S3_BUCKET },

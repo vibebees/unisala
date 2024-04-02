@@ -6,7 +6,9 @@ const HistoryHeader = ({ setData }) => {
   const [showAddHistory, setshowAddHistory] = React.useState(false)
 
   return (
-    <IonRow className={clsx("flex-col", showAddHistory ? "mb-0" : "mb-5")}>
+    <IonRow
+      className={clsx("flex-col h-full", showAddHistory ? "mb-0" : "mb-5")}
+    >
       <IonRow className="ion-no-margin mt-5 ion-no-padding items-center justify-between">
         <IonCol
           size="auto"
@@ -31,13 +33,11 @@ const HistoryHeader = ({ setData }) => {
       </IonRow>
       <IonRow
         className={clsx(
-          "w-full  ion-no-margin ion-no-padding overflow-hidden duration-200 transition-all ease-linear",
-          showAddHistory ? "h-24" : "h-0"
+          "w-full  ion-no-margin h-full ion-no-padding overflow-hidden duration-200 transition-all ease-linear",
+          showAddHistory ? "h-full" : "h-0"
         )}
       >
-        <IonCol className="w-full ion-no-margin ion-no-padding border-none">
-          <AddHistory setData={setData} />
-        </IonCol>
+        <AddHistory setData={setData} />
       </IonRow>
     </IonRow>
   )

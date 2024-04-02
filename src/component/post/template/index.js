@@ -10,7 +10,6 @@ import {PostCardForClick} from "../organisim/PostCardForClick"
 import {PostModalOnClick} from "../organisim/PostModalOnClick"
 const CreateAPostCard = ({ allProps }) => {
   const { user } = useSelector((state) => state.userProfile)
-  const { setCreateAPostPopUp } = allProps
   const [meta, setMeta] = useState({})
   const history = useHistory()
   const params = new URLSearchParams(window.location.href.search)
@@ -53,7 +52,7 @@ const CreateAPostCard = ({ allProps }) => {
       >
         <Modal
           ModalData={<PostModalOnClick allProps={allProps} metaData={meta} />}
-          ModalButton={<PostCardForClick allProps={{ ...allProps, user }} />}
+          ModalButton={<PostCardForClick />}
           header="Create a Post"
         />
       </Card>

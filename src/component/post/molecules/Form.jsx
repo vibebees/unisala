@@ -22,7 +22,6 @@ import {
 import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
 import { useSelector } from "react-redux"
-import { useHistory, useLocation } from "react-router"
 import { userServer } from "servers/endpoints"
 import { USER_SERVICE_GQL } from "servers/types"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
@@ -31,14 +30,10 @@ import { htmlForEditor } from "../utils/htmlForEditor"
 import ImageUpload from "./ImageUpload"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
-  const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
+  const { setCreateAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const location = useLocation()
-  const histroy = useHistory()
-  const params = new URLSearchParams(location.search)
 
   const client = useApolloClient()
 
@@ -160,7 +155,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         __typename: "PostNewsFeed"
       }
       if (!tags) {
-        console.log("no tags")
         const cachedData = cache.readQuery({
           query: getNewsFeed,
           variables: {
@@ -244,7 +238,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         color: "primary",
         mode: "ios"
       })
-      setCreateAPostPopUp(false)
+
       // setfile("")
     },
     onError: (error) => {
@@ -464,8 +458,10 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             showUniversityListOnAt={true}
             searchText={postData?.postText?.split("@").pop().split("<")[0]}
             handleUniversitySelect={(e) => {
+              console.log("postText", postData?.postText)
               if (postData?.postText.endsWith("</p>")) {
                 const removeTextafter = postData.postText.split("@")[0]
+                console.log("removeTextafter", removeTextafter)
                 setPostData((prev) => ({
                   ...prev,
                   postText:
@@ -526,7 +522,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   }
 
-  console.log({ postData })
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
@@ -537,7 +532,10 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             </>
           )
         })}
-        <ImageUpload files={files} setFiles={setFiles} />
+        <div className="mt-11 mb-2">
+          <ImageUpload files={files} setFiles={setFiles} />
+        </div>
+
         <IonButton type="submit">Submit</IonButton>
       </form>
     </div>

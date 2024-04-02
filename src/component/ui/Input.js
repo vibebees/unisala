@@ -1,8 +1,8 @@
-import {IonInput} from "@ionic/react"
-import {forwardRef} from "react"
-import {cn} from "utils"
+import { IonInput } from "@ionic/react"
+import { forwardRef } from "react"
+import { cn } from "utils"
 
-const Button = forwardRef(({ children, className, ...rest }, ref) => {
+const Input = forwardRef(({ children, className, ...rest }, ref) => {
   return (
     <IonInput ref={ref} className={cn("w-fit ", className)} {...rest}>
       {children}
@@ -10,6 +10,6 @@ const Button = forwardRef(({ children, className, ...rest }, ref) => {
   )
 })
 
-Button.displayName = "Input"
+Input.displayName = "Input"
 
-export default Button
+export default Input

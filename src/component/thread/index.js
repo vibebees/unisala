@@ -1,9 +1,8 @@
-import { IonCard } from "@ionic/react"
+import { Card } from "component/ui"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import ReplyInput from "../ReplyInput"
 import "./index.css"
-import { Card } from "component/ui"
 import {
   ShowPeopleComments,
   ThreadEditable,
@@ -47,11 +46,16 @@ const Thread = ({ thread, feedType, feedId }) => {
   const renderContent = () => {
     if (editable) {
       return (
-        <ThreadEditable
-          _id={_id}
-          postText={postText}
-          setEditable={setEditable}
-        />
+        <>
+          <ThreadEditable
+            _id={_id}
+            postText={postText}
+            setEditable={setEditable}
+            images={images}
+          />
+
+          <br />
+        </>
       )
     }
     return (
@@ -89,9 +93,7 @@ const Thread = ({ thread, feedType, feedId }) => {
               studentLifeAndServiceRating={studentLifeAndServiceRating}
             />
           </div>
-          <div>
-            <ThreadImages _id={_id} images={images} />
-          </div>
+          <div>{!editable && <ThreadImages _id={_id} images={images} />}</div>
 
           <ThreadFooter
             _id={_id}
