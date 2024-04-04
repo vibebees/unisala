@@ -86,7 +86,7 @@ export const Members = () => {
       <Row className="w-full">
         {data &&
           data?.getAllMemberBySpaceId?.data[memberType]?.map((user, index) => (
-            <MemberList key={index} {...user} />
+            <MemberList key={index} {...user} memberType={memberType} />
           ))}
         {data &&
           data?.getAllMemberBySpaceId?.data[memberType]?.length === 0 && (

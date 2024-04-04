@@ -3,13 +3,11 @@ import { Avatar } from "component/Avatar"
 import { Button, Col, Row, Typography } from "component/ui"
 
 const memberList = ({
-  profileBanner,
   profileImg,
-  name,
   username,
-  loaction: userLocation,
-  oneLineBio,
-  children
+  firstName,
+  lastName,
+  memberType
 }) => {
   return (
     <Row className="border py-2 px-2 ion-no-padding ion-no-margin hover:bg-neutral-200 rounded-md w-full ion-no-padding ion-no-margin">
@@ -18,10 +16,10 @@ const memberList = ({
           <Avatar profilePic={profileImg} username={username} />
         </div>
         <div>
-          <Typography variant="h2" className="w-full ml-2 mt-1">
-            Dipu chaurasiya{" "}
+          <Typography variant="h2" className="w-full capitalize ml-2 mt-1">
+            {firstName} {lastName}
             <span className="text-neutral-50 ml-3 text-xs pb-px bg-blue-400 px-2 rounded-full leading-normal">
-              member
+              {memberType}
             </span>
             <span className="text-neutral-50 ml-3 text-xs pb-px bg-green-500 px-2 rounded-full leading-normal">
               Computer science
@@ -31,7 +29,7 @@ const memberList = ({
             variant="p"
             className="w-full ml-2 text-neutral-500 text-sm"
           >
-            @dipu
+            @{username}{" "}
           </Typography>
         </div>
       </Col>

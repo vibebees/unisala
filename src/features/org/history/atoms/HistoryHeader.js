@@ -33,7 +33,7 @@ const HistoryHeader = ({ setData }) => {
       </IonRow>
       <IonRow
         className={clsx(
-          "w-full  ion-no-margin h-full ion-no-padding overflow-hidden duration-200 transition-all ease-linear",
+          "w-full  ion-no-margin  ion-no-padding overflow-hidden duration-200 transition-all ease-linear",
           showAddHistory ? "h-full" : "h-0"
         )}
       >

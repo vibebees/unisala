@@ -257,10 +257,9 @@ li {
   background: #555;
 }
 
-.ql-editor {
+.ql-container {
   min-height: 130px;
-  /* max-height: 400px;
-  overflow: auto; */
+
 }
 
 .mention {

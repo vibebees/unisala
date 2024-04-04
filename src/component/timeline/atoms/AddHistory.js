@@ -11,7 +11,7 @@ import HistoryButton from "./SaveButton"
 
 const AddHistory = ({ setData }) => {
   const { orgData } = useContext(OrgContext)
-  const [addPeople, setAddPeople] = useState(true)
+  const [addPeople, setAddPeople] = useState(false)
   const [present, dismiss] = useIonToast()
   const [data, setdata] = useState({
     date: Date.now(),
