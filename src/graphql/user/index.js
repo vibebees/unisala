@@ -1301,7 +1301,7 @@ export const AddComment = gql`
           success
           message
         }
-        spaceCategory {
+        data {
           _id
           name
         }
