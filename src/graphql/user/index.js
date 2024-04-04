@@ -1623,6 +1623,33 @@ export const AddComment = gql`
       }
     }
   `,
+  Search = gql`
+    query Search($q: String!) {
+      search(q: $q) {
+        totalItems
+        items {
+          name
+          type
+          username
+        }
+        spaces {
+          name
+          description
+        }
+        users {
+          firstName
+          lastName
+          username
+          oneLinerBio
+          picture
+        }
+        orgs {
+          name
+          description
+        }
+      }
+    }
+  `,
   InvitationRequestHandler = gql`
     query requestToJoinOrg($orgId: ID!, $status: String!, $email: String!) {
       requestToJoinOrg(orgId: $orgId, status: $status, email: $email) {
@@ -1630,3 +1657,4 @@ export const AddComment = gql`
       }
     }
   `
+

@@ -27,6 +27,14 @@ const SearchTab = () => {
       {
         name: "Posts",
         value: "post"
+      },
+      {
+        name: "Spaces",
+        value: "space"
+      },
+      {
+        name: "Orgs",
+        value: "org"
       }
     ]
   }, [])
@@ -81,3 +89,4 @@ const SearchTab = () => {
 }
 
 export default SearchTab
+
