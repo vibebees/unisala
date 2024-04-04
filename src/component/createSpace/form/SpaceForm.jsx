@@ -30,6 +30,7 @@ const SpaceForm = ({ setIsOpen }) => {
   const [addSpaceCategory, { error }] = useMutation(AddSpaceCategory, {
     context: { server: USER_SERVICE_GQL },
     onCompleted: async (data) => {
+      console.log("whattt", data.addSpaceCategory)
       if (!data?.addSpaceCategory?.status?.success) {
         // SPACE CREATION UNSUCCESSFUL
         present({
@@ -58,7 +59,7 @@ const SpaceForm = ({ setIsOpen }) => {
           formData.append("image", file[0])
           const res = await axios.post(
             userServer +
-              `/space/addSpaceCategoryImage/${data?.addSpaceCategory?.spaceCategory?._id}`,
+              `/space/addSpaceCategoryImage/${data?.addSpaceCategory?.data?._id}`,
             formData,
             {
               headers: {
@@ -77,7 +78,7 @@ const SpaceForm = ({ setIsOpen }) => {
         })
         setIsOpen(false)
         setTimeout(() => {
-          history.push("/space/" + data?.addSpaceCategory?.spaceCategory?.name)
+          history.push("/space/" + data?.addSpaceCategory?.data?.name)
         })
       }
     },
@@ -268,3 +269,4 @@ const SpaceForm = ({ setIsOpen }) => {
 }
 
 export default SpaceForm
+
