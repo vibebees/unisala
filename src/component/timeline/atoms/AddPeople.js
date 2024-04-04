@@ -1,4 +1,6 @@
+import { useLazyQuery } from "@apollo/client"
 import DeleteIcon from "Icons/DeleteIcon"
+import ListSkeleton from "component/skeleton/ListSkeleton"
 import {
   Avatar,
   Button,
@@ -8,7 +10,10 @@ import {
   Row,
   Typography
 } from "component/ui"
+import { Search } from "graphql/user"
+import { useDebouncedEffect } from "hooks/useDebouncedEffect"
 import { useState } from "react"
+import { USER_SERVICE_GQL } from "servers/types"
 
 const people = [
   {
@@ -45,6 +50,14 @@ const people = [
 
 const AddPeople = () => {
   const [selectedPeople, setSelectedPeople] = useState([])
+  const [query, setQuery] = useState("")
+
+  const [SearchPeople, { data, loading }] = useLazyQuery(Search, {
+    context: {
+      server: USER_SERVICE_GQL
+    },
+    skip: true
+  })
 
   const handlePersonClick = (person) => {
     if (!selectedPeople.find((p) => p.id === person.id)) {
@@ -55,6 +68,18 @@ const AddPeople = () => {
   const handleDeleteClick = (person) => {
     setSelectedPeople(selectedPeople.filter((p) => p.id !== person.id))
   }
+
+  const handleSearch = async () => {
+    if (query.length > 0) {
+      await SearchPeople({
+        variables: {
+          q: query
+        }
+      })
+    }
+  }
+
+  useDebouncedEffect(handleSearch, [query, data], 500)
 
   return (
     <Row className="h-full flex-col w-full my-2 rounded-md">
@@ -80,20 +105,48 @@ const AddPeople = () => {
       )}
 
       <br />
-      <Input className="w-full rounded-md" placeholder="Search people..." />
-      <List>
-        {people.map((person) => (
-          <Item
-            button
-            key={person.id}
-            onClick={() => handlePersonClick(person)}
-          >
-            <Avatar src={person.profilePic} />{" "}
-            <Typography variant="h2" className="ml-4 text-sm">
-              {person.fullName}
-            </Typography>
-          </Item>
-        ))}
+      <Input
+        value={query}
+        onIonChange={(e) => setQuery(e.target.value)}
+        className="w-full rounded-md"
+        placeholder="Search people..."
+        type="search"
+      />
+
+      {loading && (
+        <>
+          <ListSkeleton />
+          <ListSkeleton />
+          <ListSkeleton />
+          <ListSkeleton />
+          <ListSkeleton />
+        </>
+      )}
+
+      <List className="ion-no-padding">
+        {data &&
+          !loading &&
+          data?.search &&
+          data?.search?.users.map((person) => (
+            <Item
+              button
+              key={person.id}
+              onClick={() => handlePersonClick(person)}
+            >
+              <Avatar src={person?.picture} />{" "}
+              <div>
+                <Typography variant="h2" className="ml-4 text-sm">
+                  {person.firstName} {person.lastName}
+                </Typography>
+                <Typography
+                  variant="p"
+                  className="ml-4 text-xs text-neutral-400"
+                >
+                  @{person.username}
+                </Typography>
+              </div>
+            </Item>
+          ))}
       </List>
     </Row>
   )

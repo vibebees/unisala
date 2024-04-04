@@ -48,6 +48,7 @@ const RichTextInput = ({ value, onChange, id = "rich-text-input" }) => {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@", "#"],
       linkTarget: "_blank",
+
       source: async function (searchTerm, renderList) {
         const data = await getUniversitites(searchTerm)
         renderList(data, searchTerm)
@@ -100,9 +101,6 @@ const RichTextInput = ({ value, onChange, id = "rich-text-input" }) => {
           ref={quillRef}
           theme="snow"
           id={id}
-          style={{
-            minHeight: "200px"
-          }}
           className=" text-black  w-full"
           value={value}
           modules={modules}
