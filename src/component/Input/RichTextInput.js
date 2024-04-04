@@ -100,10 +100,6 @@ const RichTextInput = ({ value, onChange, id = "rich-text-input" }) => {
           ref={quillRef}
           theme="snow"
           id={id}
-          style={{
-            minHeight: "200px"
-          }}
-          className=" text-black  w-full"
           value={value}
           modules={modules}
           onChange={(e) => {
