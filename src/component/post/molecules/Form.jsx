@@ -455,29 +455,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             id={item.id}
             onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
             value={postData?.postText}
-            showUniversityListOnAt={true}
-            searchText={postData?.postText?.split("@").pop().split("<")[0]}
-            handleUniversitySelect={(e) => {
-              console.log("postText", postData?.postText)
-              if (postData?.postText.endsWith("</p>")) {
-                const removeTextafter = postData.postText.split("@")[0]
-                console.log("removeTextafter", removeTextafter)
-                setPostData((prev) => ({
-                  ...prev,
-                  postText:
-                    removeTextafter +
-                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p></p>`
-                }))
-              } else {
-                const removeTextafter = postData.postText.split("@")[0]
-                setPostData((prev) => ({
-                  ...prev,
-                  postText:
-                    removeTextafter +
-                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
-                }))
-              }
-            }}
           />
         </div>
       </>
