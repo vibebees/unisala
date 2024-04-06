@@ -15,9 +15,7 @@ import { Typography } from "component/ui"
 import {
   AddPost,
   AddSpaceEvent,
-  GetAllPostBySpaceCategoryID,
-  GetSpaceEvents,
-  getNewsFeed
+  GetAllPostBySpaceCategoryID, getNewsFeed, GetSpaceEvents
 } from "graphql/user"
 import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
@@ -306,7 +304,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
-      console.log({ files, addOrgSpaceEvent })
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append("image", files[i])
@@ -321,7 +318,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }
           }
         )
-        console.log({ res })
       }
       present({
         duration: 3000,

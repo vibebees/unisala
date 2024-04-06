@@ -16,23 +16,39 @@ const CreateAPostCard = ({ allProps }) => {
   const pathname = usePathName(0) || "home"
 
   useEffect(() => {
-    const fn = async () => {
-      const createAPostMetaData = await axios.get(
-        userServer + "/getMetadataTags",
-        {
-          headers: {
-            authorization: localStorage.getItem("accessToken")
-          }
-        }
-      )
+    const cacheKey = `metadata-${pathname}`
+    const cachedMeta = localStorage.getItem(cacheKey)
 
-      const metaData = createAPostMetaData.data?.data || []
-      const getCurrentPageMetaData = metaData[pathname] || {}
-      const { addAPost } = getCurrentPageMetaData || {}
-      setMeta(addAPost)
+    const fn = async () => {
+      if (cachedMeta) {
+        const cachedData = JSON.parse(cachedMeta)
+        setMeta(cachedData)
+      } else {
+        try {
+          const createAPostMetaData = await axios.get(
+            userServer + "/getMetadataTags",
+            {
+              headers: {
+                authorization: localStorage.getItem("accessToken")
+              }
+            }
+          )
+
+          const metaData = createAPostMetaData.data?.data || []
+          const getCurrentPageMetaData = metaData[pathname] || {}
+          const { addAPost } = getCurrentPageMetaData || {}
+
+          setMeta(addAPost)
+          localStorage.setItem(cacheKey, JSON.stringify(addAPost))
+        } catch (error) {
+          console.error("Failed to fetch metadata", error)
+        }
+      }
     }
+
     fn()
-  }, [])
+  }, [pathname])
+
   return (
     <>
       <Card

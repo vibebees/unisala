@@ -1,34 +1,33 @@
-import { useEffect, useState } from "react"
+import { Query } from "@apollo/client/react/components"
 import {
   IonCard,
   IonInfiniteScroll,
   IonInfiniteScrollContent
 } from "@ionic/react"
-import { Link } from "react-router-dom"
-import StateMessage from "component/stateMessage"
 import emptyState from "assets/emptyState.png"
-import { useSelector } from "react-redux"
-import { Query } from "@apollo/client/react/components"
-import { USER_SERVICE_GQL } from "servers/types"
-import { GetUserPost } from "graphql/user/"
-import Thread from "component/thread"
 import CourseCard from "component/courseCard"
 import { ThreadSkeleton } from "component/skeleton/threadSkeleton"
+import StateMessage from "component/stateMessage"
+import Thread from "component/thread"
+import { GetMyNewsFeed } from "graphql/user/"
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { USER_SERVICE_GQL } from "servers/types"
 
 function index({ userId, firstName }) {
   return (
     <Query
-      query={GetUserPost}
+      query={GetMyNewsFeed}
       variables={{ userId, page: 0 }}
       context={{ server: USER_SERVICE_GQL }}
     >
       {({ data, loading, fetchMore, refetch }) => {
-        const { Posts } = data?.getDicussionUniWall || []
-        const { totalPosts } = data?.getDicussionUniWall || 0
+        const Posts = data?.fetchMyNewsFeed || []
         const { user } = useSelector((state) => state.userProfile)
         const [page, setPage] = useState(0)
 
-        if (!data?.getDicussionUniWall.length) {
+        if (!data?.fetchMyNewsFeed.length) {
           return (
             <IonCard className="max-md:mx-1">
               <StateMessage
@@ -73,34 +72,29 @@ function index({ userId, firstName }) {
                 return <ThreadSkeleton key={item} />
               })}
 
-            {totalPosts > Posts.length && (
-              <IonInfiniteScroll
-                onIonInfinite={(e) => {
-                  setPage(page + 1)
-                  fetchMore({
-                    variables: {
-                      userId,
-                      page: page + 1
-                    },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      if (!fetchMoreResult) return prev
-                      return Object.assign({}, prev, {
-                        getDicussionUniWall: {
-                          ...prev.getDicussionUniWall,
-                          Posts: [
-                            ...prev.getDicussionUniWall.Posts,
-                            ...fetchMoreResult.getDicussionUniWall.Posts
-                          ]
-                        }
-                      })
-                    }
-                  })
-                  setTimeout(() => e.target.complete(), 500)
-                }}
-              >
-                <IonInfiniteScrollContent loadingText="loading..."></IonInfiniteScrollContent>
-              </IonInfiniteScroll>
-            )}
+            <IonInfiniteScroll
+              onIonInfinite={(e) => {
+                setPage(page + 1)
+                fetchMore({
+                  variables: {
+                    userId,
+                    page: page + 1
+                  },
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return prev
+                    return Object.assign({}, prev, {
+                      fetchMyNewsFeed: [
+                        ...prev?.fetchMyNewsFeed,
+                        ...fetchMoreResult?.fetchMyNewsFeed
+                      ]
+                    })
+                  }
+                })
+                setTimeout(() => e.target.complete(), 500)
+              }}
+            >
+              <IonInfiniteScrollContent loadingText="loading..."></IonInfiniteScrollContent>
+            </IonInfiniteScroll>
           </div>
         )
       }}
