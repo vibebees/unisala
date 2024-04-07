@@ -15,7 +15,9 @@ import { Typography } from "component/ui"
 import {
   AddPost,
   AddSpaceEvent,
-  GetAllPostBySpaceCategoryID, getNewsFeed, GetSpaceEvents
+  GetAllPostBySpaceCategoryID,
+  GetSpaceEvents,
+  getNewsFeed
 } from "graphql/user"
 import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
@@ -162,7 +164,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }
           }
         })
-        console.log({ cachedData })
+
         cachedData &&
           cache.writeQuery({
             query: getNewsFeed,

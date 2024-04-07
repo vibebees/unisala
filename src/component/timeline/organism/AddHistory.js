@@ -1,8 +1,8 @@
-import { useMutation } from "@apollo/client"
+import { useApolloClient, useMutation } from "@apollo/client"
 import { IonInput, useIonToast } from "@ionic/react"
 import { Button, Col, Grid, Row } from "component/ui"
 import { OrgContext } from "features/org"
-import { AddNewHistory } from "graphql/user"
+import { AddNewHistory, GetAllHistory, GetAllHistoryYear } from "graphql/user"
 import moment from "moment"
 import { useContext, useState } from "react"
 import { USER_SERVICE_GQL } from "servers/types"
@@ -12,6 +12,7 @@ import AddPeople from "./AddPeople"
 const AddHistory = () => {
   const { orgData } = useContext(OrgContext)
   const [addPeople, setAddPeople] = useState(false)
+  const client = useApolloClient()
   const [present, dismiss] = useIonToast()
   const [data, setdata] = useState({
     date: Date.now(),
@@ -21,9 +22,36 @@ const AddHistory = () => {
 
   const [addHistoryMutation] = useMutation(AddNewHistory, {
     context: { server: USER_SERVICE_GQL },
+    update: (cache, { data }) => {
+      const getHistories = cache.readQuery({
+        query: GetAllHistory,
+        variables: { orgId: orgData._id, year: new Date().getFullYear() }
+      })
+
+      if (!getHistories) {
+        client.refetchQueries({
+          include: [GetAllHistoryYear, GetAllHistory]
+        })
+      }
+
+      getHistories &&
+        cache.writeQuery({
+          query: GetAllHistory,
+          variables: { orgId: orgData._id, year: new Date().getFullYear() },
+          data: {
+            getAllHistory: {
+              ...getHistories.getAllHistory,
+              data: [
+                ...getHistories.getAllHistory.data,
+                data.createHistory.data
+              ]
+            }
+          }
+        })
+    },
 
     onCompleted: () => {
-      setdata({ date: Date.now(), description: "" })
+      setdata({ date: Date.now(), description: "", events: [] })
       present({
         duration: 3000,
         message: "History added successfully",
@@ -35,6 +63,7 @@ const AddHistory = () => {
   })
 
   const handleSaveHistory = () => {
+    let formatevents = []
     if (data.description === "") {
       return present({
         duration: 3000,
@@ -45,7 +74,7 @@ const AddHistory = () => {
       })
     }
 
-    if (data.events.length > 0) {
+    if (data.events && data.events.length > 0) {
       const isEventsValid = data.events.every((event) => event.title !== "")
       if (!isEventsValid) {
         return present({
@@ -56,15 +85,15 @@ const AddHistory = () => {
           mode: "ios"
         })
       }
+      formatevents = data.events.map((event) => {
+        return {
+          userId: "6561b47fe92160691070dc06",
+          title: event.title,
+          date: data.date
+        }
+      })
     }
 
-    const formatevents = data.events.map((event) => {
-      return {
-        userId: "6561b47fe92160691070dc06",
-        title: event.title,
-        date: data.date
-      }
-    })
     addHistoryMutation({
       variables: {
         orgId: orgData._id,

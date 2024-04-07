@@ -1,10 +1,9 @@
 /* eslint-disable no-unreachable */
-import { IonIcon } from "@ionic/react"
 import clsx from "clsx"
 import { Avatar, Button, Col, Row, Typography } from "component/ui"
 import Modal from "component/ui/Modal"
-import { closeCircle, create } from "ionicons/icons"
 import { useState } from "react"
+import EditIcon from "../../../Icons/EditIcon"
 import ContributionsList from "../organism/ContributionsList"
 import EditHistory from "./EditHistory"
 
@@ -19,52 +18,52 @@ const DateList = ({ date = "", content = "", _id }) => {
       </Col>
       <Col className="ion-no-padding ion-no-margin  w-full">
         {edit ? (
-          <EditHistory text={"Sonja joinedthe team"} />
+          <EditHistory
+            text={content}
+            edit={edit}
+            setedit={setedit}
+            orgHistoryId={_id}
+            date={date}
+          />
         ) : (
           <Typography variant="h3" className="text-sm opacity-70">
             {content}
           </Typography>
         )}
       </Col>
-      <Col>
-        <Modal
-          ModalButton={
-            <Row className="ion-no-padding ion-no-margin  w-full">
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-              <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
-            </Row>
-          }
-          ModalData={<ContributionsList _id={_id} />}
-        />
-      </Col>
-
-      <Col
-        size="auto"
-        className={clsx(
-          "ion-no-padding opacity-0 group-hover:opacity-100  ion-no-margin ",
-          edit && "opacity-100"
-        )}
-      >
-        <Button
-          fill="clear"
-          color="primary"
-          className="text-sm opacity-70 ion-no-margin  "
-          size="small"
-          onClick={() => setedit(!edit)}
-        >
-          <IonIcon
-            className={clsx("", edit && "text-red-500")}
-            icon={edit ? closeCircle : create}
+      {!edit && (
+        <Col>
+          <Modal
+            ModalButton={
+              <Row className="ion-no-padding ion-no-margin  w-full">
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+                <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
+              </Row>
+            }
+            ModalData={<ContributionsList _id={_id} />}
           />
-        </Button>
-      </Col>
+        </Col>
+      )}
+
+      {!edit && (
+        <Col
+          size="auto"
+          className={clsx(
+            "ion-no-padding opacity-0 group-hover:opacity-100  ion-no-margin "
+          )}
+        >
+          <Button fill="clear" onClick={() => setedit(!edit)} className="">
+            <EditIcon width={20} height={20} />
+          </Button>
+        </Col>
+      )}
     </Row>
   )
 }

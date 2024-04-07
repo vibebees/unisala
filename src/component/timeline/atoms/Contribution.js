@@ -2,7 +2,7 @@ import CloseIcon from "Icons/CloseIcon"
 import Tick from "Icons/Tick"
 import { Avatar, Button, Input, Item, Typography } from "component/ui"
 import { useState } from "react"
-import EditIcon from "./EditIcon"
+import EditIcon from "../../../Icons/EditIcon"
 
 const Contribution = ({ title, _id, user }) => {
   const [isEdit, setIsEdit] = useState(false)

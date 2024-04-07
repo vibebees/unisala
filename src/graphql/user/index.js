@@ -1815,6 +1815,34 @@ export const AddComment = gql`
       }
     }
   `,
+  EditHistory = gql`
+    mutation editHistory(
+      $orgHistoryId: ID!
+      $title: String
+      $description: String
+      $date: String
+    ) {
+      editHistory(
+        orgHistoryId: $orgHistoryId
+        title: $title
+        description: $description
+        date: $date
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          userId
+          orgId
+          title
+          description
+          date
+        }
+      }
+    }
+  `,
   GetAllHistoryEvents = gql`
     query getAllHistoryActivity(
       $orgHistoryId: ID!

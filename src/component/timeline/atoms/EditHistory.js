@@ -1,9 +1,74 @@
-import React, { useState } from "react"
-import { IonRow, IonCol, IonButton, IonIcon, IonInput } from "@ionic/react"
-import { checkmarkCircle } from "ionicons/icons"
+import { useMutation } from "@apollo/client"
+import { IonCol, IonInput, IonRow, useIonToast } from "@ionic/react"
+import Button from "component/ui/Button"
+import { OrgContext } from "features/org"
+import { EditHistory, GetAllHistory } from "graphql/user"
+import { useContext, useState } from "react"
+import { USER_SERVICE_GQL } from "servers/types"
+import CloseIcon from "../../../../src/Icons/CloseIcon"
+import EditIcon from "../../../../src/Icons/EditIcon"
+import Tick from "../../../../src/Icons/Tick"
 
-const EditHistory = ({ text }) => {
+const EditHistoryForm = ({ text, edit, setedit, orgHistoryId, date }) => {
+  const { orgData } = useContext(OrgContext)
   const [value, setvalue] = useState(text)
+  const [present, dismiss] = useIonToast()
+
+  const [updateHistory] = useMutation(EditHistory, {
+    context: { server: USER_SERVICE_GQL },
+
+    update: (cache, { data }) => {
+      const getAllHistories = cache.readQuery({
+        query: GetAllHistory,
+        variables: {
+          orgId: orgData._id,
+          year: new Date(date).getFullYear()
+        }
+      })
+
+      console.log("getAllHistories", getAllHistories)
+    },
+
+    onCompleted: () => {
+      present({
+        duration: 300,
+        message: "Edited successfully",
+        buttons: [
+          {
+            text: "X",
+            handler: () => dismiss()
+          }
+        ],
+        color: "primary",
+        mode: "ios"
+      })
+      setedit(false)
+    }
+  })
+
+  const handleUpdate = () => {
+    if (value.trim() === "") {
+      return present({
+        duration: 300,
+        message: "Please fill all the fields",
+        buttons: [
+          {
+            text: "X",
+            handler: () => dismiss()
+          }
+        ],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+    updateHistory({
+      variables: {
+        orgHistoryId: orgHistoryId,
+        title: value,
+        description: value
+      }
+    })
+  }
 
   return (
     <IonRow className="ion-no-padding ion-no-margin w-full">
@@ -16,16 +81,21 @@ const EditHistory = ({ text }) => {
         ></IonInput>
       </IonCol>
       <IonCol size="auto" className="h-full">
-        <IonButton
-          fill="clear"
-          color="primary"
-          className="text-sm border ion-no-margin "
-        >
-          <IonIcon className="text-3xl" icon={checkmarkCircle} />
-        </IonButton>
+        <Button fill="clear" onClick={() => setedit(!edit)} className="">
+          {edit ? (
+            <CloseIcon width={20} height={20} />
+          ) : (
+            <EditIcon width={20} height={20} />
+          )}
+        </Button>
+        {edit && (
+          <Button fill="clear" className="" onClick={handleUpdate}>
+            <Tick width={20} height={20} />
+          </Button>
+        )}
       </IonCol>
     </IonRow>
   )
 }
 
-export default EditHistory
+export default EditHistoryForm
