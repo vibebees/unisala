@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonRow, IonText } from "@ionic/react"
 import clsx from "clsx"
-import AddHistory from "component/timeline/atoms/AddHistory"
+import AddHistory from "component/timeline/organism/AddHistory"
 import React from "react"
 const HistoryHeader = ({ setData }) => {
   const [showAddHistory, setshowAddHistory] = React.useState(false)

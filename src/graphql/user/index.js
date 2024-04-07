@@ -1778,8 +1778,9 @@ export const AddComment = gql`
         data {
           _id
           title
-          description
           date
+          description
+          userId
         }
       }
     }
@@ -1790,12 +1791,14 @@ export const AddComment = gql`
       $title: String!
       $description: String!
       $date: String!
+      $events: [Event]
     ) {
       createHistory(
         orgId: $orgId
         title: $title
         description: $description
         date: $date
+        events: $events
       ) {
         status {
           success
@@ -1804,9 +1807,39 @@ export const AddComment = gql`
         data {
           _id
           userId
+          orgId
           title
           description
           date
+        }
+      }
+    }
+  `,
+  GetAllHistoryEvents = gql`
+    query getAllHistoryActivity(
+      $orgHistoryId: ID!
+      $startYear: Int
+      $endYear: Int
+    ) {
+      getAllHistoryActivity(
+        orgHistoryId: $orgHistoryId
+        startYear: $startYear
+        endYear: $endYear
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          title
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
         }
       }
     }
@@ -1845,4 +1878,3 @@ export const AddComment = gql`
       }
     }
   `
-

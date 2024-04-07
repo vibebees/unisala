@@ -1,4 +1,8 @@
-import { List } from "component/ui"
+import { useQuery } from "@apollo/client"
+import ListSkeleton from "component/skeleton/ListSkeleton"
+import { List, Typography } from "component/ui"
+import { GetAllHistoryEvents } from "graphql/user"
+import { USER_SERVICE_GQL } from "servers/types"
 import Contribution from "../atoms/Contribution"
 
 const ContributionArray = [
@@ -39,12 +43,46 @@ const ContributionArray = [
   }
 ]
 
-const ContributionsList = () => {
+const ContributionsList = ({ _id }) => {
+  const { data, loading } = useQuery(GetAllHistoryEvents, {
+    context: {
+      server: USER_SERVICE_GQL
+    },
+    variables: {
+      orgHistoryId: _id
+    }
+  })
+
+  if (loading) {
+    return (
+      <>
+        <ListSkeleton />
+        <ListSkeleton />
+        <ListSkeleton />
+        <ListSkeleton />
+      </>
+    )
+  }
+
+  console.log("contribution data", data?.getAllHistoryActivity?.data)
+
   return (
     <List>
-      {ContributionArray.map((item) => (
-        <Contribution key={item.id} {...item} />
-      ))}
+      {data?.getAllHistoryActivity?.data &&
+        data?.getAllHistoryActivity?.data.length > 0 &&
+        data?.getAllHistoryActivity?.data.map((item) => (
+          <Contribution key={item.id} {...item} />
+        ))}
+
+      {data?.getAllHistoryActivity?.data &&
+        data?.getAllHistoryActivity?.data.length === 0 && (
+          <Typography
+            variant="h3"
+            className="text-sm opacity-70 text-center mt-14"
+          >
+            No contributions yet
+          </Typography>
+        )}
     </List>
   )
 }

@@ -11,7 +11,8 @@ const SingleTimeline = ({ data }) => {
             <DateList
               key={index}
               date={new Date(item.date).toISOString().slice(0, 10)}
-              content={item?.description}
+              content={item?.description || item?.title}
+              _id={item._id}
             />
           ))}
       </IonCol>

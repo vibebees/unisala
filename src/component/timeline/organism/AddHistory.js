@@ -6,26 +6,21 @@ import { AddNewHistory } from "graphql/user"
 import moment from "moment"
 import { useContext, useState } from "react"
 import { USER_SERVICE_GQL } from "servers/types"
+import HistoryButton from "../atoms/SaveButton"
 import AddPeople from "./AddPeople"
-import HistoryButton from "./SaveButton"
 
-const AddHistory = ({ setData }) => {
+const AddHistory = () => {
   const { orgData } = useContext(OrgContext)
   const [addPeople, setAddPeople] = useState(false)
   const [present, dismiss] = useIonToast()
   const [data, setdata] = useState({
     date: Date.now(),
-    description: ""
+    description: "",
+    events: []
   })
 
   const [addHistoryMutation] = useMutation(AddNewHistory, {
     context: { server: USER_SERVICE_GQL },
-    variables: {
-      orgId: orgData._id,
-      title: data.description,
-      description: data.description,
-      date: moment(data.date).format("YYYY-MM-DD")
-    },
 
     onCompleted: () => {
       setdata({ date: Date.now(), description: "" })
@@ -38,6 +33,49 @@ const AddHistory = ({ setData }) => {
       })
     }
   })
+
+  const handleSaveHistory = () => {
+    if (data.description === "") {
+      return present({
+        duration: 3000,
+        message: "Please fill all the fields",
+        buttons: [{ text: "X", handler: () => dismiss() }],
+        color: "danger",
+        mode: "ios"
+      })
+    }
+
+    if (data.events.length > 0) {
+      const isEventsValid = data.events.every((event) => event.title !== "")
+      if (!isEventsValid) {
+        return present({
+          duration: 3000,
+          message: "Please fill all the fields",
+          buttons: [{ text: "X", handler: () => dismiss() }],
+          color: "danger",
+          mode: "ios"
+        })
+      }
+    }
+
+    const formatevents = data.events.map((event) => {
+      return {
+        userId: "6561b47fe92160691070dc06",
+        title: event.title,
+        date: data.date
+      }
+    })
+    addHistoryMutation({
+      variables: {
+        orgId: orgData._id,
+        title: data.description,
+        description: data.description,
+        date: moment(data.date).format("YYYY-MM-DD"),
+        events: formatevents
+      }
+    })
+  }
+
   return (
     <Grid className="ion-no-padding   w-full h-full ion-no-margin  mb-8 mt-4  justify-between rounded-md ">
       <Row className="w-full border justify-between h-full border-neutral-400 rounded-md ">
@@ -79,12 +117,12 @@ const AddHistory = ({ setData }) => {
           </Button>
         </Col>
       </Row>
-      {addPeople && <AddPeople />}
+      {addPeople && <AddPeople data={data} setdata={setdata} />}
       <Col className="w-full my-3 ">
         <HistoryButton
           label="Save History"
           loading={false}
-          onClick={addHistoryMutation}
+          onClick={handleSaveHistory}
           className={"w-full my-5"}
         />
       </Col>

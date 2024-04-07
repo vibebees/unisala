@@ -8,7 +8,7 @@ import { useState } from "react"
 import ContributionsList from "../organism/ContributionsList"
 import EditHistory from "./EditHistory"
 
-const DateList = ({ date = "", content = "" }) => {
+const DateList = ({ date = "", content = "", _id }) => {
   const [edit, setedit] = useState(false)
   return (
     <Row className="border-t h-full py-2 px-4 group ion-no-margin ion-no-padding  border-neutral-400 border-opacity-25 items-center  justify-start flex">
@@ -41,7 +41,7 @@ const DateList = ({ date = "", content = "" }) => {
               <Avatar className="w-7 h-7 -ml-2 border border-transparent hover:border-blue-700 hover:z-10" />
             </Row>
           }
-          ModalData={<ContributionsList />}
+          ModalData={<ContributionsList _id={_id} />}
         />
       </Col>
 

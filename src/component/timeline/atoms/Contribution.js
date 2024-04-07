@@ -4,15 +4,15 @@ import { Avatar, Button, Input, Item, Typography } from "component/ui"
 import { useState } from "react"
 import EditIcon from "./EditIcon"
 
-const Contribution = ({ profilePic, description }) => {
+const Contribution = ({ title, _id, user }) => {
   const [isEdit, setIsEdit] = useState(false)
-  const [descriptiona, setDescription] = useState(description)
+  const [description, setDescription] = useState(title)
   return (
     <Item className=" ion-no-padding">
-      <Avatar src={profilePic} />{" "}
+      <Avatar src={user?.profilePic} />{" "}
       {isEdit ? (
         <Input
-          value={descriptiona}
+          value={description}
           onChange={(e) => setDescription(e.target.value)}
           onBlur={() => setIsEdit(false)}
           autoFocus
