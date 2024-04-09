@@ -9,7 +9,7 @@ import { setContext } from "@apollo/client/link/context"
 import { onError } from "@apollo/client/link/error"
 import { getNewToken } from "api/authentication"
 import { io } from "socket.io-client"
-import { allowedRoutes } from "utils/lib/protectedRoute"
+import { CheckLoginRedirect } from "utils/lib/LoginChecker"
 import urls from "."
 import {
   MESSAGE_SERVICE_GQL,
@@ -31,18 +31,7 @@ const config = require("./config"),
         if (message === "You are not logged in. Please login") {
           localStorage.removeItem("accessToken")
           localStorage.removeItem("refreshToken")
-          const currentLocation = window.location.pathname
-          if (
-            allowedRoutes.some((route) =>
-              currentLocation.split("/").includes(route)
-            ) === false
-          ) {
-            // window.location.assign("/login")
-            if (currentLocation === "/") {
-              return
-            }
-            console.log("window is rediredcted you check faield")
-          }
+          CheckLoginRedirect()
         }
       })
     }

@@ -2,13 +2,13 @@ import axios from "axios"
 import jwtDecode from "jwt-decode"
 import { userServer } from "servers/endpoints"
 import { getUserProfile } from "store/action/userProfile"
+import { CheckLoginRedirect } from "utils/lib/LoginChecker"
 
 export const getNewToken = async (dispatch = () => {}) => {
   let prevRefreshToken = localStorage.getItem("refreshToken")
   if (!prevRefreshToken) {
-    // window.location.assign("/login")
-    console.log("window redirected")
-    console.log("current location", window.location.pathname)
+    CheckLoginRedirect()
+    return
   }
   try {
     const { data = {} } = await axios.post(
@@ -27,9 +27,7 @@ export const getNewToken = async (dispatch = () => {}) => {
       if (error?.name === "TokenExpiredError") {
         localStorage.removeItem("refreshToken")
         localStorage.removeItem("accessToken")
-        console.log("window redirected")
-        console.log("current location", window.location.pathname)
-        // window.location.assign("/login")
+        CheckLoginRedirect()
       }
 
       dispatch(getUserProfile({ user: {}, loggedIn: false }))
