@@ -1,34 +1,43 @@
 import axios from "axios"
 import jwtDecode from "jwt-decode"
-import {userServer} from "servers/endpoints"
-import {getUserProfile} from "store/action/userProfile"
+import { userServer } from "servers/endpoints"
+import { getUserProfile } from "store/action/userProfile"
 
 export const getNewToken = async (dispatch = () => {}) => {
   let prevRefreshToken = localStorage.getItem("refreshToken")
   if (!prevRefreshToken) {
-    window.location.assign("/login")
+    // window.location.assign("/login")
+    console.log("window redirected")
+    console.log("current location", window.location.pathname)
   }
   try {
-    const {data = {}} = await axios.post(userServer + "/refreshToken", {}, {
-      headers: {
-        "Authorization": `Bearer ${prevRefreshToken}`
+    const { data = {} } = await axios.post(
+      userServer + "/refreshToken",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${prevRefreshToken}`
+        }
       }
-    })
-    const {accessToken, refreshToken} = data.data
+    )
+    const { accessToken, refreshToken } = data.data
     if (!data.success) {
       const { error } = data || {}
+
       if (error?.name === "TokenExpiredError") {
         localStorage.removeItem("refreshToken")
         localStorage.removeItem("accessToken")
-        window.location.assign("/login")
+        console.log("window redirected")
+        console.log("current location", window.location.pathname)
+        // window.location.assign("/login")
       }
+
       dispatch(getUserProfile({ user: {}, loggedIn: false }))
     }
 
     data?.refreshToken &&
       localStorage.setItem("refreshToken", refreshToken || "")
-    data?.accessToken &&
-      localStorage.setItem("accessToken", accessToken || "")
+    data?.accessToken && localStorage.setItem("accessToken", accessToken || "")
     const decode = jwtDecode(accessToken)
 
     dispatch(getUserProfile({ user: { ...decode }, loggedIn: Boolean(decode) }))

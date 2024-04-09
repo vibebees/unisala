@@ -5,10 +5,11 @@ import {
   fromPromise,
   split
 } from "@apollo/client"
-import {setContext} from "@apollo/client/link/context"
-import {onError} from "@apollo/client/link/error"
-import {getNewToken} from "api/authentication"
-import {io} from "socket.io-client"
+import { setContext } from "@apollo/client/link/context"
+import { onError } from "@apollo/client/link/error"
+import { getNewToken } from "api/authentication"
+import { io } from "socket.io-client"
+import { allowedRoutes } from "utils/lib/protectedRoute"
 import urls from "."
 import {
   MESSAGE_SERVICE_GQL,
@@ -24,46 +25,53 @@ const config = require("./config"),
     userServiceAddress,
     callSocketAddress
   } = urls,
-
-
-  errorLink = onError(({graphQLErrors, networkError, operation, forward}) => {
+  errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({message, locations, path}) => {
+      graphQLErrors.forEach(({ message, locations, path }) => {
         if (message === "You are not logged in. Please login") {
           localStorage.removeItem("accessToken")
           localStorage.removeItem("refreshToken")
-          window.location.href = "/login"
+          const currentLocation = window.location.pathname
+          if (
+            allowedRoutes.some((route) =>
+              currentLocation.split("/").includes(route)
+            ) === false
+          ) {
+            // window.location.assign("/login")
+            if (currentLocation === "/") {
+              return
+            }
+            console.log("window is rediredcted you check faield")
+          }
         }
-      }
-      )
+      })
     }
     try {
       if (graphQLErrors) {
         for (let err of graphQLErrors) {
-          const {message, path} = err || {}
-          const {statusCode} = JSON.parse(message) || {}
+          const { message, path } = err || {}
+          const { statusCode } = JSON.parse(message) || {}
           switch (statusCode) {
             // case 400:
             case 401:
               return fromPromise(
-                getNewToken()
-                  .catch((error) => {
-                    return error // Consider whether you should be returning 'error' here
-                  })
-              )
-              .filter((value) => {
-                return Boolean(value)
-              })
-              .flatMap((accessToken) => {
-                const oldHeaders = operation.getContext().headers
-                operation.setContext({
-                  headers: {
-                    ...oldHeaders,
-                    authorization: `Bearer ${accessToken}`
-                  }
+                getNewToken().catch((error) => {
+                  return error // Consider whether you should be returning 'error' here
                 })
-                return forward(operation)
-              })
+              )
+                .filter((value) => {
+                  return Boolean(value)
+                })
+                .flatMap((accessToken) => {
+                  const oldHeaders = operation.getContext().headers
+                  operation.setContext({
+                    headers: {
+                      ...oldHeaders,
+                      authorization: `Bearer ${accessToken}`
+                    }
+                  })
+                  return forward(operation)
+                })
 
             default:
           }
