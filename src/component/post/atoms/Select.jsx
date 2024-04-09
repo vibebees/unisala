@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import { IonInput, IonLabel } from "@ionic/react"
+import { useState } from "react"
 import ReactSelect from "react-select"
 import { htmlForEditor } from "../utils/htmlForEditor"
-import { IonInput, IonLabel } from "@ionic/react"
 
 const SelectAtom = ({ options, item, setPostData, postData }) => {
   const [scoreType, setScoreType] = useState(null)
@@ -26,23 +26,21 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
 
   const handleChange = (e) => {
     setPostData((prev) => {
-      const postText = htmlForEditor(
-        postData?.postText,
-        item.name,
-        e.value
-      )
+      const postText = htmlForEditor(postData?.postText, item.name, e.value)
       let obj = {
         ...prev
       }
-      obj[item.id] = e.value.toLowerCase()
+      obj[item.id] = e.value
       obj.postText = postText
       return obj
     })
+    localStorage.setItem("postData", JSON.stringify(postData))
 
     if (item.id === "testScores") {
-      setScoreType(e.value.toLowerCase())
+      setScoreType(e.value)
     }
   }
+
   return (
     <>
       <ReactSelect
@@ -51,7 +49,10 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
         menuPlacement="bottom"
         placeholder={item.placeholder || ""}
         defaultValue={
-          postData && postData.levelOfStudy ? postData.levelOfStudy : null
+          postData[item?.id] && {
+            value: postData[item?.id],
+            label: postData[item?.id]
+          }
         }
         onChange={handleChange}
       />
@@ -70,8 +71,6 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
                 e.target.value
               )
 
-              console.log("he", e.target.value)
-
               setPostData((prev) => ({
                 ...prev,
                 postText,
@@ -79,6 +78,7 @@ const SelectAtom = ({ options, item, setPostData, postData }) => {
                   [`${scoreType}Score`]: parseFloat(e?.target?.value)
                 }
               }))
+              localStorage.setItem("postData", JSON.stringify(postData))
             }}
           />
         </div>

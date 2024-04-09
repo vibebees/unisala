@@ -9,7 +9,7 @@ import {
 import { useState } from "react"
 import Button from "./Button"
 
-const Modal = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
+const Modal = ({ ModalButton, ModalData = "No Data", header = "" }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -27,7 +27,7 @@ const Modal = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
         >
           <IonHeader>
             <IonToolbar>
-              <IonTitle>{header}</IonTitle>
+              <IonTitle id="modal-header">{header}</IonTitle>
               <IonButtons slot="end">
                 <Button
                   className="modal-close-btn"
@@ -36,6 +36,7 @@ const Modal = ({ ModalButton, ModalData = "No Data", header = "Modal" }) => {
                   close
                 </Button>
               </IonButtons>
+              <IonButtons slot="start" id="modal-start"></IonButtons>
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">{ModalData}</IonContent>

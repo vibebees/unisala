@@ -102,6 +102,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       }
     }, 1000)
   }
+
   return (
     <AsyncSelect
       cacheOptions
@@ -110,7 +111,10 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
       menuPlacement="bottom"
       placeholder={item.placeholder || ""}
       ref={ref}
-      defaultInputValue={item.id !== "major" ? universityName || "" : ""}
+      defaultValue={{
+        value: postData[item.id] || "",
+        label: postData[item.id] || item.placeholder || ""
+      }}
       onChange={(e) => {
         setPostData((prev) => {
           let obj = {
@@ -126,6 +130,7 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
           obj.postText = postText
           return obj
         })
+        localStorage.setItem("postData", JSON.stringify(postData))
       }}
       className="mt-2"
     />
@@ -133,4 +138,3 @@ const AsyncSelectAtom = ({ item, setPostData, postData }) => {
 }
 
 export default AsyncSelectAtom
-

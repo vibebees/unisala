@@ -1,10 +1,12 @@
+import LeftArrow from "Icons/LeftArrow"
+import { Button } from "component/ui"
 import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import "react-quill/dist/quill.snow.css"
 import { useLocation } from "react-router-dom"
 import "../index.css"
 import Form from "../molecules/Form"
 import FormAvatar from "../molecules/FormAvatar"
-import FormTab from "./FormTab"
 import NotLogggedModal from "./NotLogggedModal"
 import SelectionTab from "./SelectionTab"
 
@@ -12,20 +14,20 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const location = useLocation()
   const params = new URLSearchParams(location.search)
   const { tags } = allProps
-  const [selectedTab, setSelectedTab] = useState(null)
+  const [selectedTab, setSelectedTab] = useState(
+    localStorage.getItem("st") || null
+  )
   const [allowPost, setAllowPost] = useState(true)
-  const [postData, setPostData] = useState({
-    id: selectedTab
-  })
-
-  // useLayoutEffect(() => {
-  //   if (params.get("create")) {
-  //     setCreateAPostPopUp(true)
-  //     setSelectedTab(params.get("type"))
-  //   }
-  // }, [params, createAPostPopUp])
+  const [domloaded, setDomLoaded] = useState(false)
+  const [postData, setPostData] = useState(
+    JSON.parse(localStorage.getItem("postData")) || {}
+  )
 
   useEffect(() => {
+    setDomLoaded(true)
+  }, [])
+
+  /* useEffect(() => {
     setPostData((prevPostData) => {
       return {
         ...prevPostData,
@@ -34,14 +36,19 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
         tags: allProps.tags && tags
       }
     })
-  }, [selectedTab])
+  }, [selectedTab])*/
 
   const handleTabSelection = (item) => {
     setSelectedTab(item)
-    setPostData({ id: item })
-    // params.append("type", item)
-    // history.push({ search: params.toString() })
-    // ButtonTrack(`${item} button clicked while creating a post`)
+    setPostData((prevPostData) => {
+      return {
+        ...prevPostData,
+        id: item,
+        unitId: parseFloat(params.get("unitId")) || null,
+        tags: allProps.tags && tags
+      }
+    })
+    localStorage.setItem("st", item)
   }
 
   return (
@@ -55,11 +62,6 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
             />
           ) : (
             <>
-              <FormTab
-                metaData={metaData}
-                selectedTab={selectedTab}
-                setSelectedTab={setSelectedTab}
-              />
               <br />
               <FormAvatar />
 
@@ -75,6 +77,25 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
           )}
         </div>
       )}
+      {domloaded &&
+        selectedTab &&
+        createPortal(
+          <Button
+            className="modal-close-btn  "
+            onClick={() => {
+              setSelectedTab(null)
+            }}
+          >
+            <LeftArrow /> <span className="text-neutral-600">Back</span>
+          </Button>,
+          document.getElementById("modal-start")
+        )}
+      {domloaded &&
+        selectedTab &&
+        createPortal(
+          <p>{metaData[selectedTab]?.name}</p>,
+          document.getElementById("modal-header")
+        )}
 
       {!allowPost && <NotLogggedModal setAllowPost={setAllowPost} />}
     </>

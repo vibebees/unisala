@@ -16,7 +16,8 @@ module.exports = (() => {
       universityServiceAddress: "http://test.unisala.com/uni",
       // messageSocketAddress: "ws://test.unisala.com/msg/socket.io",
       messageSocketAddress: "ws://localhost:2224",
-      userServiceAddress: "http://test.unisala.com/user",
+      // userServiceAddress: "http://test.unisala.com/user",
+      userServiceAddress: "http://localhost:4444",
       callSocketAddress: "ws://localhost:4445"
     }
   }

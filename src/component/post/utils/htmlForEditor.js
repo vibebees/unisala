@@ -7,7 +7,7 @@ export const htmlForEditor = (postText, type, value) => {
     value = value.toUpperCase()
     universityLink = `<a> ${type} : <a href="/university/${value}"> ${value} </a></a>`
   }
-  if (value.trim() === "") {
+  if (value && value.trim() === "") {
     return postText.replace(typeRegex, "")
   }
 

@@ -70,24 +70,33 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       Emojis: "😍"
     }
   ]
-  const [ratings, setRatings] = useState({})
+  const [ratings, setRatings] = useState(
+    JSON.parse(localStorage.getItem("ratings")) || {}
+  )
 
   const handleRatingChange = (itemId, value, name) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
       [itemId]: value
     }))
+    const cachedRatings = JSON.parse(localStorage.getItem("ratings")) || {}
+    localStorage.setItem(
+      "ratings",
+      JSON.stringify({ ...cachedRatings, [itemId]: value })
+    )
+    setPostData((prev) => ({
+      ...prev,
+      // postText,
+      [itemId]: value
+    }))
+    localStorage.setItem("postData", JSON.stringify(postData))
+
     // Update the postData with the new rating
     // const postText = htmlForEditor(
     //   postData?.postText,
     //   name,
     //   RatingData.find((val) => val.value === value)?.Emojis
     // )
-    setPostData((prev) => ({
-      ...prev,
-      // postText,
-      [itemId]: value
-    }))
   }
 
   const generateDateComponent = (item) => (
@@ -95,10 +104,12 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       <Typography variant="p">{item.name}</Typography>
       <IonItem />
       <IonDatetime
+        value={postData?.[item.id] || ""}
         displayFormat="MMM DD, YYYY" // You can customize this format
-        onIonChange={(e) =>
+        onIonChange={(e) => {
           setPostData((prev) => ({ ...prev, [item?.id]: e.detail.value }))
-        }
+          localStorage.setItem("postData", JSON.stringify(postData))
+        }}
       />
     </>
   )
@@ -378,18 +389,9 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
     const btn = document.querySelector(".modal-close-btn")
     btn.click()
-    // setCreateAPostPopUp(false)
-    // params.delete("create")
-    // params.delete("type")
-
-    // histroy.push({
-    //   search: params.toString()
-    // })
   }
 
   const generateInputTag = (item) => {
-    console.log({ item })
-
     return (
       <>
         <Typography className="text-sm">{item.name}</Typography>
@@ -399,6 +401,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
           type={item.type}
           placeholder={item.placeholder || ""}
           className="border border-[#bdbdbd]  !px-2 text-sm rounded-sm "
+          value={postData?.[item.id] || ""}
           onIonChange={(e) => {
             const postText = htmlForEditor(
               postData?.postText,
@@ -412,6 +415,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
                 ? e.target.value
                 : parseFloat(e.target.value)
             }))
+            localStorage.setItem("postData", JSON.stringify(postData))
           }}
         />
       </>
@@ -451,7 +455,10 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         <div>
           <RichTextInput
             id={item.id}
-            onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
+            onChange={(e) => {
+              setPostData((prev) => ({ ...prev, postText: e }))
+              localStorage.setItem("postData", JSON.stringify(postData))
+            }}
             value={postData?.postText}
           />
         </div>
@@ -500,10 +507,12 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
-        {metaData?.edges?.map((item) => {
+        {metaData?.edges?.map((item, index) => {
           return (
             <>
-              <div className="mt-4">{item && generateHTML(item)}</div>
+              <div className="mt-4" key={index}>
+                {item && generateHTML(item)}
+              </div>
             </>
           )
         })}
