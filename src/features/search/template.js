@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client"
-import { IonCardTitle, IonCol, IonContent, IonIcon, IonRow } from "@ionic/react"
+import { IonCol, IonContent, IonIcon, IonRow } from "@ionic/react"
 import { SearchBar } from "component/searchBox"
 import { UniSearchDataList } from "graphql/uni"
-import { Search, userSearch } from "graphql/user"
+import { Search } from "graphql/user"
 import useDocTitle from "hooks/useDocTitile"
 import { school } from "ionicons/icons"
 import { useContext, useEffect, useState } from "react"
-import { Link, useHistory, useLocation } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import { UNIVERSITY_SERVICE_GQL, USER_SERVICE_GQL } from "servers/types"
 import { URLgetter } from "utils/lib/URLupdate"
 import SearchTab from "./atoms/SearchTab"
@@ -36,7 +36,11 @@ export const SearchTemplate = () => {
 
   const { data } = useQuery(Search, {
     variables: {
-      q: query
+      q: query,
+      user: true,
+      school: true,
+      space: true,
+      org: true
     },
     context: {
       server: USER_SERVICE_GQL
@@ -229,4 +233,3 @@ return (
   )
 */
 }
-

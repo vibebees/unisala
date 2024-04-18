@@ -1301,7 +1301,6 @@ export const AddComment = gql`
         data {
           name
           _id
-          name
           description
           profileImage
           coverImage
@@ -1873,8 +1872,24 @@ export const AddComment = gql`
     }
   `,
   Search = gql`
-    query Search($q: String!) {
-      search(q: $q) {
+    query Search(
+      $q: String!
+      $user: Boolean
+      $school: Boolean
+      $space: Boolean
+      $org: Boolean
+      $orgId: ID
+      $limit: Int
+    ) {
+      search(
+        q: $q
+        user: $user
+        school: $school
+        space: $space
+        org: $org
+        orgId: $orgId
+        limit: $limit
+      ) {
         totalItems
         items {
           name

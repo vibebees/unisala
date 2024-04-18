@@ -1,16 +1,16 @@
-import React, { useState, useRef } from "react"
-import { Link, useHistory } from "react-router-dom"
-import { IonInput, IonSkeletonText } from "@ionic/react"
 import { useLazyQuery } from "@apollo/client"
+import { IonInput, IonSkeletonText } from "@ionic/react"
+import { useRef, useState } from "react"
+import { Link } from "react-router-dom"
 
-import { SearchBarResultList } from "./searchResultList"
-import "./index.css"
-import { USER_SERVICE_GQL } from "servers/types"
+import SearchIcon from "Icons/SearchIcon"
+import { Button } from "component/ui"
 import { Search } from "graphql/user"
 import { useDebouncedEffect } from "hooks/useDebouncedEffect"
-import SearchIcon from "Icons/SearchIcon"
-import { Button, Typography } from "component/ui"
+import { USER_SERVICE_GQL } from "servers/types"
 import { URLgetter } from "utils/lib/URLupdate"
+import "./index.css"
+import { SearchBarResultList } from "./searchResultList"
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState(URLgetter("q") ?? "")
@@ -33,7 +33,11 @@ export const SearchBar = () => {
       setDropDownOptions([])
       await searchData({
         variables: {
-          q: searchValue
+          q: searchValue,
+          user: true,
+          school: true,
+          space: true,
+          org: true
         }
       })
       setDropDownOptions(() => data?.search.items)
@@ -141,4 +145,3 @@ export const SearchBar = () => {
     </>
   )
 }
-
