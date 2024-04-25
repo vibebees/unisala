@@ -15,11 +15,13 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const params = new URLSearchParams(location.search)
   const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
   const { user, loggedIn } = useSelector((state) => state.userProfile)
-  const [selectedTab, setSelectedTab] = useState(null)
+  const [selectedTab, setSelectedTab] = useState(
+    localStorage.getItem("st") || null
+  )
   const [allowPost, setAllowPost] = useState(true)
-  const [postData, setPostData] = useState({
-    id: selectedTab
-  })
+  const [postData, setPostData] = useState(
+    JSON.parse(localStorage.getItem("postData")) || {}
+  )
 
   useLayoutEffect(() => {
     if (params.get("create")) {
@@ -42,6 +44,8 @@ export const PostModalOnClick = ({ allProps, metaData }) => {
   const handleTabSelection = (item) => {
     setSelectedTab(item)
     setPostData({ id: item })
+    localStorage.setItem("st", item)
+
     // params.append("type", item)
     // history.push({ search: params.toString() })
     // ButtonTrack(`${item} button clicked while creating a post`)

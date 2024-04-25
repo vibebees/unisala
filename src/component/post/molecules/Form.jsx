@@ -1,4 +1,4 @@
-import {useApolloClient, useMutation} from "@apollo/client"
+import { useApolloClient, useMutation } from "@apollo/client"
 import {
   IonButton,
   IonCheckbox,
@@ -19,15 +19,15 @@ import {
   GetSpaceEvents,
   getNewsFeed
 } from "graphql/user"
-import {useState} from "react"
+import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
-import {useSelector} from "react-redux"
-import {useHistory, useLocation} from "react-router"
-import {userServer} from "servers/endpoints"
-import {USER_SERVICE_GQL} from "servers/types"
+import { useSelector } from "react-redux"
+import { useHistory, useLocation } from "react-router"
+import { userServer } from "servers/endpoints"
+import { USER_SERVICE_GQL } from "servers/types"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
 import SelectAtom from "../atoms/Select"
-import {htmlForEditor} from "../utils/htmlForEditor"
+import { htmlForEditor } from "../utils/htmlForEditor"
 import ImageUpload from "./ImageUpload"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
@@ -75,13 +75,20 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       Emojis: "😍"
     }
   ]
-  const [ratings, setRatings] = useState({})
+  const [ratings, setRatings] = useState(
+    JSON.parse(localStorage.getItem("ratings")) || {}
+  )
 
   const handleRatingChange = (itemId, value, name) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
       [itemId]: value
     }))
+    const cachedRatings = JSON.parse(localStorage.getItem("ratings")) || {}
+    localStorage.setItem(
+      "ratings",
+      JSON.stringify({ ...cachedRatings, [itemId]: value })
+    )
     // Update the postData with the new rating
     // const postText = htmlForEditor(
     //   postData?.postText,
@@ -93,6 +100,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       // postText,
       [itemId]: value
     }))
+    localStorage.setItem("postData", JSON.stringify(postData))
   }
 
   const generateDateComponent = (item) => (
@@ -457,7 +465,10 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         <div>
           <RichTextInput
             id={item.id}
-            onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
+            onChange={(e) => {
+              setPostData((prev) => ({ ...prev, postText: e }))
+              localStorage.setItem("postData", JSON.stringify(postData))
+            }}
             value={postData?.postText}
             showUniversityListOnAt={true}
             searchText={postData?.postText?.split("@").pop().split("<")[0]}
