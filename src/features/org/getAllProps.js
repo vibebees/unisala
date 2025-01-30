@@ -77,11 +77,11 @@ export const getAllProps = ({
           icon: "clipboard",
           nav: "apply"
         },
-        // {
-        //   name: "History",
-        //   icon: "time",
-        //   nav: "history"
-        // },
+        {
+          name: "History",
+          icon: "time",
+          nav: "history"
+        },
         {
           name: "Invite",
           icon: "people",

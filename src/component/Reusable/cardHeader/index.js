@@ -1,5 +1,4 @@
-import React from "react"
-import { IonText, IonCardContent } from "@ionic/react"
+import { IonCardContent } from "@ionic/react"
 import Typography from "component/ui/Typography"
 
 export const CardHeader = ({ header, child = "" }) => {
@@ -15,3 +14,4 @@ export const CardHeader = ({ header, child = "" }) => {
     </div>
   )
 }
+

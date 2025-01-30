@@ -1,13 +1,13 @@
-import React, { useState } from "react"
-import { IonGrid, IonRow, IonCard } from "@ionic/react"
-import "./auth.css"
+import {IonGrid, IonRow} from "@ionic/react"
+import clsx from "clsx"
+import useWindowWidth from "hooks/useWindowWidth"
+import {useState} from "react"
+import Card from "../ui/Card"
+import LoginText from "./LoginText"
 import SignIn from "./SignIn/Index"
 import SignUp from "./SignUp/Index"
-import useWindowWidth from "hooks/useWindowWidth"
-import clsx from "clsx"
-import LoginText from "./LoginText"
+import "./auth.css"
 import AuthTemplate from "./template/AuthTemplate"
-
 const Authentication = ({ setActiveNavDrop = () => {} }) => {
   const [showSignup, setShowSignup] = useState(false)
   const [auth, setauth] = useState({
@@ -20,7 +20,7 @@ const Authentication = ({ setActiveNavDrop = () => {} }) => {
   return (
     <IonGrid className="!max-w-4xl w-full overflow-hidden ">
       <IonRow className="ion-no-padding">
-        <IonCard
+        <Card
           className={clsx(
             "p-4 m-0 absolute max-md:h-1/2 max-md:w-full  transition-all duration-300 ease-linear w-1/2 z-20 flex flex-col justify-center gap-5 bottom-0 top-0 py-6 text-white bg-blue-500",
             showSignup
@@ -29,7 +29,7 @@ const Authentication = ({ setActiveNavDrop = () => {} }) => {
           )}
         >
           <LoginText allProps={{ setShowSignup, showSignup, setauth }} />
-        </IonCard>
+        </Card>
 
         <AuthTemplate
           singupTrueClass={"slide-out-right"}

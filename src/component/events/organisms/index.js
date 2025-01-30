@@ -2,12 +2,12 @@ import { IonAlert, IonCard, IonCardContent, IonImg } from "@ionic/react"
 import { useState } from "react"
 import RegisterButton from "../atoms/RegisterButton"
 import { EventCardHeader } from "./cardHeader"
+import { defaultEventsImages } from "component/feed/default.images"
 export const EventCard = ({ event }) => {
   const [showAlert, setShowAlert] = useState(false)
   const [selectedYear, setSelectedYear] = useState("")
   const [buttonText, setButtonText] = useState("Register Now")
   const [buttonColor, setButtonColor] = useState("primary")
-  console.log({ event })
   const handleRegister = () => setShowAlert(true)
   const handleUserActivity = (value) => {
     setSelectedYear(value)
@@ -31,10 +31,11 @@ export const EventCard = ({ event }) => {
     setButtonColor("success")
   }
 
+  const randomEventImage = defaultEventsImages[10]
   return (
     <section>
       <IonCard>
-        <IonImg src={event?.images[0] ?? ""}></IonImg>
+        <IonImg src={event?.images[0] ?? randomEventImage.small_s3} alt ={randomEventImage.alts}></IonImg>
         <EventCardHeader event={event} />
         <IonCardContent>
           <div dangerouslySetInnerHTML={{ __html: event?.description }} />

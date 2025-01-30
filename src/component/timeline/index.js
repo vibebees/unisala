@@ -1,39 +1,36 @@
-import React, { useState } from "react"
-import {
-  IonContent,
-  IonCard,
-  IonCardContent,
-  IonIcon,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonRadio,
-  IonRadioGroup,
-  IonInput,
-  IonItem
-} from "@ionic/react"
-
-import TimeLineTemp from "./template"
 // import StepInput from "../../component/roadmap/StepInput"
-import { createAvatar } from "@dicebear/core"
-import { thumbs } from "@dicebear/collection"
+import { useQuery } from "@apollo/client"
+import { Grid } from "component/ui"
+import { OrgContext } from "features/org"
+import { GetAllHistory } from "graphql/user"
+import { useContext } from "react"
+import { USER_SERVICE_GQL } from "servers/types"
 import SingleTimeline from "./organism/SingleTimeline"
 
-export const TimeLine = () => {
-  const [firstStep, setfirstStep] = useState(true)
-  const [data, setdata] = useState({
-    stepOne: "",
-    stepTwo: "",
-    stepThree: "",
-    stepFour: ""
+export const TimeLine = ({ year }) => {
+  const { orgData } = useContext(OrgContext)
+  const { data, loading, fetchMore } = useQuery(GetAllHistory, {
+    context: { server: USER_SERVICE_GQL },
+    variables: { orgId: orgData?._id, year: year }
   })
-
   return (
-    <IonGrid
+    <Grid
       style={{ maxWidth: "900px" }}
-      className="w-full ion-no-margin ion-no-padding"
+      className="w-full ion-no-margin ion-no-padding max-w-[900px]  h-full ion-no-margin  px-0 "
     >
-      <SingleTimeline />
-    </IonGrid>
+      {/* <Row className=" !px-0  ion-no-margin ion-no-padding h-full rounded-md  pt-2">
+        <Col className="w-full ion-no-margin ion-no-padding h-full ion-no-margin  px-0">
+          {data?.getAllHistory?.data &&
+            data?.getAllHistory?.data.map((item, index) => (
+              <DateList
+                key={index}
+                date={new Date(item.date).getFullYear("YY-MM-DD")}
+                content={item?.description}
+              />
+            ))}
+        </Col>
+      </Row> */}
+      <SingleTimeline data={data?.getAllHistory?.data} />
+    </Grid>
   )
 }

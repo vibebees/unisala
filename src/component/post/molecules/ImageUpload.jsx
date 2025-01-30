@@ -1,12 +1,10 @@
 import { IonIcon } from "@ionic/react"
 import clsx from "clsx"
 import { closeOutline, imageOutline } from "ionicons/icons"
-import React from "react"
 
-const ImageUpload = ({ files, setFiles }) => {
+const ImageUpload = ({ files, setFiles, isEdited = false }) => {
   const handleRemoveFile = (index) => {
     const newFiles = Array.from(files)
-
     newFiles.splice(index, 1)
     setFiles(newFiles)
   }
@@ -21,7 +19,7 @@ const ImageUpload = ({ files, setFiles }) => {
         Array.from(files).map((file, i) => (
           <div className="relative mt-16" key={i}>
             <img
-              src={URL.createObjectURL(file)}
+              src={isEdited ? file : URL.createObjectURL(file)}
               className="post-image-preview"
             />
             <button
@@ -35,7 +33,7 @@ const ImageUpload = ({ files, setFiles }) => {
         ))}
     </div>
   ) : (
-    <div className="mt-20 flex justify-center items-center">
+    <div className="mt flex justify-center items-center">
       <label
         onDragOver={(e) => e.preventDefault()}
         // onDrop={handleImageDrop}

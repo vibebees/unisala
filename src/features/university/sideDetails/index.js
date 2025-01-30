@@ -1,14 +1,13 @@
 // eslint-disable-next-line no-use-before-define
-import React from "react"
 import {
-  IonGrid,
-  IonRow,
-  IonCol,
   IonCard,
-  IonList,
-  IonItem,
+  IonCol,
+  IonGrid,
   IonIcon,
-  IonLabel
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRow
 } from "@ionic/react"
 import {
   barChartOutline,
@@ -18,24 +17,26 @@ import {
   libraryOutline,
   peopleOutline,
   receiptOutline,
-  thumbsUpOutline,
-  schoolOutline
+  schoolOutline,
+  thumbsUpOutline
 } from "ionicons/icons"
+import React from "react"
 
-import VisitWebsite from "./visitWebsite"
-import Professors from "component/professors/template/Professor"
-import Interview from "./Interview"
-import { ReportCard } from "component/reportCard"
-import { PollCard } from "component/pollCard"
-import { CardWithCircularGrid } from "component/cardWithCircularGrid"
-import StudentCharges from "./studentCharges"
-import Statstics from "./statistics"
-import Ranking from "./Ranking/template"
-import { FolderStructure } from "component/folderStructure"
 import StatCardTemplate from "component/DataStatCard/template/StatCardTemplate"
 import StatCardTemplateTwo from "component/DataStatCard/template/StatCardTemplateTwo"
 import RectangularCard from "component/RectangularCardGrid/template/RectangularCard"
 import ImageCard from "component/ScrollableImageCard/template/ImageCard"
+import { CardWithCircularGrid } from "component/cardWithCircularGrid"
+import FolderStructure from "component/folderStructure"
+import { PollCard } from "component/pollCard"
+import Professors from "component/professors/template/Professor"
+import { ReportCard } from "component/reportCard"
+import Interview from "./Interview"
+import Ranking from "./Ranking/template"
+import { DepartmentRating } from "./departmentRatings"
+import Statstics from "./statistics"
+import StudentCharges from "./studentCharges"
+import VisitWebsite from "./visitWebsite"
 
 const SideDetails = ({
   activeTab,
@@ -203,6 +204,10 @@ const SideDetails = ({
           <section ref={forwardedRef.studentCharges}>
             <StudentCharges />
           </section>
+
+          <section>
+            <DepartmentRating ratings={uniData?.departmentRatings} />
+          </section>
           <section ref={forwardedRef.admission}>
             <StatCardTemplate
               allProps={{
@@ -284,3 +289,4 @@ const SideDetails = ({
   )
 }
 export default SideDetails
+

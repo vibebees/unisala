@@ -11,6 +11,7 @@ import {
 import axios from "axios"
 import clsx from "clsx"
 import RichTextInput from "component/Input/RichTextInput"
+import { Typography } from "component/ui"
 import {
   AddPost,
   AddSpaceEvent,
@@ -21,7 +22,6 @@ import {
 import { useState } from "react"
 import "react-quill/dist/quill.snow.css"
 import { useSelector } from "react-redux"
-import { useHistory, useLocation } from "react-router"
 import { userServer } from "servers/endpoints"
 import { USER_SERVICE_GQL } from "servers/types"
 import AsyncSelectAtom from "../atoms/AsyncSelect"
@@ -30,14 +30,10 @@ import { htmlForEditor } from "../utils/htmlForEditor"
 import ImageUpload from "./ImageUpload"
 
 const Form = ({ metaData, postData, setPostData, allProps }) => {
-  const { setCreateAPostPopUp, createAPostPopUp, tags } = allProps
+  const { setCreateAPostPopUp, tags } = allProps
   const { user } = useSelector((state) => state.userProfile)
   const [files, setFiles] = useState(null)
   const [present, dismiss] = useIonToast()
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const location = useLocation()
-  const histroy = useHistory()
-  const params = new URLSearchParams(location.search)
 
   const client = useApolloClient()
 
@@ -74,35 +70,46 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       Emojis: "😍"
     }
   ]
-  const [ratings, setRatings] = useState({})
+  const [ratings, setRatings] = useState(
+    JSON.parse(localStorage.getItem("ratings")) || {}
+  )
 
   const handleRatingChange = (itemId, value, name) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
       [itemId]: value
     }))
+    const cachedRatings = JSON.parse(localStorage.getItem("ratings")) || {}
+    localStorage.setItem(
+      "ratings",
+      JSON.stringify({ ...cachedRatings, [itemId]: value })
+    )
+    setPostData((prev) => ({
+      ...prev,
+      // postText,
+      [itemId]: value
+    }))
+    localStorage.setItem("postData", JSON.stringify(postData))
+
     // Update the postData with the new rating
     // const postText = htmlForEditor(
     //   postData?.postText,
     //   name,
     //   RatingData.find((val) => val.value === value)?.Emojis
     // )
-    setPostData((prev) => ({
-      ...prev,
-      // postText,
-      [itemId]: value
-    }))
   }
 
   const generateDateComponent = (item) => (
     <>
-      <IonLabel>{item.name}</IonLabel>
+      <Typography variant="p">{item.name}</Typography>
       <IonItem />
       <IonDatetime
+        value={postData?.[item.id] || ""}
         displayFormat="MMM DD, YYYY" // You can customize this format
-        onIonChange={(e) =>
+        onIonChange={(e) => {
           setPostData((prev) => ({ ...prev, [item?.id]: e.detail.value }))
-        }
+          localStorage.setItem("postData", JSON.stringify(postData))
+        }}
       />
     </>
   )
@@ -159,7 +166,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         __typename: "PostNewsFeed"
       }
       if (!tags) {
-        console.log("no tags")
         const cachedData = cache.readQuery({
           query: getNewsFeed,
           variables: {
@@ -169,7 +175,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }
           }
         })
-        console.log({ cachedData })
+
         cachedData &&
           cache.writeQuery({
             query: getNewsFeed,
@@ -243,7 +249,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         color: "primary",
         mode: "ios"
       })
-      setCreateAPostPopUp(false)
+
       // setfile("")
     },
     onError: (error) => {
@@ -311,7 +317,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
       })
     },
     onCompleted: async ({ addOrgSpaceEvent }) => {
-      console.log({ files, addOrgSpaceEvent })
       if (files) {
         for (let i = 0; i < files.length; i++) {
           formData.append("image", files[i])
@@ -326,7 +331,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             }
           }
         )
-        console.log({ res })
       }
       present({
         duration: 3000,
@@ -342,8 +346,6 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    console.log("Submitting postData:", postData) // Log the postData here
 
     if (files?.length > 4) {
       present({
@@ -385,27 +387,21 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
         })
       }
     }
-    setCreateAPostPopUp(false)
-    params.delete("create")
-    params.delete("type")
-
-    histroy.push({
-      search: params.toString()
-    })
+    const btn = document.querySelector(".modal-close-btn")
+    btn.click()
   }
 
   const generateInputTag = (item) => {
-    console.log({ item })
-
     return (
       <>
-        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+        <Typography className="text-sm">{item.name}</Typography>
         <IonInput
           id={item.id} // Add id attribute here
           name={item.name}
           type={item.type}
           placeholder={item.placeholder || ""}
-          className="border border-[#bdbdbd] rounded-sm"
+          className="border border-[#bdbdbd]  !px-2 text-sm rounded-sm "
+          value={postData?.[item.id] || ""}
           onIonChange={(e) => {
             const postText = htmlForEditor(
               postData?.postText,
@@ -419,6 +415,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
                 ? e.target.value
                 : parseFloat(e.target.value)
             }))
+            localStorage.setItem("postData", JSON.stringify(postData))
           }}
         />
       </>
@@ -428,12 +425,15 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const generateSelectTag = (item) => {
     return (
       <>
-        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+        <Typography variant="p" className="text-sm">
+          {item.name}
+        </Typography>
         {item.api ? (
           <AsyncSelectAtom
             item={item}
             setPostData={setPostData}
             postData={postData}
+            className="text-sm"
           />
         ) : (
           <SelectAtom
@@ -441,6 +441,7 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
             item={item}
             setPostData={setPostData}
             postData={postData}
+            className="text-sm"
           />
         )}
       </>
@@ -450,33 +451,15 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
   const generateTextareaTag = (item) => {
     return (
       <>
-        <IonLabel htmlFor={item.id}>{item.name}</IonLabel>
+        <Typography className="text-sm mb-1">{item.name}</Typography>
         <div>
           <RichTextInput
             id={item.id}
-            onChange={(e) => setPostData((prev) => ({ ...prev, postText: e }))}
-            value={postData?.postText}
-            showUniversityListOnAt={true}
-            searchText={postData?.postText?.split("@").pop().split("<")[0]}
-            handleUniversitySelect={(e) => {
-              if (postData?.postText.endsWith("</p>")) {
-                const removeTextafter = postData.postText.split("@")[0]
-                setPostData((prev) => ({
-                  ...prev,
-                  postText:
-                    removeTextafter +
-                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p></p>`
-                }))
-              } else {
-                const removeTextafter = postData.postText.split("@")[0]
-                setPostData((prev) => ({
-                  ...prev,
-                  postText:
-                    removeTextafter +
-                    `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
-                }))
-              }
+            onChange={(e) => {
+              setPostData((prev) => ({ ...prev, postText: e }))
+              localStorage.setItem("postData", JSON.stringify(postData))
             }}
+            value={postData?.postText}
           />
         </div>
       </>
@@ -521,18 +504,22 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
     }
   }
 
-  console.log({ postData })
   return (
     <div className="px-2">
       <form onSubmit={handleSubmit}>
-        {metaData?.edges?.map((item) => {
+        {metaData?.edges?.map((item, index) => {
           return (
             <>
-              <div className="mt-4">{item && generateHTML(item)}</div>
+              <div className="mt-4" key={index}>
+                {item && generateHTML(item)}
+              </div>
             </>
           )
         })}
-        <ImageUpload files={files} setFiles={setFiles} />
+        <div className="mt-11 mb-2">
+          <ImageUpload files={files} setFiles={setFiles} />
+        </div>
+
         <IonButton type="submit">Submit</IonButton>
       </form>
     </div>
@@ -540,4 +527,3 @@ const Form = ({ metaData, postData, setPostData, allProps }) => {
 }
 
 export default Form
-

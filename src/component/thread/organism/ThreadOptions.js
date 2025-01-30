@@ -77,7 +77,7 @@ const ThreadOptions = ({
 
   if (loggedinUser?.username === username) {
     return (
-      <div className="absolute top-4 right-8">
+      <div className="absolute z-20 top-4 right-8">
         <div className="relative">
           <button onClick={() => setShowOptions((prev) => !prev)}>
             <IonIcon icon={ellipsisHorizontalOutline} className="text-2xl" />

@@ -508,29 +508,27 @@ export const AddComment = gql`
         pageSize: 3
         unitId: $unitId
       ) {
-        posts {
+        _id
+        images
+        postText
+        date
+        upVoteCount
+        postCommentsCount
+        userId # Use userId instead of user
+        user {
           _id
-          images
-          postText
-          date
-          upVoteCount
-          postCommentsCount
-          userId # Use userId instead of user
-          user {
-            _id
-            firstName
-            lastName
-            picture
-            username
-          }
-          saved
-          upVoted
-          admissionAndApplicationRating
-          financialAidAndScholarshipRating
-          academicProgramsAndDepartmentRating
-          studentLifeAndServiceRating
-          careerAndAlumniResourceRating
+          firstName
+          lastName
+          picture
+          username
         }
+        saved
+        upVoted
+        admissionAndApplicationRating
+        financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating
+        careerAndAlumniResourceRating
       }
     }
   `,
@@ -1057,6 +1055,196 @@ export const AddComment = gql`
       }
     }
   `,
+  GetMyNewsFeed = gql`
+    query fetchMyNewsFeed($userId: ID!, $page: Float!) {
+      fetchMyNewsFeed(userId: $userId, page: $page) {
+        section
+        postText
+        admissionAndApplicationRating
+        financialAidAndScholarshipRating
+        academicProgramsAndDepartmentRating
+        studentLifeAndServiceRating
+        careerAndAlumniResourceRating
+        upVoted
+        upVoteCount
+        postCommentsCount
+        type
+        saved
+        videoURL
+        event {
+          _id
+          title
+          description
+          isRegistered
+          address
+          eventDate
+          interestedUsers {
+            userId
+          }
+          images
+        }
+        tags {
+          _id
+          name
+          parentId
+          image
+          description
+        }
+        date
+        _id
+        images
+        user {
+          firstName
+          lastName
+          picture
+          username
+          _id
+        }
+        elevatorInfo {
+          tags
+          ownType
+          name
+          tags
+          majors {
+            title
+          }
+          pictures
+          address {
+            streetAddressOrPOBox
+            city
+            stateAbbreviation
+            zipCode
+          }
+          name
+        }
+        studentCharges {
+          combinedChargeForRoomAndBoard
+          undergraduateApplicationFee
+          graduateApplicationFee
+          unitId
+          undergraduate {
+            inState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            outOfState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            inDistrict {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            onCampus {
+              costOfAttendance {
+                inDistrict
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            offCampusWithFamily {
+              costOfAttendance {
+                inDistrict
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            offCampusNotWithFamily {
+              costOfAttendance {
+                inDistrict
+                inState
+                outOfState
+              }
+              roomAndBoard
+              otherExpenses
+            }
+            booksAndSupplies
+          }
+
+          graduate {
+            inState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            outOfState {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+            inDistrict {
+              tuition
+              requiredFees
+              perCreditHourCharge
+            }
+          }
+        }
+        suggestedOrgs {
+          name
+          type
+          spaces {
+            _id
+            name
+            description
+            image
+          }
+        }
+        suggestedSpace {
+          type
+          name
+          spaces {
+            _id
+            name
+            description
+            image
+          }
+        }
+        userEvaluation {
+          unitId
+          rankings {
+            rank
+            title
+            totalPlayers
+          }
+          report {
+            academics
+            average
+            value
+            diversity
+            campus
+            atheltics
+            partyScene
+            professors
+            location
+            dorms
+            campusFood
+            studentLife
+            safety
+          }
+          reviews {
+            rating
+            type
+            votes
+          }
+        }
+
+        unitId
+        applied_level
+        status
+        attempt
+        university
+        conversation
+        major
+      }
+    }
+  `,
   GetInterviewExperience = gql`
     query getInterviewExperience($unitId: Float!, $page: Int, $pageSize: Int) {
       getInterviewExperience(
@@ -1113,10 +1301,10 @@ export const AddComment = gql`
         data {
           name
           _id
-          name
           description
           profileImage
           coverImage
+          image
           admin {
             _id
             firstName
@@ -1300,7 +1488,7 @@ export const AddComment = gql`
           success
           message
         }
-        spaceCategory {
+        data {
           _id
           name
         }
@@ -1329,7 +1517,7 @@ export const AddComment = gql`
         data {
           _id
           userId
-          spaceOrgId
+          orgId
           spaceId
           title
           description
@@ -1567,5 +1755,169 @@ export const AddComment = gql`
         }
       }
     }
+  `,
+  GetAllHistoryYear = gql`
+    query GetAllHistoryYear($orgId: ID!) {
+      getAllHistoryYear(orgId: $orgId) {
+        status {
+          success
+          message
+        }
+        data
+      }
+    }
+  `,
+  GetAllHistory = gql`
+    query GetAllHistory($orgId: ID!, $year: Int) {
+      getAllHistory(orgId: $orgId, year: $year) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          title
+          date
+          description
+          userId
+        }
+      }
+    }
+  `,
+  AddNewHistory = gql`
+    mutation createHistory(
+      $orgId: ID!
+      $title: String!
+      $description: String!
+      $date: String!
+      $events: [Event]
+    ) {
+      createHistory(
+        orgId: $orgId
+        title: $title
+        description: $description
+        date: $date
+        events: $events
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          userId
+          orgId
+          title
+          description
+          date
+        }
+      }
+    }
+  `,
+  EditHistory = gql`
+    mutation editHistory(
+      $orgHistoryId: ID!
+      $title: String
+      $description: String
+      $date: String
+    ) {
+      editHistory(
+        orgHistoryId: $orgHistoryId
+        title: $title
+        description: $description
+        date: $date
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          userId
+          orgId
+          title
+          description
+          date
+        }
+      }
+    }
+  `,
+  GetAllHistoryEvents = gql`
+    query getAllHistoryActivity(
+      $orgHistoryId: ID!
+      $startYear: Int
+      $endYear: Int
+    ) {
+      getAllHistoryActivity(
+        orgHistoryId: $orgHistoryId
+        startYear: $startYear
+        endYear: $endYear
+      ) {
+        status {
+          success
+          message
+        }
+        data {
+          _id
+          title
+          user {
+            _id
+            firstName
+            lastName
+            username
+            picture
+          }
+        }
+      }
+    }
+  `,
+  Search = gql`
+    query Search(
+      $q: String!
+      $user: Boolean
+      $school: Boolean
+      $space: Boolean
+      $org: Boolean
+      $orgId: ID
+      $limit: Int
+    ) {
+      search(
+        q: $q
+        user: $user
+        school: $school
+        space: $space
+        org: $org
+        orgId: $orgId
+        limit: $limit
+      ) {
+        totalItems
+        items {
+          name
+          type
+          username
+        }
+        spaces {
+          name
+          description
+        }
+        users {
+          firstName
+          lastName
+          username
+          oneLinerBio
+          picture
+        }
+        orgs {
+          name
+          description
+        }
+      }
+    }
+  `,
+  InvitationRequestHandler = gql`
+    query requestToJoinOrg($orgId: ID!, $status: String!, $email: String!) {
+      requestToJoinOrg(orgId: $orgId, status: $status, email: $email) {
+        data
+      }
+    }
   `
-

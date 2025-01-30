@@ -163,16 +163,7 @@ function ReplyInput({
         <div>
           <RichTextInput
             onChange={(e) => setCommentText(e)}
-            showUniversityListOnAt={true}
             value={commentText}
-            searchText={commentText.split("@").pop().split("<")[0]}
-            handleUniversitySelect={(e) => {
-              const removeTextafter = commentText.split("@")[0]
-              setCommentText(
-                removeTextafter +
-                  `<a href="https://unisala.com/university/${e}" rel="noopener noreferrer" target="_blank">${e}</a></p>`
-              )
-            }}
           />
         </div>
         <div>

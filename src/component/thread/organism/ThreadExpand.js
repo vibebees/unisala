@@ -43,7 +43,7 @@ const ThreadExpand = ({ htmlText, thread = {}, _id }) => {
 
   const PostBodyText = () => (
     <div
-      className="ql-editor cursor-pointer"
+      className="ql-editor m-auto cursor-pointer"
       dangerouslySetInnerHTML={{ __html: linkifiedText }}
       ref={TextRef}
       onClick={(e) => {
@@ -106,3 +106,4 @@ const ThreadExpand = ({ htmlText, thread = {}, _id }) => {
 }
 
 export default ThreadExpand
+

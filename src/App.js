@@ -23,13 +23,8 @@ import { PageRoute } from "./component/PageRoute"
 import { persistor, store } from "./store/store"
 
 /* Theme variables */
-
-const axios = require("axios")
-const lib = {}
 const TrackingId = "G-KDJCCKHWYC"
 ReactGA.initialize(TrackingId)
-
-lib.axios = axios
 setupIonicReact()
 
 const DesktopView = ({ allProps }) => {
@@ -68,8 +63,8 @@ const App = () => {
         <IonApp>
           <IonPage className="text-black">
             <IonReactRouter>
-              {width > 968 && <DesktopView allProps={allProps} />}
-              {width <= 968 && (
+              {width >= 768 && <DesktopView allProps={allProps} />}
+              {width < 768 && (
                 <MobileView
                   allProps={allProps}
                   setCreateAPostPopUp={setCreateAPostPopUp}
@@ -84,4 +79,3 @@ const App = () => {
 }
 
 export default App
-

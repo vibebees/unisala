@@ -1,12 +1,13 @@
-import React, { useState, useRef } from "react"
-import { IonPopover, IonItem, IonInput, IonIcon } from "@ionic/react"
-import { universityServer } from "servers/endpoints"
-import { arrowBackOutline } from "ionicons/icons"
+import { IonIcon, IonInput, IonItem } from "@ionic/react"
 import { authInstance } from "api/axiosInstance"
-import { useDebouncedEffect } from "hooks/useDebouncedEffect"
-import SearchLoadingSkeleton from "component/authentication/Welcome/atom/SearchLoadingSkeleton"
-import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
 import NoImageFound from "assets/no_image_found.png"
+import ImageWithLoader from "component/Reusable/Image/ImageWithLoader"
+import SearchLoadingSkeleton from "component/authentication/Welcome/atom/SearchLoadingSkeleton"
+import { useDebouncedEffect } from "hooks/useDebouncedEffect"
+import { arrowBackOutline } from "ionicons/icons"
+import { useState } from "react"
+import { universityServer } from "servers/endpoints"
+
 const UniversityList = ({
   handleUniversitySelect,
   popoverOpen,

@@ -1,11 +1,10 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { IonCard } from "@ionic/react"
+import {IonCard} from "@ionic/react"
+import {CardHeader} from "component/Reusable/cardHeader"
+import Typography from "component/ui/Typography"
+import {useSelector} from "react-redux"
+import ApplicationCharge from "./template/ApplicationCharge"
 import TableOne from "./template/TableOne"
 import TableTwo from "./template/TableTwo"
-import ApplicationCharge from "./template/ApplicationCharge"
-import Typography from "component/ui/Typography"
-import { CardHeader } from "component/Reusable/cardHeader"
 
 const index = () => {
   const { uniData } = useSelector((store) => store?.university)
@@ -51,3 +50,4 @@ const index = () => {
 }
 
 export default index
+

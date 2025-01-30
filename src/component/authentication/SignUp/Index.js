@@ -3,21 +3,21 @@ import GoogleAuth from "../GoogleAuth"
 import SignUpForm from "./SignUpForm"
 import AppleAuth from "../AppleAuth"
 import "../auth.css"
+import { Typography } from "component/ui"
 
 export const SignUp = ({ setauth, setShowSignup = null }) => {
   const params = new URLSearchParams(window.location.search)
   const isInvited = params.get("org")
   return (
     <div className="sign-content bg-white">
-      <IonText className="auth-start">
-        <p>Start for free.</p>
-      </IonText>
-
-      <IonText className="mb-1">
-        <h4 className="text-xl font-semibold text-neutral-600">
-          Create a new account.
-        </h4>
-      </IonText>
+      <Typography variant="p" className=" border-blue-400 w-fit border-b-2">
+        Start for free
+      </Typography>
+      <Typography className="font-semibold text-neutral-600 text-xl">
+        Create a new account.
+      </Typography>
+      <br />
+      <br />
       {!isInvited && (
         <div className="auth-button">
           <div

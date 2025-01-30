@@ -256,3 +256,12 @@ li {
 .threadScroll::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.ql-editor {
+  min-height: 130px;
+
+}
+
+.mention {
+  background-color: transparent !important;
+}

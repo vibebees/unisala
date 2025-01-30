@@ -17,13 +17,22 @@ export const GoogleAuth = ({ setauth, setActiveNavDrop = () => {} }) => {
 
   const onGoogleSignIn = (user) => {
     const { credential } = user
+    let payload = {
+      email: params.get("email"),
+      spaceOrgName: params.get("org"),
+      code: params.get("code"),
+      token: credential,
+      type: params.get("org") && "invitation"
+    }
     dispatch(
       googleAuthAction({
         present,
         dismiss,
-        credential,
+        payload,
         setActiveNavDrop,
-        redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`
+        history,
+        redirectUrl: params.get("uni") + `?unitId=${params.get("unitId")}`,
+        showPopForUser: "test"
       })
     )
   }
